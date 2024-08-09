@@ -34,6 +34,9 @@ public class Creature : BaseObject
                 case ECreatureState.Fall:
                     isChangeState = FallStateCondition();
                     break;
+                case ECreatureState.Land:
+                    isChangeState = LandStateCondition();
+                    break;
                 case ECreatureState.Attack:
                     isChangeState = AttackStateCondition();
                     break;
@@ -62,6 +65,9 @@ public class Creature : BaseObject
                 case ECreatureState.Fall:
                     FallStateOperate();
                     break;
+                case ECreatureState.Land:
+                    LandStateOperate();
+                    break;
                 case ECreatureState.Attack:
                     AttackStateOperate();
                     break;
@@ -77,12 +83,12 @@ public class Creature : BaseObject
     public CreatureFoot creatureFoot { get; protected set; }
 
     protected Rigidbody Rigid { get; private set; }
-    public CapsuleCollider Collider { get; private set; }
+    [SerializeField] public CapsuleCollider Collider { get; private set; }
     protected Animator animator;
 
-    private void Start()
+    protected virtual void Start()
     {
-        SetInfo(0); // 임시 (오브젝트 매니저에서 스폰 시 수행) 
+        Init();
     }
 
     public override bool Init()
@@ -109,7 +115,14 @@ public class Creature : BaseObject
     #region Rigid
     protected void SetRigidVelocity(Vector2 vec)
     {
-        Rigid.velocity = new Vector3(vec.x, Rigid.velocity.y, vec.y);
+        Vector3 dir = Quaternion.AngleAxis(-transform.rotation.eulerAngles.y, Vector3.forward) * vec;
+        
+        Rigid.AddForce(new Vector3(dir.x, 0, dir.y), ForceMode.Impulse);
+    }
+
+    protected void PushRigidVelocity(float y)
+    {
+        Rigid.AddForce(new Vector3(0, y, 0), ForceMode.Impulse);
     }
 
     protected void SetRigidVelocityZero()
@@ -123,6 +136,7 @@ public class Creature : BaseObject
     protected virtual bool MoveStateCondition() { return true; }
     protected virtual bool JumpStateCondition() { return true; }
     protected virtual bool FallStateCondition() { return true; }
+    protected virtual bool LandStateCondition() { return true; }
     protected virtual bool AttackStateCondition() { return true; }
     protected virtual bool DeadStateCondition() { return true; }
     #endregion
@@ -132,6 +146,7 @@ public class Creature : BaseObject
     protected virtual void MoveStateOperate() { }
     protected virtual void JumpStateOperate() { }
     protected virtual void FallStateOperate() { }
+    protected virtual void LandStateOperate() { }
     protected virtual void AttackStateOperate() { }
     protected virtual void DeadStateOperate() { }
     #endregion

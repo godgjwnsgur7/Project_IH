@@ -53,6 +53,15 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MousePointer"",
+                    ""type"": ""Value"",
+                    ""id"": ""e0bd43b1-bcdf-4e00-96d4-1df52978fa5b"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -187,6 +196,28 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""EKey"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""83d4ec47-f655-496e-8238-c2da559bd5be"",
+                    ""path"": ""<Pointer>/delta"",
+                    ""interactions"": """",
+                    ""processors"": ""InvertVector2(invertX=false),ScaleVector2(x=0.05,y=0.05)"",
+                    ""groups"": """",
+                    ""action"": ""MousePointer"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1a43d8d4-49da-40e9-996f-c9aa16ef0d99"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": ""InvertVector2(invertX=false),StickDeadzone,ScaleVector2(x=300,y=300)"",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""MousePointer"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -232,6 +263,7 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
         m_InGame_ArrowKey = m_InGame.FindAction("ArrowKey", throwIfNotFound: true);
         m_InGame_SpaceKey = m_InGame.FindAction("SpaceKey", throwIfNotFound: true);
         m_InGame_EKey = m_InGame.FindAction("EKey", throwIfNotFound: true);
+        m_InGame_MousePointer = m_InGame.FindAction("MousePointer", throwIfNotFound: true);
         // OutGame
         m_OutGame = asset.FindActionMap("OutGame", throwIfNotFound: true);
     }
@@ -298,6 +330,7 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_InGame_ArrowKey;
     private readonly InputAction m_InGame_SpaceKey;
     private readonly InputAction m_InGame_EKey;
+    private readonly InputAction m_InGame_MousePointer;
     public struct InGameActions
     {
         private @MainInputActions m_Wrapper;
@@ -305,6 +338,7 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
         public InputAction @ArrowKey => m_Wrapper.m_InGame_ArrowKey;
         public InputAction @SpaceKey => m_Wrapper.m_InGame_SpaceKey;
         public InputAction @EKey => m_Wrapper.m_InGame_EKey;
+        public InputAction @MousePointer => m_Wrapper.m_InGame_MousePointer;
         public InputActionMap Get() { return m_Wrapper.m_InGame; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -323,6 +357,9 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
             @EKey.started += instance.OnEKey;
             @EKey.performed += instance.OnEKey;
             @EKey.canceled += instance.OnEKey;
+            @MousePointer.started += instance.OnMousePointer;
+            @MousePointer.performed += instance.OnMousePointer;
+            @MousePointer.canceled += instance.OnMousePointer;
         }
 
         private void UnregisterCallbacks(IInGameActions instance)
@@ -336,6 +373,9 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
             @EKey.started -= instance.OnEKey;
             @EKey.performed -= instance.OnEKey;
             @EKey.canceled -= instance.OnEKey;
+            @MousePointer.started -= instance.OnMousePointer;
+            @MousePointer.performed -= instance.OnMousePointer;
+            @MousePointer.canceled -= instance.OnMousePointer;
         }
 
         public void RemoveCallbacks(IInGameActions instance)
@@ -414,6 +454,7 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
         void OnArrowKey(InputAction.CallbackContext context);
         void OnSpaceKey(InputAction.CallbackContext context);
         void OnEKey(InputAction.CallbackContext context);
+        void OnMousePointer(InputAction.CallbackContext context);
     }
     public interface IOutGameActions
     {

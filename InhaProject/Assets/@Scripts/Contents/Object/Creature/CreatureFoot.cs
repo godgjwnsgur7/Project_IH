@@ -17,15 +17,15 @@ public class CreatureFoot : InitBase
         return true;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter(Collider collision)
     {
-        if(collision.tag == ETag.Ground.ToString())
+        if (collision.tag == ETag.Ground.ToString())
         {
             IsLandingGround = true;
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnTriggerExit(Collider collision)
     {
         if(collision.tag == ETag.Ground.ToString())
         {

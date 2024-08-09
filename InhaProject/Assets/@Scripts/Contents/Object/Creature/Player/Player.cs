@@ -9,8 +9,8 @@ using static Define;
 public class Player : Creature
 {
     // 임시 데이터들
-    protected float MoveSpeed = 3.0f;
-    protected float JumpPower = 5.0f;
+    protected float MoveSpeed = 1.0f;
+    protected float JumpPower = 8.0f;
 
     // 플레이어를 조작할 수 있는 경우
     [SerializeField] private bool _isPlayerInputControll = false;
@@ -38,11 +38,11 @@ public class Player : Creature
         }
     }
 
-    private void Start()
+    protected override void Start()
     {
-        // 임시
+        base.Start();
+
         IsPlayerInputControll = true; // 게임 매니저에서 할 것
-        SetInfo(0);
     }
 
     public override bool Init()
@@ -61,7 +61,7 @@ public class Player : Creature
 
         CreatureType = ECreatureType.Player;
 
-        Camera.main.GetOrAddComponent<CameraController>().Target = this;
+        // Camera.main.GetOrAddComponent<CameraController>().Target = this;
     }
 
     #region Input
@@ -71,11 +71,13 @@ public class Player : Creature
     {
         Managers.Input.OnArrowKeyEntered -= OnArrowKey;
         Managers.Input.OnSpaceKeyEntered -= OnJumpKey;
+        Managers.Input.OnMousePointerAction -= OnMousePointer;
 
         if (isConnect)
         {
             Managers.Input.OnArrowKeyEntered += OnArrowKey;
             Managers.Input.OnSpaceKeyEntered += OnJumpKey;
+            Managers.Input.OnMousePointerAction += OnMousePointer;
         }
     }
 
@@ -94,6 +96,11 @@ public class Player : Creature
             return;
 
         CreatureState = ECreatureState.Jump;
+    }
+
+    public void OnMousePointer(Vector2 value)
+    {
+        transform.Rotate(0f, value.x * 5, 0f, Space.World);
     }
     #endregion
 
@@ -118,6 +125,9 @@ public class Player : Creature
                 case ECreatureState.Fall:
                     UpdateFallState();
                     break;
+                case ECreatureState.Land:
+                    UpdateLandState();
+                    break;
                 case ECreatureState.Attack:
                     UpdateAttackState();
                     break;
@@ -135,6 +145,9 @@ public class Player : Creature
         if (base.IdleStateCondition() == false)
             return false;
 
+        if (moveDirection.x != 0 || moveDirection.y != 0)
+            return false;
+
         return true;
     }
 
@@ -146,11 +159,13 @@ public class Player : Creature
     protected override void IdleStateOperate()
     {
         base.IdleStateOperate();
+
+        SetRigidVelocityZero();
     }
     #endregion
 
     #region Move Motion
-    protected override bool MoveStateCondition()
+    protected override bool MoveStateCondition() 
     {
         if (base.MoveStateCondition() == false)
             return false;
@@ -158,25 +173,32 @@ public class Player : Creature
         if (moveDirection.x == 0 && moveDirection.y == 0)
             return false;
 
-
+        if (creatureFoot.IsLandingGround == false)
+            return false;
 
         return true;
-    }
-
-    private void UpdateMoveState()
-    {
-        // 이동할 방향 쳐다봐야 함
-
-        SetRigidVelocity(moveDirection * MoveSpeed);
-
-        CreatureState = ECreatureState.Idle;
     }
 
     protected override void MoveStateOperate()
     {
         base.MoveStateOperate();
+    }
 
+    private void UpdateMoveState()
+    {
+        FallDownCheck();
+        Movement();
 
+        if (moveDirection == Vector2.zero)
+        {
+            CreatureState = ECreatureState.Idle;
+            return;
+        }
+    }
+
+    private void Movement()
+    {
+        SetRigidVelocity(moveDirection * MoveSpeed);
     }
     #endregion
 
@@ -186,43 +208,91 @@ public class Player : Creature
         if (base.JumpStateCondition() == false)
             return false;
 
-        return true;
-    }
+        if (creatureFoot.IsLandingGround == false)
+            return false;
 
-    private void UpdateJumpState()
-    {
-        // 착지 확인
-        if (creatureFoot.IsLandingGround)
-        {
-            CreatureState = ECreatureState.Move;
-            CreatureState = ECreatureState.Idle;
-            return;
-        }
+        return true;
     }
 
     protected override void JumpStateOperate()
     {
         base.JumpStateOperate();
 
-        // SetRigidVelocityY(JumpPower);
+        PushRigidVelocity(JumpPower);
+    }
+
+    private void UpdateJumpState()
+    {
+        Movement();
+        FallDownCheck();
     }
     #endregion
 
     #region Fall Motion
     protected override bool FallStateCondition()
     {
+        if (base.FallStateCondition() == false)
+            return false;
+
+        if (Rigid.velocity.y >= 0)
+            return false;
 
         return true;
-    }
-
-    private void UpdateFallState()
-    {
-
     }
 
     protected override void FallStateOperate()
     {
         base.FallStateOperate();
+    }
+
+    private void UpdateFallState()
+    {
+        Movement();
+
+        // 낙하 속도 제한
+        if (Rigid.velocity.y < -JumpPower)
+            PushRigidVelocity(-JumpPower);
+
+        // 착지 확인
+        if (creatureFoot.IsLandingGround)
+        {
+            CreatureState = ECreatureState.Land;
+            CreatureState = ECreatureState.Move;
+        }
+    }
+
+    private void FallDownCheck()
+    {
+        if (creatureFoot.IsLandingGround == false && Rigid.velocity.y < 0)
+            CreatureState = ECreatureState.Fall;
+    }
+    #endregion
+
+    #region Land Motion
+    protected override bool LandStateCondition()
+    {
+        if (base.LandStateCondition() == false)
+            return false;
+
+        if (Rigid.velocity.y >= 0)
+            return false;
+
+        return true;
+    }
+
+    protected override void LandStateOperate()
+    {
+        base.LandStateOperate();
+    }
+
+    private void UpdateLandState()
+    {
+
+    }
+
+    public void OnLand()
+    {
+
     }
     #endregion
 
@@ -233,26 +303,30 @@ public class Player : Creature
         return true;
     }
 
-    private void UpdateAttackState()
-    {
-
-    }
-
     protected override void AttackStateOperate()
     {
         base.JumpStateOperate();
     }
+
+    private void UpdateAttackState()
+    {
+        if(CreatureState == ECreatureState.Attack && IsState(CreatureState))
+        {
+            CreatureState = ECreatureState.Move;
+            CreatureState = ECreatureState.Idle;
+        }
+    }
     #endregion
 
     #region Dead Motion
-    protected override bool DeadStateCondition()
-    {
-        return true;
-    }
-
     protected override void DeadStateOperate()
     {
         base.DeadStateOperate();
+    }
+
+    protected override bool DeadStateCondition()
+    {
+        return true;
     }
     #endregion
     

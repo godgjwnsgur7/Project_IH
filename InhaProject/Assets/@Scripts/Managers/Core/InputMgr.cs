@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public enum EInputControlSchemeType
 {
@@ -23,6 +25,9 @@ public class InputMgr : MonoBehaviour
     EInputControlSchemeType currControlSchemeType = EInputControlSchemeType.PC;
     EInputActionMapType currActionMapType = EInputActionMapType.InGame;
 
+    // Mouse InputEvent
+    public event Action<Vector2> OnMousePointerAction;
+
     // Keyboard InputEvent
     public event Action<Vector2> OnArrowKeyEntered;
     public event Action OnSpaceKeyEntered;
@@ -33,6 +38,7 @@ public class InputMgr : MonoBehaviour
         playerInput.defaultControlScheme = currControlSchemeType.ToString();
         playerInput.defaultActionMap = currActionMapType.ToString();
         playerInput.notificationBehavior = PlayerNotifications.SendMessages;
+
     }
 
     public void Clear()
@@ -53,6 +59,14 @@ public class InputMgr : MonoBehaviour
     public void OnControlsChanged()
     {
         Debug.Log("OnControlsChanged");
+    }
+    #endregion
+
+    #region Mouse InputEvent
+    public void OnMousePointer(InputValue value)
+    {
+        Vector2 inputVec = value.Get<Vector2>();
+        OnMousePointerAction?.Invoke(inputVec);
     }
     #endregion
 

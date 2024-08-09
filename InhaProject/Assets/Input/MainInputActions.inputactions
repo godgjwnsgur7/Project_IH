@@ -1,5 +1,5 @@
 {
-    "name": "MainInputAction",
+    "name": "MainInputActions",
     "maps": [
         {
             "name": "InGame",
@@ -28,6 +28,15 @@
                     "type": "Button",
                     "id": "eba49e48-9feb-4819-afa6-3702ed0d4ebc",
                     "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "MousePointer",
+                    "type": "Value",
+                    "id": "e0bd43b1-bcdf-4e00-96d4-1df52978fa5b",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -163,6 +172,28 @@
                     "processors": "",
                     "groups": "PC",
                     "action": "EKey",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "83d4ec47-f655-496e-8238-c2da559bd5be",
+                    "path": "<Pointer>/delta",
+                    "interactions": "",
+                    "processors": "InvertVector2(invertX=false),ScaleVector2(x=0.05,y=0.05)",
+                    "groups": "",
+                    "action": "MousePointer",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1a43d8d4-49da-40e9-996f-c9aa16ef0d99",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "InvertVector2(invertX=false),StickDeadzone,ScaleVector2(x=300,y=300)",
+                    "groups": "Gamepad",
+                    "action": "MousePointer",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
