@@ -27,6 +27,7 @@ public class InputMgr : MonoBehaviour
 
     // Mouse InputEvent
     public event Action<Vector2> OnMousePointerAction;
+    public event Action OnMouseLeftClickAction;
 
     // Keyboard InputEvent
     public event Action<Vector2> OnArrowKeyEntered;
@@ -67,6 +68,11 @@ public class InputMgr : MonoBehaviour
     {
         Vector2 inputVec = value.Get<Vector2>();
         OnMousePointerAction?.Invoke(inputVec);
+    }
+
+    public void OnMouseLeftClick()
+    {
+        OnMouseLeftClickAction?.Invoke();
     }
     #endregion
 

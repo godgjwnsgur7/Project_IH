@@ -7,8 +7,8 @@ using static Define;
 public class Creature : BaseObject
 {
     [SerializeField] // 확인용
-    private ECreatureState _creatureState = ECreatureState.None;
-    public ECreatureState CreatureState
+    protected ECreatureState _creatureState = ECreatureState.None;
+    public virtual ECreatureState CreatureState
     {
         get { return _creatureState; }
         protected set

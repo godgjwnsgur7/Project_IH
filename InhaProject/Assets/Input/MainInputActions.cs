@@ -62,6 +62,15 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MouseLeftClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""56f68478-b141-4dfa-9896-a8297246411f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -218,6 +227,17 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""MousePointer"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a25ef974-41f3-40b4-a678-927e65dfb042"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseLeftClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -264,6 +284,7 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
         m_InGame_SpaceKey = m_InGame.FindAction("SpaceKey", throwIfNotFound: true);
         m_InGame_EKey = m_InGame.FindAction("EKey", throwIfNotFound: true);
         m_InGame_MousePointer = m_InGame.FindAction("MousePointer", throwIfNotFound: true);
+        m_InGame_MouseLeftClick = m_InGame.FindAction("MouseLeftClick", throwIfNotFound: true);
         // OutGame
         m_OutGame = asset.FindActionMap("OutGame", throwIfNotFound: true);
     }
@@ -331,6 +352,7 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_InGame_SpaceKey;
     private readonly InputAction m_InGame_EKey;
     private readonly InputAction m_InGame_MousePointer;
+    private readonly InputAction m_InGame_MouseLeftClick;
     public struct InGameActions
     {
         private @MainInputActions m_Wrapper;
@@ -339,6 +361,7 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
         public InputAction @SpaceKey => m_Wrapper.m_InGame_SpaceKey;
         public InputAction @EKey => m_Wrapper.m_InGame_EKey;
         public InputAction @MousePointer => m_Wrapper.m_InGame_MousePointer;
+        public InputAction @MouseLeftClick => m_Wrapper.m_InGame_MouseLeftClick;
         public InputActionMap Get() { return m_Wrapper.m_InGame; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -360,6 +383,9 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
             @MousePointer.started += instance.OnMousePointer;
             @MousePointer.performed += instance.OnMousePointer;
             @MousePointer.canceled += instance.OnMousePointer;
+            @MouseLeftClick.started += instance.OnMouseLeftClick;
+            @MouseLeftClick.performed += instance.OnMouseLeftClick;
+            @MouseLeftClick.canceled += instance.OnMouseLeftClick;
         }
 
         private void UnregisterCallbacks(IInGameActions instance)
@@ -376,6 +402,9 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
             @MousePointer.started -= instance.OnMousePointer;
             @MousePointer.performed -= instance.OnMousePointer;
             @MousePointer.canceled -= instance.OnMousePointer;
+            @MouseLeftClick.started -= instance.OnMouseLeftClick;
+            @MouseLeftClick.performed -= instance.OnMouseLeftClick;
+            @MouseLeftClick.canceled -= instance.OnMouseLeftClick;
         }
 
         public void RemoveCallbacks(IInGameActions instance)
@@ -455,6 +484,7 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
         void OnSpaceKey(InputAction.CallbackContext context);
         void OnEKey(InputAction.CallbackContext context);
         void OnMousePointer(InputAction.CallbackContext context);
+        void OnMouseLeftClick(InputAction.CallbackContext context);
     }
     public interface IOutGameActions
     {
