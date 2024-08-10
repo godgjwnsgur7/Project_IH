@@ -404,7 +404,6 @@
 "Assets/@Scripts/UI/Scene/UI_TitleScene.cs"
 "Assets/@Scripts/UI/UI_BasePopup.cs"
 "Assets/@Scripts/UI/UI_BaseScene.cs"
-"Assets/@Scripts/UI/UI_BaseWindow.cs"
 "Assets/@Scripts/Utils/CoroutineHelper.cs"
 "Assets/@Scripts/Utils/Define.cs"
 "Assets/@Scripts/Utils/Extension.cs"

@@ -11,25 +11,11 @@ public class UIMgr
     private int sortingOrder = 10;
 
     private Dictionary<string, UI_BasePopup> popupPool = new Dictionary<string, UI_BasePopup>();
-    private Dictionary<string, UI_BaseWindow> windowPool = new Dictionary<string, UI_BaseWindow>();
-    
     private Stack<UI_BasePopup> popupStack = new Stack<UI_BasePopup>();
-    private UI_BaseWindow currActiveWindow = null;
 
-    public UI_BaseScene SceneUI { private set; get; }
+    public UI_BaseScene CurrSceneUI { private set; get; }
 
     #region UI Root
-    private GameObject uiWindowRoot { get; set; } = null;
-    private GameObject UIWindowRoot
-    {
-        get
-        {
-            if(uiWindowRoot == null) uiWindowRoot = GameObject.Find("@UI_WindowRoot");
-            if (uiWindowRoot == null) uiWindowRoot = new GameObject { name = "@UI_WindowRoot" };
-            return uiWindowRoot;
-        }
-    }
-
     private GameObject UIPopupRoot { get; set; } = null;
     #endregion
 
@@ -48,15 +34,11 @@ public class UIMgr
     public void Clear()
     {
         CloseAllPopupUI();
-
-        uiWindowRoot = null;
-        currActiveWindow = null;
-        windowPool.Clear();
     }
 
     public void SetSceneUI(UI_BaseScene sceneUI)
     {
-        SceneUI = sceneUI;
+        CurrSceneUI = sceneUI;
     }
 
     public void SetCanvas(GameObject go, bool sort = true, int sortingOrder = 0)
@@ -86,40 +68,6 @@ public class UIMgr
         {
             canvas.sortingOrder = sortingOrder;
         }
-    }
-
-    public T OpenWindowUI<T>(UIParam param = null) where T : UI_BaseWindow
-    {
-        string name = typeof(T).Name;
-
-        if (windowPool.TryGetValue(name, out UI_BaseWindow window) == false)
-        {
-            GameObject go = Managers.Resource.Instantiate($"{PrefabPath.UI_WINDOW_PATH}/{name}");
-            window = Util.GetOrAddComponent<T>(go);
-            windowPool[name] = window;
-            window.CloseWindowUI();
-        }
-
-        if (param != null)
-            window.SetInfo(param);
-
-        window.transform.SetParent(UIWindowRoot.transform);
-        window.OpenWindowUI();
-
-        if (currActiveWindow != null)
-        {
-            currActiveWindow.CloseWindowUI();
-        }
-
-        currActiveWindow = window;
-
-        return window as T;
-    }
-
-    public void CloseWindowUI(UI_BaseWindow window)
-    {
-        currActiveWindow = null;
-        window.gameObject.SetActive(false);
     }
 
     public void CacheAllPopupUI()

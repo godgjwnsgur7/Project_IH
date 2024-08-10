@@ -115,7 +115,8 @@ public class Creature : BaseObject
     #region Rigid
     protected void SetRigidVelocity(Vector2 vec)
     {
-        Vector3 dir = Quaternion.AngleAxis(-transform.rotation.eulerAngles.y, Vector3.forward) * vec;
+        Vector3 dir = Quaternion.AngleAxis(-transform.rotation.eulerAngles.y
+            , Vector3.forward) * vec;
         
         Rigid.AddForce(new Vector3(dir.x, 0, dir.y), ForceMode.Impulse);
     }
