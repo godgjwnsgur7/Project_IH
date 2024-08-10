@@ -29,6 +29,7 @@ public class UIMgr
 
         UnityEngine.Object.DontDestroyOnLoad(UIPopupRoot);
         CacheAllPopupUI();
+        
     }
 
     public void Clear()

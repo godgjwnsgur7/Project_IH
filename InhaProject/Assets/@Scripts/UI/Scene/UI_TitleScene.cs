@@ -20,11 +20,12 @@ public class UI_TitleScene : UI_BaseScene
 
     private void Start()
     {
-        textEffectCoroutine = StartCoroutine(IBlinkEffectToText(20));
+        // textEffectCoroutine = StartCoroutine(IBlinkEffectToText(20));
     }
 
     public void OnClickStart()
     {
+        Debug.Log("Å¬¸¯");
         Managers.Scene.LoadScene(Define.EScene.GameScene);
     }
 
