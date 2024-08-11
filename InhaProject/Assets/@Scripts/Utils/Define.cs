@@ -67,6 +67,12 @@ public static class Define
         Dead
     }
 
+    public enum EPlayerType
+    {
+        FemaleCharacter,
+        MaleCharacter, // 아직 사용 불가능
+    }
+
     public enum EMonsterType
     {
 

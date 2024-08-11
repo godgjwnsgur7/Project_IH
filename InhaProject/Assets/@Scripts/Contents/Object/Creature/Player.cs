@@ -13,7 +13,7 @@ public class Player : Creature
     protected float JumpPower = 8.0f;
 
     // 플레이어를 조작할 수 있는 경우
-    [SerializeField] private bool _isPlayerInputControll = false;
+    [SerializeField, ReadOnly] private bool _isPlayerInputControll = false;
     public bool IsPlayerInputControll
     {
         get { return _isPlayerInputControll; }
@@ -66,7 +66,7 @@ public class Player : Creature
     }
 
     #region Input
-    [SerializeField] private Vector2 moveDirection = Vector2.zero;
+    private Vector2 moveDirection = Vector2.zero;
 
     private void ConnectInputActions(bool isConnect)
     {
