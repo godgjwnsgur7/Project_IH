@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7451923900338115072}
   - component: {fileID: 4651789638941632202}
   m_Layer: 0
-  m_Name: Shield05PBR
+  m_Name: Shield05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

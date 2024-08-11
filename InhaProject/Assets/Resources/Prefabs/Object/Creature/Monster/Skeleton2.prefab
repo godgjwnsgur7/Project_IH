@@ -383,7 +383,7 @@ GameObject:
   - component: {fileID: 548425145044120718}
   - component: {fileID: 7537163753393453601}
   m_Layer: 0
-  m_Name: Monster2
+  m_Name: Skeleton2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -2194,7 +2194,7 @@ GameObject:
   - component: {fileID: 7019920669011962644}
   - component: {fileID: 7413344840680693326}
   m_Layer: 0
-  m_Name: FemaleCharacterPBR
+  m_Name: FemaleCharacter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

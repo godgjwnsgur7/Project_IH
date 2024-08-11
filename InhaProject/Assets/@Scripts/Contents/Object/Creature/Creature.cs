@@ -86,6 +86,20 @@ public class Creature : BaseObject
     [SerializeField] public CapsuleCollider Collider { get; private set; }
     protected Animator animator;
 
+    private bool _lookLeft = false;
+    public bool LookLeft
+    {
+        get { return _lookLeft; }
+        set
+        {
+            if (_lookLeft == value)
+                return;
+
+            _lookLeft = value;
+            FlipX(value);
+        }
+    }
+
     protected virtual void Start()
     {
         Init();
@@ -113,20 +127,17 @@ public class Creature : BaseObject
     }
 
     #region Rigid
-    protected void SetRigidVelocity(Vector2 vec)
+    protected void PushRigidVelocityX(float x)
     {
-        Vector3 dir = Quaternion.AngleAxis(-transform.rotation.eulerAngles.y
-            , Vector3.forward) * vec;
-        
-        Rigid.AddForce(new Vector3(dir.x, 0, dir.y), ForceMode.Impulse);
+        Rigid.AddForce(Vector3.left * -x, ForceMode.Impulse);
     }
 
-    protected void PushRigidVelocity(float y)
+    protected void PushRigidVelocityY(float y)
     {
-        Rigid.AddForce(new Vector3(0, y, 0), ForceMode.Impulse);
+        Rigid.AddForce(Vector3.up * y, ForceMode.Impulse);
     }
 
-    protected void SetRigidVelocityZero()
+    protected void SetRigidVelocityZeroToX()
     {
         Rigid.velocity = new Vector3(0, Rigid.velocity.y, 0);
     }

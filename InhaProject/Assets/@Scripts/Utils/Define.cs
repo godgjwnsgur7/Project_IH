@@ -1,4 +1,4 @@
-using System.Collections;
+//using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -36,10 +36,18 @@ public static class Define
         Interaction,
     }
 
+    public enum EObjectType
+    {
+        None,
+        Creature,
+        GimmickObject,
+
+    }
+
     public enum ECreatureType
     {
         Player,
-        Enemy,
+        Monster,
     }
 
     /// <summary>
@@ -57,5 +65,10 @@ public static class Define
         Attack,
 
         Dead
+    }
+
+    public enum EMonsterType
+    {
+
     }
 }

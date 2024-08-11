@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Define;
 
-public class Enemy : Creature
+public class Monster : Creature
 {
     // 임시 데이터들
     protected float MoveSpeed = 1;
@@ -58,7 +58,7 @@ public class Enemy : Creature
     {
         base.SetInfo(templateID);
 
-        CreatureType = ECreatureType.Enemy;
+        CreatureType = ECreatureType.Monster;
     }
 
     #region AI
@@ -124,7 +124,7 @@ public class Enemy : Creature
         {
             Vector3 dir = (_destPos - transform.position);
             this.transform.rotation = Quaternion.LookRotation(dir.normalized);
-            SetRigidVelocity(Vector2.up * MoveSpeed);
+            // SetRigidVelocity(Vector2.up * MoveSpeed);
 
             if (dir.sqrMagnitude <= 0.1f)
             {
@@ -148,7 +148,7 @@ public class Enemy : Creature
             {
                 // 공격 범위 밖이라면 추적.
                 float moveDist = Mathf.Min(dir.magnitude, Time.deltaTime * MoveSpeed);
-                SetRigidVelocity(Vector2.up * MoveSpeed);
+                // SetRigidVelocity(Vector2.up * MoveSpeed);
             }
         }
     }

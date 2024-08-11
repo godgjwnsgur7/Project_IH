@@ -60,26 +60,23 @@ public class Player : Creature
         base.SetInfo(templateID);
 
         CreatureType = ECreatureType.Player;
+        CreatureState = ECreatureState.Idle;
 
         // Camera.main.GetOrAddComponent<CameraController>().Target = this;
     }
 
     #region Input
-    private Vector2 moveDirection = Vector2.zero;
+    [SerializeField] private Vector2 moveDirection = Vector2.zero;
 
     private void ConnectInputActions(bool isConnect)
     {
         Managers.Input.OnArrowKeyEntered -= OnArrowKey;
         Managers.Input.OnSpaceKeyEntered -= OnJumpKey;
-        Managers.Input.OnMousePointerAction -= OnMousePointer;
-        Managers.Input.OnMouseLeftClickAction -= OnAttackKey;
 
         if (isConnect)
         {
             Managers.Input.OnArrowKeyEntered += OnArrowKey;
             Managers.Input.OnSpaceKeyEntered += OnJumpKey;
-            Managers.Input.OnMousePointerAction += OnMousePointer;
-            Managers.Input.OnMouseLeftClickAction += OnAttackKey;
         }
     }
 
@@ -100,21 +97,6 @@ public class Player : Creature
         CreatureState = ECreatureState.Jump;
     }
 
-    public void OnAttackKey()
-    {
-        if (!IsPlayerInputControll)
-            return;
-
-        CreatureState = ECreatureState.Attack;
-    }
-
-    public void OnMousePointer(Vector2 value)
-    {
-        if (!IsPlayerInputControll || CreatureState == ECreatureState.Attack)
-            return;
-
-        transform.Rotate(0f, value.x * 5, 0f, Space.World);
-    }
     #endregion
 
     #region CreatureState Controll
@@ -158,7 +140,10 @@ public class Player : Creature
         if (base.IdleStateCondition() == false)
             return false;
 
-        if (moveDirection.x != 0 || moveDirection.y != 0)
+        if (moveDirection != Vector2.zero)
+            return false;
+
+        if (creatureFoot.IsLandingGround == false)
             return false;
 
         return true;
@@ -173,7 +158,7 @@ public class Player : Creature
     {
         base.IdleStateOperate();
 
-        SetRigidVelocityZero();
+        SetRigidVelocityZeroToX();
     }
     #endregion
 
@@ -183,7 +168,7 @@ public class Player : Creature
         if (base.MoveStateCondition() == false)
             return false;
 
-        if (moveDirection.x == 0 && moveDirection.y == 0)
+        if (moveDirection.x == 0)
             return false;
 
         if (creatureFoot.IsLandingGround == false)
@@ -202,16 +187,18 @@ public class Player : Creature
         FallDownCheck();
         Movement();
 
-        if (moveDirection == Vector2.zero)
-        {
+        if (moveDirection.x == 0)
             CreatureState = ECreatureState.Idle;
-            return;
-        }
     }
 
     private void Movement()
     {
-        SetRigidVelocity(moveDirection * MoveSpeed);
+        PushRigidVelocityX(moveDirection.x * MoveSpeed);
+
+        if (moveDirection.x > 0)
+            LookLeft = false;
+        else if (moveDirection.x < 0)
+            LookLeft = true;
     }
     #endregion
 
@@ -231,11 +218,19 @@ public class Player : Creature
     {
         base.JumpStateOperate();
 
-        PushRigidVelocity(JumpPower);
+        PushRigidVelocityY(JumpPower);
     }
 
     private void UpdateJumpState()
     {
+        // 착지 확인
+        if (creatureFoot.IsLandingGround)
+        {
+            CreatureState = ECreatureState.Move;
+            CreatureState = ECreatureState.Land;
+            return;
+        }
+
         Movement();
         FallDownCheck();
     }
@@ -264,7 +259,7 @@ public class Player : Creature
 
         // 낙하 속도 제한
         if (Rigid.velocity.y < -JumpPower)
-            PushRigidVelocity(-JumpPower);
+            PushRigidVelocityY(-JumpPower);
 
         // 착지 확인
         if (creatureFoot.IsLandingGround)

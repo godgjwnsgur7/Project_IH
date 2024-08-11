@@ -2284,7 +2284,7 @@ GameObject:
   - component: {fileID: 8855052669661678444}
   - component: {fileID: 9036980633323257398}
   m_Layer: 0
-  m_Name: MaleCharacterPBR
+  m_Name: MaleCharacter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
