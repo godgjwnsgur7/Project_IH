@@ -26,6 +26,8 @@ public class SceneMgr
         UIFadeEffectParam param = new UIFadeEffectParam(IsCompleteLoadingScene, LoadSceneAsync);
 
         Managers.UI.OpenPopupUI<UI_FadeEffectPopup>(param);
+
+        LoadSceneAsync();
     }
 
     public void LoadSceneAsync()
