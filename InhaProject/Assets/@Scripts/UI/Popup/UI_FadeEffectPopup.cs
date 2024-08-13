@@ -21,16 +21,21 @@ public class UI_FadeEffectPopup : UI_BasePopup
         return true;
     }
 
-    public override void OpenPopupUI()
+    public override void OpenPopupUI(UIParam param = null)
     {
         base.OpenPopupUI();
 
-        if (fadeEffectCoroutine == null)
+        if(param is UIFadeEffectParam fadeEffectParam)
         {
-            fadeEffectCoroutine = StartCoroutine(IfadeOutInEffect(0.5f));
+            if (fadeEffectCoroutine == null)
+            {
+                onFadeOutCallBack = fadeEffectParam.onFadeOutCallBack;
+                onFadeInCallBack = fadeEffectParam.onFadeInCallBack;
+                fadeEffectCoroutine = StartCoroutine(IfadeOutInEffect(0.5f));
+            }
+            else
+                Debug.Log("FadeEffect 중복");
         }
-        else
-            Debug.Log("FadeEffect 중복");
     }
 
     public override void SetInfo(UIParam param)

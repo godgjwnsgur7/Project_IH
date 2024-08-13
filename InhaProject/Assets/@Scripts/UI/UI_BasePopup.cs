@@ -14,7 +14,7 @@ public class UI_BasePopup : InitBase
         return true;
     }
 
-    public virtual void OpenPopupUI()
+    public virtual void OpenPopupUI(UIParam param = null)
     {
         Managers.UI.SetCanvas(gameObject, true);
         this.gameObject.SetActive(true);

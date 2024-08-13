@@ -60,6 +60,7 @@ public static class Define
         Walk, // 일단 미사용
         Move, // Run으로 일단 사용
         Jump,
+        JumpAir,
         Fall,
         Land,
         Attack,

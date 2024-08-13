@@ -114,7 +114,7 @@ public class UIMgr
             popup.SetInfo(param);
 
         popup.transform.SetParent(UIPopupRoot.transform);
-        popup.OpenPopupUI();
+        popup.OpenPopupUI(param);
         popupStack.Push(popup);
 
         return popup as T;

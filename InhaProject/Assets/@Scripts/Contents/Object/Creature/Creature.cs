@@ -137,6 +137,11 @@ public class Creature : BaseObject
         Rigid.AddForce(Vector3.up * y, ForceMode.Impulse);
     }
 
+    protected void InitRigidVelocityY()
+    {
+        Rigid.velocity = new Vector3(Rigid.velocity.x, 0, 0);
+    }
+
     protected void SetRigidVelocityZeroToX()
     {
         Rigid.velocity = new Vector3(0, Rigid.velocity.y, 0);
@@ -147,6 +152,7 @@ public class Creature : BaseObject
     protected virtual bool IdleStateCondition() { return true; }
     protected virtual bool MoveStateCondition() { return true; }
     protected virtual bool JumpStateCondition() { return true; }
+    protected virtual bool JumpAirStateCondition() { return true; }
     protected virtual bool FallStateCondition() { return true; }
     protected virtual bool LandStateCondition() { return true; }
     protected virtual bool AttackStateCondition() { return true; }
@@ -157,6 +163,7 @@ public class Creature : BaseObject
     protected virtual void IdleStateOperate() { }
     protected virtual void MoveStateOperate() { }
     protected virtual void JumpStateOperate() { }
+    protected virtual void JumpAirStateOperate() { }
     protected virtual void FallStateOperate() { }
     protected virtual void LandStateOperate() { }
     protected virtual void AttackStateOperate() { }

@@ -117,6 +117,9 @@ public class Player : Creature
                 case ECreatureState.Jump:
                     UpdateJumpState();
                     break;
+                case ECreatureState.JumpAir:
+                    UpdateJumpAirState();
+                    break;
                 case ECreatureState.Fall:
                     UpdateFallState();
                     break;
@@ -218,21 +221,57 @@ public class Player : Creature
     {
         base.JumpStateOperate();
 
+        InitRigidVelocityY();
         PushRigidVelocityY(JumpPower);
     }
 
     private void UpdateJumpState()
     {
+        Movement();
+        FallDownCheck();
+
         // 착지 확인
         if (creatureFoot.IsLandingGround)
         {
             CreatureState = ECreatureState.Move;
-            CreatureState = ECreatureState.Land;
-            return;
         }
+    }
+    #endregion
 
+    #region JumpAir Motion
+    bool isJumpAir = false;
+    protected override bool JumpAirStateCondition()
+    {
+        if (base.JumpStateCondition() == false)
+            return false;
+
+        if (creatureFoot.IsLandingGround == false)
+            return false;
+
+        if (isJumpAir) return false;
+
+        return true;
+    }
+
+    protected override void JumpAirStateOperate()
+    {
+        base.JumpStateOperate();
+
+        isJumpAir = true;
+        InitRigidVelocityY();
+        PushRigidVelocityY(JumpPower);
+    }
+
+    private void UpdateJumpAirState()
+    {
         Movement();
         FallDownCheck();
+
+        // 착지 확인
+        if (creatureFoot.IsLandingGround)
+        {
+            CreatureState = ECreatureState.Move;
+        }
     }
     #endregion
 
@@ -282,7 +321,7 @@ public class Player : Creature
         if (base.LandStateCondition() == false)
             return false;
 
-        if (Rigid.velocity.y >= 0)
+        if (Rigid.velocity.y >= 0.01f)
             return false;
 
         return true;
