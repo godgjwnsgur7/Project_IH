@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IHitEvent
 {
-    
+    public void OnHit();
 }
 
 public class BasePlayerWeapon : InitBase

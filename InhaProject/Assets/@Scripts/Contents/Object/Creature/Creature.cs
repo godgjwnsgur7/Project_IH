@@ -106,11 +106,6 @@ public class Creature : BaseObject
         }
     }
 
-    protected virtual void Start()
-    {
-        Init();
-    }
-
     public override bool Init()
     {
         if (base.Init() == false)

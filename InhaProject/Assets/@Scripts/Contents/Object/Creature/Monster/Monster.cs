@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Define;
 
-public class Monster : Creature, IHitEvent
+public class Monster : Creature
 {
     // 임시 데이터들
     protected float MoveSpeed = 1;

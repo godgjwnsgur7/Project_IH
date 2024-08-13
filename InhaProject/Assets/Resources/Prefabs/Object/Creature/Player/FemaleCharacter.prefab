@@ -1100,6 +1100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _creatureState: 0
+  weapon: {fileID: 0}
   _isPlayerInputControll: 0
 --- !u!95 &5494248383448643314
 Animator:
@@ -2681,6 +2682,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1922282169483552761}
     m_Modifications:
+    - target: {fileID: 3328657967434100138, guid: 3617e4093ca8d5145986d37c89cfd692, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f323cced30244554986ee5e9f5dd8b67, type: 2}
     - target: {fileID: 3832907126045494399, guid: 3617e4093ca8d5145986d37c89cfd692, type: 3}
       propertyPath: m_Name
       value: OHS06

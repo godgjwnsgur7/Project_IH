@@ -12,6 +12,8 @@ public class Player : Creature
     protected float MoveSpeed = 5.0f;
     protected float JumpPower = 8.0f;
 
+    [SerializeField] BasePlayerWeapon weapon;
+
     // 플레이어를 조작할 수 있는 경우
     [SerializeField, ReadOnly] private bool _isPlayerInputControll = false;
     public bool IsPlayerInputControll
@@ -38,10 +40,8 @@ public class Player : Creature
         }
     }
 
-    protected override void Start()
+    protected void Start()
     {
-        base.Start();
-
         IsPlayerInputControll = true; // 게임 매니저에서 할 것
     }
 
