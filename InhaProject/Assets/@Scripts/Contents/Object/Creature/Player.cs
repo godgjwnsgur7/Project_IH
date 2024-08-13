@@ -94,7 +94,10 @@ public class Player : Creature
         if (!IsPlayerInputControll)
             return;
 
-        CreatureState = ECreatureState.Jump;
+        if(creatureFoot.IsLandingGround)
+            CreatureState = ECreatureState.Jump;
+        else
+            CreatureState = ECreatureState.JumpAir;
     }
 
     #endregion
@@ -161,6 +164,7 @@ public class Player : Creature
     {
         base.IdleStateOperate();
 
+        isJumpAir = false;
         SetRigidVelocityZeroToX();
     }
     #endregion
@@ -183,6 +187,8 @@ public class Player : Creature
     protected override void MoveStateOperate()
     {
         base.MoveStateOperate();
+
+        isJumpAir = false;
     }
 
     private void UpdateMoveState()
@@ -239,13 +245,14 @@ public class Player : Creature
     #endregion
 
     #region JumpAir Motion
+
     bool isJumpAir = false;
     protected override bool JumpAirStateCondition()
     {
         if (base.JumpStateCondition() == false)
             return false;
 
-        if (creatureFoot.IsLandingGround == false)
+        if (creatureFoot.IsLandingGround)
             return false;
 
         if (isJumpAir) return false;
@@ -296,9 +303,7 @@ public class Player : Creature
     {
         Movement();
 
-        // 낙하 속도 제한
-        if (Rigid.velocity.y < -JumpPower)
-            PushRigidVelocityY(-JumpPower);
+        // 낙하 속도 제한 해야 함
 
         // 착지 확인
         if (creatureFoot.IsLandingGround)
@@ -330,11 +335,17 @@ public class Player : Creature
     protected override void LandStateOperate()
     {
         base.LandStateOperate();
+
+        isJumpAir = false;
     }
 
     private void UpdateLandState()
     {
-
+        if (IsEndCurrentState(ECreatureState.Land))
+        {
+            CreatureState = ECreatureState.Move;
+            CreatureState = ECreatureState.Idle;
+        }
     }
 
     public void OnLand()

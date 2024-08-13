@@ -31,6 +31,9 @@ public class Creature : BaseObject
                 case ECreatureState.Jump:
                     isChangeState = JumpStateCondition();
                     break;
+                case ECreatureState.JumpAir:
+                    isChangeState = JumpAirStateCondition();
+                    break;
                 case ECreatureState.Fall:
                     isChangeState = FallStateCondition();
                     break;
@@ -61,6 +64,9 @@ public class Creature : BaseObject
                     break;
                 case ECreatureState.Jump:
                     JumpStateOperate();
+                    break;
+                case ECreatureState.JumpAir:
+                    JumpAirStateOperate();
                     break;
                 case ECreatureState.Fall:
                     FallStateOperate();
