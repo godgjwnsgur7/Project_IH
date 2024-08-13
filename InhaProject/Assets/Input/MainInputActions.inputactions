@@ -33,18 +33,9 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "MousePointer",
-                    "type": "Value",
-                    "id": "e0bd43b1-bcdf-4e00-96d4-1df52978fa5b",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "MouseLeftClick",
+                    "name": "FKey",
                     "type": "Button",
-                    "id": "56f68478-b141-4dfa-9896-a8297246411f",
+                    "id": "91e0aa34-5d1a-4e80-a009-a85b60878aa7",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -186,34 +177,12 @@
                 },
                 {
                     "name": "",
-                    "id": "83d4ec47-f655-496e-8238-c2da559bd5be",
-                    "path": "<Pointer>/delta",
-                    "interactions": "",
-                    "processors": "InvertVector2(invertX=false),ScaleVector2(x=0.05,y=0.05)",
-                    "groups": "",
-                    "action": "MousePointer",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "1a43d8d4-49da-40e9-996f-c9aa16ef0d99",
-                    "path": "<Gamepad>/rightStick",
-                    "interactions": "",
-                    "processors": "InvertVector2(invertX=false),StickDeadzone,ScaleVector2(x=300,y=300)",
-                    "groups": "Gamepad",
-                    "action": "MousePointer",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "a25ef974-41f3-40b4-a678-927e65dfb042",
-                    "path": "<Mouse>/leftButton",
+                    "id": "312e6cfe-8e5a-41c4-a3c1-bc712c818e4b",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "MouseLeftClick",
+                    "groups": "PC",
+                    "action": "FKey",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

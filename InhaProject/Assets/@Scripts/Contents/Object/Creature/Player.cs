@@ -9,7 +9,7 @@ using static Define;
 public class Player : Creature
 {
     // 임시 데이터들
-    protected float MoveSpeed = 1.0f;
+    protected float MoveSpeed = 5.0f;
     protected float JumpPower = 8.0f;
 
     // 플레이어를 조작할 수 있는 경우
@@ -72,11 +72,13 @@ public class Player : Creature
     {
         Managers.Input.OnArrowKeyEntered -= OnArrowKey;
         Managers.Input.OnSpaceKeyEntered -= OnJumpKey;
+        Managers.Input.OnFKeyEntered -= OnAttackKey;
 
         if (isConnect)
         {
             Managers.Input.OnArrowKeyEntered += OnArrowKey;
             Managers.Input.OnSpaceKeyEntered += OnJumpKey;
+            Managers.Input.OnFKeyEntered += OnAttackKey;
         }
     }
 
@@ -98,6 +100,14 @@ public class Player : Creature
             CreatureState = ECreatureState.Jump;
         else
             CreatureState = ECreatureState.JumpAir;
+    }
+
+    public void OnAttackKey()
+    {
+        if (!IsPlayerInputControll)
+            return;
+
+        CreatureState = ECreatureState.Attack;
     }
 
     #endregion
@@ -164,7 +174,6 @@ public class Player : Creature
     {
         base.IdleStateOperate();
 
-        isJumpAir = false;
         SetRigidVelocityZeroToX();
     }
     #endregion
@@ -188,7 +197,6 @@ public class Player : Creature
     {
         base.MoveStateOperate();
 
-        isJumpAir = false;
     }
 
     private void UpdateMoveState()
@@ -202,7 +210,7 @@ public class Player : Creature
 
     private void Movement()
     {
-        PushRigidVelocityX(moveDirection.x * MoveSpeed);
+        PushRigidVelocityX(moveDirection.x * MoveSpeed * 0.1f);
 
         if (moveDirection.x > 0)
             LookLeft = false;
@@ -358,6 +366,9 @@ public class Player : Creature
     protected override bool AttackStateCondition()
     {
         if(base.AttackStateCondition() == false)
+            return false;
+
+        if (creatureFoot.IsLandingGround == false)
             return false;
 
         return true;

@@ -25,13 +25,11 @@ public class InputMgr : MonoBehaviour
     EInputControlSchemeType currControlSchemeType = EInputControlSchemeType.PC;
     EInputActionMapType currActionMapType = EInputActionMapType.InGame;
 
-    // Mouse InputEvent
-    public event Action<Vector2> OnMousePointerAction;
-    public event Action OnMouseLeftClickAction;
-
     // Keyboard InputEvent
     public event Action<Vector2> OnArrowKeyEntered;
     public event Action OnSpaceKeyEntered;
+    public event Action OnFKeyEntered;
+    public event Action OnEKeyEntered;
 
     public void Init()
     {
@@ -63,19 +61,6 @@ public class InputMgr : MonoBehaviour
     }
     #endregion
 
-    #region Mouse InputEvent
-    public void OnMousePointer(InputValue value)
-    {
-        Vector2 inputVec = value.Get<Vector2>();
-        OnMousePointerAction?.Invoke(inputVec);
-    }
-
-    public void OnMouseLeftClick()
-    {
-        OnMouseLeftClickAction?.Invoke();
-    }
-    #endregion
-
     #region Keyboard InputEvent
     public void OnArrowKey(InputValue value)
     {
@@ -86,6 +71,16 @@ public class InputMgr : MonoBehaviour
     public void OnSpaceKey()
     {
         OnSpaceKeyEntered?.Invoke();
+    }
+
+    public void OnFKey()
+    {
+        OnFKeyEntered?.Invoke();
+    }
+
+    public void OnEKey()
+    {
+        OnEKeyEntered?.Invoke();
     }
     #endregion
 }

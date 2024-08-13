@@ -55,18 +55,9 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""MousePointer"",
-                    ""type"": ""Value"",
-                    ""id"": ""e0bd43b1-bcdf-4e00-96d4-1df52978fa5b"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""MouseLeftClick"",
+                    ""name"": ""FKey"",
                     ""type"": ""Button"",
-                    ""id"": ""56f68478-b141-4dfa-9896-a8297246411f"",
+                    ""id"": ""91e0aa34-5d1a-4e80-a009-a85b60878aa7"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -208,34 +199,12 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""83d4ec47-f655-496e-8238-c2da559bd5be"",
-                    ""path"": ""<Pointer>/delta"",
-                    ""interactions"": """",
-                    ""processors"": ""InvertVector2(invertX=false),ScaleVector2(x=0.05,y=0.05)"",
-                    ""groups"": """",
-                    ""action"": ""MousePointer"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""1a43d8d4-49da-40e9-996f-c9aa16ef0d99"",
-                    ""path"": ""<Gamepad>/rightStick"",
-                    ""interactions"": """",
-                    ""processors"": ""InvertVector2(invertX=false),StickDeadzone,ScaleVector2(x=300,y=300)"",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""MousePointer"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""a25ef974-41f3-40b4-a678-927e65dfb042"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""id"": ""312e6cfe-8e5a-41c4-a3c1-bc712c818e4b"",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""MouseLeftClick"",
+                    ""groups"": ""PC"",
+                    ""action"": ""FKey"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -283,8 +252,7 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
         m_InGame_ArrowKey = m_InGame.FindAction("ArrowKey", throwIfNotFound: true);
         m_InGame_SpaceKey = m_InGame.FindAction("SpaceKey", throwIfNotFound: true);
         m_InGame_EKey = m_InGame.FindAction("EKey", throwIfNotFound: true);
-        m_InGame_MousePointer = m_InGame.FindAction("MousePointer", throwIfNotFound: true);
-        m_InGame_MouseLeftClick = m_InGame.FindAction("MouseLeftClick", throwIfNotFound: true);
+        m_InGame_FKey = m_InGame.FindAction("FKey", throwIfNotFound: true);
         // OutGame
         m_OutGame = asset.FindActionMap("OutGame", throwIfNotFound: true);
     }
@@ -351,8 +319,7 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_InGame_ArrowKey;
     private readonly InputAction m_InGame_SpaceKey;
     private readonly InputAction m_InGame_EKey;
-    private readonly InputAction m_InGame_MousePointer;
-    private readonly InputAction m_InGame_MouseLeftClick;
+    private readonly InputAction m_InGame_FKey;
     public struct InGameActions
     {
         private @MainInputActions m_Wrapper;
@@ -360,8 +327,7 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
         public InputAction @ArrowKey => m_Wrapper.m_InGame_ArrowKey;
         public InputAction @SpaceKey => m_Wrapper.m_InGame_SpaceKey;
         public InputAction @EKey => m_Wrapper.m_InGame_EKey;
-        public InputAction @MousePointer => m_Wrapper.m_InGame_MousePointer;
-        public InputAction @MouseLeftClick => m_Wrapper.m_InGame_MouseLeftClick;
+        public InputAction @FKey => m_Wrapper.m_InGame_FKey;
         public InputActionMap Get() { return m_Wrapper.m_InGame; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -380,12 +346,9 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
             @EKey.started += instance.OnEKey;
             @EKey.performed += instance.OnEKey;
             @EKey.canceled += instance.OnEKey;
-            @MousePointer.started += instance.OnMousePointer;
-            @MousePointer.performed += instance.OnMousePointer;
-            @MousePointer.canceled += instance.OnMousePointer;
-            @MouseLeftClick.started += instance.OnMouseLeftClick;
-            @MouseLeftClick.performed += instance.OnMouseLeftClick;
-            @MouseLeftClick.canceled += instance.OnMouseLeftClick;
+            @FKey.started += instance.OnFKey;
+            @FKey.performed += instance.OnFKey;
+            @FKey.canceled += instance.OnFKey;
         }
 
         private void UnregisterCallbacks(IInGameActions instance)
@@ -399,12 +362,9 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
             @EKey.started -= instance.OnEKey;
             @EKey.performed -= instance.OnEKey;
             @EKey.canceled -= instance.OnEKey;
-            @MousePointer.started -= instance.OnMousePointer;
-            @MousePointer.performed -= instance.OnMousePointer;
-            @MousePointer.canceled -= instance.OnMousePointer;
-            @MouseLeftClick.started -= instance.OnMouseLeftClick;
-            @MouseLeftClick.performed -= instance.OnMouseLeftClick;
-            @MouseLeftClick.canceled -= instance.OnMouseLeftClick;
+            @FKey.started -= instance.OnFKey;
+            @FKey.performed -= instance.OnFKey;
+            @FKey.canceled -= instance.OnFKey;
         }
 
         public void RemoveCallbacks(IInGameActions instance)
@@ -483,8 +443,7 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
         void OnArrowKey(InputAction.CallbackContext context);
         void OnSpaceKey(InputAction.CallbackContext context);
         void OnEKey(InputAction.CallbackContext context);
-        void OnMousePointer(InputAction.CallbackContext context);
-        void OnMouseLeftClick(InputAction.CallbackContext context);
+        void OnFKey(InputAction.CallbackContext context);
     }
     public interface IOutGameActions
     {
