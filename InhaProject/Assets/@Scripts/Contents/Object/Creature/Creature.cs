@@ -117,7 +117,7 @@ public class Creature : BaseObject
     public CreatureFoot creatureFoot { get; protected set; }
 
     protected Rigidbody Rigid { get; private set; }
-    [SerializeField] public CapsuleCollider Collider { get; private set; }
+    [SerializeField] public BoxCollider Collider { get; private set; }
     protected Animator animator;
 
     private bool _lookLeft = false;
@@ -139,7 +139,7 @@ public class Creature : BaseObject
         if (base.Init() == false)
             return false;
 
-        Collider = GetComponent<CapsuleCollider>();
+        Collider = GetComponent<BoxCollider>();
         Rigid = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
 

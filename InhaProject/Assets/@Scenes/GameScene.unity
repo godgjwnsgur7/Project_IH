@@ -1862,10 +1862,10 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!95 &7331929553491775197
 Animator:
@@ -2106,7 +2106,7 @@ GameObject:
   - component: {fileID: 8915804551479280726}
   - component: {fileID: 7331929553491775197}
   - component: {fileID: 6836179012195887095}
-  - component: {fileID: 8915804551479280725}
+  - component: {fileID: 8915804551479280727}
   m_Layer: 0
   m_Name: Skeleton1
   m_TagString: Player
@@ -2114,27 +2114,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!65 &8915804551479280725
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8915804551479280724}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.4, y: 1.3, z: 0.4}
-  m_Center: {x: 0, y: 0.65, z: 0}
 --- !u!114 &8915804551479280726
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2148,11 +2127,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _creatureState: 0
-  SearchDistance: 0
   AttackDistance: 0
   _target: {fileID: 0}
-  _destPos: {x: 0, y: 0, z: 0}
-  _initPos: {x: 0, y: 0, z: 0}
+--- !u!65 &8915804551479280727
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8915804551479280724}
+  m_Material: {fileID: 13400000, guid: fcc1d63785426274b9ca640d7e073b0c, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.4, y: 1.4, z: 0.4}
+  m_Center: {x: 0, y: 0.7, z: 0}
 --- !u!4 &9014442357712060874
 Transform:
   m_ObjectHideFlags: 0

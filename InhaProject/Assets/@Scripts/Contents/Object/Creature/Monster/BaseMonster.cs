@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Define;
 
-public class Monster : Creature
+public class BaseMonster : Creature
 {
     // 임시 데이터들
     protected float MoveSpeed = 1;
-    [SerializeField] protected float SearchDistance;
     [SerializeField] protected float AttackDistance;
 
     // 임시
@@ -46,8 +45,6 @@ public class Monster : Creature
             return false;
 
         SetInfo();
-        _initPos = this.transform.position;
-
         coUpdateAI = StartCoroutine(CoUpdateAI());
 
         return true;
@@ -62,7 +59,6 @@ public class Monster : Creature
 
     #region AI
     public float UpdateAITick { get; protected set; } = 0.0f;
-    [SerializeField] Vector3 _destPos, _initPos;
     Coroutine coUpdateAI = null;
     protected IEnumerator CoUpdateAI()
     {
@@ -88,54 +84,35 @@ public class Monster : Creature
         }
     }
 
+    private void RaycastTarget()
+    {
+        Vector3 subVec = new Vector3(0, Collider.center.y, 0);
+
+        Debug.DrawRay(transform.position + subVec, Vector3.right * AttackDistance, Color.red, 0.1f);
+
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position + subVec, Vector3.right, out hit, AttackDistance))
+        {
+            CreatureState = ECreatureState.Attack;
+        }
+    }
+
     protected virtual void UpdateIdle()
     {
-        // Patrol
-        {
-            int patrolPercent = 10;
-            int rand = Random.Range(0, 100);
-            if (rand <= patrolPercent)
-            {
-                _destPos = _initPos + new Vector3(Random.Range(-2, 2), 0, Random.Range(-2, 2));
-                CreatureState = ECreatureState.Move;
-                return;
-            }
-        }
+        RaycastTarget();
     }
 
     protected virtual void UpdateMove()
     {
-        if (_target == null)
-        {
-            Vector3 dir = (_destPos - transform.position);
-            this.transform.rotation = Quaternion.LookRotation(dir.normalized);
-            // SetRigidVelocity(Vector2.up * MoveSpeed);
+        RaycastTarget();
 
-            if (dir.sqrMagnitude <= 0.1f)
-            {
-                CreatureState = ECreatureState.Idle;
-            }
-        }
-        else
-        {
-            // Chase
-            Vector3 dir = (_target.transform.position - transform.position);
-            this.transform.rotation = Quaternion.LookRotation(dir.normalized);
-            float distToTargetSqr = dir.sqrMagnitude;
-            float attackDistanceSqr = AttackDistance * AttackDistance;
+        // 1. 지금 앞으로 갈 수 있는지 확인
 
-            if (distToTargetSqr < attackDistanceSqr)
-            {
-                // 공격 범위 이내로 들어왔으면 공격.
-                CreatureState = ECreatureState.Attack;
-            }
-            else
-            {
-                // 공격 범위 밖이라면 추적.
-                float moveDist = Mathf.Min(dir.magnitude, Time.deltaTime * MoveSpeed);
-                // SetRigidVelocity(Vector2.up * MoveSpeed);
-            }
-        }
+
+        Vector3 subVec = new Vector3(0, Collider.center.y, 0);
+        subVec *= (LookLeft) ? 1 : -1;
+
+        Debug.DrawRay(transform.position + subVec, Vector3.right, Color.red, 0.1f);
     }
 
     protected virtual void UpdateAttack()
