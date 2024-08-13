@@ -10,6 +10,7 @@ public static class Define
     public enum EScene
     {
         Unknown,
+        IntroScene,
         TitleScene,
         LobbyScene,
         GameScene,
