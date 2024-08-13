@@ -35,7 +35,7 @@ public class Player : Creature
             {
                 // 강제로 모션 변환
                 PlayAnimation(ECreatureState.Idle);
-                IdleStateOperate();
+                IdleStateEnter();
             }
         }
     }
@@ -63,6 +63,11 @@ public class Player : Creature
         CreatureState = ECreatureState.Idle;
 
         // Camera.main.GetOrAddComponent<CameraController>().Target = this;
+    }
+
+    public void OnHitTarget(IHitEvent hitTarget)
+    {
+
     }
 
     #region Input
@@ -170,9 +175,9 @@ public class Player : Creature
 
     }
 
-    protected override void IdleStateOperate()
+    protected override void IdleStateEnter()
     {
-        base.IdleStateOperate();
+        base.IdleStateEnter();
 
         SetRigidVelocityZeroToX();
     }
@@ -193,9 +198,9 @@ public class Player : Creature
         return true;
     }
 
-    protected override void MoveStateOperate()
+    protected override void MoveStateEnter()
     {
-        base.MoveStateOperate();
+        base.MoveStateEnter();
 
     }
 
@@ -231,9 +236,9 @@ public class Player : Creature
         return true;
     }
 
-    protected override void JumpStateOperate()
+    protected override void JumpStateEnter()
     {
-        base.JumpStateOperate();
+        base.JumpStateEnter();
 
         InitRigidVelocityY();
         PushRigidVelocityY(JumpPower);
@@ -268,9 +273,9 @@ public class Player : Creature
         return true;
     }
 
-    protected override void JumpAirStateOperate()
+    protected override void JumpAirStateEnter()
     {
-        base.JumpStateOperate();
+        base.JumpStateEnter();
 
         isJumpAir = true;
         InitRigidVelocityY();
@@ -302,9 +307,9 @@ public class Player : Creature
         return true;
     }
 
-    protected override void FallStateOperate()
+    protected override void FallStateEnter()
     {
-        base.FallStateOperate();
+        base.FallStateEnter();
     }
 
     private void UpdateFallState()
@@ -340,9 +345,9 @@ public class Player : Creature
         return true;
     }
 
-    protected override void LandStateOperate()
+    protected override void LandStateEnter()
     {
-        base.LandStateOperate();
+        base.LandStateEnter();
 
         isJumpAir = false;
     }
@@ -374,9 +379,11 @@ public class Player : Creature
         return true;
     }
 
-    protected override void AttackStateOperate()
+    protected override void AttackStateEnter()
     {
-        base.AttackStateOperate();
+        base.AttackStateEnter();
+
+        weapon.SetActiveWeapon(true);
     }
 
     private void UpdateAttackState()
@@ -387,12 +394,18 @@ public class Player : Creature
             CreatureState = ECreatureState.Idle;
         }
     }
+
+    protected override void AttackStateExit()
+    {
+        base.AttackStateExit();
+        weapon.SetActiveWeapon(false);
+    }
     #endregion
 
     #region Dead Motion
-    protected override void DeadStateOperate()
+    protected override void DeadStateEnter()
     {
-        base.DeadStateOperate();
+        base.DeadStateEnter();
     }
 
     protected override bool DeadStateCondition()

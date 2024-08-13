@@ -51,34 +51,62 @@ public class Creature : BaseObject
             if (isChangeState == false)
                 return;
 
+            switch(_creatureState)
+            {
+                case ECreatureState.Idle:
+                    IdleStateExit();
+                    break;
+                case ECreatureState.Move:
+                    MoveStateExit();
+                    break;
+                case ECreatureState.Jump:
+                    JumpStateExit();
+                    break;
+                case ECreatureState.JumpAir:
+                    JumpAirStateExit();
+                    break;
+                case ECreatureState.Fall:
+                    FallStateExit();
+                    break;
+                case ECreatureState.Land:
+                    LandStateExit();
+                    break;
+                case ECreatureState.Attack:
+                    AttackStateExit();
+                    break;
+                case ECreatureState.Dead:
+                    DeadStateExit();
+                    break;
+            }
+
             _creatureState = value;
             PlayAnimation(value);
 
             switch (value)
             {
                 case ECreatureState.Idle:
-                    IdleStateOperate();
+                    IdleStateEnter();
                     break;
                 case ECreatureState.Move:
-                    MoveStateOperate();
+                    MoveStateEnter();
                     break;
                 case ECreatureState.Jump:
-                    JumpStateOperate();
+                    JumpStateEnter();
                     break;
                 case ECreatureState.JumpAir:
-                    JumpAirStateOperate();
+                    JumpAirStateEnter();
                     break;
                 case ECreatureState.Fall:
-                    FallStateOperate();
+                    FallStateEnter();
                     break;
                 case ECreatureState.Land:
-                    LandStateOperate();
+                    LandStateEnter();
                     break;
                 case ECreatureState.Attack:
-                    AttackStateOperate();
+                    AttackStateEnter();
                     break;
                 case ECreatureState.Dead:
-                    DeadStateOperate();
+                    DeadStateEnter();
                     break;
             }
         }
@@ -160,15 +188,26 @@ public class Creature : BaseObject
     protected virtual bool DeadStateCondition() { return true; }
     #endregion
 
-    #region State Operate
-    protected virtual void IdleStateOperate() { }
-    protected virtual void MoveStateOperate() { }
-    protected virtual void JumpStateOperate() { }
-    protected virtual void JumpAirStateOperate() { }
-    protected virtual void FallStateOperate() { }
-    protected virtual void LandStateOperate() { }
-    protected virtual void AttackStateOperate() { }
-    protected virtual void DeadStateOperate() { }
+    #region State Enter
+    protected virtual void IdleStateEnter() { }
+    protected virtual void MoveStateEnter() { }
+    protected virtual void JumpStateEnter() { }
+    protected virtual void JumpAirStateEnter() { }
+    protected virtual void FallStateEnter() { }
+    protected virtual void LandStateEnter() { }
+    protected virtual void AttackStateEnter() { }
+    protected virtual void DeadStateEnter() { }
+    #endregion
+
+    #region State Exit
+    protected virtual void IdleStateExit() { }
+    protected virtual void MoveStateExit() { }
+    protected virtual void JumpStateExit() { }
+    protected virtual void JumpAirStateExit() { }
+    protected virtual void FallStateExit() { }
+    protected virtual void LandStateExit() { }
+    protected virtual void AttackStateExit() { }
+    protected virtual void DeadStateExit() { }
     #endregion
 
     #region Animation

@@ -1100,7 +1100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _creatureState: 0
-  weapon: {fileID: 0}
+  weapon: {fileID: 182015569074983904}
   _isPlayerInputControll: 0
 --- !u!95 &5494248383448643314
 Animator:
@@ -2739,6 +2739,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3617e4093ca8d5145986d37c89cfd692, type: 3}
+--- !u!114 &182015569074983904 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2819609905303839105, guid: 3617e4093ca8d5145986d37c89cfd692, type: 3}
+  m_PrefabInstance: {fileID: 2713386301251449441}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c74750a8ceb37c40a79b677daeb121a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2007772427638138020 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4502165957148481221, guid: 3617e4093ca8d5145986d37c89cfd692, type: 3}
