@@ -27,4 +27,9 @@ public class UI_TitleScene : UI_BaseScene
         Debug.Log("Å¬¸¯");
         Managers.Scene.LoadScene(Define.EScene.GameScene);
     }
+
+    public void OnClickClose()
+    {
+        Application.Quit();
+    }
 }
