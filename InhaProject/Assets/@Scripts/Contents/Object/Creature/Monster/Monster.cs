@@ -11,7 +11,6 @@ public class Monster : Creature
     [SerializeField] protected float AttackDistance;
 
     // юс╫ц
-    [SerializeField] Player player; 
     [SerializeField] BaseObject _target = null;
 
     public override ECreatureState CreatureState
@@ -101,20 +100,6 @@ public class Monster : Creature
                 CreatureState = ECreatureState.Move;
                 return;
             }
-        }
-
-        // Search Player
-        {
-            float searchDistanceSqr = SearchDistance * SearchDistance;
-            Vector3 dir = player.transform.position - transform.position;
-            float distToTargetSqr = dir.sqrMagnitude * dir.sqrMagnitude;
-
-            if (distToTargetSqr <= searchDistanceSqr)
-            {
-                _target = player;
-                CreatureState = ECreatureState.Move;
-            }
-
         }
     }
 

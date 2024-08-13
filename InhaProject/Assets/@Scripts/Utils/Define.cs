@@ -76,6 +76,8 @@ public static class Define
 
     public enum EMonsterType
     {
-
+        Skeleton1,
+        Skeleton2,
+        Skeleton3,
     }
 }
