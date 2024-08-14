@@ -90,9 +90,7 @@ public class BaseMonster : Creature
         Vector3 subVec = new Vector3(0, Collider.center.y, 0);
 
         Debug.DrawRay(transform.position + subVec, Vector3.right * AttackDistance * moveDirX, Color.red, 0.1f);
-
-        if (Physics.Raycast(transform.position + subVec, Vector3.right * moveDirX, out RaycastHit hit, AttackDistance)
-            && hit.transform.tag == ETag.Player.ToString())
+        if (Physics.Raycast(transform.position + subVec, Vector3.right * moveDirX, out RaycastHit hit, AttackDistance, 1 << (int)ELayer.Player))
         {
             return true;
         }
@@ -105,9 +103,7 @@ public class BaseMonster : Creature
         Vector3 subVec = new Vector3((Collider.center.x + (Collider.size.x / 2)) * moveDirX, 0, 0);
 
         Debug.DrawRay(transform.position + subVec, Vector3.down, Color.red, 0.1f);
-
-        if (Physics.Raycast(transform.position + subVec, Vector3.down, out RaycastHit hit, 1)
-            && hit.transform.tag == ETag.Ground.ToString())
+        if (Physics.Raycast(transform.position + subVec, Vector3.down, out RaycastHit hit, 1, 1 << (int)ELayer.Platform))
             return true;
 
         return false;
@@ -130,9 +126,13 @@ public class BaseMonster : Creature
 
     protected virtual void UpdateMove()
     {
-        DetectTargetToAttack();
-        
-        if(MovementCheckToRay() == false)
+        if (DetectTargetToAttack())
+        {
+            CreatureState = ECreatureState.Attack;
+            return;
+        }
+
+        if (MovementCheckToRay() == false)
         {
             CreatureState = ECreatureState.Idle;
             return;
