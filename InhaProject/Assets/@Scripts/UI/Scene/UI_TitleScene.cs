@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+
 public class UI_TitleScene : UI_BaseScene
 {
     [SerializeField] private TextMeshProUGUI blinkText;
@@ -18,9 +19,11 @@ public class UI_TitleScene : UI_BaseScene
         return true;
     }
 
+
     private void Start()
     {
     }
+
 
     public void OnClickStart()
     {
@@ -30,6 +33,9 @@ public class UI_TitleScene : UI_BaseScene
 
     public void OnClickClose()
     {
+        Debug.Log("Á¾·á");
         Application.Quit();
     }
+
+
 }
