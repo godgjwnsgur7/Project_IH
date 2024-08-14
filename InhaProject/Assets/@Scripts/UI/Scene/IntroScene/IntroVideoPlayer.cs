@@ -9,20 +9,20 @@ public class IntroVideoPlayer : MonoBehaviour
 {
 	public RawImage MovieScreen;
 	public VideoPlayer LinkedVideo;
+	[SerializeField] VideoClip videoClip;
 
-	float time = 0;
+    float time = 0;
 	bool isPrepare = false;
 
 	void Awake()
 	{
-		// 재생할 동영상 파일 불러오기.
-		//string moviePath = Application.dataPath + "/Arts/Vedio/Intro.mp4";
-		//var videoClip = Resources.Load<VideoClip>(moviePath);
-		//if (null == videoClip)
-		//{
-		//	Debug.LogError("[MovieSceneDirector::Awake]not found movie - " + moviePath);
-		//	return;
-		//}
+		string moviePath = "Vedio/Intro";
+        videoClip = Managers.Resource.Load<VideoClip>(moviePath);
+		if (null == videoClip)
+		{
+			Debug.LogError("[MovieSceneDirector::Awake]not found movie - " + moviePath);
+			return;
+		}
 		time = 0;
 		StartCoroutine(ReadyToPlay());
 	}
