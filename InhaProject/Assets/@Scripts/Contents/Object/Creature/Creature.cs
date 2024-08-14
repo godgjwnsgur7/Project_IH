@@ -136,6 +136,11 @@ public class Creature : BaseObject
 
     protected float moveDirX;
 
+    protected virtual void Start()
+    {
+        SetInfo(); // 임시?
+    }
+
     public override bool Init()
     {
         if (base.Init() == false)

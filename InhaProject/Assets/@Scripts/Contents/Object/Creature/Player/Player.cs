@@ -6,13 +6,13 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XR;
 using static Define;
 
-public class Player : Creature
+public class Player : Creature, IHitEvent
 {
     // 임시 데이터들
     protected float MoveSpeed = 5.0f;
     protected float JumpPower = 8.0f;
 
-    [SerializeField] BasePlayerWeapon weapon;
+    [SerializeField] BaseAttackObject attackObject;
 
     // 플레이어를 조작할 수 있는 경우
     [SerializeField, ReadOnly] private bool _isPlayerInputControll = false;
@@ -40,9 +40,12 @@ public class Player : Creature
         }
     }
 
-    protected void Start()
+    // 게임 매니저에서 처리 예정
+    protected override void Start()
     {
-        IsPlayerInputControll = true; // 게임 매니저에서 할 것
+        base.Start();
+
+        IsPlayerInputControll = true; 
     }
 
     public override bool Init()
@@ -50,8 +53,6 @@ public class Player : Creature
         if (base.Init() == false)
             return false;
 
-        SetInfo();
-        
         return true;
     }
 
@@ -62,12 +63,7 @@ public class Player : Creature
         CreatureType = ECreatureType.Player;
         CreatureState = ECreatureState.Idle;
 
-        // Camera.main.GetOrAddComponent<CameraController>().Target = this;
-    }
-
-    public void OnHitTarget(IHitEvent hitTarget)
-    {
-
+        attackObject.SetInfo(ETag.Monster, OnAttackTarget);
     }
 
     #region Input
@@ -383,7 +379,7 @@ public class Player : Creature
     {
         base.AttackStateEnter();
 
-        weapon.SetActiveWeapon(true);
+        attackObject.SetActiveWeapon(true);
     }
 
     private void UpdateAttackState()
@@ -398,7 +394,20 @@ public class Player : Creature
     protected override void AttackStateExit()
     {
         base.AttackStateExit();
-        weapon.SetActiveWeapon(false);
+        attackObject.SetActiveWeapon(false);
+    }
+
+    public void OnAttackTarget(IHitEvent attackTarget)
+    {
+        attackTarget.OnHit();
+    }
+
+    #endregion
+
+    #region Hit Motion
+    public void OnHit(AttackParam param = null)
+    {
+        Debug.Log("플레이어 히트당함");
     }
     #endregion
 

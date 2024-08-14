@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Define;
 
-public class BaseMonster : Creature
+public class BaseMonster : Creature, IHitEvent
 {
+    [SerializeField] protected BaseAttackObject attackObject;
+
     // 임시 데이터들
     protected float MoveSpeed = 1;
-    [SerializeField] protected float AttackDistance;
-
-    // 임시
-    [SerializeField] BaseObject _target = null;
+    [SerializeField] protected float AttackDistance = 2;
 
     public override ECreatureState CreatureState
     {
@@ -55,6 +54,17 @@ public class BaseMonster : Creature
         base.SetInfo(templateID);
 
         CreatureType = ECreatureType.Monster;
+        attackObject.SetInfo(ETag.Player, OnAttackTarget);
+    }
+
+    public void OnAttackTarget(IHitEvent attackTarget)
+    {
+        attackTarget?.OnHit();
+    }
+
+    public void OnHit(AttackParam param = null)
+    {
+        Debug.Log("몬스터 히트당함");
     }
 
     #region AI

@@ -1100,7 +1100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _creatureState: 0
-  weapon: {fileID: 182015569074983904}
+  attackObject: {fileID: 182015569074983904}
   _isPlayerInputControll: 0
 --- !u!95 &5494248383448643314
 Animator:
