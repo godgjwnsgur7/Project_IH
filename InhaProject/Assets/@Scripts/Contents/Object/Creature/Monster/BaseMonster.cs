@@ -60,6 +60,7 @@ public class BaseMonster : Creature
     #region AI
     public float UpdateAITick { get; protected set; } = 0.0f;
     Coroutine coUpdateAI = null;
+
     protected IEnumerator CoUpdateAI()
     {
         while (true)
@@ -84,39 +85,69 @@ public class BaseMonster : Creature
         }
     }
 
-    private void RaycastTarget()
+    private bool DetectTargetToAttack()
     {
         Vector3 subVec = new Vector3(0, Collider.center.y, 0);
 
-        Debug.DrawRay(transform.position + subVec, Vector3.right * AttackDistance, Color.red, 0.1f);
+        Debug.DrawRay(transform.position + subVec, Vector3.right * AttackDistance * moveDirX, Color.red, 0.1f);
 
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position + subVec, Vector3.right, out hit, AttackDistance))
+        if (Physics.Raycast(transform.position + subVec, Vector3.right * moveDirX, out RaycastHit hit, AttackDistance)
+            && hit.transform.tag == ETag.Player.ToString())
         {
-            CreatureState = ECreatureState.Attack;
+            return true;
         }
+
+        return false;
+    }
+
+    private bool MovementCheckToRay()
+    {
+        Vector3 subVec = new Vector3((Collider.center.x + (Collider.size.x / 2)) * moveDirX, 0, 0);
+
+        Debug.DrawRay(transform.position + subVec, Vector3.down, Color.red, 0.1f);
+
+        if (Physics.Raycast(transform.position + subVec, Vector3.down, out RaycastHit hit, 1)
+            && hit.transform.tag == ETag.Ground.ToString())
+            return true;
+
+        return false;
     }
 
     protected virtual void UpdateIdle()
     {
-        RaycastTarget();
+        if (DetectTargetToAttack())
+        {
+            CreatureState = ECreatureState.Attack;
+            return;
+        }
+        
+        DetectTargetToAttack();
+        SetRigidVelocityZeroToX();
+
+        LookLeft = !LookLeft;
+        CreatureState = ECreatureState.Move;
     }
 
     protected virtual void UpdateMove()
     {
-        RaycastTarget();
+        DetectTargetToAttack();
+        
+        if(MovementCheckToRay() == false)
+        {
+            CreatureState = ECreatureState.Idle;
+            return;
+        }
 
-        // 1. 지금 앞으로 갈 수 있는지 확인
-
-
-        Vector3 subVec = new Vector3(0, Collider.center.y, 0);
-        subVec *= (LookLeft) ? 1 : -1;
-
-        Debug.DrawRay(transform.position + subVec, Vector3.right, Color.red, 0.1f);
+        PushRigidVelocityX(moveDirX * MoveSpeed * 0.1f);
     }
 
     protected virtual void UpdateAttack()
     {
+        if (MovementCheckToRay())
+            PushRigidVelocityX(moveDirX * MoveSpeed * 0.5f);
+        else
+            SetRigidVelocityZeroToX();
+
         if (IsEndCurrentState(ECreatureState.Attack))
         {
             CreatureState = ECreatureState.Idle;

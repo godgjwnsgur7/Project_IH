@@ -134,6 +134,8 @@ public class Creature : BaseObject
         }
     }
 
+    protected float moveDirX;
+
     public override bool Init()
     {
         if (base.Init() == false)
@@ -153,6 +155,13 @@ public class Creature : BaseObject
         base.SetInfo(templateID);
 
         CreatureState = ECreatureState.Idle;
+    }
+
+    protected override void FlipX(bool isLeft)
+    {
+        base.FlipX(isLeft);
+
+        moveDirX = (isLeft) ? -1 : 1;
     }
 
     #region Rigid

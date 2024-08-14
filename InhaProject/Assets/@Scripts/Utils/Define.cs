@@ -23,6 +23,9 @@ public static class Define
 
         Water = 4,
         UI = 5,
+        Platform = 6,
+        Player = 7,
+        Monster = 8,
     }
 
     public enum ETag
@@ -35,6 +38,7 @@ public static class Define
 
         Ground,
         Interaction,
+        Monster,
     }
 
     public enum EObjectType
