@@ -10,25 +10,31 @@ using static TMPro.Examples.TMP_ExampleScript_01;
 
 public class ObjectMgr : MonoBehaviour
 {
-    [SerializeField] 
-    private GameObject interactablePrefab;
-    [SerializeField] 
-    private GameObject triggerablePrefab;
+
+    private GameObject ObjectPrefab;
+
+    
+    public string[] itemPrefabsPath { get; set; }
 
     private List<GameObject> activeObjects = new List<GameObject>();
 
-    // 오브젝트 스폰
-    public GameObject SpawnObject(EItemType type, Vector3 position, Quaternion rotation)
+    //오브젝트 스폰
+    public GameObject SpawnObject(string path, Vector3 position, Quaternion rotation)
     {
-        GameObject prefab = GetPrefabByType(type);
-        if (prefab == null)
+        if (path == null)
             return null;
 
-        GameObject obj = Instantiate(prefab, position, rotation);
-        activeObjects.Add(obj);
-
+        // 아이템 타입에 맞는 프리팹 로드 및 인스턴스화
+        GameObject obj = Managers.Resource.Instantiate(path, null);
+        if (obj != null)
+        {
+            obj.transform.position = position;
+            obj.transform.rotation = rotation;
+            activeObjects.Add(obj);
+        }
         return obj;
     }
+   
 
     // 오브젝트 디스폰
     public void DespawnObject(GameObject obj)
@@ -45,16 +51,20 @@ public class ObjectMgr : MonoBehaviour
         return new List<GameObject>(activeObjects);
     }
 
-    private GameObject GetPrefabByType(EItemType type)
+    private void LoadItemPrefabs()
     {
-        switch (type)
+        itemPrefabsPath = new string[(int)EItemType.Max - 2]; // Max None  제외
+
+        for (int i = 0; i < itemPrefabsPath.Length; i++)
         {
-            case EItemType.Interaction:
-                return interactablePrefab;
-            case EItemType.Trigger:
-                return triggerablePrefab;
-            default:
-                return null;
+            string path = PrefabPath.OBJECT_ITEM_PATH + "/"+((EItemType)i + 1).ToString();
+            itemPrefabsPath[i] = PrefabPath.OBJECT_ITEM_PATH + "/" + (Define.EItemType.None+i+1).ToString();
         }
+    }
+
+    private void Awake()
+    {
+        LoadItemPrefabs();
+
     }
 }

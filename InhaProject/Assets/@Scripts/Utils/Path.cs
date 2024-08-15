@@ -30,4 +30,6 @@ public static class PrefabPath
     public const string UI_WINDOW_PATH = "UI/Window";
 
     public const string INPUTMANAGER_PATH = "InputManager/InputManager";
+
+    public const string OBJECT_ITEM_PATH = "Object/Item";
 }

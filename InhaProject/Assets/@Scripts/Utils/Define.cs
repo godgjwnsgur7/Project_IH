@@ -86,13 +86,30 @@ public static class Define
         Skeleton3,
     }
 
+    public enum EItemState
+    {
+        None,
+        Standby,
+        Use,
+        Used
+    }
+
+    // 아이템 프리펩이랑 이름 같을것
     public enum EItemType
     {
         None,
-        Interaction,
-        Trigger,
+        ItemBox,
+        Item2,
+        Item3,
+        Item4,
+        Item5,
+        Item6,
+        Item7,
+        Item8,
+        Item9,
+        Item10,
+        Max
     }
-
 
 
 }
