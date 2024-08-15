@@ -17,9 +17,4 @@ public class TestSceneMainMenuView : BaseView
         exitButton.onClick.AddListener(() => ViewManager.ShowLast());
         return true;
     }
-
-
-    public override void Initialize()
-	{
-	}
 }

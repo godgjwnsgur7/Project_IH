@@ -16,9 +16,4 @@ public class TestSceneSettingMenuView : BaseView
         _init = true;
         return true;
     }
-
-
-	public override void Initialize()
-	{
-	}
 }

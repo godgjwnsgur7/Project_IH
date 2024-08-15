@@ -17,8 +17,4 @@ public class TestSceneFixedMenuView : BaseView
         exButton.onClick.AddListener(() => ViewManager.Show<TestSceneMainMenuView>());
         return true;
     }
-
-    public override void Initialize()
-	{
-	}
 }
