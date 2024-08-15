@@ -3,11 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TestSceneSettingMenuView : View
+public class TestSceneSettingMenuView : BaseView
 {
-	[SerializeField] private Button backButton;
+    [SerializeField] private Button backButton;
+
+    public override bool Init()
+    {
+        if (_init)
+            return false;
+
+        backButton.onClick.AddListener(() => ViewManager.ShowLast());
+        _init = true;
+        return true;
+    }
+
+
 	public override void Initialize()
 	{
-		backButton.onClick.AddListener(() => ViewManager.ShowLast());
 	}
 }

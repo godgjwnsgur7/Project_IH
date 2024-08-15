@@ -3,21 +3,28 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class ViewManager : MonoBehaviour
+public class ViewManager : MonoBehaviour 
 {
     private static ViewManager instance;
 
-	[SerializeField] private View startingView;
+	[SerializeField] private BaseView startingView;
 
-	[SerializeField] private View fixedView;
+	[SerializeField] private BaseView fixedView;
 
-	[SerializeField] private View[] views;
+	[SerializeField] private BaseView[] views;
 
-	private View currentView;
+	private BaseView currentView;
 
-	private readonly Stack<View> history = new Stack<View>();
+	private readonly Stack<BaseView> history = new Stack<BaseView>();
+    public BaseView CurrentView { get; private set; }
 
-	public static T GetView<T>() where T : View
+
+    public void SetCurrentScene(BaseView currView)
+    {
+        CurrentView = currView;
+    }
+
+    public static T GetView<T>() where T : BaseView
 	{
 		for (int i = 0; i < instance.views.Length; i++)
 		{
@@ -30,7 +37,7 @@ public class ViewManager : MonoBehaviour
 		return null;
 	}
 	
-	public static void Show<T>(bool renderer = true) where T : View
+	public static void Show<T>(bool renderer = true) where T : BaseView
 	{
 		for (int i = 0; i < instance.views.Length; i++)
 		{
@@ -54,7 +61,7 @@ public class ViewManager : MonoBehaviour
 		}
 	}
 
-	public static void Show(View view, bool renderer = true)
+	public static void Show(BaseView view, bool renderer = true)
 	{
 		if (instance.currentView != null)
 		{
@@ -72,7 +79,7 @@ public class ViewManager : MonoBehaviour
 		instance.currentView = view;
 	}
 
-	public static void ShowFixedMenu(View view, bool renderer = true)
+	public static void ShowFixedMenu(BaseView view, bool renderer = true)
 	{
 		view.Show();
 
@@ -93,7 +100,7 @@ public class ViewManager : MonoBehaviour
 	{
 		for ( int i = 0; i < views.Length; i++ )
 		{
-			views[i].Initialize();
+			// views[i].Initialize();
 			views[i].Hide();
 		}
 

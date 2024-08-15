@@ -4,17 +4,8 @@ using TMPro;
 using UnityEngine;
 
 
-public class UI_TitleScene : UI_BaseScene
+public class UI_TitleScene 
 {
-    public override bool Init()
-    {
-        if (base.Init() == false)
-            return false;
-
-        return true;
-    }
-
-
     private void Start()
     {
     }

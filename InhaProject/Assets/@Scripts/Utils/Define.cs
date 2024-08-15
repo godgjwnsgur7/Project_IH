@@ -113,4 +113,12 @@ public static class Define
     }
 
 
+    public enum EView
+    {
+        Unknown,
+        FixedView,
+        MainView,
+        SettingView,
+        InventoryView
+    }
 }
