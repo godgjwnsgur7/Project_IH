@@ -6,11 +6,6 @@ using UnityEngine;
 
 public class UI_TitleScene : UI_BaseScene
 {
-    [SerializeField] private TextMeshProUGUI blinkText;
-
-    private Coroutine textEffectCoroutine = null;
-    private bool textEffectLock = false;
-
     public override bool Init()
     {
         if (base.Init() == false)
@@ -34,7 +29,11 @@ public class UI_TitleScene : UI_BaseScene
     public void OnClickClose()
     {
         Debug.Log("종료");
-        Application.Quit();
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit(); // 어플리케이션 종료
+#endif
     }
 
 
