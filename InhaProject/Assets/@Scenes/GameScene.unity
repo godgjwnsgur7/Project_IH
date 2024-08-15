@@ -2223,7 +2223,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _creatureState: 0
   attackObject: {fileID: 1433828130}
-  AttackDistance: 2
+  AttackDistance: 1.5
 --- !u!65 &8915804551479280727
 BoxCollider:
   m_ObjectHideFlags: 0

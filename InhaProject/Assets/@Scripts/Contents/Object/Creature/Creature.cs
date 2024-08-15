@@ -199,6 +199,7 @@ public class Creature : BaseObject
     protected virtual bool FallStateCondition() { return true; }
     protected virtual bool LandStateCondition() { return true; }
     protected virtual bool AttackStateCondition() { return true; }
+    protected virtual bool HitStateCondition() { return true; }
     protected virtual bool DeadStateCondition() { return true; }
     #endregion
 
@@ -210,6 +211,7 @@ public class Creature : BaseObject
     protected virtual void FallStateEnter() { }
     protected virtual void LandStateEnter() { }
     protected virtual void AttackStateEnter() { }
+    protected virtual void HitStateEnter() { }
     protected virtual void DeadStateEnter() { }
     #endregion
 
@@ -221,6 +223,7 @@ public class Creature : BaseObject
     protected virtual void FallStateExit() { }
     protected virtual void LandStateExit() { }
     protected virtual void AttackStateExit() { }
+    protected virtual void HitStateExit() { }
     protected virtual void DeadStateExit() { }
     #endregion
 

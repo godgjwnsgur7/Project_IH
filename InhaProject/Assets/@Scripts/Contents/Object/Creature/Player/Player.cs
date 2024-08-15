@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.IO.LowLevel.Unsafe;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -166,7 +167,7 @@ public class Player : Creature, IHitEvent
         return true;
     }
 
-    private void UpdateIdleState()
+    protected virtual void UpdateIdleState()
     {
 
     }
@@ -200,7 +201,7 @@ public class Player : Creature, IHitEvent
 
     }
 
-    private void UpdateMoveState()
+    protected virtual void UpdateMoveState()
     {
         FallDownCheck();
         Movement();
@@ -240,7 +241,7 @@ public class Player : Creature, IHitEvent
         PushRigidVelocityY(JumpPower);
     }
 
-    private void UpdateJumpState()
+    protected virtual void UpdateJumpState()
     {
         Movement();
         FallDownCheck();
@@ -278,7 +279,7 @@ public class Player : Creature, IHitEvent
         PushRigidVelocityY(JumpPower);
     }
 
-    private void UpdateJumpAirState()
+    protected virtual void UpdateJumpAirState()
     {
         Movement();
         FallDownCheck();
@@ -322,7 +323,7 @@ public class Player : Creature, IHitEvent
         }
     }
 
-    private void FallDownCheck()
+    protected virtual void FallDownCheck()
     {
         if (creatureFoot.IsLandingGround == false && Rigid.velocity.y < 0)
             CreatureState = ECreatureState.Fall;
@@ -348,7 +349,7 @@ public class Player : Creature, IHitEvent
         isJumpAir = false;
     }
 
-    private void UpdateLandState()
+    protected virtual void UpdateLandState()
     {
         if (IsEndCurrentState(ECreatureState.Land))
         {
@@ -379,10 +380,10 @@ public class Player : Creature, IHitEvent
     {
         base.AttackStateEnter();
 
-        attackObject.SetActiveWeapon(true);
+        attackObject.SetActiveAttackObject(true);
     }
 
-    private void UpdateAttackState()
+    protected virtual void UpdateAttackState()
     {
         if(IsEndCurrentState(ECreatureState.Attack))
         {
@@ -394,7 +395,7 @@ public class Player : Creature, IHitEvent
     protected override void AttackStateExit()
     {
         base.AttackStateExit();
-        attackObject.SetActiveWeapon(false);
+        attackObject.SetActiveAttackObject(false);
     }
 
     public void OnAttackTarget(IHitEvent attackTarget)
@@ -405,6 +406,35 @@ public class Player : Creature, IHitEvent
     #endregion
 
     #region Hit Motion
+    protected override bool HitStateCondition()
+    {
+        if (base.HitStateCondition() == false)
+            return false;
+
+        return true;
+    }
+
+    protected override void HitStateEnter()
+    {
+        base.HitStateEnter();
+
+    }
+
+    protected virtual void UpdateHitState()
+    {
+        if (IsEndCurrentState(ECreatureState.Attack))
+        {
+            CreatureState = ECreatureState.Move;
+            CreatureState = ECreatureState.Idle;
+        }
+    }
+
+    protected override void HitStateExit()
+    {
+        base.HitStateExit();
+        attackObject.SetActiveAttackObject(false);
+    }
+
     public void OnHit(AttackParam param = null)
     {
         Debug.Log("플레이어 히트당함");

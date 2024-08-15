@@ -9,7 +9,8 @@ public class BaseMonster : Creature, IHitEvent
 
     // 임시 데이터들
     protected float MoveSpeed = 1;
-    [SerializeField] protected float AttackDistance = 2;
+    [SerializeField] protected float ChaseDistance = 8f;
+    [SerializeField] protected float AttackDistance = 1.5f;
 
     public override ECreatureState CreatureState
     {
@@ -71,6 +72,8 @@ public class BaseMonster : Creature, IHitEvent
     public float UpdateAITick { get; protected set; } = 0.0f;
     Coroutine coUpdateAI = null;
 
+    [SerializeField, ReadOnly] Player Target;
+
     protected IEnumerator CoUpdateAI()
     {
         while (true)
@@ -95,23 +98,22 @@ public class BaseMonster : Creature, IHitEvent
         }
     }
 
-    private bool DetectTargetToAttack()
+    private void DetectTarget()
     {
-        Vector3 subVec = new Vector3(0, Collider.center.y, 0);
+        if (Target != null)
+            return;
 
+        Vector3 subVec = new Vector3(0, Collider.center.y, 0);
         Debug.DrawRay(transform.position + subVec, Vector3.right * AttackDistance * moveDirX, Color.red, 0.1f);
         if (Physics.Raycast(transform.position + subVec, Vector3.right * moveDirX, out RaycastHit hit, AttackDistance, 1 << (int)ELayer.Player))
         {
-            return true;
+            Target = hit.transform.GetComponent<Player>();
         }
-
-        return false;
     }
 
-    private bool MovementCheckToRay()
+    private bool IsMovementCheck()
     {
         Vector3 subVec = new Vector3((Collider.center.x + (Collider.size.x / 2)) * moveDirX, 0, 0);
-
         Debug.DrawRay(transform.position + subVec, Vector3.down, Color.red, 0.1f);
         if (Physics.Raycast(transform.position + subVec, Vector3.down, out RaycastHit hit, 1, 1 << (int)ELayer.Platform))
             return true;
@@ -119,41 +121,86 @@ public class BaseMonster : Creature, IHitEvent
         return false;
     }
 
-    protected virtual void UpdateIdle()
+    private void ChaseOrAttackTarget()
     {
-        if (DetectTargetToAttack())
+        DetectTarget();
+
+        if (Target == null)
+            return;
+
+        Vector3 vec = this.transform.position - Target.transform.position;
+
+        if (AttackDistance >= vec.x)
         {
+            LookLeft = (vec.x > 0);
             CreatureState = ECreatureState.Attack;
             return;
         }
-        
-        DetectTargetToAttack();
+
+        float ChaseDistanceSqr = ChaseDistance * ChaseDistance;
+        if (ChaseDistanceSqr >= vec.sqrMagnitude)
+        {
+            LookLeft = (vec.x > 0);
+            CreatureState = ECreatureState.Move;
+            return;
+        }
+
+        Target = null;
+    }
+
+    #region Idle Motion
+    
+    protected virtual void UpdateIdle()
+    {
         SetRigidVelocityZeroToX();
 
-        LookLeft = !LookLeft;
+        if (IsMovementCheck() == false)
+        {
+            Target = null;
+            LookLeft = !LookLeft;
+        }
+
+        ChaseOrAttackTarget();
         CreatureState = ECreatureState.Move;
+    }
+    #endregion
+
+    #region Move Motion
+    protected override bool MoveStateCondition()
+    {
+        if (base.MoveStateCondition() == false)
+            return false;
+
+        if (IsMovementCheck() == false)
+            return false;
+
+        return true;
     }
 
     protected virtual void UpdateMove()
     {
-        if (DetectTargetToAttack())
-        {
-            CreatureState = ECreatureState.Attack;
-            return;
-        }
-
-        if (MovementCheckToRay() == false)
+        if (IsMovementCheck() == false)
         {
             CreatureState = ECreatureState.Idle;
             return;
         }
 
+        ChaseOrAttackTarget();
         PushRigidVelocityX(moveDirX * MoveSpeed * 0.1f);
+    }
+    #endregion
+
+    #region Attack Motion
+    protected override void AttackStateEnter()
+    {
+        base.AttackStateEnter();
+
+        attackObject.SetActiveAttackObject(true);
     }
 
     protected virtual void UpdateAttack()
     {
-        if (MovementCheckToRay())
+        if (IsMovementCheck())
             PushRigidVelocityX(moveDirX * MoveSpeed * 0.5f);
         else
             SetRigidVelocityZeroToX();
@@ -163,5 +210,14 @@ public class BaseMonster : Creature, IHitEvent
             CreatureState = ECreatureState.Idle;
         }
     }
+
+    protected override void AttackStateExit()
+    {
+        base.AttackStateExit();
+
+        attackObject.SetActiveAttackObject(false);
+    }
+    #endregion
+
     #endregion
 }

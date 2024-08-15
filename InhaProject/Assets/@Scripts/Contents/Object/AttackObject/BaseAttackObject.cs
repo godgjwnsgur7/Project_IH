@@ -37,19 +37,15 @@ public class BaseAttackObject : InitBase
         this.onAttackTarget = onAttackTarget;
     }
 
-    public void SetActiveWeapon(bool isActive)
+    public void SetActiveAttackObject(bool isActive)
     {
         Collider.enabled = isActive;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"{other.tag}, {targetTag.ToString()}");
         if (other.tag.Equals(targetTag.ToString()))
         {
-            if (onAttackTarget == null)
-                Debug.Log("æÍ ≥Œ¿” §ª§ª ø÷?");
-
             onAttackTarget?.Invoke(other.GetComponent<IHitEvent>());
         }
     }
