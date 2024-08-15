@@ -85,4 +85,14 @@ public static class Define
         Skeleton2,
         Skeleton3,
     }
+
+    public enum EItemType
+    {
+        None,
+        Interaction,
+        Trigger,
+    }
+
+
+
 }
