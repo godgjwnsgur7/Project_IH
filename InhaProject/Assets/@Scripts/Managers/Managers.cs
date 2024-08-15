@@ -26,13 +26,11 @@ public class Managers : MonoBehaviour
     private ResourceMgr _resource = new ResourceMgr();
     private SceneMgr _scene = new SceneMgr();
     private SoundMgr _sound = new SoundMgr();
-    private UIMgr _ui = new UIMgr();
 
     public static InputMgr Input { get { return Instance?._input; } }
     public static ResourceMgr Resource { get { return Instance?._resource; } }
     public static SceneMgr Scene { get { return Instance?._scene; } }
     public static SoundMgr Sound { get { return Instance?._sound; } }
-    public static UIMgr UI { get { return Instance?._ui; } }
     #endregion
 
 
@@ -55,8 +53,6 @@ public class Managers : MonoBehaviour
             s_instance = go.GetComponent<Managers>();
             s_instance._input = Instance._resource.Instantiate(PrefabPath.INPUTMANAGER_PATH, s_instance.transform).GetComponent<InputMgr>();
             s_instance._input.Init();
-            
-            s_instance._ui.Init();
         }
     }
 

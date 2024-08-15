@@ -89,6 +89,9 @@ public class BaseMonster : Creature, IHitEvent
                 case ECreatureState.Attack:
                     UpdateAttack();
                     break;
+                case ECreatureState.Hit:
+                    UpdateHit();
+                    break;
             }
 
             if (UpdateAITick > 0)
@@ -98,7 +101,7 @@ public class BaseMonster : Creature, IHitEvent
         }
     }
 
-    private void DetectTarget()
+    private void DetectTargetToAttack()
     {
         if (Target != null)
             return;
@@ -107,7 +110,7 @@ public class BaseMonster : Creature, IHitEvent
         Debug.DrawRay(transform.position + subVec, Vector3.right * AttackDistance * moveDirX, Color.red, 0.1f);
         if (Physics.Raycast(transform.position + subVec, Vector3.right * moveDirX, out RaycastHit hit, AttackDistance, 1 << (int)ELayer.Player))
         {
-            Target = hit.transform.GetComponent<Player>();
+            CreatureState = ECreatureState.Attack;
         }
     }
 
@@ -120,10 +123,10 @@ public class BaseMonster : Creature, IHitEvent
 
         return false;
     }
-
+     
     private void ChaseOrAttackTarget()
     {
-        DetectTarget();
+        // DetectTarget();
 
         if (Target == null)
             return;
@@ -152,16 +155,11 @@ public class BaseMonster : Creature, IHitEvent
     
     protected virtual void UpdateIdle()
     {
-        SetRigidVelocityZeroToX();
-
         if (IsMovementCheck() == false)
         {
-            Target = null;
             LookLeft = !LookLeft;
+            CreatureState = ECreatureState.Move;
         }
-
-        ChaseOrAttackTarget();
-        CreatureState = ECreatureState.Move;
     }
     #endregion
 
@@ -179,14 +177,10 @@ public class BaseMonster : Creature, IHitEvent
 
     protected virtual void UpdateMove()
     {
-        if (IsMovementCheck() == false)
+        if(IsMovementCheck() == false)
         {
             CreatureState = ECreatureState.Idle;
-            return;
         }
-
-        ChaseOrAttackTarget();
-        PushRigidVelocityX(moveDirX * MoveSpeed * 0.1f);
     }
     #endregion
 
@@ -216,6 +210,26 @@ public class BaseMonster : Creature, IHitEvent
         base.AttackStateExit();
 
         attackObject.SetActiveAttackObject(false);
+    }
+    #endregion
+
+    #region Attack Motion
+    protected override void HitStateEnter()
+    {
+        base.HitStateEnter();
+    }
+
+    protected virtual void UpdateHit()
+    {
+        if (IsEndCurrentState(ECreatureState.Hit))
+        {
+            CreatureState = ECreatureState.Idle;
+        }
+    }
+
+    protected override void HitStateExit()
+    {
+        base.HitStateExit();
     }
     #endregion
 

@@ -5,11 +5,6 @@ using UnityEngine;
 
 public class UIParam { }
 
-public class UILoadingParam : UIParam
-{
-    
-}
-
 public class UIFadeEffectParam : UIParam
 {
     public Func<bool> fadeInEffectCondition;

@@ -69,6 +69,7 @@ public static class Define
         Fall,
         Land,
         Attack,
+        Hit,
 
         Dead
     }
