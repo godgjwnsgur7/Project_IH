@@ -437,7 +437,7 @@ public class Player : Creature, IHitEvent
 
     public void OnHit(AttackParam param = null)
     {
-        Debug.Log("플레이어 히트당함");
+        CreatureState = ECreatureState.Hit;
     }
     #endregion
 

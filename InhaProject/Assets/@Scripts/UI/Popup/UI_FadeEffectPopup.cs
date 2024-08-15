@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_FadeEffectPopup : UI_BasePopup
+public class UI_FadeEffectPopup : InitBase
 {
     [SerializeField] private Image fadeEffectImage;
 
@@ -21,11 +21,19 @@ public class UI_FadeEffectPopup : UI_BasePopup
         return true;
     }
 
-    public override void OpenPopupUI(UIParam param = null)
+    private void OnDisable()
     {
-        base.OpenPopupUI();
+        if (fadeEffectCoroutine != null)
+            return;
 
-        if(param is UIFadeEffectParam fadeEffectParam)
+        fadeInEffectCondition = null;
+        onFadeOutCallBack = null;
+        onFadeInCallBack = null;
+    }
+
+    public void PlayFadeOutInEffect(UIParam param = null)
+    {
+        if (param is UIFadeEffectParam fadeEffectParam)
         {
             if (fadeEffectCoroutine == null)
             {
@@ -36,28 +44,13 @@ public class UI_FadeEffectPopup : UI_BasePopup
             else
                 Debug.Log("FadeEffect 중복");
         }
+
+        gameObject.SetActive(true);
     }
 
-    public override void SetInfo(UIParam param)
+    public void ClosePopup()
     {
-        base.SetInfo(param);
-    }
-
-    public override void ClosePopupUI()
-    {
-        base.ClosePopupUI();
-
-        fadeInEffectCondition = null;
-        onFadeOutCallBack = null;
-        onFadeInCallBack = null;
-    }
-
-    public override void DeActivePopup()
-    {
-        if (fadeEffectCoroutine != null)
-            return;
-
-        base.DeActivePopup();
+        gameObject.SetActive(false);
     }
 
     private IEnumerator IfadeOutInEffect(float fadeTime)
@@ -76,23 +69,17 @@ public class UI_FadeEffectPopup : UI_BasePopup
 
         tempColor.a = 1f;
         fadeEffectImage.color = tempColor;
-
         onFadeOutCallBack?.Invoke();
 
         // Wait Condition
         if (fadeInEffectCondition != null)
-        {
-            var loadingPopup = Managers.UI.OpenPopupUI<UI_LoadingPopup>();
             yield return new WaitUntil(fadeInEffectCondition);
-            Managers.UI.ClosePopupUI(loadingPopup);
-        }
 
         // FadeIn Effect
         while (tempColor.a > 0.01f)
         {
             tempColor.a -= Time.deltaTime / fadeTime;
             fadeEffectImage.color = tempColor;
-
             if (tempColor.a <= 0f) tempColor.a = 0f;
 
             yield return null;
@@ -102,6 +89,6 @@ public class UI_FadeEffectPopup : UI_BasePopup
 
         fadeEffectImage.color = tempColor;
         fadeEffectCoroutine = null;
-        ClosePopupUI();
+        ClosePopup();
     }
 }
