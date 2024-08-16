@@ -118,5 +118,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5591bd173c222e41a37ef840935c7ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _itemState: 0
-  itemPrefabs: []
+  _itemState: 1

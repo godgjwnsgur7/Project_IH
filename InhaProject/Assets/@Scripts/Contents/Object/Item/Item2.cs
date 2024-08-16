@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Define;
 
-public class Item2 : Item
+public class Item2 : BaseItem
 {
     protected override void Start()
     {
@@ -23,25 +23,25 @@ public class Item2 : Item
                 /*
                  상호작용 함수
                  */
-                DestroyAndSpawn();
+                DestroyItem();
             } 
         }
     }
     protected override bool UseStateCondition()
     {
-        // Item10의 Use 상태 조건
+        // Item2의 Use 상태 조건
         return base.UseStateCondition();
     }
 
     protected override void UseStateEnter()
     {
-        // Item10의 Use 상태 진입 시 작업
+        // Item2의 Use 상태 진입 시 작업
         base.UseStateEnter();
     }
 
     protected override void UsedStateEnter()
     {
-        // Item10의 Used 상태 진입 시 작업
+        // Item2의 Used 상태 진입 시 작업
         base.UsedStateEnter();
     }
 }

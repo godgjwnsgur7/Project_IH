@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using static Define;
 
-public class Item : BaseObject
+public class BaseItem : BaseObject
 {
     [SerializeField]
     private EItemState _itemState = EItemState.None;
@@ -63,8 +63,7 @@ public class Item : BaseObject
     public EItemType ItemType { get; protected set; } // 아이템 타입
 
     private Animator animator; // 애니메이터 컴포넌트
-    //protected string[] itemPrefabsPath { get; set; } // 프리펩 경로
-
+    
     protected virtual void Start()
     {
         SetInfo(); // 초기화용 또는 불필요한 경우 제거 가능
@@ -87,7 +86,6 @@ public class Item : BaseObject
         // templateID에 따라 아이템 타입 및 상태 설정
         ItemType = (EItemType)templateID;
         ItemState = EItemState.Standby; // 기본 상태
-        objectMgr = FindObjectOfType<ObjectMgr>();
     }
 
     #region 상태 조건
@@ -115,16 +113,21 @@ public class Item : BaseObject
     }
     #endregion
 
-    protected virtual void DestroyAndSpawn()
+    protected virtual void DestroyItem()
     {
-        if (objectMgr == null)
-        {
-            Debug.Log("ObjectMgr 못가져옴");
-            return;
-        }
+        Debug.Log("Destroy");
         ItemState = EItemState.Used;
         // 자신을 파괴
-        objectMgr.DespawnObject(gameObject);
+        Managers.Object.DespawnObject(gameObject);
+        
+    }
+
+    protected virtual void SpawnItems(EItemType spawnItemType)
+    {
+        Vector3 spawnPosition = transform.position; // 현재 아이템 위치에 생성
+        Quaternion spawnRotation = Quaternion.identity;
+        Managers.Object.SpawnObject(spawnItemType, spawnPosition,spawnRotation);
+
     }
 }
 

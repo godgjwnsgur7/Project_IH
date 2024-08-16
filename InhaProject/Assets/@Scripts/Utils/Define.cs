@@ -100,7 +100,7 @@ public static class Define
     {
         None,
         ItemBox,
-        Item2,
+        Item2, //  아이템 정해지면 수정예정
         Item3,
         Item4,
         Item5,

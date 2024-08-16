@@ -10,22 +10,18 @@ using static TMPro.Examples.TMP_ExampleScript_01;
 
 public class ObjectMgr : MonoBehaviour
 {
-
-    private GameObject ObjectPrefab;
-
-    
-    public string[] itemPrefabsPath { get; set; }
+    private Dictionary<EItemType, string> itemPrefabsDict = new Dictionary<EItemType, string>();
 
     private List<GameObject> activeObjects = new List<GameObject>();
 
     //오브젝트 스폰
-    public GameObject SpawnObject(string path, Vector3 position, Quaternion rotation)
+    public GameObject SpawnObject(EItemType itemType, Vector3 position = default, Quaternion rotation = default)
     {
-        if (path == null)
+        if (itemType == EItemType.None || itemType == EItemType.Max)
             return null;
-
+    
         // 아이템 타입에 맞는 프리팹 로드 및 인스턴스화
-        GameObject obj = Managers.Resource.Instantiate(path, null);
+        GameObject obj = Managers.Resource.Instantiate(itemPrefabsDict[itemType], null);
         if (obj != null)
         {
             obj.transform.position = position;
@@ -34,7 +30,11 @@ public class ObjectMgr : MonoBehaviour
         }
         return obj;
     }
-   
+
+    public void Init()
+    {
+        SetItemPrefabsDict();
+    }
 
     // 오브젝트 디스폰
     public void DespawnObject(GameObject obj)
@@ -51,20 +51,12 @@ public class ObjectMgr : MonoBehaviour
         return new List<GameObject>(activeObjects);
     }
 
-    private void LoadItemPrefabs()
+    private void SetItemPrefabsDict()
     {
-        itemPrefabsPath = new string[(int)EItemType.Max - 2]; // Max None  제외
-
-        for (int i = 0; i < itemPrefabsPath.Length; i++)
+        for (EItemType i = EItemType.None + 1; i < EItemType.Max; ++i)
         {
-            string path = PrefabPath.OBJECT_ITEM_PATH + "/"+((EItemType)i + 1).ToString();
-            itemPrefabsPath[i] = PrefabPath.OBJECT_ITEM_PATH + "/" + (Define.EItemType.None+i+1).ToString();
+            itemPrefabsDict[i] = PrefabPath.OBJECT_ITEM_PATH + "/" + i.ToString();
         }
     }
 
-    private void Awake()
-    {
-        LoadItemPrefabs();
-
-    }
 }
