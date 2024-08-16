@@ -26,14 +26,11 @@ public class Managers : MonoBehaviour
     private ResourceMgr _resource = new ResourceMgr();
     private SceneMgr _scene = new SceneMgr();
     private SoundMgr _sound = new SoundMgr();
-    private ViewManager _view = new ViewManager();
 
     public static InputMgr Input { get { return Instance?._input; } }
     public static ResourceMgr Resource { get { return Instance?._resource; } }
     public static SceneMgr Scene { get { return Instance?._scene; } }
     public static SoundMgr Sound { get { return Instance?._sound; } }
-
-    public static ViewManager View { get { return Instance?._view; } }
     #endregion
 
 

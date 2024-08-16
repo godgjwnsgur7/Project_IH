@@ -19,7 +19,7 @@ public class ViewManager : MonoBehaviour
     public BaseView CurrentView { get; private set; }
 
 
-    public void SetCurrentScene(BaseView currView)
+    public void SetCurrentView(BaseView currView)
     {
         CurrentView = currView;
     }
@@ -100,7 +100,6 @@ public class ViewManager : MonoBehaviour
 	{
 		for ( int i = 0; i < views.Length; i++ )
 		{
-			// views[i].Initialize();
 			views[i].Hide();
 		}
 
