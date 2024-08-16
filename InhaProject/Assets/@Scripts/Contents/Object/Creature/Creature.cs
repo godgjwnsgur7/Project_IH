@@ -1,18 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using static Define;
 
 public class Creature : BaseObject
 {
-    [SerializeField] // 확인용
-    protected ECreatureState _creatureState = ECreatureState.None;
+    [SerializeField, ReadOnly] protected bool isCreatureStateLock = false;
+    [SerializeField, ReadOnly] protected ECreatureState _creatureState = ECreatureState.None;
     public virtual ECreatureState CreatureState
     {
         get { return _creatureState; }
         protected set
         {
+            if (value != ECreatureState.Idle && isCreatureStateLock)
+                return;
+
             if (_creatureState == ECreatureState.Dead)
                 return;
 
@@ -74,6 +78,9 @@ public class Creature : BaseObject
                 case ECreatureState.Attack:
                     AttackStateExit();
                     break;
+                case ECreatureState.Hit:
+                    HitStateExit();
+                    break;
                 case ECreatureState.Dead:
                     DeadStateExit();
                     break;
@@ -105,6 +112,9 @@ public class Creature : BaseObject
                 case ECreatureState.Attack:
                     AttackStateEnter();
                     break;
+                case ECreatureState.Hit:
+                    HitStateEnter();
+                    break;
                 case ECreatureState.Dead:
                     DeadStateEnter();
                     break;
@@ -132,7 +142,7 @@ public class Creature : BaseObject
             _lookLeft = value;
             FlipX(value);
         }
-    }
+    }  
 
     protected float moveDirX;
 
@@ -170,6 +180,12 @@ public class Creature : BaseObject
     }
 
     #region Rigid
+
+    protected void PushRigidVelocity(Vector3 vec)
+    {
+        Rigid.AddForce(vec, ForceMode.Impulse);
+    }
+
     protected void PushRigidVelocityX(float x)
     {
         Rigid.AddForce(Vector3.left * -x, ForceMode.Impulse);
@@ -204,14 +220,14 @@ public class Creature : BaseObject
     #endregion
 
     #region State Enter
-    protected virtual void IdleStateEnter() { }
+    protected virtual void IdleStateEnter() { isCreatureStateLock = false; }
     protected virtual void MoveStateEnter() { }
     protected virtual void JumpStateEnter() { }
     protected virtual void JumpAirStateEnter() { }
     protected virtual void FallStateEnter() { }
     protected virtual void LandStateEnter() { }
-    protected virtual void AttackStateEnter() { }
-    protected virtual void HitStateEnter() { }
+    protected virtual void AttackStateEnter() { isCreatureStateLock = true; }
+    protected virtual void HitStateEnter() { isCreatureStateLock = true; }
     protected virtual void DeadStateEnter() { }
     #endregion
 

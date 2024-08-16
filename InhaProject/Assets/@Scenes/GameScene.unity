@@ -1349,7 +1349,7 @@ Transform:
   m_GameObject: {fileID: 8915804551479280724}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 7.719, y: 4.057, z: -0}
+  m_LocalPosition: {x: 7.719, y: 4.057, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2326,10 +2326,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 979c28fdff38dda4db61785b23c4f0ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isCreatureStateLock: 0
   _creatureState: 0
   attackObject: {fileID: 1433828130}
   ChaseDistance: 5
-  AttackDistance: 1.5
+  AttackDistance: 2
   Target: {fileID: 0}
 --- !u!65 &8915804551479280727
 BoxCollider:

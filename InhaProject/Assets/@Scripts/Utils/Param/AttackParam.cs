@@ -2,7 +2,7 @@ using System;
 
 public class AttackParam
 {
-    bool isLeftAttackDir;
+    public bool isLeftAttackDir;
 
     public AttackParam(bool isLeftAttackDir)
     {

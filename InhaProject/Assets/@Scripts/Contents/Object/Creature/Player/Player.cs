@@ -144,6 +144,9 @@ public class Player : Creature, IHitEvent
                 case ECreatureState.Attack:
                     UpdateAttackState();
                     break;
+                case ECreatureState.Hit:
+                    UpdateHitState();
+                    break;
             }
 
             yield return null;
@@ -406,6 +409,8 @@ public class Player : Creature, IHitEvent
     #endregion
 
     #region Hit Motion
+    [SerializeField, ReadOnly] Vector3 hitVec = Vector3.zero;
+
     protected override bool HitStateCondition()
     {
         if (base.HitStateCondition() == false)
@@ -418,11 +423,18 @@ public class Player : Creature, IHitEvent
     {
         base.HitStateEnter();
 
+        InitRigidVelocityY();
+
+        if (hitVec != Vector3.zero)
+        {
+            PushRigidVelocity(hitVec * 3f);
+            Debug.Log(hitVec);
+        }
     }
 
     protected virtual void UpdateHitState()
     {
-        if (IsEndCurrentState(ECreatureState.Attack))
+        if (IsEndCurrentState(ECreatureState.Hit))
         {
             CreatureState = ECreatureState.Move;
             CreatureState = ECreatureState.Idle;
@@ -432,11 +444,18 @@ public class Player : Creature, IHitEvent
     protected override void HitStateExit()
     {
         base.HitStateExit();
-        attackObject.SetActiveAttackObject(false);
+        
+        hitVec = Vector3.zero;
     }
 
     public void OnHit(AttackParam param = null)
     {
+        if (param != null)
+        {
+            hitVec.x = (param.isLeftAttackDir) ? 1 : -1;
+            hitVec.y = 1;
+        }
+
         CreatureState = ECreatureState.Hit;
     }
     #endregion
