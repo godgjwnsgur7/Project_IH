@@ -5,18 +5,22 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Rendering;
 
 public class SettingMenu : MonoBehaviour
 {
-    public TMP_Dropdown ResolutionDropdown;
+    public TMP_Dropdown resolutionDropdown;
 
     Resolution[] resolutions;
 
     void Start()
     {
+        //ResolutionDropdown = TMP_Dropdown.FindObjectOfType<TMP_Dropdown>();
+        
+
         resolutions = Screen.resolutions;
 
-        ResolutionDropdown.ClearOptions();
+        resolutionDropdown.ClearOptions();
 
         List<string> options = new List<string>();
 
@@ -33,21 +37,31 @@ public class SettingMenu : MonoBehaviour
                 currentResolutionIndex = i;
             }
         }
-        ResolutionDropdown.AddOptions(options);
-        ResolutionDropdown.value = currentResolutionIndex;
-        ResolutionDropdown.RefreshShownValue();
+        resolutionDropdown.AddOptions(options);
+        resolutionDropdown.value = currentResolutionIndex;
+        resolutionDropdown.RefreshShownValue();
     }
 
-    public void SetResolution(int resolutionIndex)
+    #region OnClick Event
+    public void OnClickSetResolution(int resolutionIndex)
     {
         Resolution resolution = resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
     }
 
     public AudioMixer audioMixer;
-    public void SetVolume(float Volume)
+
+    public void SetMaster(float Volume)
     {
-        audioMixer.SetFloat("Volume", Volume);
+        audioMixer.SetFloat("Master", Volume);
+    }
+    public void SetBackground(float Volume)
+    {
+        audioMixer.SetFloat("Background", Volume);
+    }
+    public void SetEffect(float Volume)
+    {
+        audioMixer.SetFloat("Effect", Volume);
     }
 
     public void SetQuality (int qualityIndex)

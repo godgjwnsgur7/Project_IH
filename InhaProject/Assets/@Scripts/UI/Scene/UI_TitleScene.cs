@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 
-public class UI_TitleScene 
+public class UI_TitleScene : SettingMenu
 {
     private void Start()
     {
@@ -13,7 +14,7 @@ public class UI_TitleScene
 
     public void OnClickStart()
     {
-        Debug.Log("클릭");
+        Debug.Log("시작");
         Managers.Scene.LoadScene(Define.EScene.GameScene);
     }
 
@@ -21,7 +22,7 @@ public class UI_TitleScene
     {
         Debug.Log("종료");
 #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
+        UnityEditor.EditorApplication.isPlaying = false; 
 #else
         Application.Quit(); // 어플리케이션 종료
 #endif
@@ -29,3 +30,5 @@ public class UI_TitleScene
 
 
 }
+
+
