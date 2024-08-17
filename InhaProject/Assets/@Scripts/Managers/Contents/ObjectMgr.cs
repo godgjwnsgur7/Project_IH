@@ -12,7 +12,7 @@ public class ObjectMgr : MonoBehaviour
 {
     private Dictionary<EItemType, string> itemPrefabsDict = new Dictionary<EItemType, string>();
 
-    private List<GameObject> activeObjects = new List<GameObject>();
+    private List<GameObject> activeObjects = new();
 
     //오브젝트 스폰
     public GameObject SpawnObject(EItemType itemType, Vector3 position = default, Quaternion rotation = default)

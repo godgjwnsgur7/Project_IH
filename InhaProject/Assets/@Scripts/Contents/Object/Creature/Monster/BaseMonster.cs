@@ -16,9 +16,9 @@ public class BaseMonster : Creature, IHitEvent
     [SerializeField] protected BaseAttackObject attackObject;
 
     // 임시 데이터들
-    protected float MoveSpeed = 1;
-    [SerializeField] protected float ChaseDistance = 8f;
-    [SerializeField] protected float AttackDistance = 1.5f;
+    [SerializeField] protected float MoveSpeed;
+    [SerializeField] protected float ChaseDistance;
+    [SerializeField] protected float AttackDistance;
 
     public override ECreatureState CreatureState
     {
@@ -54,6 +54,11 @@ public class BaseMonster : Creature, IHitEvent
 
         SetInfo();
         coUpdateAI = StartCoroutine(CoUpdateAI());
+
+        // 임시
+        MoveSpeed = 3.0f;
+        ChaseDistance = 8.0f;
+        AttackDistance = 1.5f;
 
         return true;
     }
@@ -189,6 +194,8 @@ public class BaseMonster : Creature, IHitEvent
 
         if (IsChaseOrAttackTarget())
             return;
+
+        SetRigidVelocityX(moveDirX * MoveSpeed);
     }
     #endregion
 
@@ -204,14 +211,14 @@ public class BaseMonster : Creature, IHitEvent
     protected virtual void UpdateAttack()
     {
         if (IsMovementCheck())
-            PushRigidVelocityX(moveDirX * MoveSpeed * 0.5f);
+            SetRigidVelocityX(moveDirX * MoveSpeed);
         else
-            SetRigidVelocityZeroToX();
+            InitRigidVelocityX();
 
         if (IsEndCurrentState(ECreatureState.Attack))
         {
-            CreatureState = ECreatureState.Move;
             CreatureState = ECreatureState.Idle;
+            CreatureState = ECreatureState.Move;
         }
     }
 
@@ -254,8 +261,8 @@ public class BaseMonster : Creature, IHitEvent
         if (param == null)
             return;
 
-        LookLeft = !param.isLeftAttackDir;
-        hitForceDir.x = (param.isLeftAttackDir) ? 1 : -1;
+        LookLeft = param.isAttackerLeft;
+        hitForceDir.x = (param.isAttackerLeft) ? -1 : 1;
         hitForceDir.y = 1;
         isCreatureStateLock = false;
         CreatureState = ECreatureState.Hit;

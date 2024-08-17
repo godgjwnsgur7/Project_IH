@@ -47,29 +47,4 @@ public static class Define
         Interaction,
         Monster,
     }
-
-    public enum EItemState
-    {
-        None,
-        Standby,
-        Use,
-        Used
-    }
-
-    // 아이템 프리펩이랑 이름 같을것
-    public enum EItemType
-    {
-        None,
-        ItemBox,
-        Item2, //  아이템 정해지면 수정예정
-        Item3,
-        Item4,
-        Item5,
-        Item6,
-        Item7,
-        Item8,
-        Item9,
-        Item10,
-        Max
-    }
 }

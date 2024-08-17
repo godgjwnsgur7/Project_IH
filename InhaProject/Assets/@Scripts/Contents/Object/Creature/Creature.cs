@@ -206,19 +206,21 @@ public class Creature : BaseObject
 
     #region Rigid
 
-    protected void PushRigidVelocity(Vector3 vec)
+    protected void SetRigidVelocity(Vector3 velocity)
     {
-        Rigid.AddForce(vec, ForceMode.Impulse);
+        Rigid.velocity = velocity;
     }
 
-    protected void PushRigidVelocityX(float x)
+    protected void SetRigidVelocityX(float x)
     {
-        Rigid.AddForce(Vector3.left * -x, ForceMode.Impulse);
+        Vector3 veloctiy = new Vector3(x, Rigid.velocity.y, 0);
+        Rigid.velocity = veloctiy; 
     }
 
-    protected void PushRigidVelocityY(float y)
+    protected void SetRigidVelocityY(float y)
     {
-        Rigid.AddForce(Vector3.up * y, ForceMode.Impulse);
+        Vector3 veloctiy = new Vector3(Rigid.velocity.x, y, 0);
+        Rigid.velocity = veloctiy;
     }
 
     protected void InitRigidVelocityY()
@@ -226,9 +228,14 @@ public class Creature : BaseObject
         Rigid.velocity = new Vector3(Rigid.velocity.x, 0, 0);
     }
 
-    protected void SetRigidVelocityZeroToX()
+    protected void InitRigidVelocityX()
     {
         Rigid.velocity = new Vector3(0, Rigid.velocity.y, 0);
+    }
+
+    protected void InitRigidVelocity()
+    {
+        Rigid.velocity = Vector3.zero;
     }
     #endregion
 

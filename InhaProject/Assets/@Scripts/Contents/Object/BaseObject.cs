@@ -22,7 +22,10 @@ public abstract class BaseObject : InitBase
         return true;
     }
 
-    public virtual void SetInfo(int templateID) { }
+    public virtual void SetInfo(int templateID)
+    {
+        FlipX(false);
+    }
 
     protected virtual void FlipX(bool isLeft)
     {

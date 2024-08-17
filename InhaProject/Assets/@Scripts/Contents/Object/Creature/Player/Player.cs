@@ -16,8 +16,8 @@ public enum EPlayerType
 public class Player : Creature, IHitEvent
 {
     // 임시 데이터들
-    protected float MoveSpeed = 5.0f;
-    protected float JumpPower = 8.0f;
+    [SerializeField] protected float MoveSpeed;
+    [SerializeField] protected float JumpPower;
 
     [SerializeField] BaseAttackObject attackObject;
 
@@ -59,6 +59,10 @@ public class Player : Creature, IHitEvent
     {
         if (base.Init() == false)
             return false;
+
+        // 임시
+        MoveSpeed = 5.0f;
+        JumpPower = 8.0f;
 
         return true;
     }
@@ -185,7 +189,7 @@ public class Player : Creature, IHitEvent
     {
         base.IdleStateEnter();
 
-        SetRigidVelocityZeroToX();
+        InitRigidVelocityX();
     }
     #endregion
 
@@ -221,7 +225,7 @@ public class Player : Creature, IHitEvent
 
     private void Movement()
     {
-        PushRigidVelocityX(moveDirection.x * MoveSpeed * 0.1f);
+        SetRigidVelocityX(moveDirection.x * MoveSpeed);
 
         if (moveDirection.x > 0)
             LookLeft = false;
@@ -247,7 +251,7 @@ public class Player : Creature, IHitEvent
         base.JumpStateEnter();
 
         InitRigidVelocityY();
-        PushRigidVelocityY(JumpPower);
+        SetRigidVelocityY(JumpPower);
     }
 
     protected virtual void UpdateJumpState()
@@ -285,7 +289,7 @@ public class Player : Creature, IHitEvent
 
         isJumpAir = true;
         InitRigidVelocityY();
-        PushRigidVelocityY(JumpPower);
+        SetRigidVelocityY(JumpPower);
     }
 
     protected virtual void UpdateJumpAirState()
@@ -389,6 +393,7 @@ public class Player : Creature, IHitEvent
     {
         base.AttackStateEnter();
 
+        InitRigidVelocityX();
         attackObject.SetActiveAttackObject(true);
     }
 
@@ -433,7 +438,7 @@ public class Player : Creature, IHitEvent
 
         if (hitForceDir != Vector3.zero)
         {
-            PushRigidVelocity(hitForceDir * 3f);
+            SetRigidVelocity(hitForceDir * 3f);
             Debug.Log(hitForceDir);
         }
     }
@@ -460,8 +465,8 @@ public class Player : Creature, IHitEvent
         if (param == null)
             return;
 
-        LookLeft = !param.isLeftAttackDir;
-        hitForceDir.x = (param.isLeftAttackDir) ? 1 : -1;
+        LookLeft = param.isAttackerLeft;
+        hitForceDir.x = (param.isAttackerLeft) ? -1 : 1;
         hitForceDir.y = 1;
         isCreatureStateLock = false;
         CreatureState = ECreatureState.Hit;
