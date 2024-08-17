@@ -13,8 +13,9 @@ public class TestSceneFixedMenuView : BaseView
             return false;
 
         ViewType = EViewType.FixedView;
+        sorting = 0;
 
-        exButton.onClick.AddListener(() => ViewManager.Show<TestSceneMainMenuView>());
+        exButton.onClick.AddListener(() => ViewController.Show<TestSceneMainMenuView>());
         return true;
     }
 }

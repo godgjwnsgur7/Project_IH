@@ -13,8 +13,8 @@ public class TestSceneMainMenuView : BaseView
 
         ViewType = EViewType.MainView;
 
-        settingButton.onClick.AddListener(() => ViewManager.Show<TestSceneSettingMenuView>());
-        exitButton.onClick.AddListener(() => ViewManager.ShowLast());
+        settingButton.onClick.AddListener(() => ViewController.Show<TestSceneSettingMenuView>());
+        exitButton.onClick.AddListener(() => ViewController.ShowLast());
         return true;
     }
 }

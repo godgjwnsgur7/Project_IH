@@ -5,25 +5,24 @@ using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ViewManager : MonoBehaviour 
+public class ViewController : MonoBehaviour 
 {
-    private static ViewManager instance;
+    private static ViewController instance;
 
 	[SerializeField] private BaseView startingView;
 
 	[SerializeField] private BaseView fixedView;
 
 	[SerializeField] private BaseView[] views;
-
-	private BaseView currentView;
+	public BaseView currentView { get; private set; }
 
 	private readonly Stack<BaseView> history = new Stack<BaseView>();
-	public BaseView CurrentView { get; private set; }
+	//public BaseView CurrentView { get; private set; }
 
 
     public void SetCurrentView(BaseView currView)
     {
-        CurrentView = currView;
+        currentView = currView;
     }
 
     public static T GetView<T>() where T : BaseView
@@ -43,7 +42,7 @@ public class ViewManager : MonoBehaviour
 	{
 		for (int i = 0; i < instance.views.Length; i++)
 		{
-			if ( instance.views[i] is T)
+			if (instance.views[i] is T)
 			{
 				if (instance.currentView != null)
 				{
@@ -81,13 +80,6 @@ public class ViewManager : MonoBehaviour
 		instance.currentView = view;
 	}
 
-	public static void ShowFixedMenu(BaseView view, bool renderer = true)
-	{
-		view.Show();
-
-		instance.currentView = view;
-	}
-
 	public static void ShowLast()
 	{
 		if (instance.history.Count != 0)
@@ -104,15 +96,11 @@ public class ViewManager : MonoBehaviour
 
 	private void Start()
 	{
-		for ( int i = 0; i < views.Length; i++ )
-		{
-			views[i].Hide();
-		}
-
-		if (fixedView != null)
-		{
-			Show(fixedView, true);
-		}
+		//for ( int i = 0; i < views.Length; i++ )
+		//{
+		//	//if (views[i].sorting != 0)
+		//		//views[i].Hide();
+		//}
 
 		if (startingView != null)
 		{

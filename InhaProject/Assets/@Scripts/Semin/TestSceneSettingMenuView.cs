@@ -12,7 +12,7 @@ public class TestSceneSettingMenuView : BaseView
         if (_init)
             return false;
 
-        backButton.onClick.AddListener(() => ViewManager.ShowLast());
+        backButton.onClick.AddListener(() => ViewController.ShowLast());
         _init = true;
         return true;
     }
