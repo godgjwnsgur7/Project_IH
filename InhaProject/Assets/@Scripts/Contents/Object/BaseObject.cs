@@ -4,6 +4,12 @@ using Unity.VisualScripting;
 using UnityEngine;
 using static Define;
 using static TMPro.Examples.TMP_ExampleScript_01;
+public enum EObjectType
+{
+    None,
+    Creature,
+    Item,
+}
 
 public abstract class BaseObject : InitBase
 {

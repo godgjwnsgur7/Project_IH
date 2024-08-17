@@ -7,6 +7,12 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XR;
 using static Define;
 
+public enum EPlayerType
+{
+    FemaleCharacter,
+    MaleCharacter, // 아직 사용 불가능
+}
+
 public class Player : Creature, IHitEvent
 {
     // 임시 데이터들
@@ -409,7 +415,7 @@ public class Player : Creature, IHitEvent
     #endregion
 
     #region Hit Motion
-    [SerializeField, ReadOnly] Vector3 hitVec = Vector3.zero;
+    [SerializeField, ReadOnly] Vector3 hitForceDir = Vector3.zero;
 
     protected override bool HitStateCondition()
     {
@@ -425,10 +431,10 @@ public class Player : Creature, IHitEvent
 
         InitRigidVelocityY();
 
-        if (hitVec != Vector3.zero)
+        if (hitForceDir != Vector3.zero)
         {
-            PushRigidVelocity(hitVec * 3f);
-            Debug.Log(hitVec);
+            PushRigidVelocity(hitForceDir * 3f);
+            Debug.Log(hitForceDir);
         }
     }
 
@@ -438,24 +444,26 @@ public class Player : Creature, IHitEvent
         {
             CreatureState = ECreatureState.Move;
             CreatureState = ECreatureState.Idle;
+            CreatureState = ECreatureState.Fall;
         }
     }
 
     protected override void HitStateExit()
     {
         base.HitStateExit();
-        
-        hitVec = Vector3.zero;
+
+        hitForceDir = Vector3.zero;
     }
 
     public void OnHit(AttackParam param = null)
     {
-        if (param != null)
-        {
-            hitVec.x = (param.isLeftAttackDir) ? 1 : -1;
-            hitVec.y = 1;
-        }
+        if (param == null)
+            return;
 
+        LookLeft = !param.isLeftAttackDir;
+        hitForceDir.x = (param.isLeftAttackDir) ? 1 : -1;
+        hitForceDir.y = 1;
+        isCreatureStateLock = false;
         CreatureState = ECreatureState.Hit;
     }
     #endregion

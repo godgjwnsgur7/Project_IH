@@ -1,8 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using static Define;
 
+public enum EMonsterType
+{
+    Skeleton1,
+    Skeleton2, // 아직 사용 불가
+    Skeleton3, // 아직 사용 불가
+
+}
 public class BaseMonster : Creature, IHitEvent
 {
     [SerializeField] protected BaseAttackObject attackObject;
@@ -105,52 +113,57 @@ public class BaseMonster : Creature, IHitEvent
 
     private bool IsMovementCheck()
     {
-        RaycastHit hit;
         Vector3 subVec = new Vector3((Collider.center.x + (Collider.size.x / 2)) * moveDirX, 0, 0);
         Debug.DrawRay(transform.position + subVec, Vector3.down, Color.red);
-        if (!Physics.Raycast(transform.position + subVec, Vector3.down, out hit, 1, 1 << (int)ELayer.Platform))
-            return false;
+        if (Physics.Raycast(transform.position + subVec, Vector3.down, out RaycastHit hit, 1, 1 << (int)ELayer.Platform))
+            return true;
 
-        return true;
+        return false;
     }
      
-    private void ChaseOrAttackTarget()
+    private bool IsChaseOrAttackTarget()
     {
         if(Target != null && IsDetectTarget(AttackDistance))
         {
             CreatureState = ECreatureState.Attack;
-            return;
+            return true;
         }
 
         IsDetectTarget(ChaseDistance);
-
+        
         if (Target == null)
-            return;
+            return false;
 
-        Vector3 vec = this.transform.position - Target.transform.position;
-        LookLeft = (vec.x > 0);
+        Vector3 targetDistance = this.transform.position - Target.transform.position;
+        LookLeft = (targetDistance.x > 0);
 
-        if (Mathf.Abs(vec.x) < 0.1f)
+        if (Mathf.Abs(targetDistance.x) < 0.1f)
         {
-            CreatureState = ECreatureState.Idle;
-            return;
+            if (IsDetectTarget(AttackDistance))
+                CreatureState = ECreatureState.Attack;
+            else
+                CreatureState = ECreatureState.Idle;
+
+            return true;
         }
 
         float chaseDistanceSqr = ChaseDistance * ChaseDistance;
-        if (chaseDistanceSqr >= vec.sqrMagnitude)
+        if (chaseDistanceSqr >= targetDistance.sqrMagnitude)
         {
             CreatureState = ECreatureState.Move;
-            return;
+            return true;
         }
 
         Target = null;
+        return false;
     }
 
     #region Idle Motion
     
     protected virtual void UpdateIdle()
     {
-        ChaseOrAttackTarget();
+        if (IsChaseOrAttackTarget())
+            return;
 
         CreatureState = ECreatureState.Move;
     }
@@ -170,16 +183,19 @@ public class BaseMonster : Creature, IHitEvent
 
     protected virtual void UpdateMove()
     {
-        ChaseOrAttackTarget();
+        if (IsChaseOrAttackTarget())
+            return;
 
         if (IsMovementCheck() == false)
         {
+            Target = null;
             LookLeft = !LookLeft;
         }
     }
     #endregion
 
     #region Attack Motion
+
     protected override void AttackStateEnter()
     {
         base.AttackStateEnter();
@@ -215,6 +231,8 @@ public class BaseMonster : Creature, IHitEvent
     #endregion
 
     #region Hit Motion
+    [SerializeField, ReadOnly] Vector3 hitForceDir = Vector3.zero;
+
     protected override void HitStateEnter()
     {
         base.HitStateEnter();
@@ -235,7 +253,14 @@ public class BaseMonster : Creature, IHitEvent
 
     public void OnHit(AttackParam param = null)
     {
-        Debug.Log("몬스터 히트당함");
+        if (param == null)
+            return;
+
+        LookLeft = !param.isLeftAttackDir;
+        hitForceDir.x = (param.isLeftAttackDir) ? 1 : -1;
+        hitForceDir.y = 1;
+        isCreatureStateLock = false;
+        CreatureState = ECreatureState.Hit;
     }
     #endregion
 

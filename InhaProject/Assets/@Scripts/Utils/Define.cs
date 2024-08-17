@@ -41,52 +41,6 @@ public static class Define
         Monster,
     }
 
-    public enum EObjectType
-    {
-        None,
-        Creature,
-        GimmickObject,
-
-    }
-
-    public enum ECreatureType
-    {
-        Player,
-        Monster,
-    }
-
-    /// <summary>
-    /// 애니메이션 클립 이름과 같아야 함
-    /// </summary>
-    public enum ECreatureState
-    {
-        None,
-        Idle,
-        Walk, // 일단 미사용
-        Move, // Run으로 일단 사용
-        Jump,
-        JumpAir,
-        Fall,
-        Land,
-        Attack,
-        Hit,
-
-        Dead
-    }
-
-    public enum EPlayerType
-    {
-        FemaleCharacter,
-        MaleCharacter, // 아직 사용 불가능
-    }
-
-    public enum EMonsterType
-    {
-        Skeleton1,
-        Skeleton2,
-        Skeleton3,
-    }
-
     public enum EItemState
     {
         None,
@@ -111,7 +65,6 @@ public static class Define
         Item10,
         Max
     }
-
 
     public enum EView
     {

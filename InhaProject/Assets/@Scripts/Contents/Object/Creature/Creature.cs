@@ -5,6 +5,31 @@ using Unity.VisualScripting;
 using UnityEngine;
 using static Define;
 
+/// <summary>
+/// 애니메이션 클립 이름과 같아야 함
+/// </summary>
+public enum ECreatureState
+{
+    None,
+    Idle,
+    Walk, // 일단 미사용
+    Move, // Run으로 일단 사용
+    Jump,
+    JumpAir,
+    Fall,
+    Land,
+    Attack,
+    Hit,
+
+    Dead
+}
+
+public enum ECreatureType
+{
+    Player,
+    Monster,
+}
+
 public class Creature : BaseObject
 {
     [SerializeField, ReadOnly] protected bool isCreatureStateLock = false;
