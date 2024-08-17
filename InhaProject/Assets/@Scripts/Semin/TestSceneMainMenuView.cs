@@ -11,7 +11,7 @@ public class TestSceneMainMenuView : BaseView
         if (base.Init() == false)
             return false;
 
-        ViewType = Define.EView.MainView;
+        ViewType = EViewType.MainView;
 
         settingButton.onClick.AddListener(() => ViewManager.Show<TestSceneSettingMenuView>());
         exitButton.onClick.AddListener(() => ViewManager.ShowLast());

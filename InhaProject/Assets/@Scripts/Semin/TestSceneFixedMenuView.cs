@@ -12,7 +12,7 @@ public class TestSceneFixedMenuView : BaseView
         if (base.Init() == false)
             return false;
 
-        ViewType = Define.EView.FixedView;
+        ViewType = EViewType.FixedView;
 
         exButton.onClick.AddListener(() => ViewManager.Show<TestSceneMainMenuView>());
         return true;

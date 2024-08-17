@@ -129,8 +129,6 @@ public class BaseMonster : Creature, IHitEvent
             return true;
         }
 
-        IsDetectTarget(ChaseDistance);
-        
         if (Target == null)
             return false;
 
@@ -183,14 +181,14 @@ public class BaseMonster : Creature, IHitEvent
 
     protected virtual void UpdateMove()
     {
-        if (IsChaseOrAttackTarget())
-            return;
-
         if (IsMovementCheck() == false)
         {
             Target = null;
             LookLeft = !LookLeft;
         }
+
+        if (IsChaseOrAttackTarget())
+            return;
     }
     #endregion
 

@@ -15,6 +15,10 @@ public static class Define
         LobbyScene,
         GameScene,
     }
+
+    /// <summary>
+    /// 유니티 에디터의 레이어와 같아야 함
+    /// </summary>
     public enum ELayer
     {
         Default = 0,
@@ -28,6 +32,9 @@ public static class Define
         Monster = 8,
     }
 
+    /// <summary>
+    /// 유니티 에디터에 태그가 있어야 함
+    /// </summary>
     public enum ETag
     {
         Untagged,
@@ -64,14 +71,5 @@ public static class Define
         Item9,
         Item10,
         Max
-    }
-
-    public enum EView
-    {
-        Unknown,
-        FixedView,
-        MainView,
-        SettingView,
-        InventoryView
     }
 }

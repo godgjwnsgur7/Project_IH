@@ -3,9 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Define;
 
+public enum EViewType
+{
+    Unknown,
+    FixedView,
+    MainView,
+    SettingView,
+    InventoryView
+}
+
 public class BaseView : ViewManager
 {
-    public EView ViewType { get; protected set; } = EView.Unknown;
+    public EViewType ViewType { get; protected set; } = EViewType.Unknown;
 
 	protected bool _init = false;
 
