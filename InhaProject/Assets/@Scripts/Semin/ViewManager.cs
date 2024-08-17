@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.UI;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ViewManager : MonoBehaviour 
 {
@@ -16,7 +18,7 @@ public class ViewManager : MonoBehaviour
 	private BaseView currentView;
 
 	private readonly Stack<BaseView> history = new Stack<BaseView>();
-    public BaseView CurrentView { get; private set; }
+	public BaseView CurrentView { get; private set; }
 
 
     public void SetCurrentView(BaseView currView)
@@ -94,7 +96,11 @@ public class ViewManager : MonoBehaviour
 		}
 	}
 
-	private void Awake() => instance = this;
+	private void Awake()
+	{
+		instance = this;
+		SetCanvas();
+	}
 
 	private void Start()
 	{
@@ -112,5 +118,21 @@ public class ViewManager : MonoBehaviour
 		{
 			Show(startingView, true);
 		}
+	}
+
+	public bool SetCanvas()
+	{
+		Canvas canvas = GetComponent<Canvas>();
+		CanvasScaler scaler = GetComponent<CanvasScaler>();
+
+		if (canvas != null)
+		{
+			scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+			scaler.referenceResolution = new Vector2(1980, 1020);
+			scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+
+			return true;
+		}
+		return false;
 	}
 }
