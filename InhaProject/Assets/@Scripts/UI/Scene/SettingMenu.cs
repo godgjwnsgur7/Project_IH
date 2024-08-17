@@ -42,7 +42,6 @@ public class SettingMenu : MonoBehaviour
         resolutionDropdown.RefreshShownValue();
     }
 
-    #region OnClick Event
     public void OnClickSetResolution(int resolutionIndex)
     {
         Resolution resolution = resolutions[resolutionIndex];
