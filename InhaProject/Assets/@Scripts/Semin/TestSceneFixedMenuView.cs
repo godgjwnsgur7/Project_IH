@@ -13,9 +13,12 @@ public class TestSceneFixedMenuView : BaseView
             return false;
 
         ViewType = EViewType.FixedView;
-        sorting = 0;
 
-        exButton.onClick.AddListener(() => ViewController.Show<TestSceneMainMenuView>());
+        canvas.sortingOrder = 0;
+        exButton.onClick.AddListener(() => {
+            ViewController.Show<TestSceneMainMenuView>(true);
+        });
+
         return true;
     }
 }

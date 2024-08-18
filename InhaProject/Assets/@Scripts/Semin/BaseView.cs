@@ -17,10 +17,10 @@ public class BaseView : ViewController
 {
     public EViewType ViewType { get; protected set; } = EViewType.Unknown;
 
-	Canvas canvas;
+	public Canvas canvas;
+    public GraphicRaycaster raycaster;
 
 	protected bool _init = false;
-	public int sorting = 10;
 	public bool isActive = false;
 
 	public virtual bool Init()
@@ -28,11 +28,15 @@ public class BaseView : ViewController
 		if (_init)
 			return false;
 
-		_init = true;
+        _init = true;
 		return true;
 	}
 
-	public virtual void Hide() => gameObject.SetActive(false);
+    public virtual void Hide()
+    {
+        gameObject.SetActive(false);
+        isActive = false;
+    }
 	public virtual void Show()
 	{
 		gameObject.SetActive(true);
@@ -40,15 +44,19 @@ public class BaseView : ViewController
 	}
 
 	private void Awake()
-	{
-		Init();
-		canvas = gameObject.AddComponent<Canvas>();
-		canvas.overrideSorting = true;
-	}
+    {
+        if (canvas == null)
+        {
+            canvas = gameObject.AddComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.overrideSorting = true;
+            canvas.sortingOrder = 10;
+            gameObject.SetActive(false);
 
-	protected void SetSortingNum(int num)
-	{
-		sorting = num;
-		canvas.sortingOrder = sorting;
-	}
+            raycaster = gameObject.AddComponent<GraphicRaycaster>();
+            raycaster.ignoreReversedGraphics = true;
+            raycaster.blockingObjects= GraphicRaycaster.BlockingObjects.None;
+        }
+        Init();
+    }
 }

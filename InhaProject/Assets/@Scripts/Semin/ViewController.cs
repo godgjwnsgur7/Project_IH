@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,7 +18,8 @@ public class ViewController : MonoBehaviour
 	public BaseView currentView { get; private set; }
 
 	private readonly Stack<BaseView> history = new Stack<BaseView>();
-	//public BaseView CurrentView { get; private set; }
+
+	int order = 10;
 
 
     public void SetCurrentView(BaseView currView)
@@ -38,31 +40,43 @@ public class ViewController : MonoBehaviour
 		return null;
 	}
 	
-	public static void Show<T>(bool renderer = true) where T : BaseView
+	public static void Show<T>(bool sorting = true, bool renderer = true) where T : BaseView
 	{
 		for (int i = 0; i < instance.views.Length; i++)
 		{
 			if (instance.views[i] is T)
-			{
-				if (instance.currentView != null)
+            {
+				if (instance.views[i].isActive == false)
 				{
-					if ( renderer )
+					if (instance.currentView != null)
 					{
-						instance.history.Push(instance.currentView);
+						if (renderer)
+						{
+							instance.history.Push(instance.currentView);
+						}
+
+						instance.currentView.Hide();
 					}
 
-					if (instance.currentView != instance.fixedView)
-						instance.currentView.Hide();
+					if (sorting)
+					{
+                        instance.views[i].canvas.sortingOrder = instance.order;
+						instance.order++;
+					}
+					else
+						instance.views[i].canvas.sortingOrder = 0;
+
+					instance.views[i].Show();
+					instance.currentView = instance.views[i];
+
+					instance.views[i].isActive = true;
+					Debug.Log("order: " + instance.order + ", " + instance.currentView);
 				}
-
-				instance.views[i].Show();
-
-				instance.currentView = instance.views[i];
 			}
 		}
 	}
 
-	public static void Show(BaseView view, bool renderer = true)
+	public static void Show(BaseView view, bool sorting = true, bool renderer = true)
 	{
 		if (instance.currentView != null)
 		{
@@ -71,20 +85,51 @@ public class ViewController : MonoBehaviour
 				instance.history.Push(instance.currentView);
 			}
 
-			if ( instance.currentView != instance.fixedView)
-				instance.currentView.Hide();
+			instance.currentView.Hide();
 		}
-		
-		view.Show();
 
-		instance.currentView = view;
+		if (view.isActive == false)
+		{
+			view.Show();
+			view.isActive = true;
+		}
+
+        if (sorting)
+        {
+            view.canvas.sortingOrder = instance.order;
+            instance.order++;
+        }
+        else
+            view.canvas.sortingOrder = 0;
+
+        instance.currentView = view;
 	}
 
-	public static void ShowLast()
+    public static void Hide<T>(bool sorting = true, bool renderer = true) where T : BaseView
+    {
+        if (instance.currentView == null)
+			return;
+
+		Debug.Log("DDDDD" + instance.currentView);
+		instance.currentView.Hide();
+		instance.currentView.isActive = false;
+
+        if ( instance.history.Count != 0 )
+		{
+			instance.currentView = instance.history.Pop();
+			instance.currentView.Show();
+            Debug.Log("#Hide, order: " + instance.order);
+        }
+
+        instance.order--;
+    }
+
+    public static void ShowLast()
 	{
 		if (instance.history.Count != 0)
 		{
 			Show(instance.history.Pop(), false);
+			instance.currentView.Hide();
 		}
 	}
 
@@ -96,16 +141,21 @@ public class ViewController : MonoBehaviour
 
 	private void Start()
 	{
-		//for ( int i = 0; i < views.Length; i++ )
-		//{
-		//	//if (views[i].sorting != 0)
-		//		//views[i].Hide();
-		//}
-
-		if (startingView != null)
+		for (int i = 0; i < views.Length; i++)
 		{
-			Show(startingView, true);
+			if (views[i].canvas != null )
+			{
+				if (views[i].canvas.sortingOrder == 0)
+				{
+					views[i].Show();
+				}
+			}
 		}
+
+		//if (startingView != null)
+		//{
+		//	Show(startingView, true);
+		//}
 	}
 
 	public bool SetCanvas()
