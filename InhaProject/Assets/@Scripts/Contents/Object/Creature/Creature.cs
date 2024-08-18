@@ -176,16 +176,20 @@ public class Creature : BaseObject
         SetInfo(); // 임시?
     }
 
+    protected virtual void Reset()
+    {
+        creatureFoot ??= Util.FindChild<CreatureFoot>(this.gameObject);
+    }
+
     public override bool Init()
     {
         if (base.Init() == false)
             return false;
 
+        Reset();
         Collider = GetComponent<BoxCollider>();
         Rigid = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
-
-        creatureFoot ??= Util.FindChild<CreatureFoot>(gameObject);
 
         return true;
     }

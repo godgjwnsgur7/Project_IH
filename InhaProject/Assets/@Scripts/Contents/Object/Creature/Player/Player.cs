@@ -19,7 +19,7 @@ public class Player : Creature, IHitEvent
     [SerializeField] protected float MoveSpeed;
     [SerializeField] protected float JumpPower;
 
-    [SerializeField] BaseAttackObject attackObject;
+    [SerializeField, ReadOnly] BaseAttackObject attackObject;
 
     // 플레이어를 조작할 수 있는 경우
     [SerializeField, ReadOnly] private bool _isPlayerInputControll = false;
@@ -53,6 +53,13 @@ public class Player : Creature, IHitEvent
         base.Start();
 
         IsPlayerInputControll = true; 
+    }
+
+    protected override void Reset()
+    {
+        base.Reset();
+
+        attackObject ??= Util.FindChild<BaseAttackObject>(this.gameObject);
     }
 
     public override bool Init()

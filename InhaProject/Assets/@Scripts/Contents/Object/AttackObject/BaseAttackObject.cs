@@ -12,22 +12,33 @@ public interface IHitEvent
 
 public class BaseAttackObject : InitBase
 {
-    public BoxCollider Collider { get; private set; }
+    public Rigidbody Rigid {  get; protected set; }
+    public BoxCollider Collider { get; protected set; }
 
     Action<IHitEvent> onAttackTarget;
     ETag targetTag = ETag.Untagged;
+
+    private void Reset()
+    {
+        Rigid ??= Util.GetOrAddComponent<Rigidbody>(this.gameObject);
+        Collider ??= Util.GetOrAddComponent<BoxCollider>(this.gameObject);
+
+        Rigid.useGravity = false;
+        Rigid.isKinematic = true;
+        Collider.isTrigger = true;
+        Collider.enabled = false;
+
+        this.gameObject.layer = (int)ELayer.Default;
+        this.tag = ETag.Untagged.ToString();
+    }
 
     public override bool Init()
     {
         if (base.Init() == false)
             return false;
 
-        Collider = GetComponent<BoxCollider>();
-        Collider.enabled = false;
-
-        this.gameObject.layer = (int)ELayer.Default;
-        this.tag = ETag.Untagged.ToString();
-
+        Reset();
+        
         return true;
     }
 

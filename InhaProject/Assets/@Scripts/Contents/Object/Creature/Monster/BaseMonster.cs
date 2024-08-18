@@ -14,12 +14,13 @@ public enum EMonsterType
 }
 public class BaseMonster : Creature, IHitEvent
 {
-    [SerializeField] protected BaseAttackObject attackObject;
+    [SerializeField, ReadOnly] protected BaseAttackObject attackObject;
+    [SerializeField, ReadOnly] protected MonsterAttackRange attackRange;
 
     // 임시 데이터들
-    [SerializeField] protected float MoveSpeed;
-    [SerializeField] protected float ChaseDistance;
-    [SerializeField] protected float AttackDistance;
+    [SerializeField] public float MoveSpeed { get; protected set; }
+    [SerializeField] public float ChaseDistance { get; protected set; }
+    [SerializeField] public float AttackDistance { get; protected set; }
 
     public override ECreatureState CreatureState
     {
@@ -68,12 +69,18 @@ public class BaseMonster : Creature, IHitEvent
     }
 #endif
 
+    protected override void Reset()
+    {
+        base.Reset();
+        attackObject ??= Util.FindChild<BaseAttackObject>(this.gameObject);
+        attackRange ??= Util.FindChild<MonsterAttackRange>(this.gameObject);
+    }
+
     public override bool Init()
     {
         if (base.Init() == false)
             return false;
 
-        SetInfo();
         StartCoroutine(CoUpdateAI());
 
         // 임시
@@ -90,6 +97,7 @@ public class BaseMonster : Creature, IHitEvent
 
         CreatureType = ECreatureType.Monster;
         attackObject.SetInfo(ETag.Player, OnAttackTarget);
+        attackRange.SetInfo(OnAttackRangeInTarget, this);
     }
 
     #region AI
@@ -293,6 +301,13 @@ public class BaseMonster : Creature, IHitEvent
     public void OnAttackTarget(IHitEvent attackTarget)
     {
         attackTarget?.OnHit(new AttackParam(LookLeft));
+    }
+
+    public void OnAttackRangeInTarget(Player player)
+    {
+        Target = player;
+
+
     }
     #endregion
 
