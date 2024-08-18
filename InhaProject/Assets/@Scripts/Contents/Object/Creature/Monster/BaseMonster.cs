@@ -58,17 +58,6 @@ public class BaseMonster : Creature, IHitEvent
         }
     }
 
-#if UNITY_EDITOR
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(this.transform.position, AttackDistance);
-
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(this.transform.position, ChaseDistance);
-    }
-#endif
-
     protected override void Reset()
     {
         base.Reset();
@@ -102,7 +91,8 @@ public class BaseMonster : Creature, IHitEvent
 
     #region AI
     public float UpdateAITick { get; protected set; } = 0.0f;
-    [SerializeField, ReadOnly] Player Target;
+    [SerializeField, ReadOnly] Player ChaseTarget;
+    [SerializeField, ReadOnly] Player AttackTarget;
 
     protected IEnumerator CoUpdateAI()
     {
@@ -143,17 +133,15 @@ public class BaseMonster : Creature, IHitEvent
         }
     }
 
-    private bool DetectTarget(float detectDistance)
+    private void ChaseDetectTarget()
     {
         Vector3 subVec = new Vector3(0, Collider.center.y, 0);
-        Debug.DrawRay(transform.position + subVec, Vector3.right * detectDistance * LookDirX, Color.red, 0.1f);
-        if (!Physics.Raycast(transform.position + subVec, Vector3.right * LookDirX, out RaycastHit hit, detectDistance, 1 << (int)ELayer.Player))
-            return false;
-
-        if (hit.transform.GetComponent<Player>() != null)
-            Target = hit.transform.GetComponent<Player>();
-        
-        return true;
+        Debug.DrawRay(transform.position + subVec, Vector3.right * ChaseDistance * LookDirX, Color.red, 0.1f);
+        if (Physics.Raycast(transform.position + subVec, Vector3.right * LookDirX, out RaycastHit hit, ChaseDistance, 1 << (int)ELayer.Player)
+            && hit.transform.GetComponent<Player>() != null)
+        {
+            ChaseTarget = hit.transform.GetComponent<Player>();
+        }
     }
 
     private bool IsMovementCheck()
@@ -170,38 +158,35 @@ public class BaseMonster : Creature, IHitEvent
     {
         ECreatureState prevState = CreatureState;
 
-        if (Target != null && DetectTarget(AttackDistance))
+        if (AttackTarget != null)
         {
+            Vector3 attackTargetDistance = this.transform.position - AttackTarget.transform.position;
+            LookLeft = (attackTargetDistance.x > 0.0f);
             CreatureState = ECreatureState.Attack;
             return prevState != CreatureState;
         }
 
-        DetectTarget(ChaseDistance);
+        ChaseDetectTarget();
 
-        if (Target == null)
-            return false;
-
-        Vector3 targetDistance = this.transform.position - Target.transform.position;
-        LookLeft = (targetDistance.x > 0.0f);
-
-        if (Mathf.Abs(targetDistance.x) < 0.1f)
+        if (ChaseTarget != null)
         {
-            if (DetectTarget(AttackDistance))
-                CreatureState = ECreatureState.Attack;
-            else
+            Vector3 chaseTargetDistance = this.transform.position + Collider.center - ChaseTarget.transform.position;
+            LookLeft = (chaseTargetDistance.x > 0.0f);
+
+            if (Mathf.Abs(chaseTargetDistance.x) < 0.1f)
+            {
                 CreatureState = ECreatureState.Idle;
-            
-            return prevState != CreatureState;
+                return prevState != CreatureState;
+            }
+
+            float chaseDistanceSqr = ChaseDistance * ChaseDistance;
+            if (chaseDistanceSqr >= chaseTargetDistance.sqrMagnitude)
+            {
+                CreatureState = ECreatureState.Move;
+                return prevState != CreatureState;
+            }
         }
 
-        float chaseDistanceSqr = ChaseDistance * ChaseDistance;
-        if (chaseDistanceSqr >= targetDistance.sqrMagnitude)
-        {
-            CreatureState = ECreatureState.Move;
-            return prevState != CreatureState;
-        }
-
-        Target = null;
         return false;
     }
 
@@ -255,7 +240,7 @@ public class BaseMonster : Creature, IHitEvent
         if (IsMovementCheck() == false)
         {
             InitRigidVelocityX();
-            Target = null;
+            ChaseTarget = null;
             LookLeft = !LookLeft;
             return;
         }
@@ -305,9 +290,7 @@ public class BaseMonster : Creature, IHitEvent
 
     public void OnAttackRangeInTarget(Player player)
     {
-        Target = player;
-
-
+        AttackTarget = player;
     }
     #endregion
 

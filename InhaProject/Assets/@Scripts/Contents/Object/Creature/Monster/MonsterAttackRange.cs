@@ -48,4 +48,12 @@ public class MonsterAttackRange : InitBase
             onAttackRangeInTarget?.Invoke(other.GetComponent<Player>());
         }
     }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag.Equals(ETag.Player.ToString()))
+        {
+            onAttackRangeInTarget?.Invoke(null);
+        }
+    }
 }
