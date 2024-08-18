@@ -180,17 +180,19 @@ public class Player : Creature, IHitEvent
         return true;
     }
 
-    protected virtual void UpdateIdleState()
-    {
-
-    }
-
     protected override void IdleStateEnter()
     {
         base.IdleStateEnter();
 
         InitRigidVelocityX();
+        isCreatureStateLock = false;
     }
+
+    protected virtual void UpdateIdleState()
+    {
+
+    }
+
     #endregion
 
     #region Move Motion
@@ -393,6 +395,8 @@ public class Player : Creature, IHitEvent
     {
         base.AttackStateEnter();
 
+        isCreatureStateLock = true;
+        // 현재 입력키에 따라 앞으로 조금 전진하면서 공격해야 함
         InitRigidVelocityX();
         attackObject.SetActiveAttackObject(true);
     }
@@ -401,6 +405,7 @@ public class Player : Creature, IHitEvent
     {
         if(IsEndCurrentState(ECreatureState.Attack))
         {
+            isCreatureStateLock = false;
             CreatureState = ECreatureState.Move;
             CreatureState = ECreatureState.Idle;
         }
@@ -420,7 +425,7 @@ public class Player : Creature, IHitEvent
     #endregion
 
     #region Hit Motion
-    [SerializeField, ReadOnly] Vector3 hitForceDir = Vector3.zero;
+    Vector3 hitForceDir = Vector3.zero;
 
     protected override bool HitStateCondition()
     {
@@ -434,12 +439,12 @@ public class Player : Creature, IHitEvent
     {
         base.HitStateEnter();
 
+        isCreatureStateLock = true;
         InitRigidVelocityY();
 
         if (hitForceDir != Vector3.zero)
         {
             SetRigidVelocity(hitForceDir * 3f);
-            Debug.Log(hitForceDir);
         }
     }
 
@@ -447,6 +452,7 @@ public class Player : Creature, IHitEvent
     {
         if (IsEndCurrentState(ECreatureState.Hit))
         {
+            isCreatureStateLock = false;
             CreatureState = ECreatureState.Move;
             CreatureState = ECreatureState.Idle;
             CreatureState = ECreatureState.Fall;
@@ -465,7 +471,7 @@ public class Player : Creature, IHitEvent
         if (param == null)
             return;
 
-        LookLeft = param.isAttackerLeft;
+        LookLeft = !param.isAttackerLeft;
         hitForceDir.x = (param.isAttackerLeft) ? -1 : 1;
         hitForceDir.y = 1;
         isCreatureStateLock = false;

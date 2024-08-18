@@ -169,7 +169,7 @@ public class Creature : BaseObject
         }
     }  
 
-    protected float moveDirX;
+    protected float LookDirX;
 
     protected virtual void Start()
     {
@@ -201,7 +201,7 @@ public class Creature : BaseObject
     {
         base.FlipX(isLeft);
 
-        moveDirX = (isLeft) ? -1 : 1;
+        LookDirX = (isLeft) ? -1 : 1;
     }
 
     #region Rigid
@@ -252,14 +252,14 @@ public class Creature : BaseObject
     #endregion
 
     #region State Enter
-    protected virtual void IdleStateEnter() { isCreatureStateLock = false; }
+    protected virtual void IdleStateEnter() { }
     protected virtual void MoveStateEnter() { }
     protected virtual void JumpStateEnter() { }
     protected virtual void JumpAirStateEnter() { }
     protected virtual void FallStateEnter() { }
     protected virtual void LandStateEnter() { }
-    protected virtual void AttackStateEnter() { isCreatureStateLock = true; }
-    protected virtual void HitStateEnter() { isCreatureStateLock = true; }
+    protected virtual void AttackStateEnter() { }
+    protected virtual void HitStateEnter() { }
     protected virtual void DeadStateEnter() { }
     #endregion
 
