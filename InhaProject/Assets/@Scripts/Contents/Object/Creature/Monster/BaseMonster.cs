@@ -365,6 +365,12 @@ public class BaseMonster : Creature, IHitEvent
     protected override void HitStateEnter()
     {
         base.HitStateEnter();
+
+        if (hitForceDir != Vector3.zero)
+        {
+            // 왜 공중으로 뜨지 않지..?
+            SetRigidVelocity(hitForceDir);
+        }
     }
 
     protected virtual void UpdateHitState()
@@ -386,7 +392,7 @@ public class BaseMonster : Creature, IHitEvent
         if (param == null)
             return;
 
-        LookLeft = param.isAttackerLeft;
+        LookLeft = !param.isAttackerLeft;
         hitForceDir.x = (param.isAttackerLeft) ? -1 : 1;
         hitForceDir.y = 1;
         isCreatureStateLock = false;

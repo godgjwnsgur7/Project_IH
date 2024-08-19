@@ -403,7 +403,7 @@ public class Player : Creature, IHitEvent
         base.AttackStateEnter();
 
         isCreatureStateLock = true;
-        // 현재 입력키에 따라 앞으로 조금 전진하면서 공격해야 함
+        // 현재 입력키에 따라 앞으로 이동하며 공격하는 기능 추가할 듯
         InitRigidVelocityX();
         attackObject.SetActiveAttackObject(true);
     }
@@ -426,7 +426,7 @@ public class Player : Creature, IHitEvent
 
     public void OnAttackTarget(IHitEvent attackTarget)
     {
-        attackTarget.OnHit();
+        attackTarget.OnHit(new AttackParam(LookLeft));
     }
 
     #endregion
@@ -451,7 +451,7 @@ public class Player : Creature, IHitEvent
 
         if (hitForceDir != Vector3.zero)
         {
-            SetRigidVelocity(hitForceDir * 3f);
+            SetRigidVelocity(hitForceDir);
         }
     }
 
@@ -479,8 +479,8 @@ public class Player : Creature, IHitEvent
             return;
 
         LookLeft = !param.isAttackerLeft;
-        hitForceDir.x = (param.isAttackerLeft) ? -1 : 1;
-        hitForceDir.y = 1;
+        hitForceDir.x = param.pushPower * ((param.isAttackerLeft) ? -1 : 1);
+        hitForceDir.y = param.pushPower;
         isCreatureStateLock = false;
         CreatureState = ECreatureState.Hit;
     }
