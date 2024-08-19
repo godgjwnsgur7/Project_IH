@@ -50,20 +50,22 @@ public class SettingMenu : MonoBehaviour
 
     public AudioMixer audioMixer;
 
-    public void SetMaster(float Volume)
+    public void OnClickSetMaster(float Volume)
     {
         audioMixer.SetFloat("Master", Volume);
+        audioMixer.SetFloat("BGM", Volume);
+        audioMixer.SetFloat("Effect", Volume);
     }
-    public void SetBackground(float Volume)
+    public void OnClickSetBGM(float Volume)
     {
-        audioMixer.SetFloat("Background", Volume);
+        audioMixer.SetFloat("BGM", Volume);
     }
-    public void SetEffect(float Volume)
+    public void OnClickSetEffect(float Volume)
     {
         audioMixer.SetFloat("Effect", Volume);
     }
 
-    public void SetQuality (int qualityIndex)
+    public void OnClickSetQuality(int qualityIndex)
     {
         QualitySettings.SetQualityLevel(qualityIndex);
 

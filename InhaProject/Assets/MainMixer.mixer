@@ -31,7 +31,7 @@ AudioMixerController:
   m_UpdateMode: 0
   m_ExposedParameters:
   - guid: fbe144f06dc1e12438d95987f7393fcd
-    name: Background
+    name: BGM
   - guid: d0748a1a0060ed24aa3778fb316d5fc3
     name: Effect
   - guid: fcc361b9105a250458e74e177b79a5f4
@@ -89,7 +89,7 @@ AudioMixerSnapshotController:
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: aae8a9defe008e844993341409aa6146
   m_FloatValues:
-    fbe144f06dc1e12438d95987f7393fcd: -5.3230715
+    fbe144f06dc1e12438d95987f7393fcd: 0
     fcc361b9105a250458e74e177b79a5f4: 0
   m_TransitionOverrides: {}
 --- !u!243 &649002726607747520
@@ -117,7 +117,7 @@ AudioMixerGroupController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Background
+  m_Name: BGM
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: 87281559328b3304498cc6170266b26e
   m_Children: []

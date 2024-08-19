@@ -18,7 +18,7 @@ public class UI_TitleScene : SettingMenu
         Managers.Scene.LoadScene(Define.EScene.GameScene);
     }
 
-    public void OnClickClose()
+    public void OnClickExit()
     {
         Debug.Log("종료");
 #if UNITY_EDITOR
@@ -28,7 +28,10 @@ public class UI_TitleScene : SettingMenu
 #endif
     }
 
-
+    public void OnClickSetting()
+    {
+        Debug.Log("옵션");
+    }
 }
 
 
