@@ -9,6 +9,7 @@ public enum EObjectType
     None,
     Creature,
     Item,
+    Obstacle,//장애물(함정같은거)
 }
 
 public abstract class BaseObject : InitBase
