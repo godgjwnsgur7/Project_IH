@@ -1,26 +1,51 @@
-#region Sample
 using System.Collections.Generic;
 using System;
 
 namespace Data
 {
+    #region Player
     [Serializable]
-    public class SampleData
+    public class PlayerData
     {
-        public int dataId;
-
+        public int DataId;
+        public float MoveSpeed;
+        public float JumpPower;
     }
 
-    public class SampleDataLoader : ILoader<int, SampleData>
+    public class PlayerDataLoader : ILoader<int, PlayerData>
     {
-        public List<SampleData> Samples = new List<SampleData>();
+        public List<PlayerData> Players = new List<PlayerData>();
 
-        public Dictionary<int, SampleData> MakeDict()
+        public Dictionary<int, PlayerData> MakeDict()
         {
-            Dictionary<int, SampleData> sampleDict = new Dictionary<int, SampleData>();
-            foreach (SampleData sample in Samples)
-                sampleDict.Add(sample.dataId, sample);
-            return sampleDict;
+            Dictionary<int, PlayerData> playerDict = new Dictionary<int, PlayerData>();
+            foreach (PlayerData player in Players)
+                playerDict.Add(player.DataId, player);
+            return playerDict;
+        }
+    }
+    #endregion
+
+    #region Monster
+    [Serializable]
+    public class MonsterData
+    {
+        public int DataId;
+        public float MoveSpeed;
+        public float ChaseDistance;
+        public float AttackDistance;
+    }
+
+    public class MonsterDataLoader : ILoader<int, MonsterData>
+    {
+        public List<MonsterData> Monsters = new List<MonsterData>();
+
+        public Dictionary<int, MonsterData> MakeDict()
+        {
+            Dictionary<int, MonsterData> monsterDict = new Dictionary<int, MonsterData>();
+            foreach (MonsterData monster in Monsters)
+                monsterDict.Add(monster.DataId, monster);
+            return monsterDict;
         }
     }
     #endregion

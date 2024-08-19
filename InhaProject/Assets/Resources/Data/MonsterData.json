@@ -1,0 +1,10 @@
+{
+  "Monsters": [
+    {
+      "DataId": 0,
+      "MoveSpeed": 3.0,
+      "ChaseDistance": 8.0,
+      "AttackDistance": 1.5
+    }
+  ]
+}

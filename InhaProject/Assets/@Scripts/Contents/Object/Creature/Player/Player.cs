@@ -1,3 +1,4 @@
+using Data;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.IO.LowLevel.Unsafe;
@@ -7,17 +8,19 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XR;
 using static Define;
 
+/// <summary>
+/// 프리팹 이름과 같아야 함
+/// </summary>
 public enum EPlayerType
 {
-    FemaleCharacter,
-    MaleCharacter, // 아직 사용 불가능
+    FemaleCharacter = 0,
+    MaleCharacter = 1, // 아직 사용 불가능
 }
 
 public class Player : Creature, IHitEvent
 {
-    // 임시 데이터들
-    [SerializeField] protected float MoveSpeed;
-    [SerializeField] protected float JumpPower;
+    public EPlayerType PlayerType { get; protected set; }
+    public PlayerData PlayerData { get; protected set; }
 
     [SerializeField, ReadOnly] BaseAttackObject attackObject;
 
@@ -67,9 +70,8 @@ public class Player : Creature, IHitEvent
         if (base.Init() == false)
             return false;
 
-        // 임시
-        MoveSpeed = 5.0f;
-        JumpPower = 8.0f;
+        CreatureType = ECreatureType.Player;
+        CreatureState = ECreatureState.Idle;
 
         return true;
     }
@@ -78,8 +80,8 @@ public class Player : Creature, IHitEvent
     {
         base.SetInfo(templateID);
 
-        CreatureType = ECreatureType.Player;
-        CreatureState = ECreatureState.Idle;
+        PlayerType = Util.ParseEnum<EPlayerType>(gameObject.name); // 임시
+        PlayerData = Managers.Data.PlayerDict[(int)PlayerType];
 
         attackObject.SetInfo(ETag.Monster, OnAttackTarget);
     }
@@ -234,7 +236,7 @@ public class Player : Creature, IHitEvent
 
     private void Movement()
     {
-        SetRigidVelocityX(moveDirection.x * MoveSpeed);
+        SetRigidVelocityX(moveDirection.x * PlayerData.MoveSpeed);
 
         if (moveDirection.x > 0)
             LookLeft = false;
@@ -260,7 +262,7 @@ public class Player : Creature, IHitEvent
         base.JumpStateEnter();
 
         InitRigidVelocityY();
-        SetRigidVelocityY(JumpPower);
+        SetRigidVelocityY(PlayerData.JumpPower);
     }
 
     protected virtual void UpdateJumpState()
@@ -298,7 +300,7 @@ public class Player : Creature, IHitEvent
 
         isJumpAir = true;
         InitRigidVelocityY();
-        SetRigidVelocityY(JumpPower);
+        SetRigidVelocityY(PlayerData.JumpPower);
     }
 
     protected virtual void UpdateJumpAirState()

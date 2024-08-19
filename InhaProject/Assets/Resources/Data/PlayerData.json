@@ -1,0 +1,9 @@
+{
+  "Players": [
+    {
+      "DataId": 0,
+      "MoveSpeed": 5.0,
+      "JumpPower": 8.0
+    }
+  ]
+}

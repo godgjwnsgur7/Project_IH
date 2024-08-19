@@ -4,6 +4,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using static Define;
+using Data;
 
 /// <summary>
 /// 애니메이션 클립 이름과 같아야 함

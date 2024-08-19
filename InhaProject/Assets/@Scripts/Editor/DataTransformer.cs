@@ -9,6 +9,8 @@ using System;
 using System.Reflection;
 using System.Collections;
 using System.ComponentModel;
+using System.Threading;
+using System.Security.Policy;
 
 public class DataTransformer : EditorWindow
 {
@@ -16,7 +18,8 @@ public class DataTransformer : EditorWindow
     [MenuItem("Tools/ParseExcel %#K")]
     public static void ParseExcelDataToJson()
     {
-        ParseExcelDataToJson<SampleDataLoader, SampleData>("Sample");
+        ParseExcelDataToJson<PlayerDataLoader, PlayerData>("Player");
+        ParseExcelDataToJson<MonsterDataLoader, MonsterData>("Monster");
 
         Debug.Log("DataTransformer Completed");
     }

@@ -1,3 +1,4 @@
+using Data;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -7,20 +8,18 @@ using static Define;
 
 public enum EMonsterType
 {
-    Skeleton1,
-    Skeleton2, // 아직 사용 불가
-    Skeleton3, // 아직 사용 불가
+    Skeleton1 = 0,
+    Skeleton2 = 1, // 아직 사용 불가
+    Skeleton3 = 2, // 아직 사용 불가
 
 }
 public class BaseMonster : Creature, IHitEvent
 {
+    public EMonsterType MonsterType { get; protected set; }
+    public MonsterData MonsterData { get; protected set; }
+
     [SerializeField, ReadOnly] protected BaseAttackObject attackObject;
     [SerializeField, ReadOnly] protected MonsterAttackRange attackRange;
-
-    // 임시 데이터들
-    [SerializeField] public float MoveSpeed { get; protected set; }
-    [SerializeField] public float ChaseDistance { get; protected set; }
-    [SerializeField] public float AttackDistance { get; protected set; }
 
     public override ECreatureState CreatureState
     {
@@ -70,12 +69,7 @@ public class BaseMonster : Creature, IHitEvent
         if (base.Init() == false)
             return false;
 
-        StartCoroutine(CoUpdateAI());
-
-        // 임시
-        MoveSpeed = 3.0f;
-        ChaseDistance = 8.0f;
-        AttackDistance = 1.5f;
+        CreatureType = ECreatureType.Monster;
 
         return true;
     }
@@ -84,9 +78,13 @@ public class BaseMonster : Creature, IHitEvent
     {
         base.SetInfo(templateID);
 
-        CreatureType = ECreatureType.Monster;
+        MonsterType = Util.ParseEnum<EMonsterType>(gameObject.name); // 임시
+        MonsterData = Managers.Data.MonsterDict[(int)MonsterType];
+
         attackObject.SetInfo(ETag.Player, OnAttackTarget);
         attackRange.SetInfo(OnAttackRangeInTarget, this);
+
+        StartCoroutine(CoUpdateAI());
     }
 
     #region AI
@@ -136,8 +134,8 @@ public class BaseMonster : Creature, IHitEvent
     private void ChaseDetectTarget()
     {
         Vector3 subVec = new Vector3(0, Collider.center.y, 0);
-        Debug.DrawRay(transform.position + subVec, Vector3.right * ChaseDistance * LookDirX, Color.red, 0.1f);
-        if (Physics.Raycast(transform.position + subVec, Vector3.right * LookDirX, out RaycastHit hit, ChaseDistance, 1 << (int)ELayer.Player)
+        Debug.DrawRay(transform.position + subVec, Vector3.right * MonsterData.ChaseDistance * LookDirX, Color.red, 0.1f);
+        if (Physics.Raycast(transform.position + subVec, Vector3.right * LookDirX, out RaycastHit hit, MonsterData.ChaseDistance, 1 << (int)ELayer.Player)
             && hit.transform.GetComponent<Player>() != null)
         {
             ChaseTarget = hit.transform.GetComponent<Player>();
@@ -179,7 +177,7 @@ public class BaseMonster : Creature, IHitEvent
                 return prevState != CreatureState;
             }
 
-            float chaseDistanceSqr = ChaseDistance * ChaseDistance;
+            float chaseDistanceSqr = MonsterData.ChaseDistance * MonsterData.ChaseDistance;
             if (chaseDistanceSqr >= chaseTargetDistance.sqrMagnitude)
             {
                 CreatureState = ECreatureState.Move;
@@ -248,7 +246,7 @@ public class BaseMonster : Creature, IHitEvent
         if (IsChaseOrAttackTarget())
             return;
 
-        SetRigidVelocityX(LookDirX * MoveSpeed);
+        SetRigidVelocityX(LookDirX * MonsterData.MoveSpeed);
     }
 
     #endregion
@@ -265,7 +263,7 @@ public class BaseMonster : Creature, IHitEvent
     protected virtual void UpdateAttackState()
     {
         if (IsMovementCheck())
-            SetRigidVelocityX(LookDirX * MoveSpeed);
+            SetRigidVelocityX(LookDirX * MonsterData.MoveSpeed);
         else
             InitRigidVelocityX();
 

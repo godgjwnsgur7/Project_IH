@@ -22,11 +22,13 @@ public class Managers : MonoBehaviour
     #endregion
 
     #region Core
+    private DataMgr _data = new DataMgr();
     private InputMgr _input = null; // Init에서 생성
     private ResourceMgr _resource = new ResourceMgr();
     private SceneMgr _scene = new SceneMgr();
     private SoundMgr _sound = new SoundMgr();
 
+    public static DataMgr Data { get { return Instance?._data; } }
     public static InputMgr Input { get { return Instance?._input; } }
     public static ResourceMgr Resource { get { return Instance?._resource; } }
     public static SceneMgr Scene { get { return Instance?._scene; } }
@@ -51,6 +53,7 @@ public class Managers : MonoBehaviour
 
             // 초기화
             s_instance = go.GetComponent<Managers>();
+            s_instance._data.Init();
             s_instance._input = Instance._resource.Instantiate(PrefabPath.INPUTMANAGER_PATH, s_instance.transform).GetComponent<InputMgr>();
             s_instance._input.Init();
             s_instance._object.Init();
