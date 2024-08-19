@@ -106,13 +106,15 @@ public class ViewController : MonoBehaviour
 	}
 
     public static void Hide<T>(bool sorting = true, bool renderer = true) where T : BaseView
-    {
-        if (instance.currentView == null)
+	{
+		Debug.Log("²¨Áú±î¿ä?");
+		if (instance.currentView == null)
 			return;
 
 		Debug.Log("DDDDD" + instance.currentView);
 		instance.currentView.Hide();
 		instance.currentView.isActive = false;
+		instance.currentView = null;
 
         if ( instance.history.Count != 0 )
 		{
