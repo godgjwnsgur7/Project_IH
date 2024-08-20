@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 
 
-public class UI_TitleScene : SettingMenu
+public class UI_TitleScene : MonoBehaviour
 {
     private void Start()
     {

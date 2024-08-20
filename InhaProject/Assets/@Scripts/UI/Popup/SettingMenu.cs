@@ -13,11 +13,16 @@ public class SettingMenu : MonoBehaviour
 
     Resolution[] resolutions;
 
+    GameObject settingMenu;
+    GameObject displayMenu;
+
     void Start()
     {
         //ResolutionDropdown = TMP_Dropdown.FindObjectOfType<TMP_Dropdown>();
-        
 
+        settingMenu = GameObject.Find("SoundSetting");
+        displayMenu = GameObject.Find("DisplaySetting");
+        
         resolutions = Screen.resolutions;
 
         resolutionDropdown.ClearOptions();
@@ -41,15 +46,37 @@ public class SettingMenu : MonoBehaviour
         resolutionDropdown.value = currentResolutionIndex;
         resolutionDropdown.RefreshShownValue();
     }
-
     public void OnClickSetResolution(int resolutionIndex)
     {
         Resolution resolution = resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
     }
+    public void OnClickSetQuality(int qualityIndex)
+    {
+        QualitySettings.SetQualityLevel(qualityIndex);
+
+    }
+    public void OnClickSetFullScreen(bool isFullScreen)
+    {
+        Screen.fullScreen = isFullScreen;
+    }
+
+    public void OnClickDisplayWindow(bool DisplayWindow)
+    {
+        Debug.Log("디스플레이윈도우버튼클릭");
+        displayMenu.SetActive(true);
+        settingMenu.SetActive(false);
+    }
+
+
+    public void OnClickSoundWindow(bool SoundWindow)
+    {
+        Debug.Log("사운드윈도우버튼클릭");
+        displayMenu.SetActive(true);
+        settingMenu.SetActive(true);
+    }
 
     public AudioMixer audioMixer;
-
     public void OnClickSetMaster(float Volume)
     {
         audioMixer.SetFloat("Master", Volume);
@@ -65,14 +92,12 @@ public class SettingMenu : MonoBehaviour
         audioMixer.SetFloat("Effect", Volume);
     }
 
-    public void OnClickSetQuality(int qualityIndex)
-    {
-        QualitySettings.SetQualityLevel(qualityIndex);
 
-    }
 
-    public void OnClickSetFullScreen(bool isFullScreen)
-    {
-        Screen.fullScreen = isFullScreen;
-    }
+
+
+
+
+
+
 }
