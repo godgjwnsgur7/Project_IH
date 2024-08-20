@@ -13,6 +13,19 @@ public enum EMonsterType
     Skeleton3 = 2, // 아직 사용 불가
 
 }
+
+public enum  EMonsterState
+{
+    None,
+    Idle,
+    Move,
+    Fall,
+    Land,
+    Attack,
+    Hit,
+    Dead
+}
+
 public class BaseMonster : Creature, IHitEvent
 {
     public EMonsterType MonsterType { get; protected set; }
@@ -21,38 +34,120 @@ public class BaseMonster : Creature, IHitEvent
     [SerializeField, ReadOnly] protected BaseAttackObject attackObject;
     [SerializeField, ReadOnly] protected MonsterAttackRange attackRange;
 
-    public override ECreatureState CreatureState
+    [SerializeField, ReadOnly]
+    private EMonsterState _monsterState;
+    public virtual EMonsterState MonsterState
     {
-        get { return base.CreatureState; }
+        get { return _monsterState; }
         protected set
         {
-            if (_creatureState != value)
+            if (_monsterState == value)
+                return;
+
+            bool isChangeState = true;
+            switch (value)
             {
-                base.CreatureState = value;
+                case EMonsterState.Idle:
+                    isChangeState = IdleStateCondition();
+                    break;
+                case EMonsterState.Move:
+                    isChangeState = MoveStateCondition();
+                    break;
+                case EMonsterState.Fall:
+                    isChangeState = FallStateCondition();
+                    break;
+                case EMonsterState.Land:
+                    isChangeState = LandStateCondition();
+                    break;
+                case EMonsterState.Attack:
+                    isChangeState = AttackStateCondition();
+                    break;
+                case EMonsterState.Dead:
+                    isChangeState = DeadStateCondition();
+                    break;
+            }
+
+            if (isChangeState == false)
+                return;
+
+            switch (_monsterState)
+            {
+                case EMonsterState.Idle:
+                    IdleStateExit();
+                    break;
+                case EMonsterState.Move:
+                    MoveStateExit();
+                    break;
+                case EMonsterState.Fall:
+                    FallStateExit();
+                    break;
+                case EMonsterState.Land:
+                    LandStateExit();
+                    break;
+                case EMonsterState.Attack:
+                    AttackStateExit();
+                    break;
+                case EMonsterState.Hit:
+                    HitStateExit();
+                    break;
+                case EMonsterState.Dead:
+                    DeadStateExit();
+                    break;
+            }
+
+            _monsterState = value;
+            PlayAnimation(value);
+            if (_monsterState != value)
+            {
                 switch (value)
                 {
-                    case ECreatureState.None:
+                    case EMonsterState.None:
                         UpdateAITick = 0.0f;
                         break;
-                    case ECreatureState.Idle:
+                    case EMonsterState.Idle:
                         UpdateAITick = 0.5f;
                         break;
-                    case ECreatureState.Move:
+                    case EMonsterState.Move:
                         UpdateAITick = 0.0f;
                         break;
-                    case ECreatureState.Fall:
+                    case EMonsterState.Fall:
                         UpdateAITick = 0.0f;
                         break;
-                    case ECreatureState.Land:
+                    case EMonsterState.Land:
                         UpdateAITick = 0.0f;
                         break;
-                    case ECreatureState.Attack:
+                    case EMonsterState.Attack:
                         UpdateAITick = 0.0f;
                         break;
-                    case ECreatureState.Dead:
+                    case EMonsterState.Dead:
                         UpdateAITick = 1.0f;
                         break;
                 }
+            }
+
+            switch (value)
+            {
+                case EMonsterState.Idle:
+                    IdleStateEnter();
+                    break;
+                case EMonsterState.Move:
+                    MoveStateEnter();
+                    break;
+                case EMonsterState.Fall:
+                    FallStateEnter();
+                    break;
+                case EMonsterState.Land:
+                    LandStateEnter();
+                    break;
+                case EMonsterState.Attack:
+                    AttackStateEnter();
+                    break;
+                case EMonsterState.Hit:
+                    HitStateEnter();
+                    break;
+                case EMonsterState.Dead:
+                    DeadStateEnter();
+                    break;
             }
         }
     }
@@ -96,30 +191,30 @@ public class BaseMonster : Creature, IHitEvent
     {
         while (true)
         {
-            switch (CreatureState)
+            switch (MonsterState)
             {
-                case ECreatureState.None:
-                    CreatureState = ECreatureState.Idle;
+                case EMonsterState.None:
+                    MonsterState = EMonsterState.Idle;
                     break;
-                case ECreatureState.Idle:
+                case EMonsterState.Idle:
                     UpdateIdleState();
                     break;
-                case ECreatureState.Move:
+                case EMonsterState.Move:
                     UpdateMoveState();
                     break;
-                case ECreatureState.Fall:
+                case EMonsterState.Fall:
                     UpdateFallState();
                     break;
-                case ECreatureState.Land:
+                case EMonsterState.Land:
                     UpdateLandState();
                     break;
-                case ECreatureState.Attack:
+                case EMonsterState.Attack:
                     UpdateAttackState();
                     break;
-                case ECreatureState.Hit:
+                case EMonsterState.Hit:
                     UpdateHitState();
                     break;
-                case ECreatureState.Dead:
+                case EMonsterState.Dead:
                     UpdateDeadState();
                     break;
             }
@@ -134,8 +229,8 @@ public class BaseMonster : Creature, IHitEvent
     private void ChaseDetectTarget()
     {
         Vector3 subVec = new Vector3(0, Collider.center.y, 0);
-        Debug.DrawRay(transform.position + subVec, Vector3.right * MonsterData.ChaseDistance * LookDirX, Color.red, 0.1f);
-        if (Physics.Raycast(transform.position + subVec, Vector3.right * LookDirX, out RaycastHit hit, MonsterData.ChaseDistance, 1 << (int)ELayer.Player)
+        Debug.DrawRay(transform.position + subVec, Vector3.right * MonsterData.ChaseDistance * lookDirX, Color.red, 0.1f);
+        if (Physics.Raycast(transform.position + subVec, Vector3.right * lookDirX, out RaycastHit hit, MonsterData.ChaseDistance, 1 << (int)ELayer.Player)
             && hit.transform.GetComponent<Player>() != null)
         {
             ChaseTarget = hit.transform.GetComponent<Player>();
@@ -144,7 +239,7 @@ public class BaseMonster : Creature, IHitEvent
 
     private bool IsMovementCheck()
     {
-        Vector3 subVec = new Vector3((0.1f + Collider.center.x + (Collider.size.x / 2)) * LookDirX, 0, 0);
+        Vector3 subVec = new Vector3((0.1f + Collider.center.x + (Collider.size.x / 2)) * lookDirX, 0, 0);
         Debug.DrawRay(transform.position + subVec, Vector3.down* 2, Color.blue);
         if (!Physics.Raycast(transform.position + subVec, Vector3.down, out RaycastHit hit, 2, 1 << (int)ELayer.Platform))
             return false;
@@ -154,14 +249,14 @@ public class BaseMonster : Creature, IHitEvent
      
     private bool IsChaseOrAttackTarget()
     {
-        ECreatureState prevState = CreatureState;
+        EMonsterState prevState = MonsterState;
 
         if (AttackTarget != null)
         {
             Vector3 attackTargetDistance = this.transform.position - AttackTarget.transform.position;
             LookLeft = (attackTargetDistance.x > 0.0f);
-            CreatureState = ECreatureState.Attack;
-            return prevState != CreatureState;
+            MonsterState = EMonsterState.Attack;
+            return prevState != MonsterState;
         }
 
         ChaseDetectTarget();
@@ -173,15 +268,15 @@ public class BaseMonster : Creature, IHitEvent
 
             if (Mathf.Abs(chaseTargetDistance.x) < 0.1f)
             {
-                CreatureState = ECreatureState.Idle;
-                return prevState != CreatureState;
+                MonsterState = EMonsterState.Idle;
+                return prevState != MonsterState;
             }
 
             float chaseDistanceSqr = MonsterData.ChaseDistance * MonsterData.ChaseDistance;
             if (chaseDistanceSqr >= chaseTargetDistance.sqrMagnitude)
             {
-                CreatureState = ECreatureState.Move;
-                return prevState != CreatureState;
+                MonsterState = EMonsterState.Move;
+                return prevState != MonsterState;
             }
         }
 
@@ -189,21 +284,16 @@ public class BaseMonster : Creature, IHitEvent
     }
 
     #region Idle Motion
-    protected override bool IdleStateCondition()
+    protected virtual bool IdleStateCondition()
     {
-        if (base.IdleStateCondition() == false)
-            return false;
-
         if (creatureFoot.IsLandingGround == false)
             return false;
 
         return true;
     }
 
-    protected override void IdleStateEnter()
+    protected virtual void IdleStateEnter()
     {
-        base.IdleStateEnter();
-
         InitRigidVelocityX();
     }
 
@@ -211,27 +301,34 @@ public class BaseMonster : Creature, IHitEvent
     {
         IsChaseOrAttackTarget();
 
-        CreatureState = ECreatureState.Move;
+        MonsterState = EMonsterState.Move;
+    }
+
+    protected virtual void IdleStateExit()
+    {
+
     }
     #endregion
 
     #region Move Motion
-    protected override bool MoveStateCondition()
+    protected virtual bool MoveStateCondition()
     {
-        if (base.MoveStateCondition() == false)
-            return false;
-
         if (creatureFoot.IsLandingGround == false)
             return false;
 
         return true;
     }
 
+    protected virtual void MoveStateEnter()
+    {
+
+    }
+
     protected virtual void UpdateMoveState()
     {
         if (creatureFoot.IsLandingGround == false)
         {
-            CreatureState = ECreatureState.Land;
+            MonsterState = EMonsterState.Land;
             return;
         }
 
@@ -246,38 +343,42 @@ public class BaseMonster : Creature, IHitEvent
         if (IsChaseOrAttackTarget())
             return;
 
-        SetRigidVelocityX(LookDirX * MonsterData.MoveSpeed);
+        SetRigidVelocityX(lookDirX * MonsterData.MoveSpeed);
     }
 
+    protected virtual void MoveStateExit()
+    {
+
+    }
     #endregion
 
     #region Attack Motion
-
-    protected override void AttackStateEnter()
+    protected virtual bool AttackStateCondition()
     {
-        base.AttackStateEnter();
+        return true;
+    }
 
+    protected virtual void AttackStateEnter()
+    {
         attackObject.SetActiveAttackObject(true);
     }
 
     protected virtual void UpdateAttackState()
     {
         if (IsMovementCheck())
-            SetRigidVelocityX(LookDirX * MonsterData.MoveSpeed);
+            SetRigidVelocityX(lookDirX * MonsterData.MoveSpeed);
         else
             InitRigidVelocityX();
 
-        if (IsEndCurrentState(ECreatureState.Attack))
+        if (IsEndCurrentState(EMonsterState.Attack))
         {
-            CreatureState = ECreatureState.Idle;
+            MonsterState = EMonsterState.Idle;
             return;
         }
     }
 
-    protected override void AttackStateExit()
+    protected virtual void AttackStateExit()
     {
-        base.AttackStateExit();
-
         attackObject.SetActiveAttackObject(false);
     }
 
@@ -293,62 +394,66 @@ public class BaseMonster : Creature, IHitEvent
     #endregion
 
     #region Fall Motion
-    protected override bool FallStateCondition()
+    protected virtual bool FallStateCondition()
     {
-        if (base.FallStateCondition() == false)
-            return false;
-
         if (Rigid.velocity.y >= 0)
             return false;
 
         return true;
     }
 
-    protected override void FallStateEnter()
+    protected virtual void FallStateEnter()
     {
-        base.FallStateEnter();
+
     }
 
-    private void UpdateFallState()
+    protected virtual void UpdateFallState()
     {
         if (creatureFoot.IsLandingGround)
         {
-            CreatureState = ECreatureState.Land;
+            MonsterState = EMonsterState.Land;
             return;
         }
+    }
+
+    protected virtual void FallStateExit()
+    {
+
     }
 
     protected virtual void FallDownCheck()
     {
         if (creatureFoot.IsLandingGround == false && Rigid.velocity.y < 0)
-            CreatureState = ECreatureState.Fall;
+            MonsterState = EMonsterState.Fall;
     }
     #endregion
 
     #region Land Motion
-    protected override bool LandStateCondition()
+    protected virtual bool LandStateCondition()
     {
-        if (base.LandStateCondition() == false)
-            return false;
-
         if (Rigid.velocity.y >= 0.01f)
             return false;
 
         return true;
     }
 
-    protected override void LandStateEnter()
+    protected virtual void LandStateEnter()
     {
-        base.LandStateEnter();
+
     }
 
     protected virtual void UpdateLandState()
     {
-        if (IsEndCurrentState(ECreatureState.Land))
+        if (IsEndCurrentState(EMonsterState.Land))
         {
-            CreatureState = ECreatureState.Move;
-            CreatureState = ECreatureState.Idle;
+            MonsterState = EMonsterState.Move;
+            MonsterState = EMonsterState.Idle;
         }
+    }
+
+    protected virtual void LandStateExit()
+    {
+
     }
 
     public void OnLand()
@@ -360,10 +465,8 @@ public class BaseMonster : Creature, IHitEvent
     #region Hit Motion
     Vector3 hitForceDir = Vector3.zero;
 
-    protected override void HitStateEnter()
+    protected virtual void HitStateEnter()
     {
-        base.HitStateEnter();
-
         if (hitForceDir != Vector3.zero)
         {
             // 왜 공중으로 뜨지 않지..?
@@ -373,16 +476,16 @@ public class BaseMonster : Creature, IHitEvent
 
     protected virtual void UpdateHitState()
     {
-        if (IsEndCurrentState(ECreatureState.Hit))
+        if (IsEndCurrentState(EMonsterState.Hit))
         {
             FallDownCheck();
-            CreatureState = ECreatureState.Idle;
+            MonsterState = EMonsterState.Idle;
         }
     }
 
-    protected override void HitStateExit()
+    protected virtual void HitStateExit()
     {
-        base.HitStateExit();
+
     }
 
     public void OnHit(AttackParam param = null)
@@ -393,15 +496,19 @@ public class BaseMonster : Creature, IHitEvent
         LookLeft = !param.isAttackerLeft;
         hitForceDir.x = (param.isAttackerLeft) ? -1 : 1;
         hitForceDir.y = 1;
-        isCreatureStateLock = false;
-        CreatureState = ECreatureState.Hit;
+        MonsterState = EMonsterState.Hit;
     }
     #endregion
 
     #region Dead Motion
-    protected override bool DeadStateCondition()
+    protected virtual bool DeadStateCondition()
     {
         return true;
+    }
+
+    protected virtual void DeadStateEnter()
+    {
+
     }
 
     protected virtual void UpdateDeadState()
@@ -409,11 +516,10 @@ public class BaseMonster : Creature, IHitEvent
 
     }
 
-    protected override void DeadStateEnter()
+    protected virtual void DeadStateExit()
     {
-        base.DeadStateEnter();
-    }
 
+    }
     #endregion
 
     #endregion

@@ -22,9 +22,13 @@ public static class Extension
         if (bo == null || bo.isActiveAndEnabled == false)
             return false;
 
-        Creature creature = bo as Creature;
-        if (creature != null)
-            return creature.CreatureState != ECreatureState.Dead;
+        Player player = bo as Player;
+        if (player != null)
+            return player.PlayerState != EPlayerState.Dead;
+
+        BaseMonster monster = bo as BaseMonster;
+        if (monster != null)
+            return monster.MonsterState != EMonsterState.Dead;
 
         return true;
     }

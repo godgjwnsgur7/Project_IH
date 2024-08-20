@@ -17,6 +17,22 @@ public enum EPlayerType
     MaleCharacter = 1, // 아직 사용 불가능
 }
 
+public enum EPlayerState
+{
+    None,
+    Idle,
+    Walk, // 일단 미사용
+    Move, // Run으로 일단 사용
+    Jump,
+    JumpAir,
+    Fall,
+    Land,
+    Attack,
+    Hit,
+
+    Dead
+}
+
 public class Player : Creature, IHitEvent
 {
     public EPlayerType PlayerType { get; protected set; }
@@ -41,11 +57,118 @@ public class Player : Creature, IHitEvent
             {
                 coPlayerStateController = StartCoroutine(CoPlayerStateController());
             }
-            else if(_isPlayerInputControll == false && CreatureState != ECreatureState.Dead)
+            else if(_isPlayerInputControll == false && PlayerState != EPlayerState.Dead)
             {
                 // 강제로 모션 변환
-                PlayAnimation(ECreatureState.Idle);
+                PlayAnimation(EPlayerState.Idle);
                 IdleStateEnter();
+            }
+        }
+    }
+
+    [SerializeField, ReadOnly] protected bool isPlayerStateLock = false;
+    [SerializeField, ReadOnly]
+    protected EPlayerState _playerState = EPlayerState.None;
+    public virtual EPlayerState PlayerState
+    {
+        get { return _playerState; }
+        protected set
+        {
+            if (value != EPlayerState.Idle && isPlayerStateLock)
+                return;
+
+            if (_playerState == EPlayerState.Dead)
+                return;
+
+            if (_playerState == value)
+                return;
+
+            bool isChangeState = true;
+            switch (value)
+            {
+                case EPlayerState.Idle:
+                    isChangeState = IdleStateCondition();
+                    break;
+                case EPlayerState.Move:
+                    isChangeState = MoveStateCondition();
+                    break;
+                case EPlayerState.Jump:
+                    isChangeState = JumpStateCondition();
+                    break;
+                case EPlayerState.Fall:
+                    isChangeState = FallStateCondition();
+                    break;
+                case EPlayerState.Land:
+                    isChangeState = LandStateCondition();
+                    break;
+                case EPlayerState.Attack:
+                    isChangeState = AttackStateCondition();
+                    break;
+                case EPlayerState.Dead:
+                    isChangeState = DeadStateCondition();
+                    break;
+            }
+
+            if (isChangeState == false)
+                return;
+
+            switch (_playerState)
+            {
+                case EPlayerState.Idle:
+                    IdleStateExit();
+                    break;
+                case EPlayerState.Move:
+                    MoveStateExit();
+                    break;
+                case EPlayerState.Jump:
+                    JumpStateExit();
+                    break;
+                case EPlayerState.Fall:
+                    FallStateExit();
+                    break;
+                case EPlayerState.Land:
+                    LandStateExit();
+                    break;
+                case EPlayerState.Attack:
+                    AttackStateExit();
+                    break;
+                case EPlayerState.Hit:
+                    HitStateExit();
+                    break;
+                case EPlayerState.Dead:
+                    DeadStateExit();
+                    break;
+            }
+
+            _playerState = value;
+            PlayAnimation(value);
+
+            switch (value)
+            {
+                case EPlayerState.Idle:
+                    IdleStateEnter();
+                    break;
+                case EPlayerState.Move:
+                    MoveStateEnter();
+                    break;
+                case EPlayerState.Jump:
+                    JumpStateEnter();
+                    break;
+                case EPlayerState.Fall:
+                    FallStateEnter();
+                    break;
+                case EPlayerState.Land:
+                    LandStateEnter();
+                    break;
+                case EPlayerState.Attack:
+                    AttackStateEnter();
+                    break;
+                case EPlayerState.Hit:
+                    HitStateEnter();
+                    break;
+                case EPlayerState.Dead:
+                    DeadStateEnter();
+                    break;
             }
         }
     }
@@ -71,7 +194,7 @@ public class Player : Creature, IHitEvent
             return false;
 
         CreatureType = ECreatureType.Player;
-        CreatureState = ECreatureState.Idle;
+        PlayerState = EPlayerState.Idle;
 
         return true;
     }
@@ -109,7 +232,7 @@ public class Player : Creature, IHitEvent
             return;
 
         moveDirection = value;
-        CreatureState = ECreatureState.Move;
+        PlayerState = EPlayerState.Move;
     }
 
     public void OnJumpKey()
@@ -118,9 +241,9 @@ public class Player : Creature, IHitEvent
             return;
 
         if(creatureFoot.IsLandingGround)
-            CreatureState = ECreatureState.Jump;
+            PlayerState = EPlayerState.Jump;
         else
-            CreatureState = ECreatureState.JumpAir;
+            PlayerState = EPlayerState.JumpAir;
     }
 
     public void OnAttackKey()
@@ -128,7 +251,7 @@ public class Player : Creature, IHitEvent
         if (!IsPlayerInputControll)
             return;
 
-        CreatureState = ECreatureState.Attack;
+        PlayerState = EPlayerState.Attack;
     }
 
     #endregion
@@ -140,30 +263,27 @@ public class Player : Creature, IHitEvent
     {
         while (IsPlayerInputControll)
         {
-            switch (CreatureState)
+            switch (PlayerState)
             {
-                case ECreatureState.Idle:
+                case EPlayerState.Idle:
                     UpdateIdleState();
                     break;
-                case ECreatureState.Move:
+                case EPlayerState.Move:
                     UpdateMoveState();
                     break;
-                case ECreatureState.Jump:
+                case EPlayerState.Jump:
                     UpdateJumpState();
                     break;
-                case ECreatureState.JumpAir:
-                    UpdateJumpAirState();
-                    break;
-                case ECreatureState.Fall:
+                case EPlayerState.Fall:
                     UpdateFallState();
                     break;
-                case ECreatureState.Land:
+                case EPlayerState.Land:
                     UpdateLandState();
                     break;
-                case ECreatureState.Attack:
+                case EPlayerState.Attack:
                     UpdateAttackState();
                     break;
-                case ECreatureState.Hit:
+                case EPlayerState.Hit:
                     UpdateHitState();
                     break;
             }
@@ -175,11 +295,8 @@ public class Player : Creature, IHitEvent
     }
 
     #region Idle Motion
-    protected override bool IdleStateCondition()
+    protected virtual bool IdleStateCondition()
     {
-        if (base.IdleStateCondition() == false)
-            return false;
-
         if (moveDirection != Vector2.zero)
             return false;
 
@@ -189,12 +306,10 @@ public class Player : Creature, IHitEvent
         return true;
     }
 
-    protected override void IdleStateEnter()
+    protected virtual void IdleStateEnter()
     {
-        base.IdleStateEnter();
-
         InitRigidVelocityX();
-        isCreatureStateLock = false;
+        isPlayerStateLock = false;
     }
 
     protected virtual void UpdateIdleState()
@@ -202,14 +317,15 @@ public class Player : Creature, IHitEvent
 
     }
 
+    protected virtual void IdleStateExit()
+    {
+
+    }
     #endregion
 
     #region Move Motion
-    protected override bool MoveStateCondition() 
+    protected virtual bool MoveStateCondition() 
     {
-        if (base.MoveStateCondition() == false)
-            return false;
-
         if (moveDirection.x == 0)
             return false;
 
@@ -219,9 +335,9 @@ public class Player : Creature, IHitEvent
         return true;
     }
 
-    protected override void MoveStateEnter()
+    protected virtual void MoveStateEnter()
     {
-        base.MoveStateEnter();
+
 
     }
 
@@ -231,7 +347,12 @@ public class Player : Creature, IHitEvent
         Movement();
 
         if (moveDirection.x == 0)
-            CreatureState = ECreatureState.Idle;
+            PlayerState = EPlayerState.Idle;
+    }
+
+    protected virtual void MoveStateExit()
+    {
+
     }
 
     private void Movement()
@@ -246,21 +367,16 @@ public class Player : Creature, IHitEvent
     #endregion
 
     #region Jump Motion
-    protected override bool JumpStateCondition()
+    protected virtual bool JumpStateCondition()
     {
-        if (base.JumpStateCondition() == false)
-            return false;
-
         if (creatureFoot.IsLandingGround == false)
             return false;
 
         return true;
     }
 
-    protected override void JumpStateEnter()
+    protected virtual void JumpStateEnter()
     {
-        base.JumpStateEnter();
-
         InitRigidVelocityY();
         SetRigidVelocityY(PlayerData.JumpPower);
     }
@@ -273,64 +389,28 @@ public class Player : Creature, IHitEvent
         // 착지 확인
         if (creatureFoot.IsLandingGround)
         {
-            CreatureState = ECreatureState.Move;
+            PlayerState = EPlayerState.Move;
         }
     }
-    #endregion
 
-    #region JumpAir Motion
-
-    bool isJumpAir = false;
-    protected override bool JumpAirStateCondition()
+    protected virtual void JumpStateExit()
     {
-        if (base.JumpStateCondition() == false)
-            return false;
 
-        if (creatureFoot.IsLandingGround)
-            return false;
-
-        if (isJumpAir) return false;
-
-        return true;
-    }
-
-    protected override void JumpAirStateEnter()
-    {
-        base.JumpStateEnter();
-
-        isJumpAir = true;
-        InitRigidVelocityY();
-        SetRigidVelocityY(PlayerData.JumpPower);
-    }
-
-    protected virtual void UpdateJumpAirState()
-    {
-        Movement();
-        FallDownCheck();
-
-        // 착지 확인
-        if (creatureFoot.IsLandingGround)
-        {
-            CreatureState = ECreatureState.Move;
-        }
     }
     #endregion
 
     #region Fall Motion
-    protected override bool FallStateCondition()
+    protected virtual bool FallStateCondition()
     {
-        if (base.FallStateCondition() == false)
-            return false;
-
         if (Rigid.velocity.y >= 0)
             return false;
 
         return true;
     }
 
-    protected override void FallStateEnter()
+    protected virtual void FallStateEnter()
     {
-        base.FallStateEnter();
+
     }
 
     private void UpdateFallState()
@@ -342,44 +422,49 @@ public class Player : Creature, IHitEvent
         // 착지 확인
         if (creatureFoot.IsLandingGround)
         {
-            CreatureState = ECreatureState.Land;
-            CreatureState = ECreatureState.Move;
+            PlayerState = EPlayerState.Land;
+            PlayerState = EPlayerState.Move;
         }
+    }
+
+    protected virtual void FallStateExit()
+    {
+
     }
 
     protected virtual void FallDownCheck()
     {
         if (creatureFoot.IsLandingGround == false && Rigid.velocity.y < 0)
-            CreatureState = ECreatureState.Fall;
+            PlayerState = EPlayerState.Fall;
     }
     #endregion
 
     #region Land Motion
-    protected override bool LandStateCondition()
+    protected virtual bool LandStateCondition()
     {
-        if (base.LandStateCondition() == false)
-            return false;
-
         if (Rigid.velocity.y >= 0.01f)
             return false;
 
         return true;
     }
 
-    protected override void LandStateEnter()
+    protected virtual void LandStateEnter()
     {
-        base.LandStateEnter();
 
-        isJumpAir = false;
     }
 
     protected virtual void UpdateLandState()
     {
-        if (IsEndCurrentState(ECreatureState.Land))
+        if (IsEndCurrentState(EPlayerState.Land))
         {
-            CreatureState = ECreatureState.Move;
-            CreatureState = ECreatureState.Idle;
+            PlayerState = EPlayerState.Move;
+            PlayerState = EPlayerState.Idle;
         }
+    }
+
+    protected virtual void LandStateExit()
+    {
+
     }
 
     public void OnLand()
@@ -389,22 +474,17 @@ public class Player : Creature, IHitEvent
     #endregion
 
     #region Attack Motion
-    protected override bool AttackStateCondition()
+    protected virtual bool AttackStateCondition()
     {
-        if(base.AttackStateCondition() == false)
-            return false;
-
         if (creatureFoot.IsLandingGround == false)
             return false;
 
         return true;
     }
 
-    protected override void AttackStateEnter()
+    protected virtual void AttackStateEnter()
     {
-        base.AttackStateEnter();
-
-        isCreatureStateLock = true;
+        isPlayerStateLock = true;
         // 현재 입력키에 따라 앞으로 이동하며 공격하는 기능 추가할 듯
         InitRigidVelocityX();
         attackObject.SetActiveAttackObject(true);
@@ -412,17 +492,16 @@ public class Player : Creature, IHitEvent
 
     protected virtual void UpdateAttackState()
     {
-        if(IsEndCurrentState(ECreatureState.Attack))
+        if(IsEndCurrentState(EPlayerState.Attack))
         {
-            isCreatureStateLock = false;
-            CreatureState = ECreatureState.Move;
-            CreatureState = ECreatureState.Idle;
+            isPlayerStateLock = false;
+            PlayerState = EPlayerState.Move;
+            PlayerState = EPlayerState.Idle;
         }
     }
 
-    protected override void AttackStateExit()
+    protected virtual void AttackStateExit()
     {
-        base.AttackStateExit();
         attackObject.SetActiveAttackObject(false);
     }
 
@@ -436,19 +515,14 @@ public class Player : Creature, IHitEvent
     #region Hit Motion
     Vector3 hitForceDir = Vector3.zero;
 
-    protected override bool HitStateCondition()
+    protected virtual bool HitStateCondition()
     {
-        if (base.HitStateCondition() == false)
-            return false;
-
         return true;
     }
 
-    protected override void HitStateEnter()
+    protected virtual void HitStateEnter()
     {
-        base.HitStateEnter();
-
-        isCreatureStateLock = true;
+        isPlayerStateLock = true;
         InitRigidVelocityY();
 
         if (hitForceDir != Vector3.zero)
@@ -459,19 +533,17 @@ public class Player : Creature, IHitEvent
 
     protected virtual void UpdateHitState()
     {
-        if (IsEndCurrentState(ECreatureState.Hit))
+        if (IsEndCurrentState(EPlayerState.Hit))
         {
-            isCreatureStateLock = false;
-            CreatureState = ECreatureState.Move;
-            CreatureState = ECreatureState.Idle;
-            CreatureState = ECreatureState.Fall;
+            isPlayerStateLock = false;
+            PlayerState = EPlayerState.Move;
+            PlayerState = EPlayerState.Idle;
+            PlayerState = EPlayerState.Fall;
         }
     }
 
-    protected override void HitStateExit()
+    protected virtual void HitStateExit()
     {
-        base.HitStateExit();
-
         hitForceDir = Vector3.zero;
     }
 
@@ -483,22 +555,26 @@ public class Player : Creature, IHitEvent
         LookLeft = !param.isAttackerLeft;
         hitForceDir.x = param.pushPower * ((param.isAttackerLeft) ? -1 : 1);
         hitForceDir.y = param.pushPower;
-        isCreatureStateLock = false;
-        CreatureState = ECreatureState.Hit;
+        isPlayerStateLock = false;
+        PlayerState = EPlayerState.Hit;
     }
     #endregion
 
     #region Dead Motion
-    protected override void DeadStateEnter()
+    protected virtual void DeadStateEnter()
     {
-        base.DeadStateEnter();
     }
 
-    protected override bool DeadStateCondition()
+    protected virtual bool DeadStateCondition()
     {
         return true;
     }
+
+    protected virtual void DeadStateExit()
+    {
+
+    }
     #endregion
-    
+
     #endregion
 }

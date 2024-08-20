@@ -6,25 +6,6 @@ using UnityEngine;
 using static Define;
 using Data;
 
-/// <summary>
-/// 애니메이션 클립 이름과 같아야 함
-/// </summary>
-public enum ECreatureState
-{
-    None,
-    Idle,
-    Walk, // 일단 미사용
-    Move, // Run으로 일단 사용
-    Jump,
-    JumpAir,
-    Fall,
-    Land,
-    Attack,
-    Hit,
-
-    Dead
-}
-
 public enum ECreatureType
 {
     Player,
@@ -33,129 +14,15 @@ public enum ECreatureType
 
 public class Creature : BaseObject
 {
-    [SerializeField, ReadOnly] protected bool isCreatureStateLock = false;
-    [SerializeField, ReadOnly] protected ECreatureState _creatureState = ECreatureState.None;
-    public virtual ECreatureState CreatureState
-    {
-        get { return _creatureState; }
-        protected set
-        {
-            if (value != ECreatureState.Idle && isCreatureStateLock)
-                return;
-
-            if (_creatureState == ECreatureState.Dead)
-                return;
-
-            if (_creatureState == value)
-                return;
-
-            bool isChangeState = true;
-            switch(value)
-            {
-                case ECreatureState.Idle:
-                    isChangeState = IdleStateCondition();
-                    break;
-                case ECreatureState.Move:
-                    isChangeState = MoveStateCondition();
-                    break;
-                case ECreatureState.Jump:
-                    isChangeState = JumpStateCondition();
-                    break;
-                case ECreatureState.JumpAir:
-                    isChangeState = JumpAirStateCondition();
-                    break;
-                case ECreatureState.Fall:
-                    isChangeState = FallStateCondition();
-                    break;
-                case ECreatureState.Land:
-                    isChangeState = LandStateCondition();
-                    break;
-                case ECreatureState.Attack:
-                    isChangeState = AttackStateCondition();
-                    break;
-                case ECreatureState.Dead:
-                    isChangeState = DeadStateCondition();
-                    break;
-            }
-
-            if (isChangeState == false)
-                return;
-
-            switch(_creatureState)
-            {
-                case ECreatureState.Idle:
-                    IdleStateExit();
-                    break;
-                case ECreatureState.Move:
-                    MoveStateExit();
-                    break;
-                case ECreatureState.Jump:
-                    JumpStateExit();
-                    break;
-                case ECreatureState.JumpAir:
-                    JumpAirStateExit();
-                    break;
-                case ECreatureState.Fall:
-                    FallStateExit();
-                    break;
-                case ECreatureState.Land:
-                    LandStateExit();
-                    break;
-                case ECreatureState.Attack:
-                    AttackStateExit();
-                    break;
-                case ECreatureState.Hit:
-                    HitStateExit();
-                    break;
-                case ECreatureState.Dead:
-                    DeadStateExit();
-                    break;
-            }
-
-            _creatureState = value;
-            PlayAnimation(value);
-
-            switch (value)
-            {
-                case ECreatureState.Idle:
-                    IdleStateEnter();
-                    break;
-                case ECreatureState.Move:
-                    MoveStateEnter();
-                    break;
-                case ECreatureState.Jump:
-                    JumpStateEnter();
-                    break;
-                case ECreatureState.JumpAir:
-                    JumpAirStateEnter();
-                    break;
-                case ECreatureState.Fall:
-                    FallStateEnter();
-                    break;
-                case ECreatureState.Land:
-                    LandStateEnter();
-                    break;
-                case ECreatureState.Attack:
-                    AttackStateEnter();
-                    break;
-                case ECreatureState.Hit:
-                    HitStateEnter();
-                    break;
-                case ECreatureState.Dead:
-                    DeadStateEnter();
-                    break;
-            }
-        }
-    }
-
     public ECreatureType CreatureType { get; protected set; }
-
     public CreatureFoot creatureFoot { get; protected set; }
 
     protected Rigidbody Rigid { get; private set; }
     [SerializeField] public BoxCollider Collider { get; private set; }
+
     protected Animator animator;
 
+    protected float lookDirX;
     private bool _lookLeft = false;
     public bool LookLeft
     {
@@ -170,7 +37,6 @@ public class Creature : BaseObject
         }
     }  
 
-    protected float LookDirX;
 
     protected virtual void Start()
     {
@@ -198,15 +64,13 @@ public class Creature : BaseObject
     public override void SetInfo(int templateID = 0)
     {
         base.SetInfo(templateID);
-
-        CreatureState = ECreatureState.Idle;
     }
 
     protected override void FlipX(bool isLeft)
     {
         base.FlipX(isLeft);
 
-        LookDirX = (isLeft) ? -1 : 1;
+        lookDirX = (isLeft) ? -1 : 1;
     }
 
     #region Rigid
@@ -244,44 +108,8 @@ public class Creature : BaseObject
     }
     #endregion
 
-    #region State Condition
-    protected virtual bool IdleStateCondition() { return true; }
-    protected virtual bool MoveStateCondition() { return true; }
-    protected virtual bool JumpStateCondition() { return true; }
-    protected virtual bool JumpAirStateCondition() { return true; }
-    protected virtual bool FallStateCondition() { return true; }
-    protected virtual bool LandStateCondition() { return true; }
-    protected virtual bool AttackStateCondition() { return true; }
-    protected virtual bool HitStateCondition() { return true; }
-    protected virtual bool DeadStateCondition() { return true; }
-    #endregion
-
-    #region State Enter
-    protected virtual void IdleStateEnter() { }
-    protected virtual void MoveStateEnter() { }
-    protected virtual void JumpStateEnter() { }
-    protected virtual void JumpAirStateEnter() { }
-    protected virtual void FallStateEnter() { }
-    protected virtual void LandStateEnter() { }
-    protected virtual void AttackStateEnter() { }
-    protected virtual void HitStateEnter() { }
-    protected virtual void DeadStateEnter() { }
-    #endregion
-
-    #region State Exit
-    protected virtual void IdleStateExit() { }
-    protected virtual void MoveStateExit() { }
-    protected virtual void JumpStateExit() { }
-    protected virtual void JumpAirStateExit() { }
-    protected virtual void FallStateExit() { }
-    protected virtual void LandStateExit() { }
-    protected virtual void AttackStateExit() { }
-    protected virtual void HitStateExit() { }
-    protected virtual void DeadStateExit() { }
-    #endregion
-
     #region Animation
-    protected void PlayAnimation(ECreatureState state)
+    protected void PlayAnimation(EPlayerState state)
     {
         if (animator == null)
             return;
@@ -289,7 +117,7 @@ public class Creature : BaseObject
         animator.Play(state.ToString());
     }
 
-    public bool IsState(ECreatureState state)
+    public bool IsState(EPlayerState state)
     {
         if (animator == null)
             return false;
@@ -297,12 +125,12 @@ public class Creature : BaseObject
         return IsState(animator.GetCurrentAnimatorStateInfo(0), state);
     }
 
-    private bool IsState(AnimatorStateInfo stateInfo, ECreatureState state)
+    protected bool IsState(AnimatorStateInfo stateInfo, EPlayerState state)
     {
         return stateInfo.IsName(state.ToString());
     }
 
-    public bool IsEndCurrentState(ECreatureState state)
+    public bool IsEndCurrentState(EPlayerState state)
     {
         if (animator == null)
         {
@@ -311,13 +139,49 @@ public class Creature : BaseObject
         }
 
         // 다른 애니메이션이 재생 중
-        if(!IsState(state))
+        if (!IsState(state))
             return false;
 
         return IsEndState(animator.GetCurrentAnimatorStateInfo(0));
     }
 
-    private bool IsEndState(AnimatorStateInfo stateInfo)
+    protected void PlayAnimation(EMonsterState state)
+    {
+        if (animator == null)
+            return;
+
+        animator.Play(state.ToString());
+    }
+
+    public bool IsState(EMonsterState state)
+    {
+        if (animator == null)
+            return false;
+
+        return IsState(animator.GetCurrentAnimatorStateInfo(0), state);
+    }
+
+    protected bool IsState(AnimatorStateInfo stateInfo, EMonsterState state)
+    {
+        return stateInfo.IsName(state.ToString());
+    }
+
+    public bool IsEndCurrentState(EMonsterState state)
+    {
+        if (animator == null)
+        {
+            Debug.LogWarning("animator is Null");
+            return false;
+        }
+
+        // 다른 애니메이션이 재생 중
+        if (!IsState(state))
+            return false;
+
+        return IsEndState(animator.GetCurrentAnimatorStateInfo(0));
+    }
+
+    protected bool IsEndState(AnimatorStateInfo stateInfo)
     {
         return stateInfo.normalizedTime >= 1.0f;
     }
