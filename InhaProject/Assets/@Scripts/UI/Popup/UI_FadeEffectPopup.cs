@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_FadeEffectPopup : InitBase
+public class UI_FadeEffectPopup : UI_BasePopup
 {
     [SerializeField] private Image fadeEffectImage;
 

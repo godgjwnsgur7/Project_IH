@@ -16,5 +16,10 @@ public class UIFadeEffectParam : UIParam
         this.fadeInEffectCondition = fadeInEffectCondition;
         this.onFadeOutCallBack = onFadeOutCallBack;
         this.onFadeInCallBack = onFadeInCallBack;
-    }  
+    }
+}
+
+public class UI알림창Param : UIParam
+{
+    public string 알림메세지;
 }

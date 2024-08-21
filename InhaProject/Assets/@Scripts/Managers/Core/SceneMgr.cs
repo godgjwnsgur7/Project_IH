@@ -23,9 +23,8 @@ public class SceneMgr
         nextScene = type;
         isCompleteLoadingScene = false;
 
-        /// UI_FadeEffectPopup, UIFadeEffectParam »ç¿ë¹ý
-        // UIFadeEffectParam param = new UIFadeEffectParam(IsCompleteLoadingScene, LoadSceneAsync);
-        // Managers.UI.OpenPopupUI<UI_FadeEffectPopup>(param);
+        UIFadeEffectParam param = new UIFadeEffectParam(IsCompleteLoadingScene, LoadSceneAsync);
+        Managers.UI.OpenPopupUI<UI_FadeEffectPopup>(param);
     }
 
     public void LoadSceneAsync()
