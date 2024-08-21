@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // + 선택 팝업 -> 예 아니오를 받으셈
-public class UI_알림Popup : UI_BasePopup
+public class UI_InformPopup : UI_BasePopup
 {
     [SerializeField] Text 알림메세지text;
 
