@@ -13,7 +13,7 @@ using static Define;
 /// </summary>
 public enum EPlayerType
 {
-    FemaleCharacter = 0,
+    Player = 0,// FemaleCharacter = 0,
     MaleCharacter = 1, // 아직 사용 불가능
 }
 
@@ -24,7 +24,6 @@ public enum EPlayerState
     Walk, // 일단 미사용
     Move, // Run으로 일단 사용
     Jump,
-    JumpAir,
     Fall,
     Land,
     Attack,
@@ -53,15 +52,14 @@ public class Player : Creature, IHitEvent
             _isPlayerInputControll = value;
             ConnectInputActions(value);
 
-            if (_isPlayerInputControll && coPlayerStateController == null)
-            {
-                coPlayerStateController = StartCoroutine(CoPlayerStateController());
-            }
-            else if(_isPlayerInputControll == false && PlayerState != EPlayerState.Dead)
+            if (_isPlayerInputControll)
             {
                 // 강제로 모션 변환
                 PlayAnimation(EPlayerState.Idle);
                 IdleStateEnter();
+
+                if (coPlayerStateController == null)
+                    coPlayerStateController = StartCoroutine(CoPlayerStateController());
             }
         }
     }
@@ -196,6 +194,9 @@ public class Player : Creature, IHitEvent
         CreatureType = ECreatureType.Player;
         PlayerState = EPlayerState.Idle;
 
+        this.gameObject.tag = ETag.Player.ToString();
+        this.gameObject.layer = (int)ELayer.Player;
+
         return true;
     }
 
@@ -242,8 +243,6 @@ public class Player : Creature, IHitEvent
 
         if(creatureFoot.IsLandingGround)
             PlayerState = EPlayerState.Jump;
-        else
-            PlayerState = EPlayerState.JumpAir;
     }
 
     public void OnAttackKey()
