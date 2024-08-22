@@ -16,7 +16,7 @@ public enum  EMonsterState
     None,
     Idle,
     Walk, // 순찰
-    Move, // 추격
+    Run, // 추격
     Attack,
     Hit,
     Dead
@@ -49,8 +49,8 @@ public class BaseMonster : Creature, IHitEvent
                 case EMonsterState.Walk:
                     isChangeState = WalkStateCondition();
                     break;
-                case EMonsterState.Move:
-                    isChangeState = MoveStateCondition();
+                case EMonsterState.Run:
+                    isChangeState = RunStateCondition();
                     break;
                 case EMonsterState.Attack:
                     isChangeState = AttackStateCondition();
@@ -74,8 +74,8 @@ public class BaseMonster : Creature, IHitEvent
                 case EMonsterState.Walk:
                     WalkStateExit();
                     break;
-                case EMonsterState.Move:
-                    MoveStateExit();
+                case EMonsterState.Run:
+                    RunStateExit();
                     break;
                 case EMonsterState.Attack:
                     AttackStateExit();
@@ -114,8 +114,8 @@ public class BaseMonster : Creature, IHitEvent
                 case EMonsterState.Walk:
                     WalkStateEnter();
                     break;
-                case EMonsterState.Move:
-                    MoveStateEnter();
+                case EMonsterState.Run:
+                    RunStateEnter();
                     break;
                 case EMonsterState.Attack:
                     AttackStateEnter();
@@ -180,8 +180,8 @@ public class BaseMonster : Creature, IHitEvent
                 case EMonsterState.Walk:
                     UpdateWalkState();
                     break;
-                case EMonsterState.Move:
-                    UpdateMoveState();
+                case EMonsterState.Run:
+                    UpdateRunState();
                     break;
                 case EMonsterState.Attack:
                     UpdateAttackState();
@@ -203,7 +203,7 @@ public class BaseMonster : Creature, IHitEvent
 
     private void ChaseDetectTarget()
     {
-        Vector3 subVec = new Vector3(0, Collider.center.y, 0);
+        Vector3 subVec = new Vector3(0, this.transform.localScale.y * Collider.center.y, 0);
         Debug.DrawRay(transform.position + subVec, Vector3.right * MonsterData.ChaseDistance * lookDirX, Color.red, 0.1f);
         if (Physics.Raycast(transform.position + subVec, Vector3.right * lookDirX, out RaycastHit hit, MonsterData.ChaseDistance, 1 << (int)ELayer.Player)
             && hit.transform.GetComponent<Player>() != null)
@@ -214,7 +214,7 @@ public class BaseMonster : Creature, IHitEvent
 
     private bool IsMovementCheck()
     {
-        Vector3 subVec = new Vector3((0.1f + Collider.center.x + (Collider.size.x / 2)) * lookDirX, 0, 0);
+        Vector3 subVec = new Vector3((this.transform.localScale.x * (Collider.center.x + (Collider.size.x / 2)) * lookDirX), 0, 0);
         Debug.DrawRay(transform.position + subVec, Vector3.down* 2, Color.blue);
         if (!Physics.Raycast(transform.position + subVec, Vector3.down, out RaycastHit hit, 2, 1 << (int)ELayer.Platform))
             return false;
@@ -250,7 +250,7 @@ public class BaseMonster : Creature, IHitEvent
             float chaseDistanceSqr = MonsterData.ChaseDistance * MonsterData.ChaseDistance;
             if (chaseDistanceSqr >= chaseTargetDistance.sqrMagnitude)
             {
-                MonsterState = EMonsterState.Move;
+                MonsterState = EMonsterState.Run;
                 return prevState != MonsterState;
             }
         }
@@ -276,7 +276,7 @@ public class BaseMonster : Creature, IHitEvent
     {
         IsChaseOrAttackTarget();
 
-        MonsterState = EMonsterState.Move;
+        MonsterState = EMonsterState.Run;
     }
 
     protected virtual void IdleStateExit()
@@ -307,8 +307,8 @@ public class BaseMonster : Creature, IHitEvent
 
     }
 
-    #region Move Motion
-    protected virtual bool MoveStateCondition()
+    #region Run Motion
+    protected virtual bool RunStateCondition()
     {
         if (creatureFoot.IsLandingGround == false)
             return false;
@@ -316,12 +316,12 @@ public class BaseMonster : Creature, IHitEvent
         return true;
     }
 
-    protected virtual void MoveStateEnter()
+    protected virtual void RunStateEnter()
     {
 
     }
 
-    protected virtual void UpdateMoveState()
+    protected virtual void UpdateRunState()
     {
         if (IsMovementCheck() == false)
         {
@@ -337,7 +337,7 @@ public class BaseMonster : Creature, IHitEvent
         SetRigidVelocityX(lookDirX * MonsterData.MoveSpeed);
     }
 
-    protected virtual void MoveStateExit()
+    protected virtual void RunStateExit()
     {
 
     }
@@ -356,10 +356,7 @@ public class BaseMonster : Creature, IHitEvent
 
     protected virtual void UpdateAttackState()
     {
-        if (IsMovementCheck())
-            SetRigidVelocityX(lookDirX * MonsterData.MoveSpeed);
-        else
-            InitRigidVelocityX();
+        InitRigidVelocityX();
 
         if (IsEndCurrentState(EMonsterState.Attack))
         {
@@ -370,7 +367,7 @@ public class BaseMonster : Creature, IHitEvent
 
     protected virtual void AttackStateExit()
     {
-
+        InitRigidVelocityX();
     }
 
     public void OnAttackTarget(IHitEvent attackTarget)
