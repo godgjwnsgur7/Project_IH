@@ -13,8 +13,7 @@ using static Define;
 /// </summary>
 public enum EPlayerType
 {
-    Player = 0,// FemaleCharacter = 0,
-    MaleCharacter = 1, // 아직 사용 불가능
+    Player = 0,
 }
 
 public enum EPlayerState
@@ -484,9 +483,8 @@ public class Player : Creature, IHitEvent
     protected virtual void AttackStateEnter()
     {
         isPlayerStateLock = true;
-        // 현재 입력키에 따라 앞으로 이동하며 공격하는 기능 추가할 듯
         InitRigidVelocityX();
-        attackObject.SetActiveAttackObject(true);
+
     }
 
     protected virtual void UpdateAttackState()
@@ -501,7 +499,7 @@ public class Player : Creature, IHitEvent
 
     protected virtual void AttackStateExit()
     {
-        attackObject.SetActiveAttackObject(false);
+
     }
 
     public void OnAttackTarget(IHitEvent attackTarget)

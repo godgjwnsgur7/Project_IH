@@ -26,7 +26,7 @@ public class AttackObject : InitBase
         Rigid.useGravity = false;
         Rigid.isKinematic = true;
         Collider.isTrigger = true;
-        Collider.enabled = false;
+        Collider.enabled = true;
 
         this.gameObject.layer = (int)ELayer.Default;
         this.tag = ETag.Untagged.ToString();
@@ -46,11 +46,6 @@ public class AttackObject : InitBase
     {
         this.targetTag = targetTag;
         this.onAttackTarget = onAttackTarget;
-    }
-
-    public void SetActiveAttackObject(bool isActive)
-    {
-        Collider.enabled = isActive;
     }
 
     private void OnTriggerEnter(Collider other)

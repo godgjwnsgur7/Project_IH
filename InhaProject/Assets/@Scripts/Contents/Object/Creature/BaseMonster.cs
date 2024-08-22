@@ -8,19 +8,15 @@ using static Define;
 
 public enum EMonsterType
 {
-    Skeleton1 = 0,
-    Skeleton2 = 1, // 아직 사용 불가
-    Skeleton3 = 2, // 아직 사용 불가
-
+    Wizard,
 }
 
 public enum  EMonsterState
 {
     None,
     Idle,
-    Move,
-    Fall,
-    Land,
+    Walk, // 순찰
+    Move, // 추격
     Attack,
     Hit,
     Dead
@@ -31,7 +27,7 @@ public class BaseMonster : Creature, IHitEvent
     public EMonsterType MonsterType { get; protected set; }
     public MonsterData MonsterData { get; protected set; }
 
-    [SerializeField, ReadOnly] protected AttackObject attackObject;
+    [SerializeField] protected AttackObject attackObject;
     [SerializeField, ReadOnly] protected MonsterAttackRange attackRange;
 
     [SerializeField, ReadOnly]
@@ -50,17 +46,17 @@ public class BaseMonster : Creature, IHitEvent
                 case EMonsterState.Idle:
                     isChangeState = IdleStateCondition();
                     break;
+                case EMonsterState.Walk:
+                    isChangeState = WalkStateCondition();
+                    break;
                 case EMonsterState.Move:
                     isChangeState = MoveStateCondition();
                     break;
-                case EMonsterState.Fall:
-                    isChangeState = FallStateCondition();
-                    break;
-                case EMonsterState.Land:
-                    isChangeState = LandStateCondition();
-                    break;
                 case EMonsterState.Attack:
                     isChangeState = AttackStateCondition();
+                    break;
+                case EMonsterState.Hit:
+                    isChangeState = HitStateCondition();
                     break;
                 case EMonsterState.Dead:
                     isChangeState = DeadStateCondition();
@@ -75,14 +71,11 @@ public class BaseMonster : Creature, IHitEvent
                 case EMonsterState.Idle:
                     IdleStateExit();
                     break;
+                case EMonsterState.Walk:
+                    WalkStateExit();
+                    break;
                 case EMonsterState.Move:
                     MoveStateExit();
-                    break;
-                case EMonsterState.Fall:
-                    FallStateExit();
-                    break;
-                case EMonsterState.Land:
-                    LandStateExit();
                     break;
                 case EMonsterState.Attack:
                     AttackStateExit();
@@ -101,26 +94,14 @@ public class BaseMonster : Creature, IHitEvent
             {
                 switch (value)
                 {
-                    case EMonsterState.None:
-                        UpdateAITick = 0.0f;
-                        break;
                     case EMonsterState.Idle:
                         UpdateAITick = 0.5f;
                         break;
-                    case EMonsterState.Move:
-                        UpdateAITick = 0.0f;
-                        break;
-                    case EMonsterState.Fall:
-                        UpdateAITick = 0.0f;
-                        break;
-                    case EMonsterState.Land:
-                        UpdateAITick = 0.0f;
-                        break;
-                    case EMonsterState.Attack:
-                        UpdateAITick = 0.0f;
-                        break;
                     case EMonsterState.Dead:
                         UpdateAITick = 1.0f;
+                        break;
+                    default:
+                        UpdateAITick = 0.0f;
                         break;
                 }
             }
@@ -130,14 +111,11 @@ public class BaseMonster : Creature, IHitEvent
                 case EMonsterState.Idle:
                     IdleStateEnter();
                     break;
+                case EMonsterState.Walk:
+                    WalkStateEnter();
+                    break;
                 case EMonsterState.Move:
                     MoveStateEnter();
-                    break;
-                case EMonsterState.Fall:
-                    FallStateEnter();
-                    break;
-                case EMonsterState.Land:
-                    LandStateEnter();
                     break;
                 case EMonsterState.Attack:
                     AttackStateEnter();
@@ -199,14 +177,11 @@ public class BaseMonster : Creature, IHitEvent
                 case EMonsterState.Idle:
                     UpdateIdleState();
                     break;
+                case EMonsterState.Walk:
+                    UpdateWalkState();
+                    break;
                 case EMonsterState.Move:
                     UpdateMoveState();
-                    break;
-                case EMonsterState.Fall:
-                    UpdateFallState();
-                    break;
-                case EMonsterState.Land:
-                    UpdateLandState();
                     break;
                 case EMonsterState.Attack:
                     UpdateAttackState();
@@ -310,6 +285,28 @@ public class BaseMonster : Creature, IHitEvent
     }
     #endregion
 
+    protected virtual bool WalkStateCondition()
+    {
+
+
+        return true;
+    }
+
+    protected virtual void WalkStateEnter()
+    {
+
+    }
+
+    protected virtual void UpdateWalkState()
+    {
+
+    }
+
+    protected virtual void WalkStateExit()
+    {
+
+    }
+
     #region Move Motion
     protected virtual bool MoveStateCondition()
     {
@@ -326,12 +323,6 @@ public class BaseMonster : Creature, IHitEvent
 
     protected virtual void UpdateMoveState()
     {
-        if (creatureFoot.IsLandingGround == false)
-        {
-            MonsterState = EMonsterState.Land;
-            return;
-        }
-
         if (IsMovementCheck() == false)
         {
             InitRigidVelocityX();
@@ -360,7 +351,7 @@ public class BaseMonster : Creature, IHitEvent
 
     protected virtual void AttackStateEnter()
     {
-        attackObject.SetActiveAttackObject(true);
+
     }
 
     protected virtual void UpdateAttackState()
@@ -379,7 +370,7 @@ public class BaseMonster : Creature, IHitEvent
 
     protected virtual void AttackStateExit()
     {
-        attackObject.SetActiveAttackObject(false);
+
     }
 
     public void OnAttackTarget(IHitEvent attackTarget)
@@ -393,77 +384,14 @@ public class BaseMonster : Creature, IHitEvent
     }
     #endregion
 
-    #region Fall Motion
-    protected virtual bool FallStateCondition()
-    {
-        if (Rigid.velocity.y >= 0)
-            return false;
-
-        return true;
-    }
-
-    protected virtual void FallStateEnter()
-    {
-
-    }
-
-    protected virtual void UpdateFallState()
-    {
-        if (creatureFoot.IsLandingGround)
-        {
-            MonsterState = EMonsterState.Land;
-            return;
-        }
-    }
-
-    protected virtual void FallStateExit()
-    {
-
-    }
-
-    protected virtual void FallDownCheck()
-    {
-        if (creatureFoot.IsLandingGround == false && Rigid.velocity.y < 0)
-            MonsterState = EMonsterState.Fall;
-    }
-    #endregion
-
-    #region Land Motion
-    protected virtual bool LandStateCondition()
-    {
-        if (Rigid.velocity.y >= 0.01f)
-            return false;
-
-        return true;
-    }
-
-    protected virtual void LandStateEnter()
-    {
-
-    }
-
-    protected virtual void UpdateLandState()
-    {
-        if (IsEndCurrentState(EMonsterState.Land))
-        {
-            MonsterState = EMonsterState.Move;
-            MonsterState = EMonsterState.Idle;
-        }
-    }
-
-    protected virtual void LandStateExit()
-    {
-
-    }
-
-    public void OnLand()
-    {
-
-    }
-    #endregion
-
     #region Hit Motion
     Vector3 hitForceDir = Vector3.zero;
+    protected virtual bool HitStateCondition()
+    {
+
+
+        return true;
+    }
 
     protected virtual void HitStateEnter()
     {
@@ -478,7 +406,7 @@ public class BaseMonster : Creature, IHitEvent
     {
         if (IsEndCurrentState(EMonsterState.Hit))
         {
-            FallDownCheck();
+            // 히트로 인해 낙하상태로 들어갈 수 있음. (메모)
             MonsterState = EMonsterState.Idle;
         }
     }
