@@ -37,7 +37,7 @@ public class Player : Creature, IHitEvent
     public EPlayerType PlayerType { get; protected set; }
     public PlayerData PlayerData { get; protected set; }
 
-    [SerializeField, ReadOnly] BaseAttackObject attackObject;
+    [SerializeField, ReadOnly] AttackObject attackObject;
 
     // 플레이어를 조작할 수 있는 경우
     [SerializeField, ReadOnly] private bool _isPlayerInputControll = false;
@@ -183,7 +183,7 @@ public class Player : Creature, IHitEvent
     {
         base.Reset();
 
-        attackObject ??= Util.FindChild<BaseAttackObject>(this.gameObject);
+        attackObject ??= Util.FindChild<AttackObject>(this.gameObject, "FX_Projectile1", true);
     }
 
     public override bool Init()

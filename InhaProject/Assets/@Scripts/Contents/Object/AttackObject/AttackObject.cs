@@ -10,7 +10,7 @@ public interface IHitEvent
     public void OnHit(AttackParam param = null);
 }
 
-public class BaseAttackObject : InitBase
+public class AttackObject : InitBase
 {
     public Rigidbody Rigid {  get; protected set; }
     public BoxCollider Collider { get; protected set; }

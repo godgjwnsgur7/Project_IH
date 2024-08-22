@@ -31,7 +31,7 @@ public class BaseMonster : Creature, IHitEvent
     public EMonsterType MonsterType { get; protected set; }
     public MonsterData MonsterData { get; protected set; }
 
-    [SerializeField, ReadOnly] protected BaseAttackObject attackObject;
+    [SerializeField, ReadOnly] protected AttackObject attackObject;
     [SerializeField, ReadOnly] protected MonsterAttackRange attackRange;
 
     [SerializeField, ReadOnly]
@@ -155,7 +155,7 @@ public class BaseMonster : Creature, IHitEvent
     protected override void Reset()
     {
         base.Reset();
-        attackObject ??= Util.FindChild<BaseAttackObject>(this.gameObject);
+        attackObject ??= Util.FindChild<AttackObject>(this.gameObject);
         attackRange ??= Util.FindChild<MonsterAttackRange>(this.gameObject);
     }
 
