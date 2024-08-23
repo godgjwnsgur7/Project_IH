@@ -19,12 +19,12 @@ public class UIFadeEffectParam : UIParam
     }
 }
 
-public class UI알림창Param : UIParam
+public class UIInformParam : UIParam
 {
-    public string 알림메세지;
+    public string informText;
 
-    public UI알림창Param(string 알림메세지)
+    public UIInformParam(string informText)
     {
-        this.알림메세지 = 알림메세지;
+        this.informText = informText;
     }
 }
