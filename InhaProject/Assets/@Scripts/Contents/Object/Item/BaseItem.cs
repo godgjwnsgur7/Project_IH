@@ -17,7 +17,7 @@ public enum EItemType
     None,
     ItemBox,
     Item2, //  아이템 정해지면 수정예정
-    Item3,
+    Key,
     Item4,
     Item5,
     Item6,
