@@ -7,14 +7,14 @@ using static Define;
 public class MonsterAttackRange : InitBase
 {
     public Rigidbody Rigid { get; private set; } = null;
-    public SphereCollider Collider { get; private set; } = null;
+    public BoxCollider Collider { get; private set; } = null;
 
     Action<Player> onAttackRangeInTarget;
 
     private void Reset()
     {
         Rigid ??= Util.GetOrAddComponent<Rigidbody>(this.gameObject);
-        Collider ??= Util.GetOrAddComponent<SphereCollider>(this.gameObject);
+        Collider ??= Util.GetOrAddComponent<BoxCollider>(this.gameObject);
 
         Rigid.useGravity = false;
         Rigid.isKinematic = true;
@@ -34,11 +34,11 @@ public class MonsterAttackRange : InitBase
         return true;
     }
 
-    public void SetInfo(Action<Player> onAttackRangeInTarget, BaseMonster attacker)
+    public void SetInfo(Action<Player> onAttackRangeInTarget, Monster attacker)
     {
         this.onAttackRangeInTarget = onAttackRangeInTarget;
         Collider.center += attacker.Collider.center;
-        Collider.radius = attacker.MonsterData.AttackDistance;
+        Collider.size = new Vector3(2, attacker.Collider.size.y, attacker.MonsterData.AttackDistance * 2);
     }
 
     private void OnTriggerEnter(Collider other)

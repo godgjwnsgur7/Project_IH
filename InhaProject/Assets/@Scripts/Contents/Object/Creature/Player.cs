@@ -196,6 +196,8 @@ public class Player : Creature, IHitEvent
         this.gameObject.tag = ETag.Player.ToString();
         this.gameObject.layer = (int)ELayer.Player;
 
+        Collider.excludeLayers += 1 << (int)ELayer.Monster;
+
         return true;
     }
 

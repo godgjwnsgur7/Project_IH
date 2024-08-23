@@ -22,7 +22,7 @@ public class AttackObject : InitBase
     {
         Rigid ??= Util.GetOrAddComponent<Rigidbody>(this.gameObject);
         Collider ??= Util.GetOrAddComponent<BoxCollider>(this.gameObject);
-
+        
         Rigid.useGravity = false;
         Rigid.isKinematic = true;
         Collider.isTrigger = true;
