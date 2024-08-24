@@ -39,6 +39,11 @@ public class UIMgr
         SceneUI = sceneUI;
     }
 
+    public bool IsActivePopup()
+    {
+        return popupStack.Count > 0;
+    }
+
     public void SetCanvas(GameObject go, bool sort = true, int sortingOrder = 0)
     {
         Canvas canvas = Util.GetOrAddComponent<Canvas>(go);
