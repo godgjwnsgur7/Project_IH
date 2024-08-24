@@ -18,12 +18,9 @@ public class SettingMenu : MonoBehaviour
 
     void Start()
     {
-        //ResolutionDropdown = TMP_Dropdown.FindObjectOfType<TMP_Dropdown>();
-
         settingMenu = GameObject.Find("SoundSetting");
         displayMenu = GameObject.Find("DisplaySetting");
 
-        
         
         resolutions = Screen.resolutions;
 
@@ -96,13 +93,5 @@ public class SettingMenu : MonoBehaviour
     {
         audioMixer.SetFloat("Master", Volume);
     }
-
-
-
-
-
-
-
-
 
 }
