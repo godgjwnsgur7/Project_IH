@@ -11,8 +11,8 @@ public class GameScene : BaseScene
 
         SceneType = Define.EScene.GameScene;
 
-        // GameObject go = Managers.Resource.Instantiate(PrefabPath.OBJECT_PLAYER_PATH + $"/{EPlayerType.FemaleCharacter.ToString()}");
-        // Camera.main.GetComponent<PlayerCamera>().SetTarget(go.GetComponent<Player>());
+        GameObject go = Managers.Resource.Instantiate(PrefabPath.OBJECT_PLAYER_PATH + $"/{EPlayerType.Player.ToString()}");
+        Camera.main.GetComponent<CameraController>().SetTarget(go.GetComponent<Player>());
 
         return true;
     }

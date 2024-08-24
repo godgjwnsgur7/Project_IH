@@ -23,7 +23,7 @@ public static class LoadPath
 /// </summary>
 public static class PrefabPath
 {
-    public const string OBJECT_PLAYER_PATH = "Object/Creature/Player";
+    public const string OBJECT_PLAYER_PATH = "Object/Creature";
     public const string OBJECT_MONSTER_PATH = "Object/Creature/Monster";
 
     public const string UI_POPUP_PATH = "UI/Popup";
