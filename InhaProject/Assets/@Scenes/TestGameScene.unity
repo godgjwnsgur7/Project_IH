@@ -2626,7 +2626,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.13679248, g: 0.40312025, b: 1, a: 1}
+  m_Color: {r: 0.6698113, g: 0.6698113, b: 0.6698113, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2638,7 +2638,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0.63
+  m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -7124,6 +7124,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1840621885}
+  - component: {fileID: 1840621886}
   m_Layer: 5
   m_Name: Health bar
   m_TagString: Untagged
@@ -7157,6 +7158,21 @@ RectTransform:
   m_AnchoredPosition: {x: 80, y: 0}
   m_SizeDelta: {x: 377, y: 115.8}
   m_Pivot: {x: 0, y: 1}
+--- !u!114 &1840621886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1840621884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c585375ed5a582b4c9771261eaf6e1c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hpSlider: {fileID: 1783566899}
+  hpText: {fileID: 858233818}
+  mpSlider: {fileID: 809794322}
 --- !u!1 &1848615516
 GameObject:
   m_ObjectHideFlags: 0
@@ -8805,6 +8821,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 2a5c892bdd014164da633b8c6fd0f246, type: 3}
+    - target: {fileID: 4963669529902035935, guid: 1cf0314ce468dea46b7fd6c38e2d326e, type: 3}
+      propertyPath: m_Name
+      value: UI_SkillBar
+      objectReference: {fileID: 0}
     - target: {fileID: 4963669529902035935, guid: 1cf0314ce468dea46b7fd6c38e2d326e, type: 3}
       propertyPath: m_IsActive
       value: 1
