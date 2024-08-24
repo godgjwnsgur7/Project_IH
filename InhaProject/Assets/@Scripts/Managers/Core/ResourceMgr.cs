@@ -12,7 +12,7 @@ public class ResourceMgr
         return Resources.Load<T>(path);
     }
 
-    public GameObject Instantiate(string path, Transform parent = null)
+    public GameObject Instantiate(string path)
     {
         GameObject original = Load<GameObject>($"Prefabs/{path}");
         if (original == null)
@@ -20,22 +20,46 @@ public class ResourceMgr
             Debug.Log($"Failed to load prefab : {path}");
             return null;
         }
+
+        // 풀링된 오브젝트일 경우 위탁
+        if (original.GetComponent<Poolable>() != null)
+            return Managers.Pool.Pop(original).GameObject;
+
+        GameObject go = Object.Instantiate(original);
+        go.name = original.name;
+        return go;
+    }
+
+    public GameObject Instantiate(string path, Transform parent, Vector3 position = default)
+    {
+        GameObject original = Load<GameObject>($"Prefabs/{path}");
+        if (original == null)
+        {
+            Debug.Log($"Failed to load prefab : {path}");
+            return null;
+        }
+
+        // 풀링된 오브젝트일 경우 위탁
+        if (original.GetComponent<Poolable>() != null)
+            return Managers.Pool.Pop(original, position).GameObject;
 
         GameObject go = Object.Instantiate(original, parent);
         go.name = original.name;
         return go;
     }
 
-    public GameObject Instantiate<T>(string path, Transform parent = null)
+    public GameObject Instantiate(string path, Vector3 position, Transform parent = null)
     {
-        path += $"/{typeof(T).Name}";
-
         GameObject original = Load<GameObject>($"Prefabs/{path}");
         if (original == null)
         {
             Debug.Log($"Failed to load prefab : {path}");
             return null;
         }
+
+        // 풀링된 오브젝트일 경우 위탁
+        if (original.GetComponent<Poolable>() != null)
+            return Managers.Pool.Pop(original, position).GameObject;
 
         GameObject go = Object.Instantiate(original, parent);
         go.name = original.name;
