@@ -94,4 +94,12 @@ public class SettingMenu : MonoBehaviour
         audioMixer.SetFloat("Master", Volume);
     }
 
+    public Slider masterSlider;
+    public TextMeshProUGUI sliderText;
+
+    public void MasterSlider()
+    {
+        sliderText.text = masterSlider.value.ToString();
+    }
+
 }
