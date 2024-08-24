@@ -60,46 +60,4 @@ public static class Util
     {
         return (T)Enum.Parse(typeof(T), value, true);
     }
-
-    public static void SortingDictValue<T>(Dictionary<int, T> dict)
-    {
-        // Dict<Key, Value> -> List[index](Key, Value)
-        List<(int, T)> list = new List<(int, T)>();
-        foreach (KeyValuePair<int, T> kvp in dict)
-            list.Add((kvp.Key, kvp.Value));
-
-        // 정렬
-        list.Sort((x, y) => x.Item1 > y.Item1 ? 1 : -1);
-
-        // Reset Dict
-        dict.Clear();
-        for (int i = 0; i < list.Count; i++)
-        {
-            int key = i + 1;
-            T data = list[i].Item2;
-            dict.Add(key, data);
-        }
-    }
-
-#if UNITY_EDITOR
-    public static GameObject Editor_InstantiateObject(Transform transform)
-    {
-        GameObject tempObject = new GameObject();
-        GameObject go = GameObject.Instantiate(tempObject, transform);
-        GameObject.DestroyImmediate(tempObject);
-        return go;
-    }
-
-    public static void Editor_FileDelete(string path, string fileExtension = ".json")
-    {
-        if (fileExtension[0] != '.')
-            fileExtension = $".{fileExtension}";
-
-        if (File.Exists($"{path}{fileExtension}"))
-        {
-            File.Delete($"{path}{fileExtension}");
-            File.Delete($"{path}.meta");
-        }
-    }
-#endif
 }

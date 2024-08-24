@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum ESkill
+public enum EPlayerSkillType
 {
 	Default = 0,
     Jump,
@@ -16,13 +16,13 @@ public enum ESkill
 
 public class PlayerSkill
 {
-    public ESkill skill;
+    public EPlayerSkillType skill;
     public float coolTime = 0.0f;
 	public float currentTime = 0.0f;
 	public bool isAvailable = true;
 	public float mpAmount = 0.0f;
 
-	public PlayerSkill(ESkill skill, float coolTime, float currentTime, bool isAvailable, float mpAmount)
+	public PlayerSkill(EPlayerSkillType skill, float coolTime, float currentTime, bool isAvailable, float mpAmount)
 	{
 		this.skill = skill;
 		this.coolTime = coolTime;
@@ -49,12 +49,12 @@ public class UI_SkillBar : MonoBehaviour
 	private void Start()
 	{
 		// 일단 플레이어 스킬 정보 박아넣기... 아마도 이런 정보를 어디선가 받아올테고...
-        playerSkill[(int)ESkill.Default] = new PlayerSkill(ESkill.Default, 1.0f, 0.0f, true, 0.0f);
-		playerSkill[(int)ESkill.Jump] = new PlayerSkill(ESkill.Jump, 1.0f, 0.0f, true, 0.0f);
-		playerSkill[(int)ESkill.Attack] = new PlayerSkill(ESkill.Attack, 1.0f, 0.0f, true, 0.0f);
-		playerSkill[(int)ESkill.Skill1] = new PlayerSkill(ESkill.Skill1, 3.0f, 0.0f, true, 10.0f);
-		playerSkill[(int)ESkill.Skill2] = new PlayerSkill(ESkill.Skill2, 3.0f, 0.0f, true, 20.0f);
-		playerSkill[(int)ESkill.Skill3] = new PlayerSkill(ESkill.Skill3, 4.0f, 0.0f, true, 30.0f);
+        playerSkill[(int)EPlayerSkillType.Default] = new PlayerSkill(EPlayerSkillType.Default, 1.0f, 0.0f, true, 0.0f);
+		playerSkill[(int)EPlayerSkillType.Jump] = new PlayerSkill(EPlayerSkillType.Jump, 1.0f, 0.0f, true, 0.0f);
+		playerSkill[(int)EPlayerSkillType.Attack] = new PlayerSkill(EPlayerSkillType.Attack, 1.0f, 0.0f, true, 0.0f);
+		playerSkill[(int)EPlayerSkillType.Skill1] = new PlayerSkill(EPlayerSkillType.Skill1, 3.0f, 0.0f, true, 10.0f);
+		playerSkill[(int)EPlayerSkillType.Skill2] = new PlayerSkill(EPlayerSkillType.Skill2, 3.0f, 0.0f, true, 20.0f);
+		playerSkill[(int)EPlayerSkillType.Skill3] = new PlayerSkill(EPlayerSkillType.Skill3, 4.0f, 0.0f, true, 30.0f);
 
 		for ( int i = 0; i < coolTimeImgs.Length; i++ )
 		{
@@ -71,12 +71,12 @@ public class UI_SkillBar : MonoBehaviour
 	{
 		if ( Input.GetKeyDown(KeyCode.T))
 		{
-			StartCoroutine(SkillCoolTime(ESkill.Default));
+			StartCoroutine(SkillCoolTime(EPlayerSkillType.Default));
 		}
 	}
 
 
-	IEnumerator SkillCoolTime(ESkill type)
+	IEnumerator SkillCoolTime(EPlayerSkillType type)
 	{
 		/* TO DO: 플레이어 MP 따로 받아와서 처리해야 함 */
 		if (playerMp < playerSkill[(int)type].mpAmount)	
@@ -108,43 +108,49 @@ public class UI_SkillBar : MonoBehaviour
 	}
 
 	#region Skill Events
-	public void OnClickedSlot1()
+	public void OnClickSlot1()
 	{
-		if (playerSkill[(int)ESkill.Default].isAvailable ) 
-			StartCoroutine(SkillCoolTime(ESkill.Default));
+		if (playerSkill[(int)EPlayerSkillType.Default].isAvailable ) 
+			StartCoroutine(SkillCoolTime(EPlayerSkillType.Default));
 	}
 
-	public void OnClickedSlot2()
+	public void OnClickSlot2()
 	{
-		if (playerSkill[(int)ESkill.Jump].isAvailable)
-			StartCoroutine(SkillCoolTime(ESkill.Jump));
+		if (playerSkill[(int)EPlayerSkillType.Jump].isAvailable)
+			StartCoroutine(SkillCoolTime(EPlayerSkillType.Jump));
 
 		UIInformParam uiInformParam = new UIInformParam("테스트테스트 테스트를 합시다");
 		Managers.UI.OpenPopupUI<UI_InformPopup>(uiInformParam);
 	}
 
-	public void OnClickedSlot3()
+	public void OnClickSlot3()
 	{
-		if (playerSkill[(int)ESkill.Attack].isAvailable)
-			StartCoroutine(SkillCoolTime(ESkill.Attack));
+		if (playerSkill[(int)EPlayerSkillType.Attack].isAvailable)
+			StartCoroutine(SkillCoolTime(EPlayerSkillType.Attack));
 	}
 
-	public void OnClickedSlot4()
+	public void OnClickSlot4()
 	{
-		if (playerSkill[(int)ESkill.Skill1].isAvailable)
-			StartCoroutine(SkillCoolTime(ESkill.Skill1));
+		if (playerSkill[(int)EPlayerSkillType.Skill1].isAvailable)
+			StartCoroutine(SkillCoolTime(EPlayerSkillType.Skill1));
 	}
 
-	public void OnClickedSlot5()
+	public void OnClickSlot5()
 	{
-		if (playerSkill[(int)ESkill.Skill2].isAvailable)
-			StartCoroutine(SkillCoolTime(ESkill.Skill2));
+		if (playerSkill[(int)EPlayerSkillType.Skill2].isAvailable)
+			StartCoroutine(SkillCoolTime(EPlayerSkillType.Skill2));
 	}
 
-	public void OnClickedSlot6()
+	public void OnClickSlot6()
 	{
-		if (playerSkill[(int)ESkill.Skill3].isAvailable)
-			StartCoroutine(SkillCoolTime(ESkill.Skill3));
+		if (playerSkill[(int)EPlayerSkillType.Skill3].isAvailable)
+			StartCoroutine(SkillCoolTime(EPlayerSkillType.Skill3));
 	}
 	#endregion
+
+	public void OnDamageButton()
+	{
+		UIDamageParam uiDamageParam = new UIDamageParam(999999, new Vector3(400, 300, 0), true);
+		Managers.UI.OpenPopupUI<UI_Damage>(uiDamageParam);
+	}
 }

@@ -28,3 +28,17 @@ public class UIInformParam : UIParam
         this.informText = informText;
     }
 }
+
+public class UIDamageParam : UIParam
+{
+    public int damage;
+    public Vector3 enermyPosition;
+    public bool isCritical;
+
+    public UIDamageParam(int damage, Vector3 enermyPosition, bool isCritical)
+	{
+		this.damage = damage;
+		this.enermyPosition = enermyPosition;
+		this.isCritical = isCritical;
+	}
+}
