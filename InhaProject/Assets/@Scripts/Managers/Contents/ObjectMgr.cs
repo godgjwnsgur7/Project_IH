@@ -26,7 +26,7 @@ public class ObjectMgr : MonoBehaviour
         {
             obj.transform.position = position;
             obj.transform.rotation = rotation;
-            activeObjects.Add(obj);
+            activeObjects.Add(obj);  
         }
 
     }

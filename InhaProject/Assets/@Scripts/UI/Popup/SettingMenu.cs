@@ -22,6 +22,8 @@ public class SettingMenu : MonoBehaviour
 
         settingMenu = GameObject.Find("SoundSetting");
         displayMenu = GameObject.Find("DisplaySetting");
+
+        
         
         resolutions = Screen.resolutions;
 
@@ -88,6 +90,11 @@ public class SettingMenu : MonoBehaviour
     public void OnClickSetEffect(float Volume)
     {
         audioMixer.SetFloat("Effect", Volume);
+    }
+
+    public void OnClickSetMasterMuteButton(float Volume)
+    {
+        audioMixer.SetFloat("Master", Volume);
     }
 
 

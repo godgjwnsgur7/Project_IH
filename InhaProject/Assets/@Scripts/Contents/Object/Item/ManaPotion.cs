@@ -6,12 +6,19 @@ public class ManaPotion : BaseItem
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player")) // 충돌한 객체가 Player 태그를 가진 경우
+
+
+        if (!isPlayerInRange &&  other.CompareTag("Player") ) // 충돌한 객체가 Player 태그를 가진 경우
         {
-            //heal 코드
+            Debug.Log("인벤토리로");
+            isPlayerInRange = true;
         }
     }
-
+    private void OnTriggerExit(Collider other)
+    {
+        if (isPlayerInRange && other.CompareTag("Player"))
+            isPlayerInRange = false;
+    }
     public override bool Init()
     {
         if (!base.Init())

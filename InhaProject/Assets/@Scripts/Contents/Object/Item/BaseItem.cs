@@ -27,7 +27,7 @@ public class BaseItem : BaseObject
 
     private Animator animator; // 애니메이터 컴포넌트
 
-
+    protected bool isPlayerInRange = false;
 
     public override bool Init()
     {
