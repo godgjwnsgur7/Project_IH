@@ -15,7 +15,7 @@ public class Portal : Obstacle
         if (!base.Init())
             return false;
 
-        obstacleType = ObstacleType.Portal;
+        obstacleType = EObstacleType.Portal;
         allPortals.Add(this);
 
         // 포탈이 연결되지 않은 경우만 자동 연결 로직 적용 ->  필요할까? 없을듯?
@@ -52,4 +52,8 @@ public class Portal : Obstacle
         }
     }
 
+    public override void TeleportPlayer(Portal otherPortal = default)
+    {
+        base.TeleportPlayer(connectedPortal);
+    }
 }

@@ -19,6 +19,14 @@ public class ItemBox : BaseItem
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.collider.CompareTag("player"))
+        {
+
+        }
+    }
+
 
 
 

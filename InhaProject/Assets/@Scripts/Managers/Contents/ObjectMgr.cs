@@ -15,10 +15,10 @@ public class ObjectMgr : MonoBehaviour
     private List<GameObject> activeObjects = new();
 
     //오브젝트 스폰
-    public GameObject SpawnObject(EItemType itemType, Vector3 position = default, Quaternion rotation = default)
+    public void SpawnObject(EItemType itemType, Vector3 position = default, Quaternion rotation = default)
     {
         if (itemType == EItemType.None || itemType == EItemType.Max)
-            return null;
+            return;
     
         // 아이템 타입에 맞는 프리팹 로드 및 인스턴스화
         GameObject obj = Managers.Resource.Instantiate(itemPrefabsDict[itemType], null);
@@ -28,7 +28,7 @@ public class ObjectMgr : MonoBehaviour
             obj.transform.rotation = rotation;
             activeObjects.Add(obj);
         }
-        return obj;
+
     }
 
     public void Init()

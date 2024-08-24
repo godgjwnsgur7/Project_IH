@@ -1,12 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Define;
 
-public class HealPack : BaseItem
+public class ManaPack : BaseItem
 {
- 
-
+    // Start is called before the first frame update
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player")) // 충돌한 객체가 Player 태그를 가진 경우
@@ -19,7 +17,7 @@ public class HealPack : BaseItem
     {
         if (!base.Init())
             return false;
-        ItemType = EItemType.HealPack;
+        ItemType = EItemType.ManaPack;
 
         return true;
     }

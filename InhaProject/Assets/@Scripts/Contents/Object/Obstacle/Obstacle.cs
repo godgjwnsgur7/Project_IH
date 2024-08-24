@@ -5,34 +5,34 @@ using UnityEngine.Rendering;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
 
-public enum ObstacleType
+public enum EObstacleType
 {
     None,
-    GroundTrap,
+    Trap,
     Portal,       // 포탈
     BossStageDoor // 보스 스테이지로 가는 문
 }
 public class Obstacle : BaseObject
 {
     [SerializeField]
-    public ObstacleType obstacleType { get; set; } = ObstacleType.None;
+    public EObstacleType obstacleType { get; set; } = EObstacleType.None;
 
     protected bool isPlayerInRange = false;
     protected Player player;
 
     // 트랩 빼서 나눌까?
-    private void OnCollisionEnter(Collision collision)
+    protected void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.CompareTag("Player"))
         {
             isPlayerInRange = true;
             player ??= collision.collider.gameObject.GetComponent<Player>();
-            player?.OnHit(new AttackParam(!player.LookLeft, 1));
+           
             switch (obstacleType)
             {
-                case ObstacleType.GroundTrap:
+                case EObstacleType.Trap:
 
-
+                    player?.OnHit(new AttackParam(!player.LookLeft, 1));
                     break;
 
             }
@@ -40,7 +40,7 @@ public class Obstacle : BaseObject
         }
     }
     // 그럴까?
-    private void OnCollisionExit(Collision collision)
+    protected void OnCollisionExit(Collision collision)
     {
         if (collision.collider.CompareTag("Player"))
         {
@@ -70,10 +70,10 @@ public class Obstacle : BaseObject
 
             switch (obstacleType)
             {
-                case ObstacleType.Portal:
+                case EObstacleType.Portal:
                     TeleportPlayer();
                     break;
-                case ObstacleType.BossStageDoor:
+                case EObstacleType.BossStageDoor:
                     EnterBossStage();
                     break;
             }
@@ -109,7 +109,7 @@ public class Obstacle : BaseObject
     }
 
     // 스폰 필요하면 사용
-    private void SpawnObstacle(ObstacleType spawnObstacleType)
+    private void SpawnObstacle(EObstacleType spawnObstacleType)
     {
         // Vector3 spawnPosition = transform.position; // 현재 아이템 위치에 생성
         // Quaternion spawnRotation = Quaternion.identity;

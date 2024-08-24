@@ -10,23 +10,23 @@ public enum EItemType
 {
     None,
     ItemBox,
-    HealPotion, 
+    HealPotion,
     ManaPotion,
     HealPack,
     ManaPack,
     Key,
-    
+
     Max
 }
 
 public class BaseItem : BaseObject
 {
-   
+
 
     public EItemType ItemType { get; set; } = EItemType.None; // 아이템 타입
 
     private Animator animator; // 애니메이터 컴포넌트
-    
+
 
 
     public override bool Init()
@@ -51,18 +51,34 @@ public class BaseItem : BaseObject
 
     protected virtual void DestroyItem()
     {
-        Debug.Log(this +"Destroy");
+        Debug.Log(this + "Destroy");
         // 자신을 파괴
         Managers.Object.DespawnObject(gameObject);
-        
+
     }
 
     protected virtual void SpawnItems(EItemType spawnItemType)
     {
         Vector3 spawnPosition = transform.position; // 현재 아이템 위치에 생성
         Quaternion spawnRotation = Quaternion.identity;
-        Managers.Object.SpawnObject(spawnItemType, spawnPosition,spawnRotation);
+        Managers.Object.SpawnObject(spawnItemType, spawnPosition, spawnRotation);
 
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player")) // 충돌한 객체가 Player 태그를 가진 경우
+        {
+            switch (ItemType)
+            {
+                case EItemType.HealPack:
+                    break;
+                case EItemType.ManaPack:
+                    break;
+
+
+            }
+        }
     }
 }
 
