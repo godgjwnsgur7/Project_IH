@@ -551,9 +551,12 @@ public class Player : Creature, IHitEvent
         if (param == null)
             return;
 
+        Vector3 subVec = new Vector3(0 , Collider.size.y * 0.7f, 0);
+        Managers.Resource.Instantiate($"{PrefabPath.OBJECT_EFFECTOBEJCT_PATH}/{EEffectObjectType.PlayerHitEffect}"
+            , this.transform.position + subVec);
+
         LookLeft = !param.isAttackerLeft;
         hitForceDir.x = param.pushPower * ((param.isAttackerLeft) ? -1 : 1);
-        hitForceDir.y = param.pushPower;
         isPlayerStateLock = false;
         PlayerState = EPlayerState.Hit;
     }
