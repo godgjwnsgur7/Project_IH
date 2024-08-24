@@ -21,9 +21,10 @@ public class ItemBox : BaseItem
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.collider.CompareTag("player"))
+        if(collision.collider.CompareTag("Player"))
         {
 
+            DestroyItem();
         }
     }
 
@@ -32,7 +33,7 @@ public class ItemBox : BaseItem
 
     protected override void DestroyItem()
     {
-        base.DestroyItem();
+        Managers.Object.DespawnObject(transform.parent.gameObject);
 
 
         // 씬에서 설정된 아이템 타입으로 아이템 생성
@@ -42,7 +43,6 @@ public class ItemBox : BaseItem
     public override void SetInfo(int templateID = (int)EItemType.ItemBox)
     {
         base.SetInfo(templateID);
-        itemTypesToSpawn = EItemType.HealPack;
 
     }
 
