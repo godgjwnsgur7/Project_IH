@@ -72,7 +72,7 @@ public class SettingMenu : MonoBehaviour
     public void OnClickSoundWindow(bool SoundWindow)
     {
         Debug.Log("사운드윈도우버튼클릭");
-        displayMenu.SetActive(true);
+        displayMenu.SetActive(false);
         settingMenu.SetActive(true);
     }
 
@@ -80,8 +80,6 @@ public class SettingMenu : MonoBehaviour
     public void OnClickSetMaster(float Volume)
     {
         audioMixer.SetFloat("Master", Volume);
-        audioMixer.SetFloat("BGM", Volume);
-        audioMixer.SetFloat("Effect", Volume);
     }
     public void OnClickSetBGM(float Volume)
     {
