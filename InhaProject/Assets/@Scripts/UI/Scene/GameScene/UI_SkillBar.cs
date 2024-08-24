@@ -44,7 +44,7 @@ public class UI_SkillBar : MonoBehaviour
 	float time;
 
 	// 테스트용도, 플레이어 MP 따로 받아와야 함
-	float playerMp = 100.0f;
+	public float playerMp = 100.0f;
 
 	private void Start()
 	{
@@ -73,12 +73,6 @@ public class UI_SkillBar : MonoBehaviour
 		{
 			StartCoroutine(SkillCoolTime(ESkill.Default));
 		}
-	}
-
-	
-	public void SetMpImage()
-	{
-
 	}
 
 
@@ -113,6 +107,7 @@ public class UI_SkillBar : MonoBehaviour
 		mpText.text = playerMp + " / 100";
 	}
 
+	#region Skill Events
 	public void OnClickedSlot1()
 	{
 		if (playerSkill[(int)ESkill.Default].isAvailable ) 
@@ -151,4 +146,5 @@ public class UI_SkillBar : MonoBehaviour
 		if (playerSkill[(int)ESkill.Skill3].isAvailable)
 			StartCoroutine(SkillCoolTime(ESkill.Skill3));
 	}
+	#endregion
 }
