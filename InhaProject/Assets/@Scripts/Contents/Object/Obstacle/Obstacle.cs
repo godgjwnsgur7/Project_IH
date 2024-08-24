@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 
 public enum ObstacleType
@@ -13,34 +15,41 @@ public enum ObstacleType
 public class Obstacle : BaseObject
 {
     [SerializeField]
-    private ObstacleType obstacleType { get; set; } = ObstacleType.None;
+    public ObstacleType obstacleType { get; set; } = ObstacleType.None;
 
-    private bool isPlayerInRange = false;
-    private Player player;
+    protected bool isPlayerInRange = false;
+    protected Player player;
 
-    private void OnTriggerEnter(Collider other)
+    // 트랩 빼서 나눌까?
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.CompareTag("Player"))
+        if (collision.collider.CompareTag("Player"))
         {
             isPlayerInRange = true;
-            player = other.gameObject.GetComponent<Player>();
-
-            if (obstacleType == ObstacleType.GroundTrap)
+            player ??= collision.collider.gameObject.GetComponent<Player>();
+            player?.OnHit(new AttackParam(!player.LookLeft, 1));
+            switch (obstacleType)
             {
-                // 플레이어 hit 
-                player?.OnHit(new AttackParam(!player.LookLeft, 1)); // 이런식인가?
+                case ObstacleType.GroundTrap:
+
+
+                    break;
+
             }
+
         }
     }
-
-    private void OnTriggerExit(Collider other)
+    // 그럴까?
+    private void OnCollisionExit(Collision collision)
     {
-        if (other.CompareTag("Player"))
+        if (collision.collider.CompareTag("Player"))
         {
             isPlayerInRange = false;
-            player = null;
+
         }
     }
+    //근데 Door 에서 필요할꺼 같은데
+    
 
     public override bool Init()
     {
@@ -55,8 +64,10 @@ public class Obstacle : BaseObject
 
     private void OnArrowKeyEntered(Vector2 inputVec)
     {
+
         if (isPlayerInRange && inputVec.y > 0) // 위 방향키가 눌렸을 때
         {
+
             switch (obstacleType)
             {
                 case ObstacleType.Portal:
@@ -69,13 +80,19 @@ public class Obstacle : BaseObject
         }
     }
 
-    private void TeleportPlayer()
+    public virtual void TeleportPlayer(Portal otherPortal = default)
     {
-        // 플레이어를 포탈 위치로 이동시키는 로직
-        //  player.transform.position = destinationPosition; 이런거?
+
+        if (player != null)
+        {
+            player.transform.position = otherPortal != null ? otherPortal.transform.position : GetComponentInChildren<Portal>().connectedPortal.transform.position;
+        }
+
+
+
     }
 
-    private void EnterBossStage()
+    public virtual void EnterBossStage()
     {
         // 플레이어가 보스 스테이지로 이동하는 로직
 

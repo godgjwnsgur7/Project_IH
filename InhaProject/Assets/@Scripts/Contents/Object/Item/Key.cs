@@ -12,17 +12,5 @@ public class Key : BaseItem
         return true;
     }
 
-    protected override bool UseStateCondition()
-    {
-        // 키 사용 조건을 확인 (예: 플레이어가 문 앞에 있는지)
-        return true;
-    }
 
-    protected override void UseStateEnter()
-    {
-        base.UseStateEnter();
-        // 키 사용시 로직 (예: 문 열기)
-        Managers.Game.UseKey(ItemType);    
-        DestroyItem();
-    }
 }

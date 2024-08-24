@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7567583144582068864}
   - component: {fileID: 3562882759695212237}
   m_Layer: 0
-  m_Name: Item2
+  m_Name: HealPack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
