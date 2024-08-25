@@ -113,7 +113,7 @@ public class PoolMgr
 
     Transform root;
 
-    int poolCount = 5;
+    int poolCount = 3;
 
     public void Init()
     {

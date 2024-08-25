@@ -211,6 +211,13 @@ public class Player : Creature, IHitEvent
         attackObject.SetInfo(ETag.Monster, OnAttackTarget);
     }
 
+    public override Vector3 GetCameraTargetPos()
+    {
+        Vector3 cameraTargetPos = base.GetCameraTargetPos();
+        cameraTargetPos.y += (Collider.size.y * 1.5f);
+        return cameraTargetPos;
+    }
+
     #region Input
     private Vector2 moveDirection = Vector2.zero;
 

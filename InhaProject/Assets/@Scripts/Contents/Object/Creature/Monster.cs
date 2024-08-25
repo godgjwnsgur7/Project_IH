@@ -247,21 +247,20 @@ public class Monster : Creature, IHitEvent
             Vector3 chaseTargetDistance = this.transform.position + Collider.center - ChaseTarget.transform.position;
             LookLeft = (chaseTargetDistance.x > 0.0f);
 
-            if(Mathf.Pow(MonsterData.DetectDistance, 2) < chaseTargetDistance.sqrMagnitude)
-            {
-                ChaseTarget = null;
-                MonsterState = EMonsterState.Idle;
-                return prevState != MonsterState;
-            }
-
             if (Mathf.Abs(chaseTargetDistance.x) < 0.1f)
             {
                 MonsterState = EMonsterState.Idle;
                 return prevState != MonsterState;
             }
 
-            float chaseDistanceSqr = MonsterData.DetectDistance * MonsterData.DetectDistance;
-            if (chaseDistanceSqr >= chaseTargetDistance.sqrMagnitude)
+            float chaseDistanceSqr = MonsterData.ChaseDistance * MonsterData.ChaseDistance;
+            if (chaseDistanceSqr < chaseTargetDistance.sqrMagnitude)
+            {
+                ChaseTarget = null;
+                MonsterState = EMonsterState.Idle;
+                return prevState != MonsterState;
+            }
+            else
             {
                 MonsterState = EMonsterState.Chase;
                 return prevState != MonsterState;
@@ -455,7 +454,7 @@ public class Monster : Creature, IHitEvent
 
     protected virtual void UpdateHitState()
     {
-        if (IsEndCurrentState(EMonsterState.Hit))
+        if (IsEndCurrentState(EMonsterState.Hit) && creatureFoot.IsLandingGround)
         {
             MonsterState = EMonsterState.Idle;
         }

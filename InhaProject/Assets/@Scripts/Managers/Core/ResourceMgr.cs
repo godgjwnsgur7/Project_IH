@@ -71,6 +71,13 @@ public class ResourceMgr
         if (go == null)
             return;
 
+        // 풀링된 오브젝트일 경우 위탁
+        if (go.TryGetComponent<Poolable>(out Poolable poolGo))
+        {
+            Managers.Pool.Push(poolGo);
+            return;
+        }
+
         Object.Destroy(go);
     }
 }

@@ -37,6 +37,6 @@ public class CameraController : MonoBehaviour
 
     private void FollowingTarget()
     {
-        transform.position = target.transform.position + cameraAddFixedValue;
+        transform.position = target.GetCameraTargetPos() + cameraAddFixedValue;
     }
 }

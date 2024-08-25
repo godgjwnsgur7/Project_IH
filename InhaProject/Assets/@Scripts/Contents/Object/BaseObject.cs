@@ -36,4 +36,9 @@ public abstract class BaseObject : InitBase
 
         transform.rotation = Quaternion.Euler(0, rotationY, 0);
     }
+
+    public virtual Vector3 GetCameraTargetPos()
+    {
+        return this.transform.position;
+    }
 }
