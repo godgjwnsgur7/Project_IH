@@ -506,7 +506,10 @@ public class Player : Creature, IHitEvent
 
     public void OnAttackTarget(IHitEvent attackTarget)
     {
-        attackTarget.OnHit(new AttackParam(LookLeft));
+        if (PlayerState != EPlayerState.Attack)
+            return;
+
+        attackTarget.OnHit(new AttackParam(this, LookLeft));
     }
 
     #endregion

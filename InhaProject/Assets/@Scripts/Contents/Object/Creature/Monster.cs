@@ -155,6 +155,7 @@ public class Monster : Creature, IHitEvent
 
         MonsterType = Util.ParseEnum<EMonsterType>(gameObject.name);
         MonsterData = Managers.Data.MonsterDict[(int)MonsterType];
+        MonsterData.AttackDistance *= 2;
 
         attackObject.SetInfo(ETag.Player, OnAttackTarget);
         attackRange.SetInfo(OnAttackRangeInTarget, this);
@@ -164,8 +165,8 @@ public class Monster : Creature, IHitEvent
 
     #region AI
     public float UpdateAITick { get; protected set; } = 0.0f;
-    [SerializeField, ReadOnly] Player ChaseTarget;
-    [SerializeField, ReadOnly] Player AttackTarget;
+    [SerializeField, ReadOnly] BaseObject ChaseTarget;
+    [SerializeField, ReadOnly] BaseObject AttackTarget;
 
     protected IEnumerator CoUpdateAI()
     {
@@ -205,9 +206,12 @@ public class Monster : Creature, IHitEvent
 
     private void ChaseDetectTarget()
     {
+        if (ChaseTarget != null)
+            return;
+
         Vector3 subVec = new Vector3(0, this.transform.localScale.y * Collider.center.y, 0);
-        Debug.DrawRay(transform.position + subVec, Vector3.right * MonsterData.ChaseDistance * lookDirX, Color.red, 0.1f);
-        if (Physics.Raycast(transform.position + subVec, Vector3.right * lookDirX, out RaycastHit hit, MonsterData.ChaseDistance, 1 << (int)ELayer.Player)
+        Debug.DrawRay(transform.position + subVec, Vector3.right * MonsterData.DetectDistance * lookDirX, Color.red, 0.1f);
+        if (Physics.Raycast(transform.position + subVec, Vector3.right * lookDirX, out RaycastHit hit, MonsterData.DetectDistance, 1 << (int)ELayer.Player)
             && hit.transform.GetComponent<Player>() != null)
         {
             ChaseTarget = hit.transform.GetComponent<Player>();
@@ -243,11 +247,11 @@ public class Monster : Creature, IHitEvent
             Vector3 chaseTargetDistance = this.transform.position + Collider.center - ChaseTarget.transform.position;
             LookLeft = (chaseTargetDistance.x > 0.0f);
 
-            if(Mathf.Pow(MonsterData.ChaseDistance, 2) < chaseTargetDistance.sqrMagnitude)
+            if(Mathf.Pow(MonsterData.DetectDistance, 2) < chaseTargetDistance.sqrMagnitude)
             {
                 ChaseTarget = null;
                 MonsterState = EMonsterState.Idle;
-                return true;
+                return prevState != MonsterState;
             }
 
             if (Mathf.Abs(chaseTargetDistance.x) < 0.1f)
@@ -256,7 +260,7 @@ public class Monster : Creature, IHitEvent
                 return prevState != MonsterState;
             }
 
-            float chaseDistanceSqr = MonsterData.ChaseDistance * MonsterData.ChaseDistance;
+            float chaseDistanceSqr = MonsterData.DetectDistance * MonsterData.DetectDistance;
             if (chaseDistanceSqr >= chaseTargetDistance.sqrMagnitude)
             {
                 MonsterState = EMonsterState.Chase;
@@ -284,9 +288,7 @@ public class Monster : Creature, IHitEvent
     protected virtual void UpdateIdleState()
     {
         if(IsChaseOrAttackTarget())
-        {
             return;
-        }
 
         // Patrol
         {
@@ -306,6 +308,8 @@ public class Monster : Creature, IHitEvent
 
     }
     #endregion
+
+    #region Patrol Motion
     [SerializeField, ReadOnly] float patrolTime = 0.0f;
     protected virtual bool PatrolStateCondition()
     {
@@ -348,6 +352,7 @@ public class Monster : Creature, IHitEvent
     {
         patrolTime = 0.0f;
     }
+    #endregion
 
     #region Chase Motion
     protected virtual bool ChaseStateCondition()
@@ -369,7 +374,7 @@ public class Monster : Creature, IHitEvent
         {
             InitRigidVelocityX();
             ChaseTarget = null;
-            LookLeft = !LookLeft;
+            MonsterState = EMonsterState.Idle;
             return;
         }
 
@@ -420,13 +425,14 @@ public class Monster : Creature, IHitEvent
 
     public void OnAttackTarget(IHitEvent attackTarget)
     {
-        attackTarget?.OnHit(new AttackParam(LookLeft));
+        attackTarget?.OnHit(new AttackParam(this, LookLeft));
     }
 
     public void OnAttackRangeInTarget(Player player)
     {
-        ChaseTarget = player;
         AttackTarget = player;
+        if (player != null)
+            ChaseTarget = player;
     }
     #endregion
 
@@ -457,13 +463,16 @@ public class Monster : Creature, IHitEvent
 
     protected virtual void HitStateExit()
     {
-
+        
     }
 
     public void OnHit(AttackParam param = null)
     {
         if (param == null)
             return;
+
+        if(param.attacker is BaseObject target)
+            ChaseTarget = target;
 
         LookLeft = !param.isAttackerLeft;
         hitForceDir.x = (param.isAttackerLeft) ? -1 : 1;

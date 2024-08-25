@@ -9,6 +9,7 @@ namespace Data
         public int DataId;
         public float MoveSpeed;
         public float ChaseSpeed;
+        public float DetectDistance;
         public float ChaseDistance;
         public float AttackDistance;
     }

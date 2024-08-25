@@ -4,15 +4,17 @@
       "DataId": 0,
       "MoveSpeed": 2.0,
       "ChaseSpeed": 4.0,
-      "ChaseDistance": 10.0,
-      "AttackDistance": 7.0
+      "DetectDistance": 10.0,
+      "ChaseDistance": 15.0,
+      "AttackDistance": 3.5
     },
     {
       "DataId": 1,
       "MoveSpeed": 2.0,
       "ChaseSpeed": 3.0,
-      "ChaseDistance": 12.0,
-      "AttackDistance": 21.5
+      "DetectDistance": 12.0,
+      "ChaseDistance": 15.0,
+      "AttackDistance": 10.25
     }
   ]
 }

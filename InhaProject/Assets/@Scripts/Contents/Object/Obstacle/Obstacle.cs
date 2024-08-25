@@ -32,7 +32,7 @@ public class Obstacle : BaseObject
             {
                 case EObstacleType.Trap:
 
-                    player?.OnHit(new AttackParam(!player.LookLeft, 1));
+                    player?.OnHit(new AttackParam(this, !player.LookLeft, 1));
                     break;
 
             }
