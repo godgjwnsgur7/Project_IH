@@ -30,7 +30,7 @@ public class UI_BasePopup : InitBase
     /// <summary>
     /// 매니저에서만 호출해야하는 메서드
     /// </summary>
-    public void DeActivePopup()
+    public virtual void DeActivePopup()
     {
         this.gameObject.SetActive(false);
     }
