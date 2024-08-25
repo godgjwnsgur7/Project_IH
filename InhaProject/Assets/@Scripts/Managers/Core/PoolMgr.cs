@@ -111,23 +111,25 @@ public class PoolMgr
 
     Dictionary<string, Pool> pools = new Dictionary<string, Pool>();
 
-    Transform root;
-
-    int poolCount = 3;
-
-    public void Init()
+    Transform _root;
+    Transform Root
     {
-        if (root == null)
-        {
-            root = new GameObject { name = "@Pool_Root" }.transform;
+        get 
+        { 
+            if(_root == null)
+                _root = new GameObject { name = "@Pool_Root" }.transform;
+
+            return _root;
         }
     }
+
+    int poolCount = 3;
 
     public void CreatePool(GameObject original, int count)
     {
         Pool pool = new Pool();
         pool.Init(original, count);
-        pool.Root.parent = root;
+        pool.Root.parent = Root;
 
         pools.Add(original.name, pool);
     }
@@ -191,9 +193,9 @@ public class PoolMgr
 
     public void Clear()
     {
-        if (root != null)
+        if (Root != null)
         {
-            foreach (Transform child in root)
+            foreach (Transform child in Root)
             {
                 GameObject.Destroy(child.gameObject);
             }
