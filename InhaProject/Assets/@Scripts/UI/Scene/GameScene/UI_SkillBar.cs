@@ -43,6 +43,8 @@ public class UI_SkillBar : MonoBehaviour
 
 	float time;
 
+	public GameObject hudDamageText;
+
 	// 테스트용도, 플레이어 MP 따로 받아와야 함
 	public float playerMp = 100.0f;
 
@@ -150,7 +152,8 @@ public class UI_SkillBar : MonoBehaviour
 
 	public void OnDamageButton()
 	{
-		UIDamageParam uiDamageParam = new UIDamageParam(999999, new Vector3(400, 300, 0), true);
-		Managers.UI.OpenPopupUI<UI_Damage>(uiDamageParam);
+		GameObject hudText = Instantiate(hudDamageText);
+		UIDamageParam uiDamageParam = new UIDamageParam(9900999, new Vector3(0, 0, 0), true);
+		hudText.GetComponent<UI_Damage>().SetInfo(uiDamageParam);
 	}
 }
