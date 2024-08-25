@@ -5,7 +5,7 @@ using UnityEngine;
 
 public interface Poolable
 {
-    public bool IsUsing { get; set; }
+    public bool IsUsing { get; set; } // 풀매니저가 제어
     public GameObject GameObject { get; }
 }
 

@@ -1,3 +1,3 @@
-DataId,MoveSpeed,ChaseSpeed,DetectDistance,ChaseDistance,AttackDistance
-0,2,4,10,15,3.5
-1,2,3,12,15,10.25
+DataId,MaxHp,StrikingPower,MoveSpeed,ChaseSpeed,DetectDistance,ChaseDistance,AttackDistance
+0,200,15,2,4,10,15,3.5
+1,100,10,2,3,12,15,10.25

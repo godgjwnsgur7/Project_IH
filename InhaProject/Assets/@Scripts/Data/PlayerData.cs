@@ -4,21 +4,24 @@ using System;
 namespace Data
 {
     [Serializable]
-    public class PlayerData
+    public class JPlayerData
     {
         public int DataId;
+        public float MaxHp;
+        public float MaxMp;
+        public float StrikingPower;
         public float MoveSpeed;
         public float JumpPower;
     }
 
-    public class PlayerDataLoader : ILoader<int, PlayerData>
+    public class PlayerDataLoader : ILoader<int, JPlayerData>
     {
-        public List<PlayerData> Players = new List<PlayerData>();
+        public List<JPlayerData> Players = new List<JPlayerData>();
 
-        public Dictionary<int, PlayerData> MakeDict()
+        public Dictionary<int, JPlayerData> MakeDict()
         {
-            Dictionary<int, PlayerData> playerDict = new Dictionary<int, PlayerData>();
-            foreach (PlayerData player in Players)
+            Dictionary<int, JPlayerData> playerDict = new Dictionary<int, JPlayerData>();
+            foreach (JPlayerData player in Players)
                 playerDict.Add(player.DataId, player);
             return playerDict;
         }

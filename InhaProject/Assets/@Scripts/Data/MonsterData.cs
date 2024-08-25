@@ -4,9 +4,11 @@ using System;
 namespace Data
 {
     [Serializable]
-    public class MonsterData
+    public class JMonsterData
     {
         public int DataId;
+        public float MaxHp;
+        public float StrikingPower;
         public float MoveSpeed;
         public float ChaseSpeed;
         public float DetectDistance;
@@ -14,14 +16,14 @@ namespace Data
         public float AttackDistance;
     }
 
-    public class MonsterDataLoader : ILoader<int, MonsterData>
+    public class MonsterDataLoader : ILoader<int, JMonsterData>
     {
-        public List<MonsterData> Monsters = new List<MonsterData>();
+        public List<JMonsterData> Monsters = new List<JMonsterData>();
 
-        public Dictionary<int, MonsterData> MakeDict()
+        public Dictionary<int, JMonsterData> MakeDict()
         {
-            Dictionary<int, MonsterData> monsterDict = new Dictionary<int, MonsterData>();
-            foreach (MonsterData monster in Monsters)
+            Dictionary<int, JMonsterData> monsterDict = new Dictionary<int, JMonsterData>();
+            foreach (JMonsterData monster in Monsters)
                 monsterDict.Add(monster.DataId, monster);
             return monsterDict;
         }

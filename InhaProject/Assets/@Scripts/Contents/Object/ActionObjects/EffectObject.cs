@@ -35,10 +35,17 @@ public class EffectObject : InitBase, Poolable
         coDestroySelf = StartCoroutine(CoDestroySelf());
     }
 
+    private void OnDisable()
+    {
+        if (coDestroySelf != null)
+            StopCoroutine(coDestroySelf);
+    }
+
     private IEnumerator CoDestroySelf()
     {
         yield return new WaitForSeconds(maxDuration);
         DestroySelf();
+        coDestroySelf = null;
     }
 
     private void DestroySelf()

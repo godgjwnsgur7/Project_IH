@@ -23,10 +23,33 @@ public enum  EMonsterState
     Dead
 }
 
+public class MonsterData
+{
+    public float CurrHp;
+    public float StrikingPower;     // 공격력
+    public float MoveSpeed;
+    public float ChaseSpeed;
+    public float DetectDistance;
+    public float ChaseDistance;
+    public float AttackDistance;
+
+    public MonsterData(JMonsterData jMonsterData)
+    {
+        CurrHp = jMonsterData.MaxHp;
+        StrikingPower = jMonsterData.StrikingPower;
+        MoveSpeed = jMonsterData.MoveSpeed;
+        ChaseSpeed = jMonsterData.ChaseSpeed;
+        DetectDistance = jMonsterData.DetectDistance;
+        ChaseDistance = jMonsterData.ChaseDistance;
+        AttackDistance = jMonsterData.AttackDistance;
+    }
+}
+
 public class Monster : Creature, IHitEvent
 {
     public EMonsterType MonsterType { get; protected set; }
-    public MonsterData MonsterData { get; protected set; }
+    [SerializeField, ReadOnly]
+    public MonsterData MonsterInfo; // { get; protected set; }
 
     [SerializeField, ReadOnly] protected AttackObject attackObject;
     [SerializeField, ReadOnly] protected MonsterAttackRange attackRange;
@@ -38,6 +61,9 @@ public class Monster : Creature, IHitEvent
         get { return _monsterState; }
         protected set
         {
+            if (_monsterState == EMonsterState.Dead)
+                return;
+
             if (_monsterState == value)
                 return;
 
@@ -92,10 +118,8 @@ public class Monster : Creature, IHitEvent
             switch (value)
             {
                 case EMonsterState.Idle:
+                case EMonsterState.Hit:
                     UpdateAITick = 0.5f;
-                    break;
-                case EMonsterState.Dead:
-                    UpdateAITick = 1.0f;
                     break;
                 default:
                     UpdateAITick = 0.0f;
@@ -154,8 +178,8 @@ public class Monster : Creature, IHitEvent
         base.SetInfo(templateID);
 
         MonsterType = Util.ParseEnum<EMonsterType>(gameObject.name);
-        MonsterData = Managers.Data.MonsterDict[(int)MonsterType];
-        MonsterData.AttackDistance *= 2;
+        MonsterInfo = new MonsterData(Managers.Data.MonsterDict[(int)MonsterType]);
+        MonsterInfo.AttackDistance *= 2;
 
         attackObject.SetInfo(ETag.Player, OnAttackTarget);
         attackRange.SetInfo(OnAttackRangeInTarget, this);
@@ -210,8 +234,8 @@ public class Monster : Creature, IHitEvent
             return;
 
         Vector3 subVec = new Vector3(0, this.transform.localScale.y * Collider.center.y, 0);
-        Debug.DrawRay(transform.position + subVec, Vector3.right * MonsterData.DetectDistance * lookDirX, Color.red, 0.1f);
-        if (Physics.Raycast(transform.position + subVec, Vector3.right * lookDirX, out RaycastHit hit, MonsterData.DetectDistance, 1 << (int)ELayer.Player)
+        Debug.DrawRay(transform.position + subVec, Vector3.right * MonsterInfo.DetectDistance * lookDirX, Color.red, 0.1f);
+        if (Physics.Raycast(transform.position + subVec, Vector3.right * lookDirX, out RaycastHit hit, MonsterInfo.DetectDistance, 1 << (int)ELayer.Player)
             && hit.transform.GetComponent<Player>() != null)
         {
             ChaseTarget = hit.transform.GetComponent<Player>();
@@ -253,7 +277,7 @@ public class Monster : Creature, IHitEvent
                 return prevState != MonsterState;
             }
 
-            float chaseDistanceSqr = MonsterData.ChaseDistance * MonsterData.ChaseDistance;
+            float chaseDistanceSqr = MonsterInfo.ChaseDistance * MonsterInfo.ChaseDistance;
             if (chaseDistanceSqr < chaseTargetDistance.sqrMagnitude)
             {
                 ChaseTarget = null;
@@ -338,7 +362,7 @@ public class Monster : Creature, IHitEvent
         if (IsChaseOrAttackTarget())
             return;
 
-        SetRigidVelocityX(lookDirX * MonsterData.MoveSpeed);
+        SetRigidVelocityX(lookDirX * MonsterInfo.MoveSpeed);
         patrolTime -= Time.deltaTime;
 
         if(patrolTime < 0.0f)
@@ -386,7 +410,7 @@ public class Monster : Creature, IHitEvent
             return;
         }
 
-        SetRigidVelocityX(lookDirX * MonsterData.ChaseSpeed);
+        SetRigidVelocityX(lookDirX * MonsterInfo.ChaseSpeed);
     }
 
     protected virtual void ChaseStateExit()
@@ -470,36 +494,38 @@ public class Monster : Creature, IHitEvent
         if (param == null)
             return;
 
-        if(param.attacker is BaseObject target)
-            ChaseTarget = target;
-
+        MonsterInfo.CurrHp -= param.damage;
         LookLeft = !param.isAttackerLeft;
         hitForceDir.x = (param.isAttackerLeft) ? -1 : 1;
-        hitForceDir.y = 1;
-        MonsterState = EMonsterState.Hit;
+        MonsterState = EMonsterState.Dead;
+
+        if(MonsterInfo.CurrHp > 0)
+        {
+            if (param.attacker is BaseObject target)
+                ChaseTarget = target;
+            MonsterState = EMonsterState.Hit;
+        }
     }
     #endregion
 
     #region Dead Motion
     protected virtual bool DeadStateCondition()
     {
+        if (MonsterInfo.CurrHp > 0f)
+            return false;
+
         return true;
     }
-
-    protected virtual void DeadStateEnter()
-    {
-
-    }
-
+    protected virtual void DeadStateEnter() { }
     protected virtual void UpdateDeadState()
     {
-
+        if (IsEndCurrentState(EMonsterState.Dead))
+        {
+            // 코루틴 실행해야 함
+            return;
+        }
     }
-
-    protected virtual void DeadStateExit()
-    {
-
-    }
+    protected virtual void DeadStateExit() { }
     #endregion
 
     #endregion

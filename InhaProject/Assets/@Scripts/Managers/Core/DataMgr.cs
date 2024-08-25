@@ -11,13 +11,13 @@ public interface ILoader<Key, Value>
 
 public class DataMgr
 {
-    public Dictionary<int, PlayerData> PlayerDict { get; private set; } = new Dictionary<int, PlayerData>();
-    public Dictionary<int, MonsterData> MonsterDict { get; private set; } = new Dictionary<int, MonsterData>();
+    public Dictionary<int, JPlayerData> PlayerDict { get; private set; } = new Dictionary<int, JPlayerData>();
+    public Dictionary<int, JMonsterData> MonsterDict { get; private set; } = new Dictionary<int, JMonsterData>();
 
     public void Init()
     {
-        PlayerDict = LoadJson<PlayerDataLoader, int, PlayerData>("PlayerData").MakeDict();
-        MonsterDict = LoadJson<MonsterDataLoader, int, MonsterData>("MonsterData").MakeDict();
+        PlayerDict = LoadJson<PlayerDataLoader, int, JPlayerData>("PlayerData").MakeDict();
+        MonsterDict = LoadJson<MonsterDataLoader, int, JMonsterData>("MonsterData").MakeDict();
     }
 
     public Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>

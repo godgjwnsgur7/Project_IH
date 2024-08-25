@@ -38,7 +38,7 @@ public class MonsterAttackRange : InitBase
     {
         this.onAttackRangeInTarget = onAttackRangeInTarget;
         Collider.center += attacker.Collider.center;
-        Collider.size = new Vector3(2, attacker.Collider.size.y, attacker.MonsterData.AttackDistance * 2);
+        Collider.size = new Vector3(2, attacker.Collider.size.y, attacker.MonsterInfo.AttackDistance * 2);
     }
 
     private void OnTriggerEnter(Collider other)

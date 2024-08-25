@@ -35,8 +35,7 @@ public class Creature : BaseObject
             _lookLeft = value;
             FlipX(value);
         }
-    }  
-
+    }
 
     protected virtual void Start()
     {

@@ -31,10 +31,28 @@ public enum EPlayerState
     Dead
 }
 
+public class PlayerData
+{
+    public float CurrHp;
+    public float CurrMp;
+    public float StrikingPower;     // 공격력
+    public float MoveSpeed;
+    public float JumpPower;
+
+    public PlayerData(JPlayerData jPlayerData)
+    {
+        CurrHp = jPlayerData.MaxHp;
+        CurrMp = jPlayerData.MaxMp;
+        StrikingPower = jPlayerData.StrikingPower;
+        MoveSpeed = jPlayerData.MoveSpeed;
+        JumpPower = jPlayerData.JumpPower;
+    }
+}
+
 public class Player : Creature, IHitEvent
 {
     public EPlayerType PlayerType { get; protected set; }
-    public PlayerData PlayerData { get; protected set; }
+    public PlayerData PlayerInfo { get; protected set; }
 
     [SerializeField, ReadOnly] AttackObject attackObject;
 
@@ -206,7 +224,7 @@ public class Player : Creature, IHitEvent
         base.SetInfo(templateID);
 
         PlayerType = Util.ParseEnum<EPlayerType>(gameObject.name); // 임시
-        PlayerData = Managers.Data.PlayerDict[(int)PlayerType];
+        PlayerInfo = new PlayerData(Managers.Data.PlayerDict[(int)PlayerType]);
 
         attackObject.SetInfo(ETag.Monster, OnAttackTarget);
     }
@@ -364,7 +382,7 @@ public class Player : Creature, IHitEvent
 
     private void Movement()
     {
-        SetRigidVelocityX(moveDirection.x * PlayerData.MoveSpeed);
+        SetRigidVelocityX(moveDirection.x * PlayerInfo.MoveSpeed);
 
         if (moveDirection.x > 0)
             LookLeft = false;
@@ -385,7 +403,7 @@ public class Player : Creature, IHitEvent
     protected virtual void JumpStateEnter()
     {
         InitRigidVelocityY();
-        SetRigidVelocityY(PlayerData.JumpPower);
+        SetRigidVelocityY(PlayerInfo.JumpPower);
     }
 
     protected virtual void UpdateJumpState()
@@ -516,7 +534,7 @@ public class Player : Creature, IHitEvent
         if (PlayerState != EPlayerState.Attack)
             return;
 
-        attackTarget.OnHit(new AttackParam(this, LookLeft));
+        attackTarget.OnHit(new AttackParam(this, LookLeft, PlayerInfo.StrikingPower));
     }
 
     #endregion
