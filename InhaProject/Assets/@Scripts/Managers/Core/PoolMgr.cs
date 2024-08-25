@@ -193,14 +193,6 @@ public class PoolMgr
 
     public void Clear()
     {
-        if (Root != null)
-        {
-            foreach (Transform child in Root)
-            {
-                GameObject.Destroy(child.gameObject);
-            }
-        }
-
         pools.Clear();
     }
 }
