@@ -25,7 +25,7 @@ public class BaseItem : BaseObject
 
     public EItemType ItemType { get; set; } = EItemType.None; // 아이템 타입
 
-    private Animator animator; // 애니메이터 컴포넌트
+    protected Animator animator; // 애니메이터 컴포넌트
 
     protected bool isPlayerInRange = false;
 
@@ -61,24 +61,49 @@ public class BaseItem : BaseObject
     {
         Vector3 spawnPosition = transform.position; // 현재 아이템 위치에 생성
         Quaternion spawnRotation = Quaternion.identity;
+
+        switch(spawnItemType)
+        {
+            case EItemType.HealPack:
+            case EItemType.ManaPack:
+                spawnPosition.y += 1f;
+                break;
+        }
         Managers.Object.SpawnObject(spawnItemType, spawnPosition, spawnRotation);
 
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected virtual void OnCollisionEnter(Collision collision)
     {
-        if (other.CompareTag("Player")) // 충돌한 객체가 Player 태그를 가진 경우
+        if (collision.collider.CompareTag("Player")) // 충돌한 객체가 Player 태그를 가진 경우
         {
+            isPlayerInRange = true;
+            Player player = collision.collider.gameObject.GetComponent<Player>();
             switch (ItemType)
             {
                 case EItemType.HealPack:
+                    // player 힐
                     break;
                 case EItemType.ManaPack:
+                    // player 마나 회복
                     break;
+                default:
+                    //input 인벤토리로
+                    break;
+
 
 
             }
         }
+    }
+
+    protected virtual void OnCollisionExit(Collision collision)
+    {
+        if (collision.collider.CompareTag("Player")) // 충돌한 객체가 Player 태그를 가진 경우
+        {
+            isPlayerInRange = false;
+        }
+
     }
 }
 

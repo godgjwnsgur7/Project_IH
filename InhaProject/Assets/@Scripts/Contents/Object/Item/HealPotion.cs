@@ -4,12 +4,9 @@ using UnityEngine;
 
 public class HealPotion : BaseItem
 {
-    private void OnTriggerEnter(Collider other)
+    protected override void OnCollisionEnter(Collision collision)
     {
-        if (other.CompareTag("Player")) // 충돌한 객체가 Player 태그를 가진 경우
-        {
-            //heal 코드
-        }
+        base.OnCollisionEnter(collision);
     }
 
     public override bool Init()

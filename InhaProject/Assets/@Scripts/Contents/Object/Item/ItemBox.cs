@@ -19,8 +19,9 @@ public class ItemBox : BaseItem
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    protected override void OnCollisionEnter(Collision collision)
     {
+        base.OnCollisionEnter(collision);
         if(collision.collider.CompareTag("Player"))
         {
 
@@ -34,7 +35,6 @@ public class ItemBox : BaseItem
     protected override void DestroyItem()
     {
         Managers.Object.DespawnObject(transform.parent.gameObject);
-
 
         // 씬에서 설정된 아이템 타입으로 아이템 생성
         SpawnItems(itemTypesToSpawn);

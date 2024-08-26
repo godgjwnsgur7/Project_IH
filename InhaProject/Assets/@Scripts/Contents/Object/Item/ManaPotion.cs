@@ -4,16 +4,11 @@ using UnityEngine;
 
 public class ManaPotion : BaseItem
 {
-    private void OnTriggerEnter(Collider other)
+    protected override void OnCollisionEnter(Collision collision)
     {
-
-
-        if (!isPlayerInRange &&  other.CompareTag("Player") ) // 충돌한 객체가 Player 태그를 가진 경우
-        {
-            Debug.Log("인벤토리로");
-            isPlayerInRange = true;
-        }
+        base.OnCollisionEnter(collision);
     }
+
     private void OnTriggerExit(Collider other)
     {
         if (isPlayerInRange && other.CompareTag("Player"))
