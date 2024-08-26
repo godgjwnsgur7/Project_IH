@@ -99,6 +99,9 @@ public class UI_SkillBar : UI_GameScene
 	{
 		if (playerData.skillDatas[(int)EPlayerSkillType.Attack].isAvailable)
 			StartCoroutine(SkillCoolTime(EPlayerSkillType.Attack));
+
+		UISelectParam uiSelectParam = new UISelectParam("테스트를 또 합니다. 예를 누르면 4번 슬롯이 눌립니다.", OnClickSlot4);
+		Managers.UI.OpenPopupUI<UI_SelectPopup>(uiSelectParam);
 	}
 
 	public void OnClickSlot4()

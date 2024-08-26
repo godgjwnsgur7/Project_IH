@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class UIParam { }
 
@@ -27,6 +28,22 @@ public class UIInformParam : UIParam
     {
         this.informText = informText;
     }
+}
+
+public class UISelectParam : UIParam
+{
+    public string scriptText;
+    public string acceptButtonText;
+    public string declineButtonText;
+    public UnityAction acceptAction;
+
+    public UISelectParam(string scriptText, UnityAction acceptAction, string acceptButtonText = "예", string declineButtonText = "아니오")
+	{
+		this.scriptText = scriptText;
+		this.acceptButtonText = acceptButtonText;
+		this.declineButtonText = declineButtonText;
+        this.acceptAction = acceptAction;
+	}
 }
 
 public class UIDamageParam : UIParam

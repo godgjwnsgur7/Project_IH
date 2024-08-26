@@ -932,7 +932,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5733294602075420682}
         m_TargetAssemblyTypeName: UI_InformPopup, Assembly-CSharp
-        m_MethodName: OnClickedAccepteButton
+        m_MethodName: OnClickAccepteButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// + 선택 팝업 -> 예 아니오를 받으셈
 public class UI_InformPopup : UI_BasePopup
 {
     [SerializeField] Text informText;
     [SerializeField] Text acceptButtonText;
-
 
     public override bool Init()
     {
@@ -21,8 +19,6 @@ public class UI_InformPopup : UI_BasePopup
     public override void OpenPopupUI()
     {
         base.OpenPopupUI();
-
-        // 여기다 하는 게 맞음ㅋ
     }
 
     public override void SetInfo(UIParam param)
@@ -33,7 +29,6 @@ public class UI_InformPopup : UI_BasePopup
         if (test == null)
             return;
 
-        // 동작
 
         if (param is UIInformParam uiInformParam)
         {
@@ -44,10 +39,9 @@ public class UI_InformPopup : UI_BasePopup
 	public override void ClosePopupUI()
 	{
 		base.ClosePopupUI();
-		// 꺼진 후 동작
 	}
 
-    public void OnClickedAccepteButton()
+    public void OnClickAccepteButton()
 	{
         ClosePopupUI();
 	}
