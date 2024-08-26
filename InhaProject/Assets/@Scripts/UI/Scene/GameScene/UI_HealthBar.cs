@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_HPBar : MonoBehaviour
+public class UI_HealthBar : UI_GameScene
 {
 	[SerializeField] private Image hpSlider;
 	[SerializeField] private Text hpText;
