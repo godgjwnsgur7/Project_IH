@@ -46,6 +46,15 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""QKey"",
+                    ""type"": ""Button"",
+                    ""id"": ""d18645b8-cfc8-44a4-9de9-c8b51ec68693"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""EKey"",
                     ""type"": ""Button"",
                     ""id"": ""eba49e48-9feb-4819-afa6-3702ed0d4ebc"",
@@ -55,9 +64,27 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""RKey"",
+                    ""type"": ""Button"",
+                    ""id"": ""70a123a8-c452-41dc-a440-aab0bf0c6611"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""FKey"",
                     ""type"": ""Button"",
                     ""id"": ""91e0aa34-5d1a-4e80-a009-a85b60878aa7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""GKey"",
+                    ""type"": ""Button"",
+                    ""id"": ""7299309b-df8a-4168-8502-141571be1b6c"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -207,6 +234,39 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""FKey"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""69de52c1-441a-4cc4-b651-97447cdf2e70"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""QKey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3aefaa66-560b-42de-829d-c67b8fdc2036"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""RKey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c1b7e8ee-618b-4b9b-bf00-2737c74b7c98"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""GKey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -251,8 +311,11 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
         m_InGame = asset.FindActionMap("InGame", throwIfNotFound: true);
         m_InGame_ArrowKey = m_InGame.FindAction("ArrowKey", throwIfNotFound: true);
         m_InGame_SpaceKey = m_InGame.FindAction("SpaceKey", throwIfNotFound: true);
+        m_InGame_QKey = m_InGame.FindAction("QKey", throwIfNotFound: true);
         m_InGame_EKey = m_InGame.FindAction("EKey", throwIfNotFound: true);
+        m_InGame_RKey = m_InGame.FindAction("RKey", throwIfNotFound: true);
         m_InGame_FKey = m_InGame.FindAction("FKey", throwIfNotFound: true);
+        m_InGame_GKey = m_InGame.FindAction("GKey", throwIfNotFound: true);
         // OutGame
         m_OutGame = asset.FindActionMap("OutGame", throwIfNotFound: true);
     }
@@ -318,16 +381,22 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
     private List<IInGameActions> m_InGameActionsCallbackInterfaces = new List<IInGameActions>();
     private readonly InputAction m_InGame_ArrowKey;
     private readonly InputAction m_InGame_SpaceKey;
+    private readonly InputAction m_InGame_QKey;
     private readonly InputAction m_InGame_EKey;
+    private readonly InputAction m_InGame_RKey;
     private readonly InputAction m_InGame_FKey;
+    private readonly InputAction m_InGame_GKey;
     public struct InGameActions
     {
         private @MainInputActions m_Wrapper;
         public InGameActions(@MainInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @ArrowKey => m_Wrapper.m_InGame_ArrowKey;
         public InputAction @SpaceKey => m_Wrapper.m_InGame_SpaceKey;
+        public InputAction @QKey => m_Wrapper.m_InGame_QKey;
         public InputAction @EKey => m_Wrapper.m_InGame_EKey;
+        public InputAction @RKey => m_Wrapper.m_InGame_RKey;
         public InputAction @FKey => m_Wrapper.m_InGame_FKey;
+        public InputAction @GKey => m_Wrapper.m_InGame_GKey;
         public InputActionMap Get() { return m_Wrapper.m_InGame; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -343,12 +412,21 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
             @SpaceKey.started += instance.OnSpaceKey;
             @SpaceKey.performed += instance.OnSpaceKey;
             @SpaceKey.canceled += instance.OnSpaceKey;
+            @QKey.started += instance.OnQKey;
+            @QKey.performed += instance.OnQKey;
+            @QKey.canceled += instance.OnQKey;
             @EKey.started += instance.OnEKey;
             @EKey.performed += instance.OnEKey;
             @EKey.canceled += instance.OnEKey;
+            @RKey.started += instance.OnRKey;
+            @RKey.performed += instance.OnRKey;
+            @RKey.canceled += instance.OnRKey;
             @FKey.started += instance.OnFKey;
             @FKey.performed += instance.OnFKey;
             @FKey.canceled += instance.OnFKey;
+            @GKey.started += instance.OnGKey;
+            @GKey.performed += instance.OnGKey;
+            @GKey.canceled += instance.OnGKey;
         }
 
         private void UnregisterCallbacks(IInGameActions instance)
@@ -359,12 +437,21 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
             @SpaceKey.started -= instance.OnSpaceKey;
             @SpaceKey.performed -= instance.OnSpaceKey;
             @SpaceKey.canceled -= instance.OnSpaceKey;
+            @QKey.started -= instance.OnQKey;
+            @QKey.performed -= instance.OnQKey;
+            @QKey.canceled -= instance.OnQKey;
             @EKey.started -= instance.OnEKey;
             @EKey.performed -= instance.OnEKey;
             @EKey.canceled -= instance.OnEKey;
+            @RKey.started -= instance.OnRKey;
+            @RKey.performed -= instance.OnRKey;
+            @RKey.canceled -= instance.OnRKey;
             @FKey.started -= instance.OnFKey;
             @FKey.performed -= instance.OnFKey;
             @FKey.canceled -= instance.OnFKey;
+            @GKey.started -= instance.OnGKey;
+            @GKey.performed -= instance.OnGKey;
+            @GKey.canceled -= instance.OnGKey;
         }
 
         public void RemoveCallbacks(IInGameActions instance)
@@ -442,8 +529,11 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
     {
         void OnArrowKey(InputAction.CallbackContext context);
         void OnSpaceKey(InputAction.CallbackContext context);
+        void OnQKey(InputAction.CallbackContext context);
         void OnEKey(InputAction.CallbackContext context);
+        void OnRKey(InputAction.CallbackContext context);
         void OnFKey(InputAction.CallbackContext context);
+        void OnGKey(InputAction.CallbackContext context);
     }
     public interface IOutGameActions
     {

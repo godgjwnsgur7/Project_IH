@@ -26,11 +26,18 @@ public enum EPlayerState
     Fall,
     Land,
     Attack,
+
+    Guard,
+    Block,
     Hit,
+
+    Down, // 미구현
+    GetUp, // 미구현
 
     Dead
 }
 
+[System.Serializable]
 public class PlayerData
 {
     public float CurrHp;
@@ -51,8 +58,8 @@ public class PlayerData
 
 public class Player : Creature, IHitEvent
 {
-    public EPlayerType PlayerType { get; protected set; }
-    public PlayerData PlayerInfo { get; protected set; }
+    [field: SerializeField, ReadOnly] public EPlayerType PlayerType { get; protected set; }
+    [field: SerializeField, ReadOnly] public PlayerData PlayerInfo { get; protected set; }
 
     [SerializeField, ReadOnly] AttackObject attackObject;
 

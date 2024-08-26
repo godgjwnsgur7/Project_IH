@@ -24,6 +24,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "QKey",
+                    "type": "Button",
+                    "id": "d18645b8-cfc8-44a4-9de9-c8b51ec68693",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "EKey",
                     "type": "Button",
                     "id": "eba49e48-9feb-4819-afa6-3702ed0d4ebc",
@@ -33,9 +42,27 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "RKey",
+                    "type": "Button",
+                    "id": "70a123a8-c452-41dc-a440-aab0bf0c6611",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "FKey",
                     "type": "Button",
                     "id": "91e0aa34-5d1a-4e80-a009-a85b60878aa7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "GKey",
+                    "type": "Button",
+                    "id": "7299309b-df8a-4168-8502-141571be1b6c",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -183,6 +210,39 @@
                     "processors": "",
                     "groups": "PC",
                     "action": "FKey",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "69de52c1-441a-4cc4-b651-97447cdf2e70",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "QKey",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3aefaa66-560b-42de-829d-c67b8fdc2036",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "RKey",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c1b7e8ee-618b-4b9b-bf00-2737c74b7c98",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "GKey",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

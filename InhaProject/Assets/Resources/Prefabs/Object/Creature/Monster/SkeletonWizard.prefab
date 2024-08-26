@@ -21624,7 +21624,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: be5995a9158bda9459c22d48acd79a3f, type: 3}
   m_Controller: {fileID: 9100000, guid: d15a208e17e42f14f89dc4d791556451, type: 2}
-  m_CullingMode: 0
+  m_CullingMode: 2
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
@@ -21646,6 +21646,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e7c927faf00adc41b3ff795317b4f1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <MonsterType>k__BackingField: 0
+  <MonsterInfo>k__BackingField:
+    CurrHp: 0
+    StrikingPower: 0
+    MoveSpeed: 0
+    ChaseSpeed: 0
+    DetectDistance: 0
+    ChaseDistance: 0
+    AttackDistance: 0
   attackObject: {fileID: 6809991558581559518}
   attackRange: {fileID: 0}
   _monsterState: 0
@@ -21934,12 +21943,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 2, y: 7, z: 27}
+  m_Center: {x: 0, y: 3, z: 6.7}
 --- !u!1 &7613220742475642985
 GameObject:
   m_ObjectHideFlags: 0

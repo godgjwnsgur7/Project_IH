@@ -23,6 +23,7 @@ public enum  EMonsterState
     Dead
 }
 
+[System.Serializable]
 public class MonsterData
 {
     public float CurrHp;
@@ -47,9 +48,8 @@ public class MonsterData
 
 public class Monster : Creature, IHitEvent
 {
-    public EMonsterType MonsterType { get; protected set; }
-    [SerializeField, ReadOnly]
-    public MonsterData MonsterInfo; // { get; protected set; }
+    [field: SerializeField, ReadOnly] public EMonsterType MonsterType { get; protected set; }
+    [field: SerializeField, ReadOnly] public MonsterData MonsterInfo { get; protected set; }
 
     [SerializeField, ReadOnly] protected AttackObject attackObject;
     [SerializeField, ReadOnly] protected MonsterAttackRange attackRange;
@@ -182,7 +182,7 @@ public class Monster : Creature, IHitEvent
         MonsterInfo.AttackDistance *= 2;
 
         attackObject.SetInfo(ETag.Player, OnAttackTarget);
-        attackRange.SetInfo(OnAttackRangeInTarget, this);
+        attackRange.SetInfo(OnAttackRangeInTarget);
 
         StartCoroutine(CoUpdateAI());
     }
