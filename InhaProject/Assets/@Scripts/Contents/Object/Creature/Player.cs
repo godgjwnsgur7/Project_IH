@@ -154,6 +154,12 @@ public class Player : Creature, IHitEvent
                 case EPlayerState.Attack:
                     AttackStateExit();
                     break;
+                case EPlayerState.Guard:
+                    GuardStateExit();
+                    break;
+                case EPlayerState.Block:
+                    BlockStateExit();
+                    break;
                 case EPlayerState.Hit:
                     HitStateExit();
                     break;
@@ -184,6 +190,12 @@ public class Player : Creature, IHitEvent
                     break;
                 case EPlayerState.Attack:
                     AttackStateEnter();
+                    break;
+                case EPlayerState.Guard:
+                    GuardStateEnter();
+                    break;
+                case EPlayerState.Block:
+                    BlockStateEnter();
                     break;
                 case EPlayerState.Hit:
                     HitStateEnter();
@@ -250,12 +262,14 @@ public class Player : Creature, IHitEvent
     {
         Managers.Input.OnArrowKeyEntered -= OnArrowKey;
         Managers.Input.OnSpaceKeyEntered -= OnJumpKey;
+        Managers.Input.OnEKeyEntered -= OnGuardKey;
         Managers.Input.OnFKeyEntered -= OnAttackKey;
 
         if (isConnect)
         {
             Managers.Input.OnArrowKeyEntered += OnArrowKey;
             Managers.Input.OnSpaceKeyEntered += OnJumpKey;
+            Managers.Input.OnEKeyEntered += OnGuardKey;
             Managers.Input.OnFKeyEntered += OnAttackKey;
         }
     }
@@ -267,6 +281,14 @@ public class Player : Creature, IHitEvent
 
         moveDirection = value;
         PlayerState = EPlayerState.Move;
+    }
+
+    public void OnGuardKey()
+    {
+        if(!IsPlayerInputControll) 
+            return;
+
+        PlayerState = EPlayerState.Guard;
     }
 
     public void OnJumpKey()
@@ -314,6 +336,12 @@ public class Player : Creature, IHitEvent
                     break;
                 case EPlayerState.Attack:
                     UpdateAttackState();
+                    break;
+                case EPlayerState.Guard:
+                    UpdateGuardState();
+                    break;
+                case EPlayerState.Block:
+                    UpdateBlockState();
                     break;
                 case EPlayerState.Hit:
                     UpdateHitState();
@@ -546,6 +574,63 @@ public class Player : Creature, IHitEvent
 
     #endregion
 
+    #region Guard Motion
+    protected virtual bool GuardStateCondition()
+    {
+        // 가드를 하나의 스킬로 볼 예정
+
+        return true;
+    }
+    
+    protected virtual void GuardStateEnter()
+    {
+        InitRigidVelocityX();
+    }
+
+    protected virtual void UpdateGuardState()
+    {
+        if (IsEndCurrentState(EPlayerState.Guard))
+        {
+            PlayerState = EPlayerState.Idle;
+        }
+    }    
+
+    protected virtual void GuardStateExit()
+    {
+
+    }
+    #endregion
+
+    #region Block Motion
+    protected virtual bool BlockStateCondition()
+    {
+        return true;
+    }
+
+    protected virtual void BlockStateEnter()
+    {
+        isPlayerStateLock = true;
+        SetRigidVelocityX(2f * ((LookLeft) ? 1 : -1));
+        Time.timeScale = 0.5f; // 게임매니저로 옮길 예정? (임시)
+    }
+
+    protected virtual void UpdateBlockState()
+    {
+        if (IsEndCurrentState(EPlayerState.Block))
+        {
+            isPlayerStateLock = false;
+            PlayerState = EPlayerState.Move;
+            PlayerState = EPlayerState.Idle;
+            PlayerState = EPlayerState.Fall;
+        }
+    }
+
+    protected virtual void BlockStateExit()
+    {
+        Time.timeScale = 1f; // 게임매니저로 옮길 예정? (임시)
+    }
+    #endregion
+
     #region Hit Motion
     Vector3 hitForceDir = Vector3.zero;
 
@@ -587,24 +672,35 @@ public class Player : Creature, IHitEvent
             return;
 
         Vector3 subVec = new Vector3(0 , Collider.size.y * 0.7f, 0);
-        Managers.Resource.Instantiate($"{PrefabPath.OBJECT_EFFECTOBEJCT_PATH}/{EEffectObjectType.PlayerHitEffect}"
-            , this.transform.position + subVec);
+        if(PlayerState == EPlayerState.Guard && param.isAttackerLeft == !LookLeft)
+        {
+            subVec.x += Collider.size.x * ((LookLeft) ? -1 : 1) * 2;
+            PlayerState = EPlayerState.Block;
+        }
+        else
+        {
+            LookLeft = !param.isAttackerLeft;
+            hitForceDir.x = param.pushPower * ((param.isAttackerLeft) ? -1 : 1);
+            isPlayerStateLock = false;
+            PlayerState = EPlayerState.Hit;
+        }
 
-        LookLeft = !param.isAttackerLeft;
-        hitForceDir.x = param.pushPower * ((param.isAttackerLeft) ? -1 : 1);
-        isPlayerStateLock = false;
-        PlayerState = EPlayerState.Hit;
+        Managers.Resource.Instantiate($"{PrefabPath.OBJECT_EFFECTOBEJCT_PATH}/{EEffectObjectType.PlayerHitEffect}"
+           , this.transform.position + subVec);
     }
     #endregion
 
     #region Dead Motion
-    protected virtual void DeadStateEnter()
-    {
-    }
-
     protected virtual bool DeadStateCondition()
     {
+        if (PlayerInfo.CurrHp > 0)
+            return false;
+
         return true;
+    }
+
+    protected virtual void DeadStateEnter()
+    {
     }
 
     protected virtual void DeadStateExit()

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.UIElements;
 using UnityEngine;
 
 public enum EEffectObjectType
@@ -25,9 +26,11 @@ public class EffectObject : InitBase, Poolable
         {
             if(child.TryGetComponent<ParticleSystem>(out ParticleSystem particle))
             {
-                maxDuration = Mathf.Max(maxDuration, particle.duration);
+                float time = (particle.duration + particle.startSpeed);
+                maxDuration = Mathf.Max(maxDuration, time);
             }
         }
+        Debug.Log(maxDuration);
     }
 
     private void OnEnable()

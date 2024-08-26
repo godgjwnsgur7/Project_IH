@@ -116,7 +116,7 @@ ParticleSystem:
   m_GameObject: {fileID: 577479865529219275}
   serializedVersion: 8
   lengthInSec: 0.3
-  simulationSpeed: 1
+  simulationSpeed: 2
   stopAction: 0
   cullingMode: 1
   ringBufferMode: 0
@@ -2103,7 +2103,7 @@ ParticleSystem:
     speedModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 2
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -3359,7 +3359,7 @@ ParticleSystem:
         m_RotationOrder: 4
     y:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 1
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -3412,7 +3412,7 @@ ParticleSystem:
         m_RotationOrder: 4
     z:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 1
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -3463,8 +3463,8 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    range: {x: 0, y: 1}
-    separateAxes: 0
+    range: {x: 1, y: 2}
+    separateAxes: 1
   RotationBySpeedModule:
     enabled: 0
     x:
@@ -4892,7 +4892,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc4a18064659034eba51a3824134fb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxDuration: 1
+  maxDuration: 1.3
 --- !u!1 &8688888908304986117
 GameObject:
   m_ObjectHideFlags: 0
@@ -4935,7 +4935,7 @@ ParticleSystem:
   m_GameObject: {fileID: 8688888908304986117}
   serializedVersion: 8
   lengthInSec: 1
-  simulationSpeed: 1
+  simulationSpeed: 2
   stopAction: 0
   cullingMode: 3
   ringBufferMode: 0
