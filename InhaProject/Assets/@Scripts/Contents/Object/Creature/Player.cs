@@ -688,6 +688,13 @@ public class Player : Creature, IHitEvent
         Managers.Resource.Instantiate($"{PrefabPath.OBJECT_EFFECTOBEJCT_PATH}/{EEffectObjectType.PlayerHitEffect}"
            , this.transform.position + subVec);
     }
+    
+    // Animation Clip Event
+    public void OnInitHitForce()
+    {
+        if(creatureFoot.IsLandingGround)
+            InitRigidVelocityX();
+    }
     #endregion
 
     #region Dead Motion
