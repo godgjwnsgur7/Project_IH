@@ -94,12 +94,39 @@ public class SettingMenu : MonoBehaviour
         audioMixer.SetFloat("Master", Volume);
     }
 
-    public Slider masterSlider;
-    public TextMeshProUGUI sliderText;
+    public Slider masterSlider, bgmSlider, effectSlider;
+    public TextMeshProUGUI mastersliderText, bgmsliderText, effectsliderText;
+    float a = 1.25f;
 
     public void MasterSlider()
     {
-        sliderText.text = masterSlider.value.ToString();
+        mastersliderText.text = Mathf.RoundToInt((masterSlider.value +80) * a).ToString();
     }
+
+    public void BGMSlider()
+    {
+        bgmsliderText.text = Mathf.RoundToInt((bgmSlider.value + 80) * a).ToString();
+    }
+
+    public void EffectSlider()
+    {
+        effectsliderText.text = Mathf.RoundToInt((effectSlider.value + 80) * a).ToString();
+    }
+
+    public GameObject settingmenu;
+
+    public void OnClickStopButton()
+    {
+        Time.timeScale = 0;
+        settingmenu.SetActive(true);
+    }
+
+    public void OnClickContinueButton()
+    {
+        Time.timeScale = 1;
+        settingmenu.SetActive(false);
+    }
+
+
 
 }
