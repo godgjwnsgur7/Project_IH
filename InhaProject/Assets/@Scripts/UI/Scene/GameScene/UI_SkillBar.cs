@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class UI_SkillBar : UI_GameScene
 {
-	[SerializeField] private Image[] coolTimeImgs;
+	[SerializeField] private UI_Slot[] skillSlots;
 	[SerializeField] private Image playerMPImg;
 	[SerializeField] private Image playerMPImgBar;
 	[SerializeField] private Text mpText;
@@ -28,10 +28,10 @@ public class UI_SkillBar : UI_GameScene
 
 	private void Start()
 	{
-		for ( int i = 0; i < coolTimeImgs.Length; i++ )
+		for ( int i = 0; i < skillSlots.Length; i++ )
 		{
-			coolTimeImgs[i].fillAmount = 0;
-			coolTimeImgs[i].fillOrigin = (int)Image.Origin360.Top;
+			skillSlots[i].frontImage.fillAmount = 0;
+			skillSlots[i].frontImage.fillOrigin = (int)Image.Origin360.Top;
 		}
 
 		/* TO DO: 플레이어 MP 따로 받아와서 처리해야 함 */
@@ -63,13 +63,13 @@ public class UI_SkillBar : UI_GameScene
 		while (playerData.skillDatas[(int)type].currentTime < playerData.skillDatas[(int)type].coolTime)
 		{
 			playerData.skillDatas[(int)type].currentTime += Time.deltaTime;
-			coolTimeImgs[(int)type].fillAmount = playerData.skillDatas[(int)type].currentTime / playerData.skillDatas[(int)type].coolTime;
+			skillSlots[(int)type].frontImage.fillAmount = playerData.skillDatas[(int)type].currentTime / playerData.skillDatas[(int)type].coolTime;
 			yield return new WaitForFixedUpdate();
 		}
 
 		playerData.skillDatas[(int)type].currentTime = 0;
 		playerData.skillDatas[(int)type].isAvailable = true;
-		coolTimeImgs[(int)type].fillAmount = 0;
+		skillSlots[(int)type].frontImage.fillAmount = 0;
 	}
 
 	private void SetMpSlot()
