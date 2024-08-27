@@ -1,33 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public abstract class BaseMap : BaseObject
+public class BaseMap : BaseObject
 {
-    public string mapName;
+    public string mapName; // 맵 이름
+    public bool isCleared; // 맵이 클리어되었는지 여부
 
+    public void ClearMap()
+    {
+        if (!isCleared)
+        {
+            isCleared = true;
+            GameMgr.Instance.OnMapCleared(this); // GameMgr에 클리어된 맵을 전달
+        }
+    }
+
+    // 맵 초기화
     public override bool Init()
     {
-        if (!base.Init())
+        if (base.Init() == false)
             return false;
 
-        // 맵 초기화 로직
-        gameObject.SetActive(false); // 맵을 초기화 시 비활성화
+        isCleared = false;
+        // 맵 초기화 로직 추가
+
         return true;
-    }
-
-    public virtual void LoadMap()
-    {
-        if (!_init)
-        {
-            return;
-        }
-
-        gameObject.SetActive(true);
-    }
-
-    public virtual void UnloadMap()
-    {
-        gameObject.SetActive(false);
     }
 }

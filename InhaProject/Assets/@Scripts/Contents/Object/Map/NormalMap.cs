@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class NormalMap : BaseMap
 {
-    public override void LoadMap()
+    public override bool Init()
     {
-        base.LoadMap();
-        // 추가적인 로드 로직 (예: 적 스폰)
-    }
+        if (base.Init() == false)
+            return false;
 
-    public override void UnloadMap()
-    {
-        base.UnloadMap();
-        // 추가적인 언로드 로직
+        isCleared = false;
+        // 맵 초기화 로직 추가
+
+        return true;
     }
 }

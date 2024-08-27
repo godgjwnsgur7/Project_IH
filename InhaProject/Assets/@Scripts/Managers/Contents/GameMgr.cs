@@ -1,43 +1,65 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class GameMgr
-{
 
-    public BaseStage currentStage;
+public class GameMgr 
+{
+    public static GameMgr Instance { get; private set; }
+
+    public List<BaseStage> stages; // 전체 스테이지 리스트
+    private int currentStageIndex;
+    private BaseStage currentStage;
 
     public void Init()
     {
-        if (currentStage != null)
+         if (Instance == null)
         {
+            Instance = this;
+
+        }
+        else
+        {
+
+        }
+
+        LoadStage(0); // 첫 스테이지 로드
+    }
+
+
+
+    public void LoadStage(int stageIndex)
+    {
+        if (stageIndex < stages.Count)
+        {
+            currentStageIndex = stageIndex;
+            currentStage = stages[stageIndex];
             currentStage.Init();
-            currentStage.StartStage();
+            LoadNextMap(currentStage.maps[0]);
         }
-    }
-
-    public void Clear()
-    {
-        // 게임 클리어 처리 로직
-
-    }
-
-    public void UseKey(EItemType keyType)
-    {
-        // 현재 맵에서 키를 사용할 수 있는지 확인
-        if (currentStage != null &&  keyType == EItemType.Key)
+        else
         {
-            // 보스 맵 클리어 문을 열 수 있는 키 사용
-            Debug.Log("Boss Map");
-            currentStage.NextMap();
-        }
-        else if (keyType == EItemType.Key)
-        {
-            // 일반 맵에서 중간 보스 문을 여는 키 사용
-            Debug.Log("Middle Boss Door Opened!");
-            currentStage.NextMap();
+            Debug.Log("모든 스테이지 클리어!");
+            // 게임 클리어 로직 추가
         }
     }
 
+    public void LoadNextMap(BaseMap map)
+    {
+        // 맵을 활성화하고, 필요한 초기화 로직 수행
+        map.gameObject.SetActive(true);
+        map.Init();
+    }
+
+    public void OnMapCleared(BaseMap clearedMap)
+    {
+        currentStage.OnMapCleared(clearedMap); // 현재 스테이지에 맵 클리어 알림
+    }
+
+    public void OnStageCleared(BaseStage clearedStage)
+    {
+        currentStageIndex++;
+        LoadStage(currentStageIndex); // 다음 스테이지 로드
+    }
 }
-  

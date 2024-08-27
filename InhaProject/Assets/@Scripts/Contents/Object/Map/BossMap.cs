@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class BossMap : BaseMap
 {
-    public override void LoadMap()
+    public override bool Init()
     {
-        base.LoadMap();
-        // 보스 맵 특화 로직 (예: 보스 스폰)
-    }
+        if (base.Init() == false)
+            return false;
 
-    public override void UnloadMap()
-    {
-        base.UnloadMap();
-        // 보스 맵 특화 로직 (예: 보스 제거)
+        isCleared = false;
+        // 맵 초기화 로직 추가
+
+        return true;
     }
 }
