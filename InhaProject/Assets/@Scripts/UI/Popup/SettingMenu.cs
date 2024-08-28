@@ -13,12 +13,12 @@ public class SettingMenu : MonoBehaviour
 
     Resolution[] resolutions;
 
-    GameObject settingMenu;
+    GameObject soundMenu;
     GameObject displayMenu;
 
     void Start()
     {
-        settingMenu = GameObject.Find("SoundSetting");
+        soundMenu = GameObject.Find("SoundSetting");
         displayMenu = GameObject.Find("DisplaySetting");
 
         
@@ -62,19 +62,22 @@ public class SettingMenu : MonoBehaviour
 
     public void OnClickDisplayWindow(bool DisplayWindow)
     {
-        Debug.Log("µğ½ºÇÃ·¹ÀÌÀ©µµ¿ì¹öÆ°Å¬¸¯");
+        Debug.Log("ë””ìŠ¤í”Œë ˆì´ ìœˆë„ìš°");
         displayMenu.SetActive(true);
-        settingMenu.SetActive(false);
+        soundMenu.SetActive(false);
     }
 
 
     public void OnClickSoundWindow(bool SoundWindow)
     {
-        Debug.Log("»ç¿îµåÀ©µµ¿ì¹öÆ°Å¬¸¯");
+        Debug.Log("ì‚¬ìš´ë“œ ìœˆë„ìš°");
         displayMenu.SetActive(false);
-        settingMenu.SetActive(true);
+        soundMenu.SetActive(true);
     }
 
+ #region Sound Setting
+
+    // Sound Control
     public AudioMixer audioMixer;
     public void OnClickSetMaster(float Volume)
     {
@@ -89,44 +92,38 @@ public class SettingMenu : MonoBehaviour
         audioMixer.SetFloat("Effect", Volume);
     }
 
-    public void OnClickSetMasterMuteButton(float Volume)
-    {
-        audioMixer.SetFloat("Master", Volume);
-    }
-
+    // Sound Text
     public Slider masterSlider, bgmSlider, effectSlider;
     public TextMeshProUGUI mastersliderText, bgmsliderText, effectsliderText;
     float a = 1.25f;
-
     public void MasterSlider()
     {
         mastersliderText.text = Mathf.RoundToInt((masterSlider.value +80) * a).ToString();
     }
-
     public void BGMSlider()
     {
         bgmsliderText.text = Mathf.RoundToInt((bgmSlider.value + 80) * a).ToString();
     }
-
     public void EffectSlider()
     {
         effectsliderText.text = Mathf.RoundToInt((effectSlider.value + 80) * a).ToString();
     }
 
-    public GameObject settingmenu;
-
-    public void OnClickStopButton()
+    // Sound Mute
+    public void OnClickSetMasterMuteButton(float Volume, bool On)
     {
-        Time.timeScale = 0;
-        settingmenu.SetActive(true);
+        audioMixer.SetFloat("Master", Mathf.Log10(Volume) * 0);
+    }
+    
+    public void OnClickSetBGMMuteButton(float Volume)
+    {
+        audioMixer.SetFloat("BGM", Mathf.Log10(Volume) * 0);
     }
 
-    public void OnClickContinueButton()
+    public void OnClickSetEffectMuteButton(float Volume)
     {
-        Time.timeScale = 1;
-        settingmenu.SetActive(false);
+        audioMixer.SetFloat("Effect", Mathf.Log10(Volume) * 0);
     }
-
-
 
 }
+#endregion
