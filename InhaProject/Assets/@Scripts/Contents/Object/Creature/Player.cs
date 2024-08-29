@@ -59,7 +59,7 @@ public class PlayerData
 public class Player : Creature, IHitEvent
 {
     [field: SerializeField, ReadOnly] public EPlayerType PlayerType { get; protected set; }
-    [field: SerializeField, ReadOnly] public PlayerData PlayerInfo { get; protected set; }
+    [field: SerializeField] public PlayerData PlayerInfo { get; protected set; }
 
     [SerializeField, ReadOnly] AttackObject attackObject;
 

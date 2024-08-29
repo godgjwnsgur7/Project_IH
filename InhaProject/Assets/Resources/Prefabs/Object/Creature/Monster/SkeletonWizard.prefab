@@ -21656,7 +21656,11 @@ MonoBehaviour:
     ChaseDistance: 0
     AttackDistance: 0
   attackObject: {fileID: 6809991558581559518}
-  attackRange: {fileID: 0}
+  attackRange: {fileID: 2763639465042881651}
+  rendererList:
+  - {fileID: 330978695316538647}
+  - {fileID: 7918122168092726096}
+  - {fileID: 8486395161245503449}
   _monsterState: 0
   ChaseTarget: {fileID: 0}
   AttackTarget: {fileID: 0}
@@ -21947,8 +21951,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 7, z: 27}
-  m_Center: {x: 0, y: 3, z: 6.7}
+  m_Size: {x: 2, y: 7, z: 29}
+  m_Center: {x: 0, y: 3, z: 5.7}
 --- !u!1 &7613220742475642985
 GameObject:
   m_ObjectHideFlags: 0

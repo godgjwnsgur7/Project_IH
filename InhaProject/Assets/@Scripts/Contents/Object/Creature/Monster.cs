@@ -53,6 +53,7 @@ public class Monster : Creature, IHitEvent
 
     [SerializeField, ReadOnly] protected AttackObject attackObject;
     [SerializeField, ReadOnly] protected MonsterAttackRange attackRange;
+    [SerializeField, ReadOnly] List<Renderer> rendererList;
 
     [SerializeField, ReadOnly]
     private EMonsterState _monsterState;
@@ -158,6 +159,13 @@ public class Monster : Creature, IHitEvent
         base.Reset();
         attackObject ??= Util.FindChild<AttackObject>(this.gameObject);
         attackRange ??= Util.FindChild<MonsterAttackRange>(this.gameObject);
+
+        rendererList = new List<Renderer>();
+        Transform[] allChildren = this.GetComponentsInChildren<Transform>();
+        foreach(Transform child in allChildren)
+            if(child.GetComponent<ParticleSystem>() == null && 
+                child.TryGetComponent<Renderer>(out Renderer renderer))
+                rendererList.Add(renderer);
     }
 
     public override bool Init()
@@ -496,7 +504,7 @@ public class Monster : Creature, IHitEvent
 
         MonsterInfo.CurrHp -= param.damage;
         LookLeft = !param.isAttackerLeft;
-        hitForceDir.x = (param.isAttackerLeft) ? -1 : 1;
+        hitForceDir.x = param.pushPower * ((param.isAttackerLeft) ? -1 : 1);
         MonsterState = EMonsterState.Dead;
 
         if(MonsterInfo.CurrHp > 0)
@@ -518,14 +526,41 @@ public class Monster : Creature, IHitEvent
     }
     protected virtual void DeadStateEnter() { }
     protected virtual void UpdateDeadState()
-    {
+    { 
         if (IsEndCurrentState(EMonsterState.Dead))
         {
-            // 内风凭 角青秦具 窃
+            StartCoroutine(CoDestroyEffect(1.5f));
             return;
         }
     }
     protected virtual void DeadStateExit() { }
+
+    private IEnumerator CoDestroyEffect(float fadeTime)
+    {
+        while(true)
+        {
+            int count = 0;
+            float time = fadeTime * 0.01f * Time.deltaTime;
+            foreach (Renderer randerer in rendererList)
+            {
+                Color tempColor = randerer.material.color;
+                if(tempColor.a > 0.01f)
+                {
+                    count++;
+                    tempColor.a -= time;
+                    if (tempColor.a <= 0f) tempColor.a = 0f;
+                    randerer.material.color = tempColor;
+                }
+            }
+
+            if (count == 0)
+                break;
+
+            yield return null;
+        }
+
+        Managers.Resource.Destroy(gameObject);
+    }
     #endregion
 
     #endregion
