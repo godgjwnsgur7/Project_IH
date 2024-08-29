@@ -6,28 +6,19 @@ using UnityEngine;
 
 public class GameMgr 
 {
-    public static GameMgr Instance { get; private set; }
-
-    public List<BaseStage> stages; // 전체 스테이지 리스트
+    public List<BaseStage> stages = new List<BaseStage>(); // 전체 스테이지 리스트
     private int currentStageIndex;
     private BaseStage currentStage;
 
     public void Init()
     {
-         if (Instance == null)
-        {
-            Instance = this;
-
-        }
-        else
-        {
-
-        }
-
         LoadStage(0); // 첫 스테이지 로드
     }
 
+    public void Clear()
+    {
 
+    }
 
     public void LoadStage(int stageIndex)
     {

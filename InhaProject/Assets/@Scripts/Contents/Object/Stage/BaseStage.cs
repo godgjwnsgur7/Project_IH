@@ -27,11 +27,11 @@ public class BaseStage : BaseObject
 
         if (currentMapIndex >= maps.Count)
         {
-            GameMgr.Instance.OnStageCleared(this); // GameMgr에 스테이지 클리어 알림
+            Managers.Game.OnStageCleared(this); // GameMgr에 스테이지 클리어 알림
         }
         else
         {
-            GameMgr.Instance.LoadNextMap(maps[currentMapIndex]); // 다음 맵 로드
+            Managers.Game.LoadNextMap(maps[currentMapIndex]); // 다음 맵 로드
         }
     }
 }

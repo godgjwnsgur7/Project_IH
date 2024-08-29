@@ -11,7 +11,7 @@ public class BaseMap : BaseObject
         if (!isCleared)
         {
             isCleared = true;
-            GameMgr.Instance.OnMapCleared(this); // GameMgr에 클리어된 맵을 전달
+            Managers.Game.OnMapCleared(this); // GameMgr에 클리어된 맵을 전달
         }
     }
 

@@ -61,7 +61,6 @@ public class Managers : MonoBehaviour
             s_instance._data.Init();
             s_instance._input = Instance._resource.Instantiate(PrefabPath.INPUTMANAGER_PATH, s_instance.transform).GetComponent<InputMgr>();
             s_instance._input.Init();
-            s_instance._game.Init();
             s_instance._object.Init();
             s_instance._sound.Init();
             s_instance._ui.Init();
@@ -73,6 +72,9 @@ public class Managers : MonoBehaviour
     /// </summary>
     public static void Clear()
     {
+        if (Scene.CurrentScene.SceneType == Define.EScene.GameScene)
+            Game.Clear();
+
         Pool.Clear();
         Scene.Clear();
     }
