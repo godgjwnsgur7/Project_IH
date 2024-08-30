@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
@@ -29,7 +30,6 @@ public class IntroVideoPlayer : MonoBehaviour
 
 	IEnumerator ReadyToPlay()
 	{
-		//LinkedVideo.clip = clip;
 		LinkedVideo.Prepare();
 
 		while (!LinkedVideo.isPrepared)
@@ -37,28 +37,16 @@ public class IntroVideoPlayer : MonoBehaviour
 			yield return null;
 		}
 
-		MovieScreen.texture = LinkedVideo.texture;
+		LinkedVideo.loopPointReached += OnEndMovie;
 		LinkedVideo.Play();
+
+		MovieScreen.texture = LinkedVideo.texture;
 
 		isPrepare = true;
 	}
 
-
-	void Start()
-    {
-
-	}
-
-    void Update()
-    {
-		if ( isPrepare)
-		{
-			time += Time.deltaTime;
-			if ( time >= LinkedVideo.clockTime )
-			{
-				//Debug.Log("Video ");
-				Managers.Scene.LoadScene(Define.EScene.TitleScene);
-			}
-		}
+	void OnEndMovie(VideoPlayer vp)
+	{
+		Managers.Scene.LoadScene(Define.EScene.TitleScene);
 	}
 }
