@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering;
 using static UnityEditor.Progress;
 
 public class Inventory : MonoBehaviour
@@ -45,7 +46,7 @@ public class Inventory : MonoBehaviour
 			if (items.Exists(x => x.Name.Equals(item.Name)))
 			{
 				IInventoryItem findItem = items.Find(x => x.Name.Equals(item.Name));
-				findItem.Count = item.Count;
+				findItem.Count += item.Count;
 				if ( ItemAdd != null )
 					ItemAdd(this, new InventoryEventArgs(item));
 				return;
@@ -62,6 +63,25 @@ public class Inventory : MonoBehaviour
 
 	public void RemoveItem(IInventoryItem item)
 	{
+		if (items.Exists(x => x.Name.Equals(item.Name)))
+		{
+			IInventoryItem findItem = items.Find(x => x.Name.Equals(item.Name));
+			findItem.Count -= item.Count;
+			if (ItemRemove != null)
+				ItemRemove(this, new InventoryEventArgs(findItem));
 
+			if ( findItem.Count <= 0 )
+			{
+				items.Remove(findItem);
+				Debug.Log(items.Exists(x => x.Name.Equals(item.Name)));
+				Debug.Log("아이템 없을걸");
+			}
+			return;
+		}
+
+		else
+		{
+			Debug.Log(item.Name + "이 없습니다.");
+		}
 	}
 }

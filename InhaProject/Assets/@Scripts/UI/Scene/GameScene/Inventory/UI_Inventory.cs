@@ -9,7 +9,8 @@ using UnityEngine.UI;
 public class UI_Inventory : MonoBehaviour
 {
 	public GameObject item;
-	private Inventory inventory;
+	public GameObject removeItem;
+	public Inventory inventory;
 
 	[SerializeField]
 	Transform inventorySlot;
@@ -23,6 +24,17 @@ public class UI_Inventory : MonoBehaviour
 			Debug.Log(inventoryItem.Name + " " + inventoryItem.Count);
 			inventory.AddItem(inventoryItem);
 			Destroy(item);
+		}
+	}
+
+	public void OnClickRemoveItemButton()
+	{
+		IInventoryItem removeItem = new HealPotion();
+
+		if ( removeItem != null )
+		{
+			Debug.Log("remove");
+			inventory.RemoveItem(removeItem);
 		}
 	}
 
@@ -80,6 +92,45 @@ public class UI_Inventory : MonoBehaviour
 
 	private void InventoryScript_ItemRemove(object sender, InventoryEventArgs e)
 	{
+		UI_ItemSlot[] arr = transform.GetComponentsInChildren<UI_ItemSlot>();
 
+		IInventoryItem item = inventory.FindItem(e.Item.Name);
+
+		// 찾는 아이템이 인벤토리에 없다면 return
+		if ( item == null)
+			return;
+
+		foreach (UI_ItemSlot slot in arr)
+		{
+			Transform childTransformSlotImg = slot.transform.Find("SlotImage");
+			Image image = childTransformSlotImg.GetComponent<Image>();
+			
+			if (slot.name == e.Item.Name)
+			{
+				Debug.Log(e.Item.Count);
+				int count = int.Parse(slot.countText.text);
+				count = e.Item.Count;
+				
+				// 소모품일 경우만 개수 표시 수정
+				if ( e.Item.Type == EItemType.HealPotion)
+				{
+					if (count > 0)
+						slot.countText.text = count.ToString();
+					else
+					{
+						image.enabled = false;
+						slot.countText.enabled = false;
+						slot.name = "null";
+					}
+				}
+				
+				else
+				{
+					image.enabled = false;
+					slot.name = "null";
+				}
+				break;
+			}
+		}
 	}
 }

@@ -1913,7 +1913,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61d3c40a22eadd0419c82db1daaac4a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 0}
+  item: {fileID: 1777295352}
+  removeItem: {fileID: 0}
+  inventory: {fileID: 1448931183}
   inventorySlot: {fileID: 572421383}
 --- !u!224 &554750812 stripped
 RectTransform:
@@ -5737,7 +5739,7 @@ GameObject:
   - component: {fileID: 1561364416}
   - component: {fileID: 1561364415}
   m_Layer: 5
-  m_Name: ItemButton (1)
+  m_Name: RemoveItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5809,7 +5811,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 554702148}
         m_TargetAssemblyTypeName: UI_Inventory, Assembly-CSharp
-        m_MethodName: OnClickPickupButton
+        m_MethodName: OnClickRemoveItemButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
