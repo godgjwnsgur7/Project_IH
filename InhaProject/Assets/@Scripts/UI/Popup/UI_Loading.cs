@@ -1,20 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_Loading : UI_BasePopup
 {
+    [SerializeField] public Slider progressBar;
+
     public override bool Init()
     {
         if (base.Init() == false)
             return false;
 
-
+        progressBar.value = 0;
 
         return true;
     }
 
-    public override void SetInfo(UIParam param)
+	private void Update()
+	{
+		progressBar.value += Time.deltaTime;
+	}
+
+	public override void SetInfo(UIParam param)
     {
         base.SetInfo(param);
 
