@@ -317,7 +317,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 592727172}
-  - component: {fileID: 592727171}
   - component: {fileID: 592727170}
   - component: {fileID: 592727169}
   - component: {fileID: 592727168}
@@ -391,19 +390,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &592727171
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 592727167}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98b0b92ee3e50f64891a0019d49759e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  blinkText: {fileID: 0}
 --- !u!224 &592727172
 RectTransform:
   m_ObjectHideFlags: 0
@@ -552,6 +538,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MovieScreen: {fileID: 1961836762}
   LinkedVideo: {fileID: 688414139}
+  videoClip: {fileID: 0}
 --- !u!1 &958892538
 GameObject:
   m_ObjectHideFlags: 0

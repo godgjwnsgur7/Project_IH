@@ -26,7 +26,6 @@ public class IntroScene : BaseScene
 	private void Update()
 	{
 		time += Time.deltaTime;
-		//if ( time > )
 	}
 
 	public override void Clear()
