@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class Inventory : MonoBehaviour
 {
@@ -12,6 +13,17 @@ public class Inventory : MonoBehaviour
 
 	public event EventHandler<InventoryEventArgs> ItemAdd;
 	public event EventHandler<InventoryEventArgs> ItemRemove;
+
+	public IInventoryItem FindItem(string name)
+	{
+		if (items.Exists(x => x.Name.Equals(name)))
+		{
+			IInventoryItem findItem = items.Find(x => x.Name.Equals(name));
+			return findItem;
+		}
+
+		return null;
+	}
 
 	public void AddItem(IInventoryItem item)
 	{
@@ -33,8 +45,9 @@ public class Inventory : MonoBehaviour
 			if (items.Exists(x => x.Name.Equals(item.Name)))
 			{
 				IInventoryItem findItem = items.Find(x => x.Name.Equals(item.Name));
-				findItem.Count += item.Count;
-				Debug.Log(findItem.Name + " " + findItem.Count);
+				findItem.Count = item.Count;
+				if ( ItemAdd != null )
+					ItemAdd(this, new InventoryEventArgs(item));
 				return;
 			}
 

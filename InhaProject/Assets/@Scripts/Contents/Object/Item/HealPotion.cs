@@ -6,44 +6,51 @@ public class HealPotion : BaseItem, IInventoryItem
 {
     public string Name 
     {
-        get
-        {
-            return "HealPotion";
-        }
+        get { return "HealPotion"; }
     }
 
     public Sprite _Image = null;
 
     public Sprite Image
     {
-        get
-        {
-            return _Image;
-        }
+        get { return _Image; }
     }
     
     public int _count = 1;
+
     public int Count
     {
-        get
-        {
-            return _count;
-        }
-        set 
-        {
-            _count = value;
-        }
+        get { return _count; }
+        set { _count = value; }
+    }
+
+    public EItemType Type
+    {
+        get { return ItemType; }
     }
 
     public void OnPickup()
     {
         gameObject.SetActive(false);
+        Destroy(gameObject); 
     }
 
     protected override void OnCollisionEnter(Collision collision)
     {
         base.OnCollisionEnter(collision);
-    }
+
+		if (collision.collider.CompareTag("Player")) 
+		{
+			isPlayerInRange = true;
+			Player player = collision.collider.gameObject.GetComponent<Player>();
+
+			if (player != null)
+			{
+				//player.inventory.AddItem(this);
+                OnPickup();
+			}
+		}
+	}
 
     public override bool Init()
     {
