@@ -1,20 +1,22 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
 	private const int SLOT_SIZE = 6;
+
 	private List<IInventoryItem> items = new List<IInventoryItem>();
 
 	public event EventHandler<InventoryEventArgs> ItemAdd;
+	public event EventHandler<InventoryEventArgs> ItemRemove;
 
 	public void AddItem(IInventoryItem item)
 	{
 		if (items.Count < SLOT_SIZE)
 		{
-			// as BaseObject인지
 			Collider collider = (item as BaseItem).GetComponent<Collider>();
 
 			if (collider != null)
@@ -27,6 +29,15 @@ public class Inventory : MonoBehaviour
 
 			item.OnPickup();
 
+			// 이미 가지고 있는 아이템인지 검사
+			if (items.Exists(x => x.Name.Equals(item.Name)))
+			{
+				IInventoryItem findItem = items.Find(x => x.Name.Equals(item.Name));
+				findItem.Count += item.Count;
+				Debug.Log(findItem.Name + " " + findItem.Count);
+				return;
+			}
+
 			if (ItemAdd != null)
 			{
 				ItemAdd(this, new InventoryEventArgs(item));
@@ -34,5 +45,10 @@ public class Inventory : MonoBehaviour
 
 			items.Add(item);
 		}
+	}
+
+	public void RemoveItem(IInventoryItem item)
+	{
+
 	}
 }

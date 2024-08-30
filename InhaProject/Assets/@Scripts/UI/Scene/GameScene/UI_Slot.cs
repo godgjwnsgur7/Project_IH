@@ -8,11 +8,15 @@ public class UI_Slot : MonoBehaviour
 {
 	[SerializeField] public Sprite slot_img;
 	public Sprite front_img;
-	private Image slotImage;
+	protected Image slotImage;
 	public Image frontImage;
 
-
 	private void Start()
+	{
+		Init();
+	}
+
+	virtual protected void Init()
 	{
 		Transform childTransformSlotImg = transform.Find("SlotImage");
 		slotImage = childTransformSlotImg.GetComponent<Image>();
