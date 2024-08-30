@@ -42,7 +42,7 @@ public class Inventory : MonoBehaviour
 
 			item.OnPickup();
 
-			// ÀÌ¹Ì °¡Áö°í ÀÖ´Â ¾ÆÀÌÅÛÀÎÁö °Ë»ç
+			// ì´ë¯¸ ê°€ì§€ê³  ìˆëŠ” ì•„ì´í…œì¸ì§€ ê²€ì‚¬
 			if (items.Exists(x => x.Name.Equals(item.Name)))
 			{
 				IInventoryItem findItem = items.Find(x => x.Name.Equals(item.Name));
@@ -74,14 +74,13 @@ public class Inventory : MonoBehaviour
 			{
 				items.Remove(findItem);
 				Debug.Log(items.Exists(x => x.Name.Equals(item.Name)));
-				Debug.Log("¾ÆÀÌÅÛ ¾øÀ»°É");
 			}
 			return;
 		}
 
 		else
 		{
-			Debug.Log(item.Name + "ÀÌ ¾ø½À´Ï´Ù.");
+			Debug.Log(item.Name + "ì´ ì—†ìŠµë‹ˆë‹¤.");
 		}
 	}
 }

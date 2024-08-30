@@ -19,11 +19,11 @@ public class UI_Inventory : MonoBehaviour
 	public void OnClickPickupButton()
 	{
 		IInventoryItem inventoryItem = item.GetComponent<IInventoryItem>();
+		//IInventoryItem inventoryItem = new HealPotion();
 		if ( inventoryItem != null )
 		{
-			Debug.Log(inventoryItem.Name + " " + inventoryItem.Count);
 			inventory.AddItem(inventoryItem);
-			Destroy(item);
+			// Destroy(item);
 		}
 	}
 
@@ -33,7 +33,6 @@ public class UI_Inventory : MonoBehaviour
 
 		if ( removeItem != null )
 		{
-			Debug.Log("remove");
 			inventory.RemoveItem(removeItem);
 		}
 	}
@@ -107,7 +106,6 @@ public class UI_Inventory : MonoBehaviour
 			
 			if (slot.name == e.Item.Name)
 			{
-				Debug.Log(e.Item.Count);
 				int count = int.Parse(slot.countText.text);
 				count = e.Item.Count;
 				
