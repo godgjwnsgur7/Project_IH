@@ -3602,17 +3602,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <PlayerType>k__BackingField: 0
-  <PlayerInfo>k__BackingField:
+  _playerInfo:
+    MaxHp: 0
     CurrHp: 0
+    MaxMp: 0
     CurrMp: 0
     StrikingPower: 0
     MoveSpeed: 0
     JumpPower: 0
+    PlayerSkillList: []
   skillAttackObject: {fileID: 0}
   attackObject: {fileID: 2169763420635916841}
   _isPlayerInputControll: 0
   isPlayerStateLock: 0
   _playerState: 0
+  inventory: {fileID: 0}
   skillNum: 0
   isSuperArmour: 0
   isInvincibility: 0

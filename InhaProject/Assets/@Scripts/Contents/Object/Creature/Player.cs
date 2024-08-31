@@ -28,6 +28,7 @@ public enum EPlayerState
     Jump,
     Fall,
     Land,
+    Dash,
 
     Attack,
     Skill1,
@@ -183,6 +184,9 @@ public class Player : Creature, IHitEvent
                 case EPlayerState.Land:
                     isChangeState = LandStateCondition();
                     break;
+                case EPlayerState.Dash:
+                    isChangeState = DashStateCondition();
+                    break;
                 case EPlayerState.Attack:
                     isChangeState = AttackStateCondition();
                     break;
@@ -216,6 +220,9 @@ public class Player : Creature, IHitEvent
                     break;
                 case EPlayerState.Land:
                     LandStateExit();
+                    break;
+                case EPlayerState.Dash:
+                    DashStateExit();
                     break;
                 case EPlayerState.Attack:
                     AttackStateExit();
@@ -259,6 +266,9 @@ public class Player : Creature, IHitEvent
                     break;
                 case EPlayerState.Land:
                     LandStateEnter();
+                    break;
+                case EPlayerState.Dash:
+                    DashStateEnter();
                     break;
                 case EPlayerState.Attack:
                     AttackStateEnter();
@@ -371,6 +381,7 @@ public class Player : Creature, IHitEvent
     private void ConnectInputActions(bool isConnect)
     {
         Managers.Input.OnArrowKeyEntered -= OnArrowKey;
+        Managers.Input.OnSpaceKeyEntered -= OnDashKey;
         Managers.Input.OnCKeyEntered -= OnJumpKey;
         Managers.Input.OnVKeyEntered -= OnGuardKey;
         Managers.Input.OnXKeyEntered -= OnAttackKey;
@@ -382,6 +393,7 @@ public class Player : Creature, IHitEvent
         if (isConnect)
         {
             Managers.Input.OnArrowKeyEntered += OnArrowKey;
+            Managers.Input.OnSpaceKeyEntered += OnDashKey;
             Managers.Input.OnCKeyEntered += OnJumpKey;
             Managers.Input.OnVKeyEntered += OnGuardKey;
             Managers.Input.OnXKeyEntered += OnAttackKey;
@@ -414,8 +426,21 @@ public class Player : Creature, IHitEvent
         if (!IsPlayerInputControll)
             return;
 
-        if(creatureFoot.IsLandingGround)
-            PlayerState = EPlayerState.Jump;
+        if (!creatureFoot.IsLandingGround)
+            return;
+        
+        PlayerState = EPlayerState.Jump;
+    }
+
+    public void OnDashKey()
+    {
+        if (!IsPlayerInputControll)
+            return;
+
+        if (!creatureFoot.IsLandingGround)
+            return;
+
+        PlayerState = EPlayerState.Dash;
     }
 
     public void OnAttackKey()
@@ -517,6 +542,9 @@ public class Player : Creature, IHitEvent
                     break;
                 case EPlayerState.Land:
                     UpdateLandState();
+                    break;
+                case EPlayerState.Dash:
+                    UpdateDashState();
                     break;
                 case EPlayerState.Attack:
                     UpdateAttackState();
@@ -720,6 +748,33 @@ public class Player : Creature, IHitEvent
     public void OnLand()
     {
 
+    }
+    #endregion
+
+    #region Dash Motion
+    protected virtual bool DashStateCondition()
+    {
+        return true;
+    }
+
+    protected virtual void DashStateEnter()
+    {
+        isPlayerStateLock = true;
+    }
+
+    protected virtual void UpdateDashState()
+    {
+        if (IsEndCurrentState(EPlayerState.Dash))
+        {
+            isPlayerStateLock = false;
+            PlayerState = EPlayerState.Move;
+            PlayerState = EPlayerState.Idle;
+        }
+    }
+
+    protected virtual void DashStateExit()
+    {
+        
     }
     #endregion
 
