@@ -6,13 +6,13 @@ using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using static UnityEditor.Progress;
 
-public class InventoryData
+public class InventoryItemData
 {
 	public string name;
 	public int count;
 	public EItemType type;
 
-	public InventoryData(string name, int count, EItemType type)
+	public InventoryItemData(string name, int count, EItemType type)
 	{
 		this.name = name;
 		this.count = count;
@@ -75,7 +75,7 @@ public class Inventory : MonoBehaviour
 		}
 	}
 
-	public void RemoveItem(InventoryData data)
+	public void RemoveItem(InventoryItemData data)
 	{
 		if (items.Exists(x => x.Name.Equals(data.name)))
 		{
@@ -119,5 +119,10 @@ public class Inventory : MonoBehaviour
 		{
 			Debug.Log(item.Name + "이 없습니다.");
 		}
+	}
+
+	public InventoryItemData GetItem(int slotId)
+	{
+		return null;
 	}
 }

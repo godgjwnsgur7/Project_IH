@@ -27,7 +27,7 @@ public class UI_Inventory : MonoBehaviour
 
 	public void OnClickRemoveItemButton()
 	{
-		InventoryData removeItemData = new InventoryData("HealPotion", 1, EItemType.HealPotion);
+		InventoryItemData removeItemData = new InventoryItemData("HealPotion", 1, EItemType.HealPotion);
 
 		if (removeItemData != null )
 		{

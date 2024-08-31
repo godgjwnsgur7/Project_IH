@@ -1,4 +1,5 @@
 using Data;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.IO.LowLevel.Unsafe;
@@ -9,6 +10,7 @@ using UnityEngine.InputSystem.XR;
 using UnityEngine.UIElements;
 using static Define;
 
+#region Enum Group
 /// <summary>
 /// 프리팹 이름과 같아야 함
 /// </summary>
@@ -43,29 +45,80 @@ public enum EPlayerState
     Dead
 }
 
-[System.Serializable]
+public enum EPlayerSkillType
+{
+    Default = 0,
+    Skill1 = 1,
+    Skill2 = 2,
+    Skill3 = 3,
+    Skill4 = 4,
+    Guard = 5,
+    Max = 6,
+}
+#endregion
+
+#region DataClass
+[Serializable]
 public class PlayerData
 {
+    public float MaxHp;
     public float CurrHp;
+    public float MaxMp;
     public float CurrMp;
     public float StrikingPower;     // 공격력
     public float MoveSpeed;
     public float JumpPower;
+    public List<PlayerSkill> PlayerSkillList;     // 값 세팅을 따로 해주어야 함
 
     public PlayerData(JPlayerData jPlayerData)
     {
+        MaxHp = jPlayerData.MaxHp;
         CurrHp = jPlayerData.MaxHp;
+        MaxMp = jPlayerData.MaxMp;
         CurrMp = jPlayerData.MaxMp;
         StrikingPower = jPlayerData.StrikingPower;
         MoveSpeed = jPlayerData.MoveSpeed;
         JumpPower = jPlayerData.JumpPower;
+        PlayerSkillList = new List<PlayerSkill>();
     }
 }
+
+[Serializable]
+public class PlayerSkill
+{
+    public EPlayerSkillType skill;
+    public float coolTime;
+    public float currentTime;
+    public bool isAvailable;
+    public float mpAmount;
+
+    public PlayerSkill(EPlayerSkillType skill, float coolTime, bool isAvailable, float mpAmount)
+    {
+        this.skill = skill;
+        this.coolTime = coolTime;
+        this.isAvailable = isAvailable;
+        this.mpAmount = mpAmount;
+
+        this.currentTime = 0.0f;
+    }
+}
+#endregion
 
 public class Player : Creature, IHitEvent
 {
     [field: SerializeField, ReadOnly] public EPlayerType PlayerType { get; protected set; }
-    [field: SerializeField] public PlayerData PlayerInfo { get; protected set; }
+    [field: SerializeField] private PlayerData _playerInfo;
+    public PlayerData PlayerInfo
+    {
+        get { return _playerInfo; }
+        protected set
+        {
+            OnChangedHp?.Invoke(_playerInfo.CurrHp);
+            OnChangedMp?.Invoke(_playerInfo.CurrMp);
+
+            _playerInfo = value;
+        }
+    }
 
     [SerializeField, ReadOnly] AttackObject skillAttackObject;
     [SerializeField, ReadOnly] AttackObject attackObject = null;
@@ -274,6 +327,13 @@ public class Player : Creature, IHitEvent
 
         skillAttackObject.SetInfo(ETag.Player, OnSkillAttackTarget);
         attackObject.SetInfo(ETag.Player, OnAttackTarget);
+
+        SetSkillInfo();
+    }
+
+    private void SetSkillInfo()
+    {
+
     }
 
     public override Vector3 GetCameraTargetPos()
@@ -282,6 +342,28 @@ public class Player : Creature, IHitEvent
         cameraTargetPos.y += (Collider.size.y * 1.5f);
         return cameraTargetPos;
     }
+
+    #region UI
+    public Action<float> OnChangedHp = null;
+    public Action<float> OnChangedMp = null;
+    public Action<int> OnUseSkill = null; // int : SkillType Num.
+
+    [SerializeField, ReadOnly] Inventory inventory;
+
+    public void OnUseItemKey(int slotId)
+    {
+        InventoryItemData itemData = inventory.GetItem(slotId);
+
+        // ItemParam을 받아와야 할 듯
+        // 지금 상황에서 사용이 가능한지 판단.
+
+        bool isUse = true;
+        if(isUse)
+        {
+            inventory.RemoveItem(itemData);
+        }
+    }
+    #endregion
 
     #region Input
     private Vector2 moveDirection = Vector2.zero;
@@ -836,7 +918,7 @@ public class Player : Creature, IHitEvent
         if (isSuperArmour)
         {
             subVec.x += Collider.size.x * ((LookLeft) ? 1 : -1) * 2;
-            subVec.y += Random.Range(-0.5f, 0.5f);
+            subVec.y += UnityEngine.Random.Range(-0.5f, 0.5f);
             Managers.Object.SpawnEffectObject(EEffectObjectType.PlayerHitEffect, this.transform.position + subVec);
             return;
         }

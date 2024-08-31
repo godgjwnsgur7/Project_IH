@@ -79,8 +79,13 @@ public class UI_SkillBar : UI_GameScene
 		mpText.text = playerMp + " / 100";
 	}
 
-	#region Skill Events
-	public void OnClickSlot1()
+	public void ConnectSlot()
+	{
+
+	}
+
+    #region Skill Events
+    public void OnClickSlot1()
 	{
 		if (playerData.skillDatas[(int)EPlayerSkillType.Default].isAvailable ) 
 			StartCoroutine(SkillCoolTime(EPlayerSkillType.Default));
@@ -88,8 +93,8 @@ public class UI_SkillBar : UI_GameScene
 
 	public void OnClickSlot2()
 	{
-		if (playerData.skillDatas[(int)EPlayerSkillType.Jump].isAvailable)
-			StartCoroutine(SkillCoolTime(EPlayerSkillType.Jump));
+		if (playerData.skillDatas[(int)EPlayerSkillType.Guard].isAvailable)
+			StartCoroutine(SkillCoolTime(EPlayerSkillType.Guard));
 
 		UIInformParam uiInformParam = new UIInformParam("테스트테스트 테스트를 합시다");
 		Managers.UI.OpenPopupUI<UI_InformPopup>(uiInformParam);
@@ -97,8 +102,8 @@ public class UI_SkillBar : UI_GameScene
 
 	public void OnClickSlot3()
 	{
-		if (playerData.skillDatas[(int)EPlayerSkillType.Attack].isAvailable)
-			StartCoroutine(SkillCoolTime(EPlayerSkillType.Attack));
+		if (playerData.skillDatas[(int)EPlayerSkillType.Skill1].isAvailable)
+			StartCoroutine(SkillCoolTime(EPlayerSkillType.Skill1));
 
 		UISelectParam uiSelectParam = new UISelectParam("테스트를 또 합니다. 예를 누르면 4번 슬롯이 눌립니다.", OnClickSlot4);
 		Managers.UI.OpenPopupUI<UI_SelectPopup>(uiSelectParam);
@@ -106,20 +111,20 @@ public class UI_SkillBar : UI_GameScene
 
 	public void OnClickSlot4()
 	{
-		if (playerData.skillDatas[(int)EPlayerSkillType.Skill1].isAvailable)
-			StartCoroutine(SkillCoolTime(EPlayerSkillType.Skill1));
-	}
-
-	public void OnClickSlot5()
-	{
 		if (playerData.skillDatas[(int)EPlayerSkillType.Skill2].isAvailable)
 			StartCoroutine(SkillCoolTime(EPlayerSkillType.Skill2));
 	}
 
-	public void OnClickSlot6()
+	public void OnClickSlot5()
 	{
 		if (playerData.skillDatas[(int)EPlayerSkillType.Skill3].isAvailable)
 			StartCoroutine(SkillCoolTime(EPlayerSkillType.Skill3));
+	}
+
+	public void OnClickSlot6()
+	{
+		if (playerData.skillDatas[(int)EPlayerSkillType.Skill4].isAvailable)
+			StartCoroutine(SkillCoolTime(EPlayerSkillType.Skill4));
 	}
 	#endregion
 

@@ -29,7 +29,6 @@ public class UI_InformPopup : UI_BasePopup
         if (test == null)
             return;
 
-
         if (param is UIInformParam uiInformParam)
         {
             informText.text = uiInformParam.informText;

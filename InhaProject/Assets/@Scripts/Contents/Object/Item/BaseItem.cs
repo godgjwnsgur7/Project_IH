@@ -19,15 +19,15 @@ public enum EItemType
     Max
 }
 
-public class BaseItem : BaseObject
+public abstract class BaseItem : BaseObject
 {
-
-
     public EItemType ItemType { get; set; } = EItemType.None; // 아이템 타입
 
     protected Animator animator; // 애니메이터 컴포넌트
 
     protected bool isPlayerInRange = false;
+
+    ItemParam param;
 
     public override bool Init()
     {

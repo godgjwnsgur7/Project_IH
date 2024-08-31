@@ -1,17 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
-
-public enum EPlayerSkillType
-{
-	Default = 0,
-	Jump,
-	Attack,
-	Skill1,
-	Skill2,
-	Skill3
-}
 
 public class UIPlayerData
 {
@@ -31,25 +22,6 @@ public class UIPlayerData
 	}
 }
 
-public class PlayerSkill
-{
-	public EPlayerSkillType skill;
-	public float coolTime = 0.0f;
-	public float currentTime = 0.0f;
-	public bool isAvailable = true;
-	public float mpAmount = 0.0f;
-
-	public PlayerSkill(EPlayerSkillType skill, float coolTime, bool isAvailable, float mpAmount)
-	{
-		this.skill = skill;
-		this.coolTime = coolTime;
-		this.isAvailable = isAvailable;
-		this.mpAmount = mpAmount;
-		
-		this.currentTime = 0.0f;
-	}
-}
-
 public class UI_GameScene : UI_BaseScene
 {
 	private UI_SkillBar uiSkillBar;
@@ -63,11 +35,11 @@ public class UI_GameScene : UI_BaseScene
 
 		PlayerSkill[] skills = new PlayerSkill[6];
 		skills[(int)EPlayerSkillType.Default] = new PlayerSkill(EPlayerSkillType.Default, 1.0f, true, 0.0f);
-		skills[(int)EPlayerSkillType.Jump] = new PlayerSkill(EPlayerSkillType.Jump, 1.0f, true, 0.0f);
-		skills[(int)EPlayerSkillType.Attack] = new PlayerSkill(EPlayerSkillType.Attack, 1.0f, true, 0.0f);
-		skills[(int)EPlayerSkillType.Skill1] = new PlayerSkill(EPlayerSkillType.Skill1, 3.0f, true, 10.0f);
-		skills[(int)EPlayerSkillType.Skill2] = new PlayerSkill(EPlayerSkillType.Skill2, 3.0f, true, 20.0f);
-		skills[(int)EPlayerSkillType.Skill3] = new PlayerSkill(EPlayerSkillType.Skill3, 4.0f, true, 30.0f);
+		skills[(int)EPlayerSkillType.Guard] = new PlayerSkill(EPlayerSkillType.Guard, 1.0f, true, 0.0f);
+		skills[(int)EPlayerSkillType.Skill1] = new PlayerSkill(EPlayerSkillType.Skill1, 1.0f, true, 0.0f);
+		skills[(int)EPlayerSkillType.Skill2] = new PlayerSkill(EPlayerSkillType.Skill2, 3.0f, true, 10.0f);
+		skills[(int)EPlayerSkillType.Skill3] = new PlayerSkill(EPlayerSkillType.Skill3, 3.0f, true, 20.0f);
+		skills[(int)EPlayerSkillType.Skill4] = new PlayerSkill(EPlayerSkillType.Skill4, 4.0f, true, 30.0f);
 
 		playerData = new UIPlayerData(100, 100, 100, 100, skills);
 
@@ -94,6 +66,11 @@ public class UI_GameScene : UI_BaseScene
 			Debug.Log("UI_GameScene에 UI_HealthBar가 존재하지 않습니다.");
 		}
 		uiHealthBar = childTransformHealthBar.GetComponent<UI_HealthBar>();
+	}
+
+	public void ConnectPlayerInfoUI(Player player, Action<int> onSkillActive)
+	{
+		
 	}
 
 	public void SetPlayerDataInfo(UIPlayerData playerData)

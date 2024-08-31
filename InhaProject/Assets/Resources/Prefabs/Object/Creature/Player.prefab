@@ -763,6 +763,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6afe8309bcf5de54ea0f57871bfcf8dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  landingCount: 0
 --- !u!54 &842552856598378037
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -809,7 +810,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.2, y: 0.2, z: 0.2}
+  m_Size: {x: 0.25, y: 0.1, z: 0.25}
   m_Center: {x: 0, y: 0.05, z: 0}
 --- !u!1 &1308480016052120217
 GameObject:
@@ -3600,10 +3601,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2abe321c6304ed4a878e1bfbfd439cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <PlayerType>k__BackingField: 0
+  <PlayerInfo>k__BackingField:
+    CurrHp: 0
+    CurrMp: 0
+    StrikingPower: 0
+    MoveSpeed: 0
+    JumpPower: 0
+  skillAttackObject: {fileID: 0}
   attackObject: {fileID: 2169763420635916841}
   _isPlayerInputControll: 0
   isPlayerStateLock: 0
   _playerState: 0
+  skillNum: 0
+  isSuperArmour: 0
+  isInvincibility: 0
 --- !u!54 &8072101056926990187
 Rigidbody:
   m_ObjectHideFlags: 0
