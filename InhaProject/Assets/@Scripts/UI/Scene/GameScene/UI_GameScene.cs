@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
@@ -81,7 +81,7 @@ public class UI_GameScene : UI_BaseScene
 
 		if ( childTransformSkillBar == null)
 		{
-			Debug.Log("UI_GameScene¿¡ UI_SkillBar°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+			Debug.Log("UI_GameSceneì— UI_SkillBarê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 		}
 		else
 			uiSkillBar = childTransformSkillBar.GetComponent<UI_SkillBar>();
@@ -91,7 +91,7 @@ public class UI_GameScene : UI_BaseScene
 
 		if ( childTransformHealthBar == null )
 		{
-			Debug.Log("UI_GameScene¿¡ UI_HealthBar°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+			Debug.Log("UI_GameSceneì— UI_HealthBarê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 		}
 		uiHealthBar = childTransformHealthBar.GetComponent<UI_HealthBar>();
 	}
@@ -99,5 +99,14 @@ public class UI_GameScene : UI_BaseScene
 	public void SetPlayerDataInfo(UIPlayerData playerData)
 	{
 		this.playerData = playerData;
+	}
+
+	// í…ŒìŠ¤íŠ¸ ìš©ë„
+	public void OnClickDialogueButton()
+	{
+		string[] scripts = { "ì˜ ë˜ëŠ”ì§€ í™•ì¸", "í™•ì¸í™•ì¸í™•ì¸", "ë§ˆì§€ë§‰ í™•ì¸ " };
+		UIParam dialogueParam = new UIDialogueParam("ì•„ì´ê³ ", scripts, scripts.Length);
+
+		Managers.UI.OpenPopupUI<UI_Dialogue>(dialogueParam);
 	}
 }

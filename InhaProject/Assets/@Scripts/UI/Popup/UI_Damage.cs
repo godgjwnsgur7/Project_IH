@@ -36,8 +36,6 @@ public class UI_Damage : MonoBehaviour
 
 	public void SetInfo(UIParam param)
 	{
-		//base.SetInfo(param);
-
 		UIDamageParam test = param as UIDamageParam;
 
 		if (test == null)

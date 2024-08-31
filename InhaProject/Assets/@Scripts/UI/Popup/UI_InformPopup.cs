@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class UI_InformPopup : UI_BasePopup
 {
-    [SerializeField] Text informText;
-    [SerializeField] Text acceptButtonText;
+    [SerializeField] private Text informText;
+    [SerializeField] private Text acceptButtonText;
 
     public override bool Init()
     {
