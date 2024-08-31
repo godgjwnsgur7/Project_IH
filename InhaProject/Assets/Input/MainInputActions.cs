@@ -46,7 +46,7 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""QKey"",
+                    ""name"": ""AKey"",
                     ""type"": ""Button"",
                     ""id"": ""d18645b8-cfc8-44a4-9de9-c8b51ec68693"",
                     ""expectedControlType"": ""Button"",
@@ -55,18 +55,18 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""EKey"",
+                    ""name"": ""SKey"",
                     ""type"": ""Button"",
-                    ""id"": ""eba49e48-9feb-4819-afa6-3702ed0d4ebc"",
+                    ""id"": ""fa27ae3a-c0d9-4ad5-9092-5c17ca2d10cc"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""RKey"",
+                    ""name"": ""DKey"",
                     ""type"": ""Button"",
-                    ""id"": ""70a123a8-c452-41dc-a440-aab0bf0c6611"",
+                    ""id"": ""39259908-598d-4a90-b1b2-d8371751b97f"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -75,16 +75,43 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""FKey"",
                     ""type"": ""Button"",
-                    ""id"": ""91e0aa34-5d1a-4e80-a009-a85b60878aa7"",
+                    ""id"": ""337e673d-aa65-43ad-b767-8ebc7d9d24ae"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""GKey"",
+                    ""name"": ""ZKey"",
                     ""type"": ""Button"",
-                    ""id"": ""7299309b-df8a-4168-8502-141571be1b6c"",
+                    ""id"": ""8cac2265-808e-4862-8c07-7078db29bf21"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""XKey"",
+                    ""type"": ""Button"",
+                    ""id"": ""3e4c6694-629e-4481-8983-33fe65e8aad0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""CKey"",
+                    ""type"": ""Button"",
+                    ""id"": ""4c65e448-6d5c-44d0-8257-4cd10b50b195"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""VKey"",
+                    ""type"": ""Button"",
+                    ""id"": ""0fda1d8f-640a-4293-ba26-357c49b61579"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -102,61 +129,6 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""SpaceKey"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""WASD"",
-                    ""id"": ""0269a506-a01f-4a40-91b8-c1c5a871a4b8"",
-                    ""path"": ""2DVector(mode=1)"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ArrowKey"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""261d276c-2bb2-4fad-8f86-622c749175fd"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PC"",
-                    ""action"": ""ArrowKey"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""e22d34cf-96d6-4c45-91ff-87e6b42f989e"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PC"",
-                    ""action"": ""ArrowKey"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""a536dc0b-1bbb-4674-8ed0-e052ad5c17d8"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PC"",
-                    ""action"": ""ArrowKey"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""9e23b79c-3a23-4d04-a8df-d1ae70fa11c5"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PC"",
-                    ""action"": ""ArrowKey"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""Arrow"",
@@ -215,18 +187,40 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""8ea0563f-787c-4bd7-97e9-574a3982c8b1"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""id"": ""69de52c1-441a-4cc4-b651-97447cdf2e70"",
+                    ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PC"",
-                    ""action"": ""EKey"",
+                    ""action"": ""AKey"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""312e6cfe-8e5a-41c4-a3c1-bc712c818e4b"",
+                    ""id"": ""776c1c01-d1ec-415b-bef6-6cf5c667df8a"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""SKey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""996111ec-491a-4849-9f67-90a3edff2762"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""DKey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""58aa4d5a-dac2-4728-9975-a81f61bf1d2f"",
                     ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -237,34 +231,45 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""69de52c1-441a-4cc4-b651-97447cdf2e70"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""id"": ""c4148e22-5ec0-47da-bd8a-ea7a7d066c56"",
+                    ""path"": ""<Keyboard>/z"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PC"",
-                    ""action"": ""QKey"",
+                    ""action"": ""ZKey"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""3aefaa66-560b-42de-829d-c67b8fdc2036"",
-                    ""path"": ""<Keyboard>/r"",
+                    ""id"": ""bff973fe-b058-42da-8ad4-8840fb088114"",
+                    ""path"": ""<Keyboard>/x"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PC"",
-                    ""action"": ""RKey"",
+                    ""action"": ""XKey"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""c1b7e8ee-618b-4b9b-bf00-2737c74b7c98"",
-                    ""path"": ""<Keyboard>/g"",
+                    ""id"": ""8d18bce7-78fd-4a89-9b90-a23348eda40b"",
+                    ""path"": ""<Keyboard>/c"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PC"",
-                    ""action"": ""GKey"",
+                    ""action"": ""CKey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""65fe7857-7e58-44c4-bfe9-208c9c88977e"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""VKey"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -311,11 +316,14 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
         m_InGame = asset.FindActionMap("InGame", throwIfNotFound: true);
         m_InGame_ArrowKey = m_InGame.FindAction("ArrowKey", throwIfNotFound: true);
         m_InGame_SpaceKey = m_InGame.FindAction("SpaceKey", throwIfNotFound: true);
-        m_InGame_QKey = m_InGame.FindAction("QKey", throwIfNotFound: true);
-        m_InGame_EKey = m_InGame.FindAction("EKey", throwIfNotFound: true);
-        m_InGame_RKey = m_InGame.FindAction("RKey", throwIfNotFound: true);
+        m_InGame_AKey = m_InGame.FindAction("AKey", throwIfNotFound: true);
+        m_InGame_SKey = m_InGame.FindAction("SKey", throwIfNotFound: true);
+        m_InGame_DKey = m_InGame.FindAction("DKey", throwIfNotFound: true);
         m_InGame_FKey = m_InGame.FindAction("FKey", throwIfNotFound: true);
-        m_InGame_GKey = m_InGame.FindAction("GKey", throwIfNotFound: true);
+        m_InGame_ZKey = m_InGame.FindAction("ZKey", throwIfNotFound: true);
+        m_InGame_XKey = m_InGame.FindAction("XKey", throwIfNotFound: true);
+        m_InGame_CKey = m_InGame.FindAction("CKey", throwIfNotFound: true);
+        m_InGame_VKey = m_InGame.FindAction("VKey", throwIfNotFound: true);
         // OutGame
         m_OutGame = asset.FindActionMap("OutGame", throwIfNotFound: true);
     }
@@ -381,22 +389,28 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
     private List<IInGameActions> m_InGameActionsCallbackInterfaces = new List<IInGameActions>();
     private readonly InputAction m_InGame_ArrowKey;
     private readonly InputAction m_InGame_SpaceKey;
-    private readonly InputAction m_InGame_QKey;
-    private readonly InputAction m_InGame_EKey;
-    private readonly InputAction m_InGame_RKey;
+    private readonly InputAction m_InGame_AKey;
+    private readonly InputAction m_InGame_SKey;
+    private readonly InputAction m_InGame_DKey;
     private readonly InputAction m_InGame_FKey;
-    private readonly InputAction m_InGame_GKey;
+    private readonly InputAction m_InGame_ZKey;
+    private readonly InputAction m_InGame_XKey;
+    private readonly InputAction m_InGame_CKey;
+    private readonly InputAction m_InGame_VKey;
     public struct InGameActions
     {
         private @MainInputActions m_Wrapper;
         public InGameActions(@MainInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @ArrowKey => m_Wrapper.m_InGame_ArrowKey;
         public InputAction @SpaceKey => m_Wrapper.m_InGame_SpaceKey;
-        public InputAction @QKey => m_Wrapper.m_InGame_QKey;
-        public InputAction @EKey => m_Wrapper.m_InGame_EKey;
-        public InputAction @RKey => m_Wrapper.m_InGame_RKey;
+        public InputAction @AKey => m_Wrapper.m_InGame_AKey;
+        public InputAction @SKey => m_Wrapper.m_InGame_SKey;
+        public InputAction @DKey => m_Wrapper.m_InGame_DKey;
         public InputAction @FKey => m_Wrapper.m_InGame_FKey;
-        public InputAction @GKey => m_Wrapper.m_InGame_GKey;
+        public InputAction @ZKey => m_Wrapper.m_InGame_ZKey;
+        public InputAction @XKey => m_Wrapper.m_InGame_XKey;
+        public InputAction @CKey => m_Wrapper.m_InGame_CKey;
+        public InputAction @VKey => m_Wrapper.m_InGame_VKey;
         public InputActionMap Get() { return m_Wrapper.m_InGame; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -412,21 +426,30 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
             @SpaceKey.started += instance.OnSpaceKey;
             @SpaceKey.performed += instance.OnSpaceKey;
             @SpaceKey.canceled += instance.OnSpaceKey;
-            @QKey.started += instance.OnQKey;
-            @QKey.performed += instance.OnQKey;
-            @QKey.canceled += instance.OnQKey;
-            @EKey.started += instance.OnEKey;
-            @EKey.performed += instance.OnEKey;
-            @EKey.canceled += instance.OnEKey;
-            @RKey.started += instance.OnRKey;
-            @RKey.performed += instance.OnRKey;
-            @RKey.canceled += instance.OnRKey;
+            @AKey.started += instance.OnAKey;
+            @AKey.performed += instance.OnAKey;
+            @AKey.canceled += instance.OnAKey;
+            @SKey.started += instance.OnSKey;
+            @SKey.performed += instance.OnSKey;
+            @SKey.canceled += instance.OnSKey;
+            @DKey.started += instance.OnDKey;
+            @DKey.performed += instance.OnDKey;
+            @DKey.canceled += instance.OnDKey;
             @FKey.started += instance.OnFKey;
             @FKey.performed += instance.OnFKey;
             @FKey.canceled += instance.OnFKey;
-            @GKey.started += instance.OnGKey;
-            @GKey.performed += instance.OnGKey;
-            @GKey.canceled += instance.OnGKey;
+            @ZKey.started += instance.OnZKey;
+            @ZKey.performed += instance.OnZKey;
+            @ZKey.canceled += instance.OnZKey;
+            @XKey.started += instance.OnXKey;
+            @XKey.performed += instance.OnXKey;
+            @XKey.canceled += instance.OnXKey;
+            @CKey.started += instance.OnCKey;
+            @CKey.performed += instance.OnCKey;
+            @CKey.canceled += instance.OnCKey;
+            @VKey.started += instance.OnVKey;
+            @VKey.performed += instance.OnVKey;
+            @VKey.canceled += instance.OnVKey;
         }
 
         private void UnregisterCallbacks(IInGameActions instance)
@@ -437,21 +460,30 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
             @SpaceKey.started -= instance.OnSpaceKey;
             @SpaceKey.performed -= instance.OnSpaceKey;
             @SpaceKey.canceled -= instance.OnSpaceKey;
-            @QKey.started -= instance.OnQKey;
-            @QKey.performed -= instance.OnQKey;
-            @QKey.canceled -= instance.OnQKey;
-            @EKey.started -= instance.OnEKey;
-            @EKey.performed -= instance.OnEKey;
-            @EKey.canceled -= instance.OnEKey;
-            @RKey.started -= instance.OnRKey;
-            @RKey.performed -= instance.OnRKey;
-            @RKey.canceled -= instance.OnRKey;
+            @AKey.started -= instance.OnAKey;
+            @AKey.performed -= instance.OnAKey;
+            @AKey.canceled -= instance.OnAKey;
+            @SKey.started -= instance.OnSKey;
+            @SKey.performed -= instance.OnSKey;
+            @SKey.canceled -= instance.OnSKey;
+            @DKey.started -= instance.OnDKey;
+            @DKey.performed -= instance.OnDKey;
+            @DKey.canceled -= instance.OnDKey;
             @FKey.started -= instance.OnFKey;
             @FKey.performed -= instance.OnFKey;
             @FKey.canceled -= instance.OnFKey;
-            @GKey.started -= instance.OnGKey;
-            @GKey.performed -= instance.OnGKey;
-            @GKey.canceled -= instance.OnGKey;
+            @ZKey.started -= instance.OnZKey;
+            @ZKey.performed -= instance.OnZKey;
+            @ZKey.canceled -= instance.OnZKey;
+            @XKey.started -= instance.OnXKey;
+            @XKey.performed -= instance.OnXKey;
+            @XKey.canceled -= instance.OnXKey;
+            @CKey.started -= instance.OnCKey;
+            @CKey.performed -= instance.OnCKey;
+            @CKey.canceled -= instance.OnCKey;
+            @VKey.started -= instance.OnVKey;
+            @VKey.performed -= instance.OnVKey;
+            @VKey.canceled -= instance.OnVKey;
         }
 
         public void RemoveCallbacks(IInGameActions instance)
@@ -529,11 +561,14 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
     {
         void OnArrowKey(InputAction.CallbackContext context);
         void OnSpaceKey(InputAction.CallbackContext context);
-        void OnQKey(InputAction.CallbackContext context);
-        void OnEKey(InputAction.CallbackContext context);
-        void OnRKey(InputAction.CallbackContext context);
+        void OnAKey(InputAction.CallbackContext context);
+        void OnSKey(InputAction.CallbackContext context);
+        void OnDKey(InputAction.CallbackContext context);
         void OnFKey(InputAction.CallbackContext context);
-        void OnGKey(InputAction.CallbackContext context);
+        void OnZKey(InputAction.CallbackContext context);
+        void OnXKey(InputAction.CallbackContext context);
+        void OnCKey(InputAction.CallbackContext context);
+        void OnVKey(InputAction.CallbackContext context);
     }
     public interface IOutGameActions
     {

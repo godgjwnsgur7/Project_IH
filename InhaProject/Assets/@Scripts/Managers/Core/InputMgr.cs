@@ -28,11 +28,15 @@ public class InputMgr : MonoBehaviour
     // Keyboard InputEvent
     public event Action<Vector2> OnArrowKeyEntered;
     public event Action OnSpaceKeyEntered;
-    public event Action OnQKeyEntered;
-    public event Action OnEKeyEntered;
-    public event Action OnRKeyEntered;
+    public event Action OnAKeyEntered;
+    public event Action OnSKeyEntered;
+    public event Action OnDKeyEntered;
     public event Action OnFKeyEntered;
-    public event Action OnGKeyEntered;
+    public event Action OnZKeyEntered;
+    public event Action OnXKeyEntered;
+    public event Action OnCKeyEntered;
+    public event Action OnVKeyEntered;
+
 
     public void Init()
     {
@@ -76,27 +80,44 @@ public class InputMgr : MonoBehaviour
         OnSpaceKeyEntered?.Invoke();
     }
 
-    public void OnQKey()
+    public void OnAKey()
     {
-        OnQKeyEntered?.Invoke();
+        OnAKeyEntered?.Invoke();
     }
 
-    public void OnEKey()
+    public void OnSKey()
     {
-        OnEKeyEntered?.Invoke();
+        OnSKeyEntered?.Invoke();
     }
-    public void OnRKey()
+
+    public void OnDKey()
     {
-        OnRKeyEntered?.Invoke();
+        OnDKeyEntered?.Invoke();
     }
 
     public void OnFKey()
     {
         OnFKeyEntered?.Invoke();
     }
-    public void OnGKey()
+
+    public void OnZKey()
     {
-        OnGKeyEntered?.Invoke();
+        OnZKeyEntered?.Invoke();
+    }
+
+    public void OnXKey()
+    {
+        OnXKeyEntered?.Invoke();
+    }
+
+    public void OnCKey()
+    {
+        OnCKeyEntered?.Invoke();
+    }
+
+    public void OnVKey()
+    {
+        OnVKeyEntered?.Invoke();
     }
     #endregion
 }

@@ -25,7 +25,11 @@ public enum EPlayerState
     Jump,
     Fall,
     Land,
+
     Attack,
+    Skill1,
+    Skill2,
+    Skill3,
 
     Guard,
     Block,
@@ -126,6 +130,11 @@ public class Player : Creature, IHitEvent
                 case EPlayerState.Attack:
                     isChangeState = AttackStateCondition();
                     break;
+                case EPlayerState.Skill1:
+                case EPlayerState.Skill2:
+                case EPlayerState.Skill3:
+                    isChangeState = SkillStateCondition();
+                    break;
                 case EPlayerState.Dead:
                     isChangeState = DeadStateCondition();
                     break;
@@ -153,6 +162,11 @@ public class Player : Creature, IHitEvent
                     break;
                 case EPlayerState.Attack:
                     AttackStateExit();
+                    break;
+                case EPlayerState.Skill1:
+                case EPlayerState.Skill2:
+                case EPlayerState.Skill3:
+                    SkillStateExit();
                     break;
                 case EPlayerState.Guard:
                     GuardStateExit();
@@ -190,6 +204,11 @@ public class Player : Creature, IHitEvent
                     break;
                 case EPlayerState.Attack:
                     AttackStateEnter();
+                    break;
+                case EPlayerState.Skill1:
+                case EPlayerState.Skill2:
+                case EPlayerState.Skill3:
+                    SkillStateEnter();
                     break;
                 case EPlayerState.Guard:
                     GuardStateEnter();
@@ -261,16 +280,22 @@ public class Player : Creature, IHitEvent
     private void ConnectInputActions(bool isConnect)
     {
         Managers.Input.OnArrowKeyEntered -= OnArrowKey;
-        Managers.Input.OnSpaceKeyEntered -= OnJumpKey;
-        Managers.Input.OnEKeyEntered -= OnGuardKey;
-        Managers.Input.OnFKeyEntered -= OnAttackKey;
+        Managers.Input.OnCKeyEntered -= OnJumpKey;
+        Managers.Input.OnVKeyEntered -= OnGuardKey;
+        Managers.Input.OnXKeyEntered -= OnAttackKey;
+        Managers.Input.OnAKeyEntered -= OnSkillKey1;
+        Managers.Input.OnSKeyEntered -= OnSkillKey2;
+        Managers.Input.OnDKeyEntered -= OnSkillKey3;
 
         if (isConnect)
         {
             Managers.Input.OnArrowKeyEntered += OnArrowKey;
-            Managers.Input.OnSpaceKeyEntered += OnJumpKey;
-            Managers.Input.OnEKeyEntered += OnGuardKey;
-            Managers.Input.OnFKeyEntered += OnAttackKey;
+            Managers.Input.OnCKeyEntered += OnJumpKey;
+            Managers.Input.OnVKeyEntered += OnGuardKey;
+            Managers.Input.OnXKeyEntered += OnAttackKey;
+            Managers.Input.OnAKeyEntered += OnSkillKey1;
+            Managers.Input.OnSKeyEntered += OnSkillKey2;
+            Managers.Input.OnDKeyEntered += OnSkillKey3;
         }
     }
 
@@ -308,9 +333,45 @@ public class Player : Creature, IHitEvent
         PlayerState = EPlayerState.Attack;
     }
 
+    public void OnSkillKey1()
+    {
+        if (!IsPlayerInputControll)
+            return;
+
+        skillNum = 1;
+        PlayerState = EPlayerState.Skill1;
+
+        if (PlayerState != EPlayerState.Skill1)
+            skillNum = 0;
+    }
+
+    public void OnSkillKey2()
+    {
+        if (!IsPlayerInputControll)
+            return;
+
+        skillNum = 2;
+        PlayerState = EPlayerState.Skill2;
+
+        if (PlayerState != EPlayerState.Skill2)
+            skillNum = 0;
+    }
+
+    public void OnSkillKey3()
+    {
+        if (!IsPlayerInputControll)
+            return;
+
+        skillNum = 3;
+        PlayerState = EPlayerState.Skill3;
+
+        if (PlayerState != EPlayerState.Skill3)
+            skillNum = 0;
+    }
+
     #endregion
 
-    #region CreatureState Controll
+    #region PlayerState Controll
 
     Coroutine coPlayerStateController = null;
     protected IEnumerator CoPlayerStateController()
@@ -336,6 +397,11 @@ public class Player : Creature, IHitEvent
                     break;
                 case EPlayerState.Attack:
                     UpdateAttackState();
+                    break;
+                case EPlayerState.Skill1:
+                case EPlayerState.Skill2:
+                case EPlayerState.Skill3:
+                    UpdateSkillState();
                     break;
                 case EPlayerState.Guard:
                     UpdateGuardState();
@@ -566,18 +632,55 @@ public class Player : Creature, IHitEvent
 
     public void OnAttackTarget(IHitEvent attackTarget)
     {
-        if (PlayerState != EPlayerState.Attack)
-            return;
-
-        attackTarget.OnHit(new AttackParam(this, LookLeft, PlayerInfo.StrikingPower));
+        if (PlayerState == EPlayerState.Attack || PlayerState == EPlayerState.Skill1 ||
+            PlayerState == EPlayerState.Skill2 || PlayerState == EPlayerState.Skill3)
+        {
+            attackTarget.OnHit(new AttackParam(this, LookLeft, PlayerInfo.StrikingPower));
+        }
     }
 
+    #endregion
+
+    #region Skill Motion
+    [SerializeField, ReadOnly] int skillNum = 0;
+    protected virtual bool SkillStateCondition()
+    {
+        if (skillNum == 0)
+            return false;
+
+        if (creatureFoot.IsLandingGround == false)
+            return false;
+
+        return true;
+    }
+
+    protected virtual void SkillStateEnter()
+    {
+        isPlayerStateLock = true;
+        InitRigidVelocityX();
+    }
+
+    protected virtual void UpdateSkillState()
+    {
+        if (IsEndCurrentState(Util.ParseEnum<EPlayerState>($"Skill{skillNum}")))
+        {
+            isPlayerStateLock = false;
+            PlayerState = EPlayerState.Move;
+            PlayerState = EPlayerState.Idle;
+        }
+    }
+
+    protected virtual void SkillStateExit()
+    {
+        skillNum = 0;
+    }
     #endregion
 
     #region Guard Motion
     protected virtual bool GuardStateCondition()
     {
-        // 가드를 하나의 스킬로 볼 예정
+        if (creatureFoot.IsLandingGround == false)
+            return false;
 
         return true;
     }

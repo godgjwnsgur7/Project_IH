@@ -24,7 +24,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "QKey",
+                    "name": "AKey",
                     "type": "Button",
                     "id": "d18645b8-cfc8-44a4-9de9-c8b51ec68693",
                     "expectedControlType": "Button",
@@ -33,18 +33,18 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "EKey",
+                    "name": "SKey",
                     "type": "Button",
-                    "id": "eba49e48-9feb-4819-afa6-3702ed0d4ebc",
+                    "id": "fa27ae3a-c0d9-4ad5-9092-5c17ca2d10cc",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
                 },
                 {
-                    "name": "RKey",
+                    "name": "DKey",
                     "type": "Button",
-                    "id": "70a123a8-c452-41dc-a440-aab0bf0c6611",
+                    "id": "39259908-598d-4a90-b1b2-d8371751b97f",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -53,16 +53,43 @@
                 {
                     "name": "FKey",
                     "type": "Button",
-                    "id": "91e0aa34-5d1a-4e80-a009-a85b60878aa7",
+                    "id": "337e673d-aa65-43ad-b767-8ebc7d9d24ae",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
                 },
                 {
-                    "name": "GKey",
+                    "name": "ZKey",
                     "type": "Button",
-                    "id": "7299309b-df8a-4168-8502-141571be1b6c",
+                    "id": "8cac2265-808e-4862-8c07-7078db29bf21",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "XKey",
+                    "type": "Button",
+                    "id": "3e4c6694-629e-4481-8983-33fe65e8aad0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "CKey",
+                    "type": "Button",
+                    "id": "4c65e448-6d5c-44d0-8257-4cd10b50b195",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "VKey",
+                    "type": "Button",
+                    "id": "0fda1d8f-640a-4293-ba26-357c49b61579",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -80,61 +107,6 @@
                     "action": "SpaceKey",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "WASD",
-                    "id": "0269a506-a01f-4a40-91b8-c1c5a871a4b8",
-                    "path": "2DVector(mode=1)",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ArrowKey",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "up",
-                    "id": "261d276c-2bb2-4fad-8f86-622c749175fd",
-                    "path": "<Keyboard>/w",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "PC",
-                    "action": "ArrowKey",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "e22d34cf-96d6-4c45-91ff-87e6b42f989e",
-                    "path": "<Keyboard>/s",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "PC",
-                    "action": "ArrowKey",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "a536dc0b-1bbb-4674-8ed0-e052ad5c17d8",
-                    "path": "<Keyboard>/a",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "PC",
-                    "action": "ArrowKey",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "9e23b79c-3a23-4d04-a8df-d1ae70fa11c5",
-                    "path": "<Keyboard>/d",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "PC",
-                    "action": "ArrowKey",
-                    "isComposite": false,
-                    "isPartOfComposite": true
                 },
                 {
                     "name": "Arrow",
@@ -193,18 +165,40 @@
                 },
                 {
                     "name": "",
-                    "id": "8ea0563f-787c-4bd7-97e9-574a3982c8b1",
-                    "path": "<Keyboard>/e",
+                    "id": "69de52c1-441a-4cc4-b651-97447cdf2e70",
+                    "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
                     "groups": "PC",
-                    "action": "EKey",
+                    "action": "AKey",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "312e6cfe-8e5a-41c4-a3c1-bc712c818e4b",
+                    "id": "776c1c01-d1ec-415b-bef6-6cf5c667df8a",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "SKey",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "996111ec-491a-4849-9f67-90a3edff2762",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "DKey",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "58aa4d5a-dac2-4728-9975-a81f61bf1d2f",
                     "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
@@ -215,34 +209,45 @@
                 },
                 {
                     "name": "",
-                    "id": "69de52c1-441a-4cc4-b651-97447cdf2e70",
-                    "path": "<Keyboard>/q",
+                    "id": "c4148e22-5ec0-47da-bd8a-ea7a7d066c56",
+                    "path": "<Keyboard>/z",
                     "interactions": "",
                     "processors": "",
                     "groups": "PC",
-                    "action": "QKey",
+                    "action": "ZKey",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "3aefaa66-560b-42de-829d-c67b8fdc2036",
-                    "path": "<Keyboard>/r",
+                    "id": "bff973fe-b058-42da-8ad4-8840fb088114",
+                    "path": "<Keyboard>/x",
                     "interactions": "",
                     "processors": "",
                     "groups": "PC",
-                    "action": "RKey",
+                    "action": "XKey",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "c1b7e8ee-618b-4b9b-bf00-2737c74b7c98",
-                    "path": "<Keyboard>/g",
+                    "id": "8d18bce7-78fd-4a89-9b90-a23348eda40b",
+                    "path": "<Keyboard>/c",
                     "interactions": "",
                     "processors": "",
                     "groups": "PC",
-                    "action": "GKey",
+                    "action": "CKey",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "65fe7857-7e58-44c4-bfe9-208c9c88977e",
+                    "path": "<Keyboard>/v",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "VKey",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
