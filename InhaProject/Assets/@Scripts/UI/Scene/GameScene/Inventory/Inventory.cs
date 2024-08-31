@@ -6,6 +6,20 @@ using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using static UnityEditor.Progress;
 
+public class InventoryData
+{
+	public string name;
+	public int count;
+	public EItemType type;
+
+	public InventoryData(string name, int count, EItemType type)
+	{
+		this.name = name;
+		this.count = count;
+		this.type = type;
+	}
+}
+
 public class Inventory : MonoBehaviour
 {
 	private const int SLOT_SIZE = 6;
@@ -58,6 +72,29 @@ public class Inventory : MonoBehaviour
 			}
 
 			items.Add(item);
+		}
+	}
+
+	public void RemoveItem(InventoryData data)
+	{
+		if (items.Exists(x => x.Name.Equals(data.name)))
+		{
+			IInventoryItem findItem = items.Find(x => x.Name.Equals(data.name));
+			findItem.Count -= data.count;
+			if (ItemRemove != null)
+				ItemRemove(this, new InventoryEventArgs(findItem));
+
+			if (findItem.Count <= 0)
+			{
+				items.Remove(findItem);
+				Debug.Log(items.Exists(x => x.Name.Equals(data.name)));
+			}
+			return;
+		}
+
+		else
+		{
+			Debug.Log(data.name + "이 없습니다.");
 		}
 	}
 

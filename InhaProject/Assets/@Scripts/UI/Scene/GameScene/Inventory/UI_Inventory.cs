@@ -9,7 +9,6 @@ using UnityEngine.UI;
 public class UI_Inventory : MonoBehaviour
 {
 	public GameObject item;
-	public GameObject removeItem;
 	public Inventory inventory;
 
 	[SerializeField]
@@ -19,21 +18,20 @@ public class UI_Inventory : MonoBehaviour
 	public void OnClickPickupButton()
 	{
 		IInventoryItem inventoryItem = item.GetComponent<IInventoryItem>();
-		//IInventoryItem inventoryItem = new HealPotion();
+
 		if ( inventoryItem != null )
 		{
 			inventory.AddItem(inventoryItem);
-			// Destroy(item);
 		}
 	}
 
 	public void OnClickRemoveItemButton()
 	{
-		IInventoryItem removeItem = new HealPotion();
+		InventoryData removeItemData = new InventoryData("HealPotion", 1, EItemType.HealPotion);
 
-		if ( removeItem != null )
+		if (removeItemData != null )
 		{
-			inventory.RemoveItem(removeItem);
+			inventory.RemoveItem(removeItemData);
 		}
 	}
 
