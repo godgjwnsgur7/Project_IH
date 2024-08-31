@@ -31,7 +31,7 @@ public enum EPlayerState
     Skill1,
     Skill2,
     Skill3,
-    UltimateSkill,
+    Skill4,
 
     Guard,
     Block,
@@ -136,6 +136,7 @@ public class Player : Creature, IHitEvent
                 case EPlayerState.Skill1:
                 case EPlayerState.Skill2:
                 case EPlayerState.Skill3:
+                case EPlayerState.Skill4:
                     isChangeState = SkillStateCondition();
                     break;
                 case EPlayerState.Dead:
@@ -169,6 +170,7 @@ public class Player : Creature, IHitEvent
                 case EPlayerState.Skill1:
                 case EPlayerState.Skill2:
                 case EPlayerState.Skill3:
+                case EPlayerState.Skill4:
                     SkillStateExit();
                     break;
                 case EPlayerState.Guard:
@@ -211,6 +213,7 @@ public class Player : Creature, IHitEvent
                 case EPlayerState.Skill1:
                 case EPlayerState.Skill2:
                 case EPlayerState.Skill3:
+                case EPlayerState.Skill4:
                     SkillStateEnter();
                     break;
                 case EPlayerState.Guard:
@@ -289,9 +292,10 @@ public class Player : Creature, IHitEvent
         Managers.Input.OnCKeyEntered -= OnJumpKey;
         Managers.Input.OnVKeyEntered -= OnGuardKey;
         Managers.Input.OnXKeyEntered -= OnAttackKey;
-        Managers.Input.OnAKeyEntered -= OnSkillKey1;
-        Managers.Input.OnSKeyEntered -= OnSkillKey2;
-        Managers.Input.OnDKeyEntered -= OnSkillKey3;
+        Managers.Input.OnZKeyEntered += OnSkillKey1;
+        Managers.Input.OnAKeyEntered -= OnSkillKey2;
+        Managers.Input.OnSKeyEntered -= OnSkillKey3;
+        Managers.Input.OnDKeyEntered -= OnSkillKey4;
 
         if (isConnect)
         {
@@ -299,9 +303,10 @@ public class Player : Creature, IHitEvent
             Managers.Input.OnCKeyEntered += OnJumpKey;
             Managers.Input.OnVKeyEntered += OnGuardKey;
             Managers.Input.OnXKeyEntered += OnAttackKey;
-            Managers.Input.OnAKeyEntered += OnSkillKey1;
-            Managers.Input.OnSKeyEntered += OnSkillKey2;
-            Managers.Input.OnDKeyEntered += OnSkillKey3;
+            Managers.Input.OnZKeyEntered += OnSkillKey1;
+            Managers.Input.OnAKeyEntered += OnSkillKey2;
+            Managers.Input.OnSKeyEntered += OnSkillKey3;
+            Managers.Input.OnDKeyEntered += OnSkillKey4;
         }
     }
 
@@ -344,6 +349,9 @@ public class Player : Creature, IHitEvent
         if (!IsPlayerInputControll)
             return;
 
+        if (skillNum != 0)
+            return;
+
         skillNum = 1;
         PlayerState = EPlayerState.Skill1;
 
@@ -356,11 +364,16 @@ public class Player : Creature, IHitEvent
         if (!IsPlayerInputControll)
             return;
 
+        if (skillNum != 0)
+            return;
+
         skillNum = 2;
         PlayerState = EPlayerState.Skill2;
 
         if (PlayerState != EPlayerState.Skill2)
             skillNum = 0;
+        else
+            isSuperArmour = true;
     }
 
     public void OnSkillKey3()
@@ -368,11 +381,33 @@ public class Player : Creature, IHitEvent
         if (!IsPlayerInputControll)
             return;
 
+        if (skillNum != 0)
+            return;
+
         skillNum = 3;
         PlayerState = EPlayerState.Skill3;
 
         if (PlayerState != EPlayerState.Skill3)
             skillNum = 0;
+        else
+            isSuperArmour = true;
+    }
+
+    public void OnSkillKey4()
+    {
+        if (!IsPlayerInputControll)
+            return;
+
+        if (skillNum != 0)
+            return;
+
+        skillNum = 4;
+        PlayerState = EPlayerState.Skill4;
+
+        if (PlayerState != EPlayerState.Skill4)
+            skillNum = 0;
+        else
+            isInvincibility = true;
     }
 
     #endregion
@@ -407,6 +442,7 @@ public class Player : Creature, IHitEvent
                 case EPlayerState.Skill1:
                 case EPlayerState.Skill2:
                 case EPlayerState.Skill3:
+                case EPlayerState.Skill4:
                     UpdateSkillState();
                     break;
                 case EPlayerState.Guard:
@@ -649,7 +685,8 @@ public class Player : Creature, IHitEvent
     [SerializeField, ReadOnly] int skillNum = 0;
     public void OnSkillAttackTarget(IHitEvent skillAttackTarget)
     {
-        if (PlayerState == EPlayerState.Skill1 || PlayerState == EPlayerState.Skill2 || PlayerState == EPlayerState.Skill3)
+        if (PlayerState == EPlayerState.Skill1 || PlayerState == EPlayerState.Skill2 
+            || PlayerState == EPlayerState.Skill3 || PlayerState == EPlayerState.Skill4)
         {
             skillAttackTarget.OnHit(new AttackParam(this, LookLeft, PlayerInfo.StrikingPower * 2f));
         }
@@ -669,7 +706,6 @@ public class Player : Creature, IHitEvent
     protected virtual void SkillStateEnter()
     {
         isPlayerStateLock = true;
-        isSuperArmour = true;
         InitRigidVelocityX();
     }
 
@@ -687,6 +723,7 @@ public class Player : Creature, IHitEvent
     {
         skillNum = 0;
         isSuperArmour = false;
+        isInvincibility = false;
     }
 
     // Animation Clip Event
@@ -699,6 +736,18 @@ public class Player : Creature, IHitEvent
     public void OnDeactiveAttackobject()
     {
         attackObject.SetActive(false);
+    }
+
+    // Animation Clip Event
+    public void OnStartSlowEffect()
+    {
+        Time.timeScale = 0.5f; // 게임매니저로 옮길 예정? (임시)
+    }
+
+    // Animation Clip Event
+    public void OnEndSlowEffect()
+    {
+        Time.timeScale = 1.0f; // 게임매니저로 옮길 예정? (임시)
     }
     #endregion
 
@@ -774,21 +823,25 @@ public class Player : Creature, IHitEvent
         if (PlayerState == EPlayerState.Guard && param.isAttackerLeft == !LookLeft)
         {
             subVec.x += Collider.size.x * ((LookLeft) ? -1 : 1) * 2;
-            Managers.Resource.Instantiate($"{PrefabPath.OBJECT_EFFECTOBEJCT_PATH}/{EEffectObjectType.PlayerHitEffect}", this.transform.position + subVec);
+            Managers.Object.SpawnEffectObject(EEffectObjectType.PlayerHitEffect, this.transform.position + subVec);
             isPlayerStateLock = false;
             PlayerState = EPlayerState.Block;
             return;
         }
         
-        LookLeft = !param.isAttackerLeft;
-        Managers.Resource.Instantiate($"{PrefabPath.OBJECT_EFFECTOBEJCT_PATH}/{EEffectObjectType.PlayerHitEffect}", this.transform.position + subVec);
-
-        if(isSuperArmour == false)
+        if (isSuperArmour)
         {
-            hitForceDir.x = param.pushPower * ((param.isAttackerLeft) ? -1 : 1);
-            isPlayerStateLock = false;
-            PlayerState = EPlayerState.Hit;
+            subVec.x += Collider.size.x * ((LookLeft) ? 1 : -1) * 2;
+            subVec.y += Random.Range(-0.5f, 0.5f);
+            Managers.Object.SpawnEffectObject(EEffectObjectType.PlayerHitEffect, this.transform.position + subVec);
+            return;
         }
+
+        LookLeft = !param.isAttackerLeft;
+        hitForceDir.x = param.pushPower * ((param.isAttackerLeft) ? -1 : 1);
+        Managers.Object.SpawnEffectObject(EEffectObjectType.PlayerHitEffect, this.transform.position + subVec);
+        isPlayerStateLock = false;
+        PlayerState = EPlayerState.Hit;
     }
 
     protected virtual bool HitStateCondition()
