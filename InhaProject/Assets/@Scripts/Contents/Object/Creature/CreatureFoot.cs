@@ -11,6 +11,8 @@ public class CreatureFoot : InitBase
     public Rigidbody Rigid { get; private set; }
     public BoxCollider Collider { get; private set; }
 
+    [SerializeField, ReadOnly] int landingCount = 0;
+
     public override bool Init()
     {
         if (base.Init() == false)
@@ -34,6 +36,7 @@ public class CreatureFoot : InitBase
     {
         if (collision.tag == ETag.Ground.ToString())
         {
+            landingCount++;
             IsLandingGround = true;
         }
     }
@@ -42,7 +45,12 @@ public class CreatureFoot : InitBase
     {
         if(collision.tag == ETag.Ground.ToString())
         {
-            IsLandingGround = false;
+            landingCount--;
+            if(landingCount <= 0)
+            {
+                landingCount = 0;
+                IsLandingGround = false;
+            }
         }
     }
 }
