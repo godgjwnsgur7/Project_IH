@@ -49,13 +49,13 @@ public class UISelectParam : UIParam
 public class UIDamageParam : UIParam
 {
     public int damage;
-    public Vector3 enermyPosition;
+    public Vector3 pos;
     public bool isCritical;
 
-    public UIDamageParam(int damage, Vector3 enermyPosition, bool isCritical)
+    public UIDamageParam(int damage, Vector3 pos, bool isCritical = false)
 	{
 		this.damage = damage;
-		this.enermyPosition = enermyPosition;
+		this.pos = pos;
 		this.isCritical = isCritical;
 	}
 }

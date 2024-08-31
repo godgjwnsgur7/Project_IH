@@ -125,8 +125,10 @@ public class UI_SkillBar : UI_GameScene
 
 	public void OnDamageButton()
 	{
-		GameObject hudText = Instantiate(hudDamageText);
-		UIDamageParam uiDamageParam = new UIDamageParam(9900999, new Vector3(0, 0, 0), true);
-		hudText.GetComponent<UI_Damage>().SetInfo(uiDamageParam);
+        UIDamageParam uiDamageParam = new UIDamageParam(9900999, new Vector3(0, 0, 0), true);
+        UI_Damage damageUI = Managers.Resource.Instantiate($"{PrefabPath.UI_OBJECT_PATH}/{EUIObjectType.UI_Damage}").GetComponent<UI_Damage>();
+		
+		if (damageUI != null)
+			damageUI.SetInfo(uiDamageParam);
 	}
 }

@@ -252,4 +252,5 @@ MonoBehaviour:
   moveSpeed: 100
   alphaSpeed: 3
   destroyTime: 2
+  text: {fileID: 4262125353293783263}
   damage: 0

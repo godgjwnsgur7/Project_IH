@@ -40,10 +40,12 @@ public class UI_Inventory : MonoBehaviour
 		GameObject playerObject = GameObject.FindWithTag("Player");
 		Player player = playerObject.GetComponent<Player>();
 
-		//inventory = player.inventory;
-		inventory.ItemAdd += InventoryScript_ItemAdd;
-		inventory.ItemRemove += InventoryScript_ItemRemove;
-	}
+        //inventory = player.inventory;
+        inventory.ItemAdd -= InventoryScript_ItemAdd;
+        inventory.ItemAdd += InventoryScript_ItemAdd;
+        inventory.ItemRemove -= InventoryScript_ItemRemove;
+        inventory.ItemRemove += InventoryScript_ItemRemove;
+    }
 
 	private void InventoryScript_ItemAdd(object sender, InventoryEventArgs e )
 	{

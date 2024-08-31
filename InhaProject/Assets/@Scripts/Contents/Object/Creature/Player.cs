@@ -819,6 +819,10 @@ public class Player : Creature, IHitEvent
         if (isInvincibility || param == null)
             return;
 
+        UIDamageParam damageParam = new((int)param.damage
+            , transform.position + (Collider.size.y * Vector3.up * 1.2f));
+        Managers.UI.SpawnObjectUI<UI_Damage>(EUIObjectType.UI_Damage, damageParam);
+
         Vector3 subVec = new Vector3(0, Collider.size.y * 0.7f, 0);
         if (PlayerState == EPlayerState.Guard && param.isAttackerLeft == !LookLeft)
         {

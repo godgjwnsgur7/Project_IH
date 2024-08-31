@@ -474,6 +474,11 @@ public class Monster : Creature, IHitEvent
         if (param == null)
             return;
 
+        UIDamageParam damageParam = new((int)param.damage
+            , transform.position + (Collider.size.y * Vector3.up * this.transform.localScale.y * 1.2f)
+            , true);
+        Managers.UI.SpawnObjectUI<UI_Damage>(EUIObjectType.UI_Damage, damageParam);
+
         MonsterInfo.CurrHp -= param.damage;
         LookLeft = !param.isAttackerLeft;
         hitForceDir.x = param.pushPower * ((param.isAttackerLeft) ? -1 : 1);

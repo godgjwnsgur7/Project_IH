@@ -39,6 +39,26 @@ public class UIMgr
         SceneUI = sceneUI;
     }
 
+    public T SpawnObjectUI<T>(EUIObjectType type, UIParam param = null) where T : UI_BaseObject
+    {
+        string name = typeof(T).Name;
+
+        GameObject go = Managers.Resource.Instantiate($"{PrefabPath.UI_OBJECT_PATH}/{type}");
+
+        T obj = go.GetComponent<T>();
+
+        if(obj != null)
+        {
+            obj.name = name;
+            obj.transform.SetParent(SceneUI.transform);
+
+            if (param != null)
+                obj.SetInfo(param);
+        }
+
+        return obj as T;
+    }
+
     public bool IsActivePopup()
     {
         return popupStack.Count > 0;
