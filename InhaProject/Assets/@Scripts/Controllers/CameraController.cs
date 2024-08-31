@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -13,10 +14,20 @@ public class CameraController : MonoBehaviour
         Init();
     }
 
-    private void LateUpdate()
+    private void Start()
     {
-        if (target != null)
+        coCameraControll = StartCoroutine(CoCameraControll());
+    }
+
+    Coroutine coCameraControll = null;
+    private IEnumerator CoCameraControll()
+    {
+        yield return new WaitUntil(() => target != null);
+
+        while(target != null)
         {
+
+            yield return new LateUpdate();
             FollowingTarget();
         }
     }
@@ -25,7 +36,7 @@ public class CameraController : MonoBehaviour
     {
         cam = Camera.main;
         cam.transform.position = new Vector3(0, 0, -10);
-        cam.orthographicSize = 1.5f;
+        cam.fieldOfView = 70;
 
         cameraAddFixedValue.z = -10;
     }

@@ -11,6 +11,7 @@ namespace Data
         public float MaxMp;
         public float StrikingPower;
         public float MoveSpeed;
+        public float DashSpeed;
         public float JumpPower;
     }
 

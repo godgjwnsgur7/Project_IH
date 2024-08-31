@@ -58,7 +58,7 @@ public enum EPlayerSkillType
 }
 #endregion
 
-#region DataClass
+#region PlayerData
 [Serializable]
 public class PlayerData
 {
@@ -68,6 +68,7 @@ public class PlayerData
     public float CurrMp;
     public float StrikingPower;     // 공격력
     public float MoveSpeed;
+    public float DashSpeed;
     public float JumpPower;
     public List<PlayerSkill> PlayerSkillList;     // 값 세팅을 따로 해주어야 함
 
@@ -79,6 +80,7 @@ public class PlayerData
         CurrMp = jPlayerData.MaxMp;
         StrikingPower = jPlayerData.StrikingPower;
         MoveSpeed = jPlayerData.MoveSpeed;
+        DashSpeed = jPlayerData.DashSpeed;
         JumpPower = jPlayerData.JumpPower;
         PlayerSkillList = new List<PlayerSkill>();
     }
@@ -107,6 +109,8 @@ public class PlayerSkill
 
 public class Player : Creature, IHitEvent
 {
+    [SerializeField, ReadOnly] Camera playerCamera;
+
     [field: SerializeField, ReadOnly] public EPlayerType PlayerType { get; protected set; }
     [field: SerializeField] private PlayerData _playerInfo;
     public PlayerData PlayerInfo
@@ -308,14 +312,17 @@ public class Player : Creature, IHitEvent
         base.Reset();
 
         skillAttackObject ??= Util.FindChild<AttackObject>(this.gameObject, "FX_Projectile1", true);
-        attackObject = Managers.Object.SpawnAttackObject(EAttackObjectType.PlayerAttackObject, this.transform).GetComponent<AttackObject>();
-        attackObject.SetActive(false);
+        playerCamera = Util.FindChild<Camera>(gameObject, "PlayerCamera", true);
+        playerCamera.enabled = false;
     }
 
     public override bool Init()
     {
         if (base.Init() == false)
             return false;
+
+        attackObject = Managers.Object.SpawnAttackObject(EAttackObjectType.PlayerAttackObject, this.transform).GetComponent<AttackObject>();
+        attackObject.SetActive(false);
 
         CreatureType = ECreatureType.Player;
         PlayerState = EPlayerState.Idle;
@@ -759,7 +766,9 @@ public class Player : Creature, IHitEvent
 
     protected virtual void DashStateEnter()
     {
+        SetRigidVelocityX(PlayerInfo.DashSpeed * ((LookLeft) ? -1 : 1));
         isPlayerStateLock = true;
+        isInvincibility = true;
     }
 
     protected virtual void UpdateDashState()
@@ -767,6 +776,7 @@ public class Player : Creature, IHitEvent
         if (IsEndCurrentState(EPlayerState.Dash))
         {
             isPlayerStateLock = false;
+            PlayerState = EPlayerState.Fall;
             PlayerState = EPlayerState.Move;
             PlayerState = EPlayerState.Idle;
         }
@@ -774,7 +784,7 @@ public class Player : Creature, IHitEvent
 
     protected virtual void DashStateExit()
     {
-        
+        isInvincibility = false;
     }
     #endregion
 
@@ -842,6 +852,9 @@ public class Player : Creature, IHitEvent
 
     protected virtual void SkillStateEnter()
     {
+        if(skillNum == 4)
+            playerCamera.enabled = true;
+
         isPlayerStateLock = true;
         InitRigidVelocityX();
     }
@@ -858,33 +871,10 @@ public class Player : Creature, IHitEvent
 
     protected virtual void SkillStateExit()
     {
+        playerCamera.enabled = false;
         skillNum = 0;
         isSuperArmour = false;
         isInvincibility = false;
-    }
-
-    // Animation Clip Event
-    public void OnActiveAttackObject()
-    {
-        attackObject.SetActive(true);
-    }
-
-    // Animation Clip Event
-    public void OnDeactiveAttackobject()
-    {
-        attackObject.SetActive(false);
-    }
-
-    // Animation Clip Event
-    public void OnStartSlowEffect()
-    {
-        Time.timeScale = 0.5f; // 게임매니저로 옮길 예정? (임시)
-    }
-
-    // Animation Clip Event
-    public void OnEndSlowEffect()
-    {
-        Time.timeScale = 1.0f; // 게임매니저로 옮길 예정? (임시)
     }
     #endregion
 
@@ -926,7 +916,7 @@ public class Player : Creature, IHitEvent
     {
         isPlayerStateLock = true;
         SetRigidVelocityX(2f * ((LookLeft) ? 1 : -1));
-        Time.timeScale = 0.5f; // 게임매니저로 옮길 예정? (임시)
+        Managers.Game.GameTimeScaleSlowEffect(0.5f, 0.5f);
     }
 
     protected virtual void UpdateBlockState()
@@ -942,7 +932,7 @@ public class Player : Creature, IHitEvent
 
     protected virtual void BlockStateExit()
     {
-        Time.timeScale = 1f; // 게임매니저로 옮길 예정? (임시)
+
     }
     #endregion
 
@@ -1016,13 +1006,6 @@ public class Player : Creature, IHitEvent
     {
         hitForceDir = Vector3.zero;
     }
-
-    // Animation Clip Event
-    public void OnInitHitForce()
-    {
-        if(creatureFoot.IsLandingGround)
-            InitRigidVelocityX();
-    }
     #endregion
 
     #region Dead Motion
@@ -1044,5 +1027,23 @@ public class Player : Creature, IHitEvent
     }
     #endregion
 
+    #endregion
+
+    #region Animation Clip Event
+    public void OnInitHitForce()
+    {
+        if (creatureFoot.IsLandingGround)
+            InitRigidVelocityX();
+    }
+
+    public void OnActiveAttackObject()
+    {
+        attackObject.SetActive(true);
+    }
+
+    public void OnDeactiveAttackobject()
+    {
+        attackObject.SetActive(false);
+    }
     #endregion
 }

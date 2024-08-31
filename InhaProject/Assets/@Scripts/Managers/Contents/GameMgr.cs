@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -52,5 +53,36 @@ public class GameMgr
     {
         currentStageIndex++;
         LoadStage(currentStageIndex); // 다음 스테이지 로드
+    }
+
+    Action onEndEffect = null;
+    public void GameTimeScaleSlowEffect(float slowTime, float timeScale, Action onEndEffect = null)
+    {
+        if (timeScale >= 1.0f)
+            return;
+
+        if (coTimeScaleSlowEffect != null)
+            return;
+
+        if (onEndEffect != null)
+            this.onEndEffect = onEndEffect;
+
+        coTimeScaleSlowEffect = CoroutineHelper.StartCoroutine(CoTimeScaleSlowEffect(slowTime, timeScale));
+    }
+
+    public bool IsGameSlowEffect { get; private set; }
+    Coroutine coTimeScaleSlowEffect;
+    protected IEnumerator CoTimeScaleSlowEffect(float slowTime, float timeScale)
+    {
+        Time.timeScale = timeScale;
+        IsGameSlowEffect = true;
+
+        yield return new WaitForSecondsRealtime(slowTime);
+
+        onEndEffect?.Invoke();
+        Time.timeScale = 1.0f;
+        IsGameSlowEffect = false;
+        onEndEffect = null;
+        coTimeScaleSlowEffect = null;
     }
 }

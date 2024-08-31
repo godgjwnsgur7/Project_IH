@@ -1,2 +1,2 @@
-DataId,MaxHp,MaxMp,StrikingPower,MoveSpeed,JumpPower
-0,100,100,10,5,8
+DataId,MaxHp,MaxMp,StrikingPower,MoveSpeed,DashSpeed,JumpPower
+0,100,100,10,5,8,8

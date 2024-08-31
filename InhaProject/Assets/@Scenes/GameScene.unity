@@ -742,7 +742,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 50
+  field of view: 70
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -789,6 +789,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   cameraAddFixedValue: {x: 0, y: 0, z: 0}
+  basicFieldOfView: 0
 --- !u!1 &1191175061
 GameObject:
   m_ObjectHideFlags: 0
@@ -1948,6 +1949,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 696884378}
     m_Modifications:
+    - target: {fileID: 3369322846333586908, guid: a088eedd107bf4340ad4047d0a8025b3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 3369322846333586908, guid: a088eedd107bf4340ad4047d0a8025b3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -270
+      objectReference: {fileID: 0}
+    - target: {fileID: 3369322846333586908, guid: a088eedd107bf4340ad4047d0a8025b3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -365
+      objectReference: {fileID: 0}
     - target: {fileID: 6062023828576574894, guid: a088eedd107bf4340ad4047d0a8025b3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.91

@@ -6,6 +6,7 @@
       "MaxMp": 100.0,
       "StrikingPower": 10.0,
       "MoveSpeed": 5.0,
+      "DashSpeed": 8.0,
       "JumpPower": 8.0
     }
   ]
