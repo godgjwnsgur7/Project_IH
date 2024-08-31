@@ -33,9 +33,14 @@ public class ObjectMgr : MonoBehaviour
     /// <summary>
     /// 이펙트 오브젝트 스폰 - 파괴(비활성화)는 이펙트가 끝나면 자동으로 수행
     /// </summary>
-    public void SpawnEffectObject(EEffectObjectType type, Vector3 position)
+    public GameObject SpawnEffectObject(EEffectObjectType type, Vector3 position)
     {
-        Managers.Resource.Instantiate($"{PrefabPath.OBJECT_EFFECTOBEJCT_PATH}/{EEffectObjectType.PlayerHitEffect}", position);
+        return Managers.Resource.Instantiate($"{PrefabPath.OBJECT_EFFECTOBEJCT_PATH}/{type}", position);
+    }
+
+    public GameObject SpawnAttackObject(EAttackObjectType type, Transform parent)
+    {
+        return Managers.Resource.Instantiate($"{PrefabPath.OBJECT_ATTACKOBJECT_PATH}/{type}", parent);
     }
 
     public void Init()

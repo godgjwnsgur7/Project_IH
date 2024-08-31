@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XR;
+using UnityEngine.UIElements;
 using static Define;
 
 /// <summary>
@@ -30,6 +31,7 @@ public enum EPlayerState
     Skill1,
     Skill2,
     Skill3,
+    UltimateSkill,
 
     Guard,
     Block,
@@ -65,7 +67,8 @@ public class Player : Creature, IHitEvent
     [field: SerializeField, ReadOnly] public EPlayerType PlayerType { get; protected set; }
     [field: SerializeField] public PlayerData PlayerInfo { get; protected set; }
 
-    [SerializeField, ReadOnly] AttackObject attackObject;
+    [SerializeField, ReadOnly] AttackObject skillAttackObject;
+    [SerializeField, ReadOnly] AttackObject attackObject = null;
 
     // 플레이어를 조작할 수 있는 경우
     [SerializeField, ReadOnly] private bool _isPlayerInputControll = false;
@@ -238,7 +241,9 @@ public class Player : Creature, IHitEvent
     {
         base.Reset();
 
-        attackObject ??= Util.FindChild<AttackObject>(this.gameObject, "FX_Projectile1", true);
+        skillAttackObject ??= Util.FindChild<AttackObject>(this.gameObject, "FX_Projectile1", true);
+        attackObject = Managers.Object.SpawnAttackObject(EAttackObjectType.PlayerAttackObject, this.transform).GetComponent<AttackObject>();
+        attackObject.SetActive(false);
     }
 
     public override bool Init()
@@ -264,7 +269,8 @@ public class Player : Creature, IHitEvent
         PlayerType = Util.ParseEnum<EPlayerType>(gameObject.name); // 임시
         PlayerInfo = new PlayerData(Managers.Data.PlayerDict[(int)PlayerType]);
 
-        attackObject.SetInfo(ETag.Monster, OnAttackTarget);
+        skillAttackObject.SetInfo(ETag.Player, OnSkillAttackTarget);
+        attackObject.SetInfo(ETag.Player, OnAttackTarget);
     }
 
     public override Vector3 GetCameraTargetPos()
@@ -600,6 +606,14 @@ public class Player : Creature, IHitEvent
     #endregion
 
     #region Attack Motion
+
+    public void OnAttackTarget(IHitEvent attackTarget)
+    {
+        if (PlayerState == EPlayerState.Attack)
+        {
+            attackTarget.OnHit(new AttackParam(this, LookLeft, PlayerInfo.StrikingPower));
+        }
+    }
     protected virtual bool AttackStateCondition()
     {
         if (creatureFoot.IsLandingGround == false)
@@ -629,20 +643,18 @@ public class Player : Creature, IHitEvent
     {
 
     }
-
-    public void OnAttackTarget(IHitEvent attackTarget)
-    {
-        if (PlayerState == EPlayerState.Attack || PlayerState == EPlayerState.Skill1 ||
-            PlayerState == EPlayerState.Skill2 || PlayerState == EPlayerState.Skill3)
-        {
-            attackTarget.OnHit(new AttackParam(this, LookLeft, PlayerInfo.StrikingPower));
-        }
-    }
-
     #endregion
 
     #region Skill Motion
     [SerializeField, ReadOnly] int skillNum = 0;
+    public void OnSkillAttackTarget(IHitEvent skillAttackTarget)
+    {
+        if (PlayerState == EPlayerState.Skill1 || PlayerState == EPlayerState.Skill2 || PlayerState == EPlayerState.Skill3)
+        {
+            skillAttackTarget.OnHit(new AttackParam(this, LookLeft, PlayerInfo.StrikingPower * 2f));
+        }
+    }
+
     protected virtual bool SkillStateCondition()
     {
         if (skillNum == 0)
@@ -657,6 +669,7 @@ public class Player : Creature, IHitEvent
     protected virtual void SkillStateEnter()
     {
         isPlayerStateLock = true;
+        isSuperArmour = true;
         InitRigidVelocityX();
     }
 
@@ -673,6 +686,19 @@ public class Player : Creature, IHitEvent
     protected virtual void SkillStateExit()
     {
         skillNum = 0;
+        isSuperArmour = false;
+    }
+
+    // Animation Clip Event
+    public void OnActiveAttackObject()
+    {
+        attackObject.SetActive(true);
+    }
+
+    // Animation Clip Event
+    public void OnDeactiveAttackobject()
+    {
+        attackObject.SetActive(false);
     }
     #endregion
 
@@ -736,6 +762,34 @@ public class Player : Creature, IHitEvent
 
     #region Hit Motion
     Vector3 hitForceDir = Vector3.zero;
+    [SerializeField, ReadOnly] bool isSuperArmour = false;
+    [SerializeField, ReadOnly] bool isInvincibility = false;
+
+    public void OnHit(AttackParam param = null)
+    {
+        if (isInvincibility || param == null)
+            return;
+
+        Vector3 subVec = new Vector3(0, Collider.size.y * 0.7f, 0);
+        if (PlayerState == EPlayerState.Guard && param.isAttackerLeft == !LookLeft)
+        {
+            subVec.x += Collider.size.x * ((LookLeft) ? -1 : 1) * 2;
+            Managers.Resource.Instantiate($"{PrefabPath.OBJECT_EFFECTOBEJCT_PATH}/{EEffectObjectType.PlayerHitEffect}", this.transform.position + subVec);
+            isPlayerStateLock = false;
+            PlayerState = EPlayerState.Block;
+            return;
+        }
+        
+        LookLeft = !param.isAttackerLeft;
+        Managers.Resource.Instantiate($"{PrefabPath.OBJECT_EFFECTOBEJCT_PATH}/{EEffectObjectType.PlayerHitEffect}", this.transform.position + subVec);
+
+        if(isSuperArmour == false)
+        {
+            hitForceDir.x = param.pushPower * ((param.isAttackerLeft) ? -1 : 1);
+            isPlayerStateLock = false;
+            PlayerState = EPlayerState.Hit;
+        }
+    }
 
     protected virtual bool HitStateCondition()
     {
@@ -769,29 +823,6 @@ public class Player : Creature, IHitEvent
         hitForceDir = Vector3.zero;
     }
 
-    public void OnHit(AttackParam param = null)
-    {
-        if (param == null)
-            return;
-
-        Vector3 subVec = new Vector3(0 , Collider.size.y * 0.7f, 0);
-        if(PlayerState == EPlayerState.Guard && param.isAttackerLeft == !LookLeft)
-        {
-            subVec.x += Collider.size.x * ((LookLeft) ? -1 : 1) * 2;
-            PlayerState = EPlayerState.Block;
-        }
-        else
-        {
-            LookLeft = !param.isAttackerLeft;
-            hitForceDir.x = param.pushPower * ((param.isAttackerLeft) ? -1 : 1);
-            isPlayerStateLock = false;
-            PlayerState = EPlayerState.Hit;
-        }
-
-        Managers.Resource.Instantiate($"{PrefabPath.OBJECT_EFFECTOBEJCT_PATH}/{EEffectObjectType.PlayerHitEffect}"
-           , this.transform.position + subVec);
-    }
-    
     // Animation Clip Event
     public void OnInitHitForce()
     {

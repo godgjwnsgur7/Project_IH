@@ -10,13 +10,18 @@ public interface IHitEvent
     public void OnHit(AttackParam param = null);
 }
 
+public enum EAttackObjectType
+{
+    PlayerAttackObject,
+}
+
 public class AttackObject : InitBase
 {
     public Rigidbody Rigid {  get; protected set; }
     public BoxCollider Collider { get; protected set; }
 
     Action<IHitEvent> onAttackTarget;
-    ETag targetTag = ETag.Untagged;
+    ETag masterTag = ETag.Untagged;
 
     private void Reset()
     {
@@ -42,17 +47,25 @@ public class AttackObject : InitBase
         return true;
     }
 
-    public void SetInfo(ETag targetTag, Action<IHitEvent> onAttackTarget)
+    public void SetInfo(ETag masterTag, Action<IHitEvent> onAttackTarget)
     {
-        this.targetTag = targetTag;
+        this.masterTag = masterTag;
         this.onAttackTarget = onAttackTarget;
+    }
+    
+    public void SetActive(bool active)
+    {
+        this.gameObject.SetActive(active);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag.Equals(targetTag.ToString()))
+        if (other.tag.Equals(masterTag.ToString()))
+            return;
+
+        if (other.TryGetComponent<IHitEvent>(out var hitEvent))
         {
-            onAttackTarget?.Invoke(other.GetComponent<IHitEvent>());
+            onAttackTarget?.Invoke(hitEvent);
         }
     }
 }

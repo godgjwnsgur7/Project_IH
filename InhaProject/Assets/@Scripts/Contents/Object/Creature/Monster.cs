@@ -189,7 +189,7 @@ public class Monster : Creature, IHitEvent
         MonsterInfo = new MonsterData(Managers.Data.MonsterDict[(int)MonsterType]);
         MonsterInfo.AttackDistance *= 2;
 
-        attackObject.SetInfo(ETag.Player, OnAttackTarget);
+        attackObject.SetInfo(ETag.Monster, OnAttackTarget);
         attackRange.SetInfo(OnAttackRangeInTarget);
 
         StartCoroutine(CoUpdateAI());
@@ -469,6 +469,30 @@ public class Monster : Creature, IHitEvent
 
     #region Hit Motion
     Vector3 hitForceDir = Vector3.zero;
+    public void OnHit(AttackParam param = null)
+    {
+        if (param == null)
+            return;
+
+        MonsterInfo.CurrHp -= param.damage;
+        LookLeft = !param.isAttackerLeft;
+        hitForceDir.x = param.pushPower * ((param.isAttackerLeft) ? -1 : 1);
+        MonsterState = EMonsterState.Dead;
+
+        if (MonsterInfo.CurrHp > 0)
+        {
+            if (ChaseTarget == null && param.attacker is BaseObject target)
+                ChaseTarget = target;
+
+            if (MonsterState == EMonsterState.Hit)
+            {
+                ReplayAnimation(EMonsterState.Hit);
+                SetRigidVelocity(hitForceDir);
+            }
+            MonsterState = EMonsterState.Hit;
+        }
+    }
+
     protected virtual bool HitStateCondition()
     {
 
@@ -495,24 +519,6 @@ public class Monster : Creature, IHitEvent
     protected virtual void HitStateExit()
     {
         
-    }
-
-    public void OnHit(AttackParam param = null)
-    {
-        if (param == null)
-            return;
-
-        MonsterInfo.CurrHp -= param.damage;
-        LookLeft = !param.isAttackerLeft;
-        hitForceDir.x = param.pushPower * ((param.isAttackerLeft) ? -1 : 1);
-        MonsterState = EMonsterState.Dead;
-
-        if(MonsterInfo.CurrHp > 0)
-        {
-            if (param.attacker is BaseObject target)
-                ChaseTarget = target;
-            MonsterState = EMonsterState.Hit;
-        }
     }
     #endregion
 

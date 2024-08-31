@@ -152,6 +152,14 @@ public class Creature : BaseObject
         animator.Play(state.ToString());
     }
 
+    protected void ReplayAnimation(EMonsterState state)
+    {
+        if (IsState(state))
+            return;
+
+        animator.Play(state.ToString(), -1, 0f);
+    }
+
     public bool IsState(EMonsterState state)
     {
         if (animator == null)
