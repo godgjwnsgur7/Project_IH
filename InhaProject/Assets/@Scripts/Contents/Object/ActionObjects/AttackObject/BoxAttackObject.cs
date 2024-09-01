@@ -37,7 +37,7 @@ public class BoxAttackObject : BaseAttackObject
 
         if (other.TryGetComponent<IHitEvent>(out var hitEvent))
         {
-            onAttackTarget?.Invoke(hitEvent);
+            OnAttackTarget(hitEvent);
         }
     }
 }

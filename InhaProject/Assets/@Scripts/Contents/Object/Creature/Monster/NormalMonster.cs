@@ -48,7 +48,7 @@ public class NormalMonster : BaseMonster
     [field: SerializeField, ReadOnly] public ENormalMonsterType NormalMonsterType { get; protected set; }
     [field: SerializeField, ReadOnly] public NormalMonsterData MonsterInfo { get; protected set; }
     [SerializeField, ReadOnly] protected MonsterAttackRange attackRange;
-    [SerializeField, ReadOnly] protected BaseAttackObject attackObject;
+    [SerializeField] protected BaseAttackObject attackObject;
     [SerializeField, ReadOnly] protected List<Renderer> rendererList;
     
     [SerializeField, ReadOnly]
@@ -164,7 +164,7 @@ public class NormalMonster : BaseMonster
         base.Reset();
 
         attackRange ??= Util.FindChild<MonsterAttackRange>(this.gameObject);
-        attackObject ??= Util.FindChild<BaseAttackObject>(this.gameObject);
+        attackObject ??= Util.FindChild<BaseAttackObject>(this.gameObject, "AttackObject", true);
 
         rendererList = new List<Renderer>();
         Transform[] allChildren = this.GetComponentsInChildren<Transform>();
@@ -177,7 +177,6 @@ public class NormalMonster : BaseMonster
     {
         base.SetInfo(templateID);
 
-       
         NormalMonsterType = Util.ParseEnum<ENormalMonsterType>(gameObject.name);
         MonsterInfo = new NormalMonsterData(Managers.Data.MonsterDict[(int)MonsterType]);
         MonsterInfo.AttackDistance *= 2;

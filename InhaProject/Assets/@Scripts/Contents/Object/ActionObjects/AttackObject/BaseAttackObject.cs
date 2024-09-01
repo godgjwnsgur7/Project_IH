@@ -20,7 +20,7 @@ public class BaseAttackObject : InitBase
 {
     [field: SerializeField, ReadOnly] 
     public EAttackObjectType AttackObjectType { get; protected set; }
-    protected Action<IHitEvent> onAttackTarget;
+    private Action<IHitEvent> onAttackTarget;
     protected ETag masterTag = ETag.Untagged;
 
     protected virtual void Reset()
@@ -41,6 +41,11 @@ public class BaseAttackObject : InitBase
     {
         this.masterTag = masterTag;
         this.onAttackTarget = onAttackTarget;
+    }
+
+    protected void OnAttackTarget(IHitEvent hitEvent)
+    {
+        onAttackTarget?.Invoke(hitEvent);
     }
     
     public void SetActive(bool active)
