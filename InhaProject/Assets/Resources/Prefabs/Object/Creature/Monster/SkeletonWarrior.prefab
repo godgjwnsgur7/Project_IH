@@ -31198,7 +31198,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5391807911152739004}
   - component: {fileID: 2650173142577020162}
-  - component: {fileID: 4824909318067092502}
+  - component: {fileID: 5216241134304237995}
   - component: {fileID: 501858191394797036}
   - component: {fileID: 6306175933850317747}
   m_Layer: 0
@@ -31242,7 +31242,7 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
---- !u!114 &4824909318067092502
+--- !u!114 &5216241134304237995
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -31251,9 +31251,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4882418437131849137}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c74750a8ceb37c40a79b677daeb121a, type: 3}
+  m_Script: {fileID: 11500000, guid: efe95d9fa7c33314bb2dab9e0df0c0f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <AttackObjectType>k__BackingField: 0
 --- !u!54 &501858191394797036
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -42148,7 +42149,7 @@ MonoBehaviour:
     ChaseDistance: 0
     AttackDistance: 0
   attackRange: {fileID: 6507128251054799236}
-  attackObject: {fileID: 4824909318067092502}
+  attackObject: {fileID: 0}
   rendererList:
   - {fileID: 6392578872326442776}
   - {fileID: 3120640660852872551}

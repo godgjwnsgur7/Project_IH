@@ -7,7 +7,7 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class MonsterCollisionBarrier : InitBase
 {
-    public Rigidbody Rigid {  get; private set; }
+    public Rigidbody Rigid { get; private set; }
     public CapsuleCollider Collider { get; private set; }
 
     private void Reset()
@@ -31,7 +31,7 @@ public class MonsterCollisionBarrier : InitBase
 
         return true;
     }
-    
+
     public void SetInfo(ELayer includeLayer)
     {
         Rigid.includeLayers += 1 << (int)includeLayer;

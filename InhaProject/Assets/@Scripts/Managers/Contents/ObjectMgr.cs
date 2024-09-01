@@ -38,11 +38,6 @@ public class ObjectMgr : MonoBehaviour
         return Managers.Resource.Instantiate($"{PrefabPath.OBJECT_EFFECTOBEJCT_PATH}/{type}", position);
     }
 
-    public GameObject SpawnAttackObject(EAttackObjectType type, Transform parent)
-    {
-        return Managers.Resource.Instantiate($"{PrefabPath.OBJECT_ATTACKOBJECT_PATH}/{type}", parent);
-    }
-
     public void Init()
     {
         SetItemPrefabsDict();

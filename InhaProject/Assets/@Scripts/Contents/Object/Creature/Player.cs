@@ -125,8 +125,8 @@ public class Player : Creature, IHitEvent
         }
     }
 
-    [SerializeField, ReadOnly] AttackObject skillAttackObject;
-    [SerializeField, ReadOnly] AttackObject attackObject = null;
+    [SerializeField, ReadOnly] BaseAttackObject skillAttackObject;
+    [SerializeField, ReadOnly] BaseAttackObject attackObject = null;
 
     // 플레이어를 조작할 수 있는 경우
     [SerializeField, ReadOnly] private bool _isPlayerInputControll = false;
@@ -311,9 +311,9 @@ public class Player : Creature, IHitEvent
     {
         base.Reset();
 
-        skillAttackObject ??= Util.FindChild<AttackObject>(this.gameObject, "FX_Projectile1", true);
+        skillAttackObject ??= Util.FindChild<BaseAttackObject>(this.gameObject, "FX_Projectile1", true);
+        attackObject ??= Util.FindChild<BoxAttackObject>(this.gameObject, "PlayerAttackObject");
         playerCamera = Util.FindChild<Camera>(gameObject, "PlayerCamera", true);
-        playerCamera.enabled = false;
     }
 
     public override bool Init()
@@ -321,7 +321,7 @@ public class Player : Creature, IHitEvent
         if (base.Init() == false)
             return false;
 
-        attackObject = Managers.Object.SpawnAttackObject(EAttackObjectType.PlayerAttackObject, this.transform).GetComponent<AttackObject>();
+        playerCamera.enabled = false;
         attackObject.SetActive(false);
 
         CreatureType = ECreatureType.Player;
