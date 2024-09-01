@@ -329,7 +329,6 @@ public class Player : Creature, IHitEvent
 
         this.gameObject.tag = ETag.Player.ToString();
         this.gameObject.layer = (int)ELayer.Player;
-
         Collider.excludeLayers += 1 << (int)ELayer.Monster;
 
         return true;
@@ -521,7 +520,7 @@ public class Player : Creature, IHitEvent
         if (PlayerState != EPlayerState.Skill4)
             skillNum = 0;
         else
-            isInvincibility = true;
+            IsInvincibility = true;
     }
 
     #endregion
@@ -768,7 +767,7 @@ public class Player : Creature, IHitEvent
     {
         SetRigidVelocityX(PlayerInfo.DashSpeed * ((LookLeft) ? -1 : 1));
         isPlayerStateLock = true;
-        isInvincibility = true;
+        IsInvincibility = true;
     }
 
     protected virtual void UpdateDashState()
@@ -784,7 +783,7 @@ public class Player : Creature, IHitEvent
 
     protected virtual void DashStateExit()
     {
-        isInvincibility = false;
+        IsInvincibility = false;
     }
     #endregion
 
@@ -874,7 +873,7 @@ public class Player : Creature, IHitEvent
         playerCamera.enabled = false;
         skillNum = 0;
         isSuperArmour = false;
-        isInvincibility = false;
+        IsInvincibility = false;
     }
     #endregion
 
@@ -939,11 +938,28 @@ public class Player : Creature, IHitEvent
     #region Hit Motion
     Vector3 hitForceDir = Vector3.zero;
     [SerializeField, ReadOnly] bool isSuperArmour = false;
-    [SerializeField, ReadOnly] bool isInvincibility = false;
+
+    [SerializeField, ReadOnly] bool _isInvincibility;
+    bool IsInvincibility
+    {
+        get { return _isInvincibility; }
+        set
+        {
+            if (value == _isInvincibility)
+                return;
+
+            _isInvincibility = value;
+
+            if (_isInvincibility)
+                Rigid.excludeLayers += 1 << (int)ELayer.Default;
+            else
+                Rigid.excludeLayers -= 1 << (int)ELayer.Default;
+        }
+    }
 
     public void OnHit(AttackParam param = null)
     {
-        if (isInvincibility || param == null)
+        if (IsInvincibility || param == null)
             return;
 
         UIDamageParam damageParam = new((int)param.damage

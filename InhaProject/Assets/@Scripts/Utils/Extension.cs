@@ -26,9 +26,9 @@ public static class Extension
         if (player != null)
             return player.PlayerState != EPlayerState.Dead;
 
-        Monster monster = bo as Monster;
-        if (monster != null)
-            return monster.MonsterState != EMonsterState.Dead;
+        NormalMonster normalMonster = bo as NormalMonster;
+        if (normalMonster != null)
+            return normalMonster.MonsterState != ENormalMonsterState.Dead;
 
         return true;
     }

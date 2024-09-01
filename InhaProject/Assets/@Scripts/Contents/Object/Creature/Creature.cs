@@ -144,7 +144,7 @@ public class Creature : BaseObject
         return IsEndState(animator.GetCurrentAnimatorStateInfo(0));
     }
 
-    protected void PlayAnimation(EMonsterState state)
+    protected void PlayAnimation(ENormalMonsterState state)
     {
         if (animator == null)
             return;
@@ -152,7 +152,7 @@ public class Creature : BaseObject
         animator.Play(state.ToString());
     }
 
-    protected void ReplayAnimation(EMonsterState state)
+    protected void ReplayAnimation(ENormalMonsterState state)
     {
         if (IsState(state))
             return;
@@ -160,7 +160,7 @@ public class Creature : BaseObject
         animator.Play(state.ToString(), -1, 0f);
     }
 
-    public bool IsState(EMonsterState state)
+    public bool IsState(ENormalMonsterState state)
     {
         if (animator == null)
             return false;
@@ -168,12 +168,12 @@ public class Creature : BaseObject
         return IsState(animator.GetCurrentAnimatorStateInfo(0), state);
     }
 
-    protected bool IsState(AnimatorStateInfo stateInfo, EMonsterState state)
+    protected bool IsState(AnimatorStateInfo stateInfo, ENormalMonsterState state)
     {
         return stateInfo.IsName(state.ToString());
     }
 
-    public bool IsEndCurrentState(EMonsterState state)
+    public bool IsEndCurrentState(ENormalMonsterState state)
     {
         if (animator == null)
         {

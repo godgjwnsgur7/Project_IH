@@ -30,6 +30,7 @@ public static class Define
         Platform = 6,
         Player = 7,
         Monster = 8,
+        Max = 9,
     }
 
     /// <summary>
