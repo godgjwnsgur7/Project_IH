@@ -433,7 +433,7 @@ public class Player : Creature, IHitEvent
         if (!IsPlayerInputControll)
             return;
 
-        if (!creatureFoot.IsLandingGround)
+        if (!CreatureFoot.IsLandingGround)
             return;
         
         PlayerState = EPlayerState.Jump;
@@ -444,7 +444,7 @@ public class Player : Creature, IHitEvent
         if (!IsPlayerInputControll)
             return;
 
-        if (!creatureFoot.IsLandingGround)
+        if (!CreatureFoot.IsLandingGround)
             return;
 
         PlayerState = EPlayerState.Dash;
@@ -585,7 +585,7 @@ public class Player : Creature, IHitEvent
         if (moveDirection != Vector2.zero)
             return false;
 
-        if (creatureFoot.IsLandingGround == false)
+        if (CreatureFoot.IsLandingGround == false)
             return false;
 
         return true;
@@ -614,7 +614,7 @@ public class Player : Creature, IHitEvent
         if (moveDirection.x == 0)
             return false;
 
-        if (creatureFoot.IsLandingGround == false)
+        if (CreatureFoot.IsLandingGround == false)
             return false;
 
         return true;
@@ -654,7 +654,7 @@ public class Player : Creature, IHitEvent
     #region Jump Motion
     protected virtual bool JumpStateCondition()
     {
-        if (creatureFoot.IsLandingGround == false)
+        if (CreatureFoot.IsLandingGround == false)
             return false;
 
         return true;
@@ -672,7 +672,7 @@ public class Player : Creature, IHitEvent
         FallDownCheck();
 
         // 착지 확인
-        if (creatureFoot.IsLandingGround)
+        if (CreatureFoot.IsLandingGround)
         {
             PlayerState = EPlayerState.Move;
         }
@@ -705,7 +705,7 @@ public class Player : Creature, IHitEvent
         // 낙하 속도 제한 해야 함
 
         // 착지 확인
-        if (creatureFoot.IsLandingGround)
+        if (CreatureFoot.IsLandingGround)
         {
             PlayerState = EPlayerState.Land;
             PlayerState = EPlayerState.Move;
@@ -719,7 +719,7 @@ public class Player : Creature, IHitEvent
 
     protected virtual void FallDownCheck()
     {
-        if (creatureFoot.IsLandingGround == false && Rigid.velocity.y < 0)
+        if (CreatureFoot.IsLandingGround == false && Rigid.velocity.y < 0)
             PlayerState = EPlayerState.Fall;
     }
     #endregion
@@ -799,7 +799,7 @@ public class Player : Creature, IHitEvent
     }
     protected virtual bool AttackStateCondition()
     {
-        if (creatureFoot.IsLandingGround == false)
+        if (CreatureFoot.IsLandingGround == false)
             return false;
 
         return true;
@@ -844,7 +844,7 @@ public class Player : Creature, IHitEvent
         if (skillNum == 0)
             return false;
 
-        if (creatureFoot.IsLandingGround == false)
+        if (CreatureFoot.IsLandingGround == false)
             return false;
 
         return true;
@@ -881,7 +881,7 @@ public class Player : Creature, IHitEvent
     #region Guard Motion
     protected virtual bool GuardStateCondition()
     {
-        if (creatureFoot.IsLandingGround == false)
+        if (CreatureFoot.IsLandingGround == false)
             return false;
 
         return true;
@@ -1032,7 +1032,7 @@ public class Player : Creature, IHitEvent
     #region Animation Clip Event
     public void OnInitHitForce()
     {
-        if (creatureFoot.IsLandingGround)
+        if (CreatureFoot.IsLandingGround)
             InitRigidVelocityX();
     }
 

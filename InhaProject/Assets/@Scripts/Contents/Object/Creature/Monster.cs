@@ -305,7 +305,7 @@ public class Monster : Creature, IHitEvent
     #region Idle Motion
     protected virtual bool IdleStateCondition()
     {
-        if (creatureFoot.IsLandingGround == false)
+        if (CreatureFoot.IsLandingGround == false)
             return false;
 
         return true;
@@ -388,7 +388,7 @@ public class Monster : Creature, IHitEvent
     #region Chase Motion
     protected virtual bool ChaseStateCondition()
     {
-        if (creatureFoot.IsLandingGround == false)
+        if (CreatureFoot.IsLandingGround == false)
             return false;
 
         return true;
@@ -515,7 +515,7 @@ public class Monster : Creature, IHitEvent
 
     protected virtual void UpdateHitState()
     {
-        if (IsEndCurrentState(EMonsterState.Hit) && creatureFoot.IsLandingGround)
+        if (IsEndCurrentState(EMonsterState.Hit) && CreatureFoot.IsLandingGround)
         {
             MonsterState = EMonsterState.Idle;
         }

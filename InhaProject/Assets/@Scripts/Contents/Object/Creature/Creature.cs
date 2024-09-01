@@ -15,7 +15,7 @@ public enum ECreatureType
 public class Creature : BaseObject
 {
     public ECreatureType CreatureType { get; protected set; }
-    public CreatureFoot creatureFoot { get; protected set; }
+    public CreatureFoot CreatureFoot { get; protected set; }
 
     protected Rigidbody Rigid { get; private set; }
     [SerializeField] public BoxCollider Collider { get; private set; }
@@ -44,7 +44,7 @@ public class Creature : BaseObject
 
     protected virtual void Reset()
     {
-        creatureFoot ??= Util.FindChild<CreatureFoot>(this.gameObject);
+        CreatureFoot ??= Util.FindChild<CreatureFoot>(this.gameObject);
     }
 
     public override bool Init()
