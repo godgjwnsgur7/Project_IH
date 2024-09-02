@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class UI_SkillBar : UI_GameScene
 {
-	[SerializeField] private UI_Slot[] skillSlots;
+	[SerializeField] private UI_SkillSlot[] skillSlots;
 	[SerializeField] private Image playerMPImg;
 	[SerializeField] private Image playerMPImgBar;
 	[SerializeField] private Text mpText;
@@ -30,6 +30,7 @@ public class UI_SkillBar : UI_GameScene
 	{
 		for ( int i = 0; i < skillSlots.Length; i++ )
 		{
+			skillSlots[i].Init();
 			skillSlots[i].frontImage.fillAmount = 0;
 			skillSlots[i].frontImage.fillOrigin = (int)Image.Origin360.Top;
 		}

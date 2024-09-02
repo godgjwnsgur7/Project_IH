@@ -6,8 +6,9 @@ using UnityEngine.UI;
 
 public class UI_Slot : MonoBehaviour
 {
-	[SerializeField] public Sprite slot_img;
-	public Sprite front_img;
+	[SerializeField] protected Sprite slot_img;
+	[SerializeField] protected Sprite front_img;
+
 	protected Image slotImage;
 	public Image frontImage;
 
@@ -16,7 +17,7 @@ public class UI_Slot : MonoBehaviour
 		Init();
 	}
 
-	virtual protected void Init()
+	virtual public void Init()
 	{
 		Transform childTransformSlotImg = transform.Find("SlotImage");
 		slotImage = childTransformSlotImg.GetComponent<Image>();
@@ -24,7 +25,7 @@ public class UI_Slot : MonoBehaviour
 		Transform childTransformFrontImg = transform.Find("FrontImage");
 		frontImage = childTransformFrontImg.GetComponent<Image>();
 
-		slotImage.sprite = slot_img;
-		frontImage.sprite = front_img;
+		if (front_img != null)
+			frontImage.sprite = front_img;
 	}
 }

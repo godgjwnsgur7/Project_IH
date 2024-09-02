@@ -13,9 +13,15 @@ public class UI_ItemSlot : UI_Slot
 		Init();
 	}
 
-	override protected void Init()
+	override public void Init()
 	{
 		base.Init();
+
+		if (slot_img != null)
+			slotImage.sprite = slot_img;
+		if (front_img != null)
+			frontImage.sprite = front_img;
+
 		slotImage.enabled = false;
 		countText.enabled = false;
 	}
