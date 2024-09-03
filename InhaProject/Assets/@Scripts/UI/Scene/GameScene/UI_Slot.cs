@@ -24,8 +24,5 @@ public class UI_Slot : MonoBehaviour
 
 		Transform childTransformFrontImg = transform.Find("FrontImage");
 		frontImage = childTransformFrontImg.GetComponent<Image>();
-
-		if (front_img != null)
-			frontImage.sprite = front_img;
 	}
 }

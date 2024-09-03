@@ -37,6 +37,8 @@ public class UI_Dialogue : UI_BasePopup
 
 		if (test is UIDialogueParam uiDialogueParam)
 		{
+			currentLine = 0;
+
 			npcName = uiDialogueParam.nameText;
 			scripts = uiDialogueParam.scriptTexts;
 			scriptLength = uiDialogueParam.size;

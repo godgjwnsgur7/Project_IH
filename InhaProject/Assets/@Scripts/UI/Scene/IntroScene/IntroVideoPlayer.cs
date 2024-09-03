@@ -12,9 +12,6 @@ public class IntroVideoPlayer : MonoBehaviour
 	public VideoPlayer LinkedVideo;
 	[SerializeField] VideoClip videoClip;
 
-    float time = 0;
-	bool isPrepare = false;
-
 	void Awake()
 	{
 		string moviePath = "Vedio/Intro";
@@ -24,7 +21,7 @@ public class IntroVideoPlayer : MonoBehaviour
 			Debug.LogError("[MovieSceneDirector::Awake]not found movie - " + moviePath);
 			return;
 		}
-		time = 0;
+
 		StartCoroutine(ReadyToPlay());
 	}
 
@@ -41,8 +38,6 @@ public class IntroVideoPlayer : MonoBehaviour
 		LinkedVideo.Play();
 
 		MovieScreen.texture = LinkedVideo.texture;
-
-		isPrepare = true;
 	}
 
 	void OnEndMovie(VideoPlayer vp)

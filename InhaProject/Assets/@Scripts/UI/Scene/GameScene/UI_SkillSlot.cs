@@ -15,5 +15,11 @@ public class UI_SkillSlot : UI_Slot
     override public void Init()
     {
         base.Init();
+
+        if (front_img != null)
+            frontImage.sprite = front_img;
+
+        slotImage.enabled = false;
+        cooltimeText.enabled = false;
     }
 }
