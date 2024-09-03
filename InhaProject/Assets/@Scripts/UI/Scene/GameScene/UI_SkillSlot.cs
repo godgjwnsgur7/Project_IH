@@ -19,7 +19,6 @@ public class UI_SkillSlot : UI_Slot
         if (front_img != null)
             frontImage.sprite = front_img;
 
-        slotImage.enabled = false;
         cooltimeText.enabled = false;
     }
 }

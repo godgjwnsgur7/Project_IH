@@ -9,18 +9,33 @@ public class UI_HealthBar : UI_GameScene
 	[SerializeField] private Text hpText;
 
 	float playerHp = 100;
-	float playerCurrentHp = 100;
+
+	private Player player;
+	public override bool Init()
+	{
+		if (base.Init() == false)
+			return false;
+
+		return true;
+	}
+
+	private void OnChangedHp(float hp)
+    {
+		hpSlider.fillAmount = hp / player.PlayerInfo.MaxHp;
+		hpText.text = hp.ToString() + "/" + player.PlayerInfo.MaxHp.ToString();
+	}
 
 	private void Start()
 	{
-		hpSlider.fillAmount = playerCurrentHp / playerHp;
-		hpText.text = playerCurrentHp.ToString() + "/" + playerHp.ToString();
-		// mpSlider.fillAmount = 
-	}
+		GameObject playerObject = GameObject.FindWithTag("Player");
+		player = playerObject.GetComponent<Player>();
 
-	public void OnDamaged()
-	{
-		hpSlider.fillAmount = playerCurrentHp / playerHp;
-		hpText.text = playerCurrentHp.ToString() + "/" + playerHp.ToString();
+		if (player == null)
+			return;
+
+		hpSlider.fillAmount = player.PlayerInfo.CurrHp / player.PlayerInfo.MaxHp;
+		hpText.text = player.PlayerInfo.CurrHp.ToString() + "/" + player.PlayerInfo.MaxHp.ToString();
+
+		player.OnChangedHp += OnChangedHp;
 	}
 }

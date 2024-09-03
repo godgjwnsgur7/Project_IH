@@ -26,7 +26,6 @@ public class UI_GameScene : UI_BaseScene
 {
 	private UI_SkillBar uiSkillBar;
 	private UI_HealthBar uiHealthBar;
-	protected UIPlayerData playerData;
 
 	public override bool Init()
     {
@@ -41,7 +40,7 @@ public class UI_GameScene : UI_BaseScene
 		skills[(int)EPlayerSkillType.Skill3] = new PlayerSkill(EPlayerSkillType.Skill3, 3.0f, true, 20.0f);
 		skills[(int)EPlayerSkillType.Skill4] = new PlayerSkill(EPlayerSkillType.Skill4, 4.0f, true, 30.0f);
 
-		playerData = new UIPlayerData(100, 100, 100, 100, skills);
+		// playerData = new UIPlayerData(100, 100, 100, 100, skills);
 
 		return true;
 	}
@@ -71,11 +70,6 @@ public class UI_GameScene : UI_BaseScene
 	public void ConnectPlayerInfoUI(Player player, Action<int> onSkillActive)
 	{
 		
-	}
-
-	public void SetPlayerDataInfo(UIPlayerData playerData)
-	{
-		this.playerData = playerData;
 	}
 
 	// 테스트 용도
