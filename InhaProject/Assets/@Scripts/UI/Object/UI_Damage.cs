@@ -10,7 +10,8 @@ public class UI_Damage : UI_BaseObject
 	public float alphaSpeed = 3.0f;
 	public float destroyTime = 2.0f;
 	[SerializeField, ReadOnly] TextMeshProUGUI text;
-	Color alpha;
+	[SerializeField, ReadOnly] Image criticalImage;
+	Color alpha, imageAlpha;
 	public int damage;
 	Vector3 pos = new Vector3(0, 0, 0);
 
@@ -20,6 +21,7 @@ public class UI_Damage : UI_BaseObject
     private void Start()
 	{
 		alpha = text.color;
+		imageAlpha = criticalImage.color;
 	}
 
     private void Reset()
@@ -33,8 +35,13 @@ public class UI_Damage : UI_BaseObject
 		text.text = damage.ToString();
 
 		text.transform.Translate(new Vector3(0, moveSpeed * Time.deltaTime, 0));
+		criticalImage.transform.Translate(new Vector3(0, moveSpeed * Time.deltaTime, 0));
+
 		alpha.a = Mathf.Lerp(alpha.a, 0, Time.deltaTime * alphaSpeed);
 		text.color = alpha;
+
+		imageAlpha.a = Mathf.Lerp(imageAlpha.a, 0, Time.deltaTime * alphaSpeed);
+		criticalImage.color = imageAlpha;
 	}
 
 	public override void SetInfo(UIParam param)
@@ -48,6 +55,7 @@ public class UI_Damage : UI_BaseObject
 
 			if (uiDamageParam.isCritical)
 			{
+				criticalImage.enabled = true;
 				text.color = Color.yellow;
 			}
 

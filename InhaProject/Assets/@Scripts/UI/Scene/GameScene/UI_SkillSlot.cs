@@ -5,7 +5,7 @@ using TMPro;
 
 public class UI_SkillSlot : UI_Slot
 {
-    [SerializeField] TextMeshProUGUI cooltimeText;
+    [SerializeField] public TextMeshProUGUI cooltimeText;
 
     private void Awake()
     {

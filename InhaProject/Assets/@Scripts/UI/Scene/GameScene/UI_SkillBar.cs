@@ -91,10 +91,13 @@ public class UI_SkillBar : UI_GameScene
 			currentTime += Time.deltaTime;
 
 			skillSlots[type].frontImage.fillAmount = currentTime;
+			int cooltime = (int)(player.PlayerInfo.PlayerSkillList[type].coolTime - currentTime);
+			skillSlots[(int)type].cooltimeText.text = cooltime.ToString();
 			yield return new WaitForFixedUpdate();
 		}
 
 		skillSlots[(int)type].frontImage.fillAmount = 0;
+		skillSlots[(int)type].cooltimeText.enabled = false;
 
 		// 이건 플레이어에서 해야 될 것 같은데
 		player.PlayerInfo.PlayerSkillList[type].isAvailable = true;
@@ -105,8 +108,8 @@ public class UI_SkillBar : UI_GameScene
 
 	}
 
-    #region Skill Events
- //   public void OnClickSlot1()
+	#region Skill Events
+	//   public void OnClickSlot1()
 	//{
 	//	if (playerData.skillDatas[(int)EPlayerSkillType.Default].isAvailable ) 
 	//		StartCoroutine(SkillCoolTime(EPlayerSkillType.Default));
@@ -148,4 +151,13 @@ public class UI_SkillBar : UI_GameScene
 	//		StartCoroutine(SkillCoolTime(EPlayerSkillType.Skill4));
 	//}
 	#endregion
+
+	public void OnDamageButton()
+	{
+		UIDamageParam uiDamageParam = new UIDamageParam(9900999, new Vector3(0, 0, 0), true);
+		UI_Damage damageUI = Managers.Resource.Instantiate($"{PrefabPath.UI_OBJECT_PATH}/{EUIObjectType.UI_Damage}").GetComponent<UI_Damage>();
+
+		if (damageUI != null)
+			damageUI.SetInfo(uiDamageParam);
+	}
 }
