@@ -27,12 +27,12 @@ public class UI_Inventory : MonoBehaviour
 
 	public void OnClickRemoveItemButton()
 	{
-		InventoryItemData removeItemData = new InventoryItemData("HealPotion", 1, EItemType.HealPotion);
+		// InventoryItemData removeItemData = new InventoryItemData("HealPotion", 1, new ItemParam param);
 
-		if (removeItemData != null )
-		{
-			inventory.RemoveItem(removeItemData);
-		}
+		//if (removeItemData != null )
+		//{
+		//	inventory.RemoveItem(removeItemData);
+		//}
 	}
 
 	private void Start()
@@ -79,7 +79,7 @@ public class UI_Inventory : MonoBehaviour
 				image.sprite = e.Item.Image;
 
 				// 아이템 타입이 소모품이라면 숫자도 표시
-				if ( e.Item.Type == EItemType.HealPotion)
+				if ( e.Item.Param.type == EItemType.HealPotion)
 				{
 					slot.countText.enabled = true;
 					slot.countText.text = e.Item.Count.ToString();
@@ -110,7 +110,7 @@ public class UI_Inventory : MonoBehaviour
 				count = e.Item.Count;
 				
 				// 소모품일 경우만 개수 표시 수정
-				if ( e.Item.Type == EItemType.HealPotion)
+				if ( e.Item.Param.type == EItemType.HealPotion)
 				{
 					if (count > 0)
 						slot.countText.text = count.ToString();

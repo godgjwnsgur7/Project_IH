@@ -1,6 +1,14 @@
 using System;
 
-public class ItemParam { }
+public class ItemParam 
+{
+    public EItemType type;
+
+    //ItemParam(EItemType type)
+    //{
+    //    this.type = type;
+    //}
+}
 
 public class ConsumeItem : ItemParam { }
 

@@ -24,9 +24,11 @@ public class HealPotion : BaseItem, IInventoryItem
         set { _count = value; }
     }
 
-    public EItemType Type
+    ItemParam _param;
+    public ItemParam Param
     {
-        get { return ItemType; }
+        get { return _param; }
+        set {  _param = value; }
     }
 
     public void OnPickup()
