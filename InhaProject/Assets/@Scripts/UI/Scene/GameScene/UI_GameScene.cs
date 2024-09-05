@@ -32,15 +32,13 @@ public class UI_GameScene : UI_BaseScene
         if (base.Init() == false)
             return false;
 
-		PlayerSkill[] skills = new PlayerSkill[6];
-		skills[(int)EPlayerSkillType.Default] = new PlayerSkill(EPlayerSkillType.Default, 1.0f, true, 0.0f);
-		skills[(int)EPlayerSkillType.Guard] = new PlayerSkill(EPlayerSkillType.Guard, 1.0f, true, 0.0f);
-		skills[(int)EPlayerSkillType.Skill1] = new PlayerSkill(EPlayerSkillType.Skill1, 1.0f, true, 0.0f);
-		skills[(int)EPlayerSkillType.Skill2] = new PlayerSkill(EPlayerSkillType.Skill2, 3.0f, true, 10.0f);
-		skills[(int)EPlayerSkillType.Skill3] = new PlayerSkill(EPlayerSkillType.Skill3, 3.0f, true, 20.0f);
-		skills[(int)EPlayerSkillType.Skill4] = new PlayerSkill(EPlayerSkillType.Skill4, 4.0f, true, 30.0f);
-
-		// playerData = new UIPlayerData(100, 100, 100, 100, skills);
+		//PlayerSkill[] skills = new PlayerSkill[6];
+		//skills[(int)EPlayerSkillType.Default] = new PlayerSkill(EPlayerSkillType.Default, 1.0f, true, 0.0f);
+		//skills[(int)EPlayerSkillType.Guard] = new PlayerSkill(EPlayerSkillType.Guard, 1.0f, true, 0.0f);
+		//skills[(int)EPlayerSkillType.Skill1] = new PlayerSkill(EPlayerSkillType.Skill1, 1.0f, true, 0.0f);
+		//skills[(int)EPlayerSkillType.Skill2] = new PlayerSkill(EPlayerSkillType.Skill2, 3.0f, true, 10.0f);
+		//skills[(int)EPlayerSkillType.Skill3] = new PlayerSkill(EPlayerSkillType.Skill3, 3.0f, true, 20.0f);
+		//skills[(int)EPlayerSkillType.Skill4] = new PlayerSkill(EPlayerSkillType.Skill4, 4.0f, true, 30.0f);
 
 		return true;
 	}

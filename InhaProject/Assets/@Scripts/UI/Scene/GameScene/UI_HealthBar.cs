@@ -8,8 +8,6 @@ public class UI_HealthBar : UI_GameScene
 	[SerializeField] private Image hpSlider;
 	[SerializeField] private Text hpText;
 
-	float playerHp = 100;
-
 	private Player player;
 	public override bool Init()
 	{
@@ -37,5 +35,7 @@ public class UI_HealthBar : UI_GameScene
 		hpText.text = player.PlayerInfo.CurrHp.ToString() + "/" + player.PlayerInfo.MaxHp.ToString();
 
 		player.OnChangedHp += OnChangedHp;
+
+		OnChangedHp(player.PlayerInfo.CurrHp);
 	}
 }

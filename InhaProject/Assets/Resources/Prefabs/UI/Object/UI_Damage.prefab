@@ -170,7 +170,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 50, y: 50}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 1.5, y: 0}
 --- !u!222 &3009126318228005354
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -324,11 +324,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee2c6107ce0c5834781d02d6e4f9863f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  text: {fileID: 4262125353293783263}
+  criticalImage: {fileID: 8213516691403283956}
   moveSpeed: 100
   alphaSpeed: 3
   destroyTime: 2
-  text: {fileID: 4262125353293783263}
-  criticalImage: {fileID: 8213516691403283956}
   damage: 0
 --- !u!1 &8184351176006326654
 GameObject:
