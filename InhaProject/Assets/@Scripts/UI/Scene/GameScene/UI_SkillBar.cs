@@ -22,31 +22,35 @@ public class UI_SkillBar : UI_GameScene
 	public float playerMp = 100.0f;
 	public override bool Init()
 	{
-		if (base.Init() == false)
-			return false;
-
 		return true;
 	}
 
-	private void Start()
+	private void Awake()
 	{
 		for (int i = 0; i < skillSlots.Length; i++)
+        {
+            skillSlots[i].Init();
+            skillSlots[i].frontImage.fillAmount = 0;
+            skillSlots[i].frontImage.fillOrigin = (int)Image.Origin360.Top;
+        }
+    }
+
+    private void Start()
+	{
+		GameObject playerObject = GameObject.FindWithTag("Player");
+		if (playerObject != null)
 		{
-			skillSlots[i].Init();
-			skillSlots[i].frontImage.fillAmount = 0;
-			skillSlots[i].frontImage.fillOrigin = (int)Image.Origin360.Top;
+			player = playerObject.GetComponent<Player>();
+			player.OnChangedMp += OnChangedMp;
 		}
 
-		GameObject playerObject = GameObject.FindWithTag("Player");
-		player = playerObject.GetComponent<Player>();
+		StartCoroutine(SetPlayerInfo());
+	}
 
-		if (player == null)
-			return;
-
-		player.OnChangedMp += OnChangedMp;
-		player.OnUseSkill += OnUseSkill;
-
-		OnChangedMp(player.PlayerInfo.CurrMp);
+	IEnumerator SetPlayerInfo()
+	{
+		yield return new WaitForFixedUpdate();
+		OnChangedMp(player.PlayerInfo.MaxMp);
 	}
 
 	private void OnChangedMp(float mp)
@@ -60,12 +64,6 @@ public class UI_SkillBar : UI_GameScene
     {
 		StartCoroutine(SkillCoolTime(type));
     }
-
-	private void Update()
-	{
-
-	}
-
 
 	IEnumerator SkillCoolTime(int type)
 	{
