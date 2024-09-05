@@ -10,13 +10,13 @@ public class InventoryItemData
 {
 	public string name;
 	public int count;
-	public EItemType type;
+	public ItemParam param;
 
-	public InventoryItemData(string name, int count, EItemType type)
+	public InventoryItemData(string name, int count, ItemParam param)
 	{
 		this.name = name;
 		this.count = count;
-		this.type = type;
+		this.param = param;
 	}
 }
 
