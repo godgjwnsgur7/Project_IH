@@ -8,7 +8,7 @@ public interface IInventoryItem
 	string Name { get; }
 	Sprite Image { get; }
 	int Count { get; set; }
-	EItemType Type { get; }
+	ItemParam Param { get; set;  }
 	void OnPickup();
 }
 
