@@ -152,8 +152,20 @@ public class UI_SkillBar : UI_GameScene
 
 	public void OnDamageButton()
 	{
-		UIDamageParam uiDamageParam = new UIDamageParam(9900999, new Vector3(0, 0, 0), true);
+		int rand = Random.Range(0, 2);
+
+		UIDamageParam uiDamageParam = new UIDamageParam(9900999, new Vector3(0, 0, 0), false);
 		UI_Damage damageUI = Managers.Resource.Instantiate($"{PrefabPath.UI_OBJECT_PATH}/{EUIObjectType.UI_Damage}").GetComponent<UI_Damage>();
+
+		switch ( rand )
+        {
+			default:
+				uiDamageParam.isCritical = true;
+				break;
+			case 1:
+				uiDamageParam.isCritical = false;
+				break;
+        }
 
 		if (damageUI != null)
 			damageUI.SetInfo(uiDamageParam);
