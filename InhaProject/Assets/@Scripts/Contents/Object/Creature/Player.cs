@@ -92,7 +92,6 @@ public class PlayerSkill
 {
     public EPlayerSkillType skill;
     public float coolTime;
-    public float currentTime;
     public bool isAvailable;
     public float mpAmount;
 
@@ -102,8 +101,6 @@ public class PlayerSkill
         this.coolTime = coolTime;
         this.isAvailable = isAvailable;
         this.mpAmount = mpAmount;
-
-        this.currentTime = 0.0f;
     }
 }
 #endregion
@@ -285,17 +282,21 @@ public class Player : Creature, IHitEvent
 
         PlayerType = Util.ParseEnum<EPlayerType>(gameObject.name); // 임시
         PlayerInfo = new PlayerData(Managers.Data.PlayerDict[(int)PlayerType]);
+        SetSkillInfo();
 
         skillAttackObject.SetActive(false);
         skillAttackObject.SetInfo(ETag.Player, OnSkillAttackTarget);
         attackObject.SetInfo(ETag.Player, OnAttackTarget);
-
-        SetSkillInfo();
     }
 
     private void SetSkillInfo()
     {
+        for(int i = 0; i < (int)EPlayerSkillType.Max; i++)
+        {
+            PlayerSkill skill = new PlayerSkill((EPlayerSkillType)i, 5, true, 10);
+        }
 
+        // PlayerInfo.PlayerSkillList.Add
     }
 
     public override Vector3 GetCameraTargetPos()

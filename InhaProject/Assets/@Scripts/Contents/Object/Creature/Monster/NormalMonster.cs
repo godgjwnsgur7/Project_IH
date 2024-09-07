@@ -178,7 +178,7 @@ public class NormalMonster : BaseMonster
         base.SetInfo(templateID);
 
         NormalMonsterType = Util.ParseEnum<ENormalMonsterType>(gameObject.name);
-        MonsterInfo = new NormalMonsterData(Managers.Data.MonsterDict[(int)MonsterType]);
+        MonsterInfo = new NormalMonsterData(Managers.Data.NormalMonsterDict[(int)MonsterType]);
         MonsterInfo.AttackDistance *= 2;
 
         attackObject.SetInfo(ETag.Monster, OnAttackTarget);

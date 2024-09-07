@@ -18,8 +18,10 @@ public class DataTransformer : EditorWindow
     [MenuItem("Tools/ParseExcel %#K")]
     public static void ParseExcelDataToJson()
     {
-        ParseExcelDataToJson<PlayerDataLoader, JPlayerData>("Player");
+        ParseExcelDataToJson<MapDataLoader, JMapData>("Map");
         ParseExcelDataToJson<NormalMonsterDataLoader, JNormalMonsterData>("NormalMonster");
+        ParseExcelDataToJson<PlayerDataLoader, JPlayerData>("Player");
+        ParseExcelDataToJson<PlayerSkillDataLoader, JPlayerSkillData>("PlayerSkill");
 
         Debug.Log("DataTransformer Completed");
     }
