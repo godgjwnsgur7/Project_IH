@@ -67,29 +67,29 @@ public class UI_SkillBar : UI_GameScene
 
 	IEnumerator SkillCoolTime(int type)
 	{
-		Debug.Log(player.PlayerInfo.PlayerSkillList[type].isAvailable);
+		Debug.Log(player.PlayerSkillDict[(EPlayerSkillType)type].isAvailable);
 
-		if (player.PlayerInfo.PlayerSkillList[type].isAvailable == false)
+		if (player.PlayerSkillDict[(EPlayerSkillType)type].isAvailable == false)
 			yield break;
 
-		Debug.Log(player.PlayerInfo.PlayerSkillList[type].mpAmount);
+		Debug.Log(player.PlayerSkillDict[(EPlayerSkillType)type].mpAmount);
 
-		if (player.PlayerInfo.CurrMp < player.PlayerInfo.PlayerSkillList[type].mpAmount)	
+		if (player.PlayerInfo.CurrMp < player.PlayerSkillDict[(EPlayerSkillType)type].mpAmount)	
 			yield break;
 
 		// player.PlayerInfo.CurrMp -= player.PlayerInfo.PlayerSkillList[type].mpAmount;
 
 		// 이건 플레이어에서 해야 될 것 같은데
-		player.PlayerInfo.PlayerSkillList[type].isAvailable = false;
+		player.PlayerSkillDict[(EPlayerSkillType)type].isAvailable = false;
 
 		float currentTime = 0;   
 
-		while (currentTime < player.PlayerInfo.PlayerSkillList[type].coolTime)
+		while (currentTime < player.PlayerSkillDict[(EPlayerSkillType)type].coolTime)
 		{
 			currentTime += Time.deltaTime;
 
 			skillSlots[type].frontImage.fillAmount = currentTime;
-			int cooltime = (int)(player.PlayerInfo.PlayerSkillList[type].coolTime - currentTime);
+			int cooltime = (int)(player.PlayerSkillDict[(EPlayerSkillType)type].coolTime - currentTime);
 			skillSlots[(int)type].cooltimeText.text = cooltime.ToString();
 			yield return new WaitForFixedUpdate();
 		}
@@ -98,7 +98,7 @@ public class UI_SkillBar : UI_GameScene
 		skillSlots[(int)type].cooltimeText.enabled = false;
 
 		// 이건 플레이어에서 해야 될 것 같은데
-		player.PlayerInfo.PlayerSkillList[type].isAvailable = true;
+		player.PlayerSkillDict[(EPlayerSkillType)type].isAvailable = true;
 	}
 
 	public void ConnectSlot()
