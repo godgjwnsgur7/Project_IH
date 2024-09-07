@@ -6,13 +6,21 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+enum EItemSlot
+{
+	RedPotion,
+	BluePotion,
+	IronKey,
+	GoldenKey,
+	Map
+}
+
 public class UI_Inventory : MonoBehaviour
 {
 	public GameObject item;
 	public Inventory inventory;
 
-	[SerializeField]
-	Transform inventorySlot;
+	[SerializeField, ReadOnly] UI_ItemSlot[] itemSlots;
 
 
 	public void OnClickPickupButton()
@@ -49,12 +57,35 @@ public class UI_Inventory : MonoBehaviour
 
 	private void InventoryScript_ItemAdd(object sender, InventoryEventArgs e )
 	{
-		UI_ItemSlot[] arr = transform.GetComponentsInChildren<UI_ItemSlot>();
+		// UI_ItemSlot[] arr = transform.GetComponentsInChildren<UI_ItemSlot>();
 
 		IInventoryItem item = inventory.FindItem(e.Item.Name);
 
-		foreach (UI_ItemSlot slot in arr)
+		//switch (item.Param.type)
+		//{
+		//	case EItemType.None:
+		//		break;
+		//	case EItemType.HealPotion:
+		//		itemSlots[(int)EItemSlot.RedPotion].name = e.Item.Name;
+		//		itemSlots[(int)EItemSlot.RedPotion].frontImage.enabled = false;
+		//		itemSlots[(int)EItemSlot.RedPotion].countText.enabled = true;
+		//		itemSlots[(int)EItemSlot.RedPotion].countText.text = e.Item.Count.ToString();
+		//		break;
+		//	case EItemType.ManaPotion:
+		//		itemSlots[(int)EItemSlot.BluePotion].name = e.Item.Name;
+		//		itemSlots[(int)EItemSlot.BluePotion].frontImage.enabled = false;
+		//		itemSlots[(int)EItemSlot.BluePotion].countText.enabled = true;
+		//		itemSlots[(int)EItemSlot.BluePotion].countText.text = e.Item.Count.ToString();
+		//		break;
+		//	case EItemType.Key:
+
+		//		break;
+		//}
+
+		foreach (UI_ItemSlot slot in itemSlots)
 		{
+
+
 			Transform childTransformSlotImg = slot.transform.Find("SlotImage");
 			Image image = childTransformSlotImg.GetComponent<Image>();
 

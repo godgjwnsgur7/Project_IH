@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class UI_ItemSlot : UI_Slot
 {
 	[SerializeField] public TextMeshProUGUI countText;
+	private bool isEnable { get; set; }
 
 	private void Start()
 	{
@@ -22,5 +23,6 @@ public class UI_ItemSlot : UI_Slot
 
 		//slotImage.enabled = false;
 		countText.enabled = false;
+		isEnable = false;
 	}
 }

@@ -29,7 +29,7 @@ public class Inventory : MonoBehaviour
 	public event EventHandler<InventoryEventArgs> ItemAdd;
 	public event EventHandler<InventoryEventArgs> ItemRemove;
 
-	public IInventoryItem FindItem(string name)
+	public IInventoryItem FindItem(string name)	
 	{
 		if (items.Exists(x => x.Name.Equals(name)))
 		{
