@@ -60,4 +60,10 @@ public static class Util
     {
         return (T)Enum.Parse(typeof(T), value, true);
     }
+
+    public static IEnumerator CoWaitMethod(Action method, float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        method();
+    }
 }

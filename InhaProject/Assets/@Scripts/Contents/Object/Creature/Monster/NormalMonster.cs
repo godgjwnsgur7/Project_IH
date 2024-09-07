@@ -271,7 +271,7 @@ public class NormalMonster : BaseMonster
             Vector3 chaseTargetDistance = this.transform.position + Collider.center - ChaseTarget.transform.position;
             LookLeft = (chaseTargetDistance.x > 0.0f);
 
-            if (Mathf.Abs(chaseTargetDistance.x) < 0.1f)
+            if (Mathf.Abs(chaseTargetDistance.x) < 0.5f)
             {
                 MonsterState = ENormalMonsterState.Idle;
                 return prevState != MonsterState;

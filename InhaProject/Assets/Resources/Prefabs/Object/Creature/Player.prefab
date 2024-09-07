@@ -2079,7 +2079,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6456486105562813636}
-  - component: {fileID: 2169763420635916841}
+  - component: {fileID: 5049102924517790271}
   - component: {fileID: 4931165932373663284}
   - component: {fileID: 407465477280357262}
   m_Layer: 0
@@ -2104,7 +2104,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3328500011339877813}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2169763420635916841
+--- !u!114 &5049102924517790271
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2113,7 +2113,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3409301976052508966}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c74750a8ceb37c40a79b677daeb121a, type: 3}
+  m_Script: {fileID: 11500000, guid: efe95d9fa7c33314bb2dab9e0df0c0f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   <AttackObjectType>k__BackingField: 0
@@ -2161,7 +2161,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -3804,7 +3804,7 @@ MonoBehaviour:
     DashSpeed: 0
     JumpPower: 0
     PlayerSkillList: []
-  skillAttackObject: {fileID: 2169763420635916841}
+  skillAttackObject: {fileID: 0}
   attackObject: {fileID: 2916405762298004907}
   _isPlayerInputControll: 0
   isPlayerStateLock: 0

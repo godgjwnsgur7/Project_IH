@@ -38,10 +38,11 @@ public enum EPlayerState
 
     Guard,
     Block,
+    
     Hit,
-
-    Down, // 미구현
-    GetUp, // 미구현
+    Down,
+    DownLand,
+    GetUp,
 
     Dead
 }
@@ -173,36 +174,22 @@ public class Player : Creature, IHitEvent
             bool isChangeState = true;
             switch (value)
             {
-                case EPlayerState.Idle:
-                    isChangeState = IdleStateCondition();
-                    break;
-                case EPlayerState.Move:
-                    isChangeState = MoveStateCondition();
-                    break;
-                case EPlayerState.Jump:
-                    isChangeState = JumpStateCondition();
-                    break;
-                case EPlayerState.Fall:
-                    isChangeState = FallStateCondition();
-                    break;
-                case EPlayerState.Land:
-                    isChangeState = LandStateCondition();
-                    break;
-                case EPlayerState.Dash:
-                    isChangeState = DashStateCondition();
-                    break;
-                case EPlayerState.Attack:
-                    isChangeState = AttackStateCondition();
-                    break;
+                case EPlayerState.Idle: isChangeState = IdleStateCondition(); break;
+                case EPlayerState.Move: isChangeState = MoveStateCondition(); break;
+                case EPlayerState.Jump: isChangeState = JumpStateCondition(); break;
+                case EPlayerState.Fall: isChangeState = FallStateCondition(); break;
+                case EPlayerState.Land: isChangeState = LandStateCondition(); break;
+                case EPlayerState.Dash: isChangeState = DashStateCondition(); break;
+                case EPlayerState.Attack: isChangeState = AttackStateCondition(); break;
                 case EPlayerState.Skill1:
                 case EPlayerState.Skill2:
                 case EPlayerState.Skill3:
-                case EPlayerState.Skill4:
-                    isChangeState = SkillStateCondition();
-                    break;
-                case EPlayerState.Dead:
-                    isChangeState = DeadStateCondition();
-                    break;
+                case EPlayerState.Skill4: isChangeState = SkillStateCondition(); break;
+                case EPlayerState.Hit: isChangeState = HitStateCondition(); break;
+                case EPlayerState.Down: isChangeState = DownStateCondition(); break;
+                case EPlayerState.DownLand: isChangeState = DownLandStateCondition(); break;
+                case EPlayerState.GetUp: isChangeState = GetUpStateCondition(); break;
+                case EPlayerState.Dead: isChangeState = DeadStateCondition(); break;
             }
 
             if (isChangeState == false)
@@ -210,45 +197,24 @@ public class Player : Creature, IHitEvent
 
             switch (_playerState)
             {
-                case EPlayerState.Idle:
-                    IdleStateExit();
-                    break;
-                case EPlayerState.Move:
-                    MoveStateExit();
-                    break;
-                case EPlayerState.Jump:
-                    JumpStateExit();
-                    break;
-                case EPlayerState.Fall:
-                    FallStateExit();
-                    break;
-                case EPlayerState.Land:
-                    LandStateExit();
-                    break;
-                case EPlayerState.Dash:
-                    DashStateExit();
-                    break;
-                case EPlayerState.Attack:
-                    AttackStateExit();
-                    break;
+                case EPlayerState.Idle: IdleStateExit(); break;
+                case EPlayerState.Move: MoveStateExit(); break;
+                case EPlayerState.Jump: JumpStateExit(); break;
+                case EPlayerState.Fall: FallStateExit(); break;
+                case EPlayerState.Land: LandStateExit(); break;
+                case EPlayerState.Dash: DashStateExit(); break;
+                case EPlayerState.Attack: AttackStateExit(); break;
                 case EPlayerState.Skill1:
                 case EPlayerState.Skill2:
                 case EPlayerState.Skill3:
-                case EPlayerState.Skill4:
-                    SkillStateExit();
-                    break;
-                case EPlayerState.Guard:
-                    GuardStateExit();
-                    break;
-                case EPlayerState.Block:
-                    BlockStateExit();
-                    break;
-                case EPlayerState.Hit:
-                    HitStateExit();
-                    break;
-                case EPlayerState.Dead:
-                    DeadStateExit();
-                    break;
+                case EPlayerState.Skill4: SkillStateExit(); break;
+                case EPlayerState.Guard: GuardStateExit(); break;
+                case EPlayerState.Block: BlockStateExit(); break;
+                case EPlayerState.Hit: HitStateExit(); break;
+                case EPlayerState.Down: DownStateExit(); break;
+                case EPlayerState.DownLand: DownLandStateExit(); break;
+                case EPlayerState.GetUp: GetUpStateExit(); break;
+                case EPlayerState.Dead: DeadStateExit(); break;
             }
 
             _playerState = value;
@@ -256,45 +222,24 @@ public class Player : Creature, IHitEvent
 
             switch (value)
             {
-                case EPlayerState.Idle:
-                    IdleStateEnter();
-                    break;
-                case EPlayerState.Move:
-                    MoveStateEnter();
-                    break;
-                case EPlayerState.Jump:
-                    JumpStateEnter();
-                    break;
-                case EPlayerState.Fall:
-                    FallStateEnter();
-                    break;
-                case EPlayerState.Land:
-                    LandStateEnter();
-                    break;
-                case EPlayerState.Dash:
-                    DashStateEnter();
-                    break;
-                case EPlayerState.Attack:
-                    AttackStateEnter();
-                    break;
+                case EPlayerState.Idle: IdleStateEnter(); break;
+                case EPlayerState.Move: MoveStateEnter(); break;
+                case EPlayerState.Jump: JumpStateEnter(); break;
+                case EPlayerState.Fall: FallStateEnter(); break;
+                case EPlayerState.Land: LandStateEnter(); break;
+                case EPlayerState.Dash: DashStateEnter(); break;
+                case EPlayerState.Attack: AttackStateEnter(); break;
                 case EPlayerState.Skill1:
                 case EPlayerState.Skill2:
                 case EPlayerState.Skill3:
-                case EPlayerState.Skill4:
-                    SkillStateEnter();
-                    break;
-                case EPlayerState.Guard:
-                    GuardStateEnter();
-                    break;
-                case EPlayerState.Block:
-                    BlockStateEnter();
-                    break;
-                case EPlayerState.Hit:
-                    HitStateEnter();
-                    break;
-                case EPlayerState.Dead:
-                    DeadStateEnter();
-                    break;
+                case EPlayerState.Skill4: SkillStateEnter(); break;
+                case EPlayerState.Guard: GuardStateEnter(); break;
+                case EPlayerState.Block: BlockStateEnter(); break;
+                case EPlayerState.Hit: HitStateEnter(); break;
+                case EPlayerState.Down: DownStateEnter(); break;
+                case EPlayerState.DownLand: DownLandStateEnter(); break;
+                case EPlayerState.GetUp: GetUpStateEnter(); break;
+                case EPlayerState.Dead: DeadStateEnter(); break;
             }
         }
     }
@@ -341,6 +286,7 @@ public class Player : Creature, IHitEvent
         PlayerType = Util.ParseEnum<EPlayerType>(gameObject.name); // 임시
         PlayerInfo = new PlayerData(Managers.Data.PlayerDict[(int)PlayerType]);
 
+        skillAttackObject.SetActive(false);
         skillAttackObject.SetInfo(ETag.Player, OnSkillAttackTarget);
         attackObject.SetInfo(ETag.Player, OnAttackTarget);
 
@@ -534,42 +480,23 @@ public class Player : Creature, IHitEvent
         {
             switch (PlayerState)
             {
-                case EPlayerState.Idle:
-                    UpdateIdleState();
-                    break;
-                case EPlayerState.Move:
-                    UpdateMoveState();
-                    break;
-                case EPlayerState.Jump:
-                    UpdateJumpState();
-                    break;
-                case EPlayerState.Fall:
-                    UpdateFallState();
-                    break;
-                case EPlayerState.Land:
-                    UpdateLandState();
-                    break;
-                case EPlayerState.Dash:
-                    UpdateDashState();
-                    break;
-                case EPlayerState.Attack:
-                    UpdateAttackState();
-                    break;
+                case EPlayerState.Idle: UpdateIdleState(); break;
+                case EPlayerState.Move: UpdateMoveState(); break;
+                case EPlayerState.Jump: UpdateJumpState(); break;
+                case EPlayerState.Fall: UpdateFallState(); break;
+                case EPlayerState.Land: UpdateLandState(); break;
+                case EPlayerState.Dash: UpdateDashState(); break;
+                case EPlayerState.Attack: UpdateAttackState(); break;
                 case EPlayerState.Skill1:
                 case EPlayerState.Skill2:
                 case EPlayerState.Skill3:
-                case EPlayerState.Skill4:
-                    UpdateSkillState();
-                    break;
-                case EPlayerState.Guard:
-                    UpdateGuardState();
-                    break;
-                case EPlayerState.Block:
-                    UpdateBlockState();
-                    break;
-                case EPlayerState.Hit:
-                    UpdateHitState();
-                    break;
+                case EPlayerState.Skill4: UpdateSkillState(); break;
+                case EPlayerState.Guard: UpdateGuardState(); break;
+                case EPlayerState.Block: UpdateBlockState(); break;
+                case EPlayerState.Hit: UpdateHitState(); break;
+                case EPlayerState.Down: UpdateDownState(); break;
+                case EPlayerState.DownLand: UpdateDownLandState(); break;
+                case EPlayerState.GetUp: UpdateGetUpState(); break;
             }
 
             yield return null;
@@ -856,6 +783,7 @@ public class Player : Creature, IHitEvent
 
         isPlayerStateLock = true;
         InitRigidVelocityX();
+        skillAttackObject.SetActive(true);
     }
 
     protected virtual void UpdateSkillState()
@@ -870,6 +798,7 @@ public class Player : Creature, IHitEvent
 
     protected virtual void SkillStateExit()
     {
+        skillAttackObject.SetActive(false);
         playerCamera.enabled = false;
         skillNum = 0;
         isSuperArmour = false;
@@ -962,6 +891,11 @@ public class Player : Creature, IHitEvent
         if (IsInvincibility || param == null)
             return;
 
+        if (coHitDelayCheck != null)
+            return;
+
+        coHitDelayCheck = StartCoroutine(CoHitDelayCheck(0.3f));
+
         UIDamageParam damageParam = new((int)param.damage
             , transform.position + (Collider.size.y * Vector3.up * 1.2f));
         Managers.UI.SpawnObjectUI<UI_Damage>(EUIObjectType.UI_Damage, damageParam);
@@ -988,7 +922,22 @@ public class Player : Creature, IHitEvent
         hitForceDir.x = param.pushPower * ((param.isAttackerLeft) ? -1 : 1);
         Managers.Object.SpawnEffectObject(EEffectObjectType.PlayerHitEffect, this.transform.position + subVec);
         isPlayerStateLock = false;
-        PlayerState = EPlayerState.Hit;
+
+        if (CreatureFoot.IsLandingGround)
+            PlayerState = EPlayerState.Hit;
+        else
+        {
+            hitForceDir.y = param.pushPower;
+            PlayerState = EPlayerState.Down;
+        }
+    }
+
+    Coroutine coHitDelayCheck;
+    private IEnumerator CoHitDelayCheck(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+
+        coHitDelayCheck = null;
     }
 
     protected virtual bool HitStateCondition()
@@ -1021,6 +970,94 @@ public class Player : Creature, IHitEvent
     protected virtual void HitStateExit()
     {
         hitForceDir = Vector3.zero;
+    }
+    #endregion
+
+    #region Down Motion
+    protected virtual bool DownStateCondition()
+    {
+        return true;
+    }
+
+    protected virtual void DownStateEnter()
+    {
+        isPlayerStateLock = true;
+        InitRigidVelocityY();
+
+        if (hitForceDir != Vector3.zero)
+        {
+            SetRigidVelocity(hitForceDir);
+        }
+    }
+
+    protected virtual void UpdateDownState()
+    {
+        if (CreatureFoot.IsLandingGround)
+        {
+            isPlayerStateLock = false;
+            PlayerState = EPlayerState.DownLand;
+        }
+    }
+
+    protected virtual void DownStateExit()
+    {
+        hitForceDir = Vector3.zero;
+        isPlayerStateLock = true;
+    }
+    #endregion
+
+    #region DownLand Motion
+    protected virtual bool DownLandStateCondition()
+    {
+        return true;
+    }
+
+    protected virtual void DownLandStateEnter()
+    {
+        isPlayerStateLock = true;
+        IsInvincibility = true;
+        InitRigidVelocityX();
+    }
+
+    protected virtual void UpdateDownLandState()
+    {
+       if(IsEndCurrentState(EPlayerState.DownLand))
+        {
+            isPlayerStateLock = false;
+            PlayerState = EPlayerState.GetUp;
+        }
+    }
+
+    protected virtual void DownLandStateExit()
+    {
+        isPlayerStateLock = true;
+    }
+    #endregion
+
+    #region GetUp Motion
+    protected virtual bool GetUpStateCondition()
+    {
+        return true;
+    }
+
+    protected virtual void GetUpStateEnter()
+    {
+        isPlayerStateLock = true;
+    }
+
+    protected virtual void UpdateGetUpState()
+    {
+        if (IsEndCurrentState(EPlayerState.GetUp))
+        {
+            isPlayerStateLock = false;
+            PlayerState = EPlayerState.Move;
+            PlayerState = EPlayerState.Idle;
+        }
+    }
+
+    protected virtual void GetUpStateExit()
+    {
+        IsInvincibility = false;
     }
     #endregion
 

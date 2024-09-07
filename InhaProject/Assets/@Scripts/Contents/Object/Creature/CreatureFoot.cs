@@ -7,7 +7,7 @@ using static Define;
 
 public class CreatureFoot : InitBase
 {
-    public bool IsLandingGround { get; private set; }
+    public bool IsLandingGround{ get { return (landingCount > 0); } }
     public Rigidbody Rigid { get; private set; }
     public BoxCollider Collider { get; private set; }
 
@@ -18,7 +18,7 @@ public class CreatureFoot : InitBase
         if (base.Init() == false)
             return false;
 
-        IsLandingGround = false;
+        landingCount = 0;
 
         return true;
     }
@@ -37,7 +37,6 @@ public class CreatureFoot : InitBase
         if (collision.tag == ETag.Ground.ToString())
         {
             landingCount++;
-            IsLandingGround = true;
         }
     }
 
@@ -49,7 +48,6 @@ public class CreatureFoot : InitBase
             if(landingCount <= 0)
             {
                 landingCount = 0;
-                IsLandingGround = false;
             }
         }
     }
