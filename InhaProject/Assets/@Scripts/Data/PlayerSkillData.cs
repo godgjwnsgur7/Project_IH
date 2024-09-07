@@ -3,11 +3,14 @@ using System;
 
 namespace Data
 {
+    // 일단 미사용
     [Serializable]
     public class JPlayerSkillData
     {
         public int DataId;
+        public List<float> DamageRatioList;
         public float SkillCoolTime;
+        public float MpAmount;
     }
 
     public class PlayerSkillDataLoader : ILoader<int, JPlayerSkillData>

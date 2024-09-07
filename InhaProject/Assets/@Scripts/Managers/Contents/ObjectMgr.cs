@@ -65,7 +65,4 @@ public class ObjectMgr : MonoBehaviour
             itemPrefabsDict[i] = PrefabPath.OBJECT_ITEM_PATH + "/" + i.ToString();
         }
     }
-
-    
-
 }

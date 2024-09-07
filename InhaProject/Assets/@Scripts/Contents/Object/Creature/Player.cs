@@ -55,7 +55,8 @@ public enum EPlayerSkillType
     Skill3 = 3,
     Skill4 = 4,
     Guard = 5,
-    Max = 6,
+    Dash = 6,
+    Max = 7,
 }
 #endregion
 
@@ -71,7 +72,7 @@ public class PlayerData
     public float MoveSpeed;
     public float DashSpeed;
     public float JumpPower;
-    public List<PlayerSkill> PlayerSkillList;     // 값 세팅을 따로 해주어야 함
+    public Dictionary<EPlayerSkillType, PlayerSkill> PlayerSkillDict;     // 값 세팅을 따로 해주어야 함
 
     public PlayerData(JPlayerData jPlayerData)
     {
@@ -83,21 +84,21 @@ public class PlayerData
         MoveSpeed = jPlayerData.MoveSpeed;
         DashSpeed = jPlayerData.DashSpeed;
         JumpPower = jPlayerData.JumpPower;
-        PlayerSkillList = new List<PlayerSkill>();
+        PlayerSkillDict = new Dictionary<EPlayerSkillType, PlayerSkill>();
     }
 }
 
 [Serializable]
 public class PlayerSkill
 {
-    public EPlayerSkillType skill;
+    public EPlayerSkillType skillType;
     public float coolTime;
     public bool isAvailable;
     public float mpAmount;
 
-    public PlayerSkill(EPlayerSkillType skill, float coolTime, bool isAvailable, float mpAmount)
+    public PlayerSkill(EPlayerSkillType skillType, float coolTime, bool isAvailable, float mpAmount)
     {
-        this.skill = skill;
+        this.skillType = skillType;
         this.coolTime = coolTime;
         this.isAvailable = isAvailable;
         this.mpAmount = mpAmount;
@@ -246,7 +247,9 @@ public class Player : Creature, IHitEvent
     {
         base.Start();
 
-        IsPlayerInputControll = true; 
+        IsPlayerInputControll = true;
+
+        JMapData mapData = Managers.Data.MapDict[0];
     }
 
     protected override void Reset()
@@ -291,12 +294,26 @@ public class Player : Creature, IHitEvent
 
     private void SetSkillInfo()
     {
-        for(int i = 0; i < (int)EPlayerSkillType.Max; i++)
-        {
-            PlayerSkill skill = new PlayerSkill((EPlayerSkillType)i, 5, true, 10);
-        }
+        // 플레이어 스킬 데이터로 분리 예정 (임시)
+        EPlayerSkillType skillType;
 
-        // PlayerInfo.PlayerSkillList.Add
+        skillType = EPlayerSkillType.Dash;
+        PlayerInfo.PlayerSkillDict.Add(skillType, new PlayerSkill(skillType, 5, true, 0));
+
+        skillType = EPlayerSkillType.Guard;
+        PlayerInfo.PlayerSkillDict.Add(skillType, new PlayerSkill(skillType, 5, true, 0));
+
+        skillType = EPlayerSkillType.Skill1;
+        PlayerInfo.PlayerSkillDict.Add(skillType, new PlayerSkill(skillType, 0, true, 10));
+        
+        skillType = EPlayerSkillType.Skill2;
+        PlayerInfo.PlayerSkillDict.Add(skillType, new PlayerSkill(skillType, 5, true, 30));
+        
+        skillType = EPlayerSkillType.Skill3;
+        PlayerInfo.PlayerSkillDict.Add(skillType, new PlayerSkill(skillType, 10, true, 100));
+        
+        skillType = EPlayerSkillType.Skill4;
+        PlayerInfo.PlayerSkillDict.Add(skillType, new PlayerSkill(skillType, 15, true, 200));
     }
 
     public override Vector3 GetCameraTargetPos()

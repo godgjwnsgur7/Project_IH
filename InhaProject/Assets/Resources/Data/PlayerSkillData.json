@@ -2,7 +2,14 @@
   "PlayerSkills": [
     {
       "DataId": 0,
-      "SkillCoolTime": 10.0
+      "DamageRatioList": [
+        0.5,
+        0.5,
+        0.5,
+        1.5
+      ],
+      "SkillCoolTime": 10.0,
+      "MpAmount": 100.0
     }
   ]
 }

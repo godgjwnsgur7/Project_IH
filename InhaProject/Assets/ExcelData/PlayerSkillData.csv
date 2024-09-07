@@ -1,2 +1,2 @@
-DataId,SkillCoolTime
-0,10
+DataId,DamageRatioList,SkillCoolTime,MpAmount
+0,0.5&0.5&0.5&1.5,10,100
