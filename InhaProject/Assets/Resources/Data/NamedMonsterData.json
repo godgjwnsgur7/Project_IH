@@ -1,0 +1,10 @@
+{
+  "Monsters": [
+    {
+      "DataId": 0,
+      "MaxHp": 10000.0,
+      "StrikingPower": 40.0,
+      "MoveSpeed": 1.0
+    }
+  ]
+}

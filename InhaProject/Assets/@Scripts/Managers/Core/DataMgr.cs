@@ -12,6 +12,7 @@ public interface ILoader<Key, Value>
 public class DataMgr
 {
     public Dictionary<int, JMapData> MapDict { get; private set; } = new Dictionary<int, JMapData>();
+    public Dictionary<int, JNamedMonsterData> NamedMonsterDict { get; private set; } = new Dictionary<int, JNamedMonsterData>();
     public Dictionary<int, JNormalMonsterData> NormalMonsterDict { get; private set; } = new Dictionary<int, JNormalMonsterData>();
 
     public Dictionary<int, JPlayerData> PlayerDict { get; private set; } = new Dictionary<int, JPlayerData>();
@@ -21,6 +22,7 @@ public class DataMgr
     public void Init()
     {
         MapDict = LoadJson<MapDataLoader, int, JMapData>("MapData").MakeDict();
+        NamedMonsterDict = LoadJson<NamedMonsterDataLoader, int, JNamedMonsterData>("NamedMonsterData").MakeDict();
         NormalMonsterDict = LoadJson<NormalMonsterDataLoader, int, JNormalMonsterData>("NormalMonsterData").MakeDict();
         PlayerDict = LoadJson<PlayerDataLoader, int, JPlayerData>("PlayerData").MakeDict();
         PlayerSkillDict = LoadJson<PlayerSkillDataLoader, int, JPlayerSkillData>("PlayerSkillData").MakeDict();

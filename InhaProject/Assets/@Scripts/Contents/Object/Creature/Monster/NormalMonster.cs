@@ -42,7 +42,7 @@ public enum ENormalMonsterType
 {
     SkeletonWarrior = 0,
     SkeletonWizard = 1,
-    Max = 2,
+    Max,
 }
 
 public class NormalMonster : BaseMonster
@@ -51,7 +51,6 @@ public class NormalMonster : BaseMonster
     [field: SerializeField, ReadOnly] public NormalMonsterData MonsterInfo { get; protected set; }
     [SerializeField, ReadOnly] protected MonsterAttackRange attackRange;
     [SerializeField] protected BaseAttackObject attackObject;
-    [SerializeField, ReadOnly] protected List<Renderer> rendererList;
     
     [SerializeField, ReadOnly]
     private ENormalMonsterState _monsterState;
@@ -69,24 +68,12 @@ public class NormalMonster : BaseMonster
             bool isChangeState = true;
             switch (value)
             {
-                case ENormalMonsterState.Idle:
-                    isChangeState = IdleStateCondition();
-                    break;
-                case ENormalMonsterState.Patrol:
-                    isChangeState = PatrolStateCondition();
-                    break;
-                case ENormalMonsterState.Chase:
-                    isChangeState = ChaseStateCondition();
-                    break;
-                case ENormalMonsterState.Attack:
-                    isChangeState = AttackStateCondition();
-                    break;
-                case ENormalMonsterState.Hit:
-                    isChangeState = HitStateCondition();
-                    break;
-                case ENormalMonsterState.Dead:
-                    isChangeState = DeadStateCondition();
-                    break;
+                case ENormalMonsterState.Idle: isChangeState = IdleStateCondition(); break;
+                case ENormalMonsterState.Patrol: isChangeState = PatrolStateCondition(); break;
+                case ENormalMonsterState.Chase: isChangeState = ChaseStateCondition(); break;
+                case ENormalMonsterState.Attack: isChangeState = AttackStateCondition(); break;
+                case ENormalMonsterState.Hit: isChangeState = HitStateCondition(); break;
+                case ENormalMonsterState.Dead: isChangeState = DeadStateCondition(); break;
             }
 
             if (isChangeState == false)
@@ -94,24 +81,12 @@ public class NormalMonster : BaseMonster
 
             switch (_monsterState)
             {
-                case ENormalMonsterState.Idle:
-                    IdleStateExit();
-                    break;
-                case ENormalMonsterState.Patrol:
-                    PatrolStateExit();
-                    break;
-                case ENormalMonsterState.Chase:
-                    ChaseStateExit();
-                    break;
-                case ENormalMonsterState.Attack:
-                    AttackStateExit();
-                    break;
-                case ENormalMonsterState.Hit:
-                    HitStateExit();
-                    break;
-                case ENormalMonsterState.Dead:
-                    DeadStateExit();
-                    break;
+                case ENormalMonsterState.Idle: IdleStateExit(); break;
+                case ENormalMonsterState.Patrol: PatrolStateExit(); break;
+                case ENormalMonsterState.Chase: ChaseStateExit(); break;
+                case ENormalMonsterState.Attack: AttackStateExit(); break;
+                case ENormalMonsterState.Hit: HitStateExit(); break;
+                case ENormalMonsterState.Dead: DeadStateExit(); break;
             }
 
             switch (value)
@@ -129,24 +104,12 @@ public class NormalMonster : BaseMonster
 
             switch (value)
             {
-                case ENormalMonsterState.Idle:
-                    IdleStateEnter();
-                    break;
-                case ENormalMonsterState.Patrol:
-                    PatrolStateEnter();
-                    break;
-                case ENormalMonsterState.Chase:
-                    ChaseStateEnter();
-                    break;
-                case ENormalMonsterState.Attack:
-                    AttackStateEnter();
-                    break;
-                case ENormalMonsterState.Hit:
-                    HitStateEnter();
-                    break;
-                case ENormalMonsterState.Dead:
-                    DeadStateEnter();
-                    break;
+                case ENormalMonsterState.Idle: IdleStateEnter(); break;
+                case ENormalMonsterState.Patrol: PatrolStateEnter(); break;
+                case ENormalMonsterState.Chase: ChaseStateEnter(); break;
+                case ENormalMonsterState.Attack: AttackStateEnter(); break;
+                case ENormalMonsterState.Hit: HitStateEnter(); break;
+                case ENormalMonsterState.Dead: DeadStateEnter(); break;
             }
         }
     }
@@ -167,12 +130,6 @@ public class NormalMonster : BaseMonster
 
         attackRange ??= Util.FindChild<MonsterAttackRange>(this.gameObject);
         attackObject ??= Util.FindChild<BaseAttackObject>(this.gameObject, "AttackObject", true);
-
-        rendererList = new List<Renderer>();
-        Transform[] allChildren = this.GetComponentsInChildren<Transform>();
-        foreach (Transform child in allChildren)
-            if (child.GetComponent<ParticleSystem>() == null && child.TryGetComponent<Renderer>(out Renderer renderer))
-                rendererList.Add(renderer);
     }
 
     public override void SetInfo(int templateID = 0)
@@ -201,26 +158,14 @@ public class NormalMonster : BaseMonster
             switch (MonsterState)
             {
                 case ENormalMonsterState.None:
-                    MonsterState = ENormalMonsterState.Idle;
+                    MonsterState = ENormalMonsterState.Idle; 
                     break;
-                case ENormalMonsterState.Idle:
-                    UpdateIdleState();
-                    break;
-                case ENormalMonsterState.Patrol:
-                    UpdatePatrolState();
-                    break;
-                case ENormalMonsterState.Chase:
-                    UpdateChaseState();
-                    break;
-                case ENormalMonsterState.Attack:
-                    UpdateAttackState();
-                    break;
-                case ENormalMonsterState.Hit:
-                    UpdateHitState();
-                    break;
-                case ENormalMonsterState.Dead:
-                    UpdateDeadState();
-                    break;
+                case ENormalMonsterState.Idle: UpdateIdleState(); break;
+                case ENormalMonsterState.Patrol: UpdatePatrolState(); break;
+                case ENormalMonsterState.Chase: UpdateChaseState(); break;
+                case ENormalMonsterState.Attack: UpdateAttackState(); break;
+                case ENormalMonsterState.Hit: UpdateHitState(); break;
+                case ENormalMonsterState.Dead: UpdateDeadState(); break;
             }
 
             if (UpdateAITick > 0)
@@ -539,35 +484,6 @@ public class NormalMonster : BaseMonster
         }
     }
     protected virtual void DeadStateExit() { }
-
-    Coroutine coDestroyEffect = null;
-    private IEnumerator CoDestroyEffect(float fadeTime)
-    {
-        while (true)
-        {
-            int count = 0;
-            float time = fadeTime * 0.01f * Time.deltaTime;
-            foreach (Renderer randerer in rendererList)
-            {
-                Color tempColor = randerer.material.color;
-                if (tempColor.a > 0.01f)
-                {
-                    count++;
-                    tempColor.a -= time;
-                    if (tempColor.a <= 0f) tempColor.a = 0f;
-                    randerer.material.color = tempColor;
-                }
-            }
-
-            if (count == 0)
-                break;
-
-            yield return null;
-        }
-
-        coDestroyEffect = null;
-        Managers.Resource.Destroy(gameObject);
-    }
     #endregion
     #endregion
 

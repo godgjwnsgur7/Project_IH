@@ -19,6 +19,7 @@ public class DataTransformer : EditorWindow
     public static void ParseExcelDataToJson()
     {
         ParseExcelDataToJson<MapDataLoader, JMapData>("Map");
+        ParseExcelDataToJson<NamedMonsterDataLoader, JNamedMonsterData>("NamedMonster");
         ParseExcelDataToJson<NormalMonsterDataLoader, JNormalMonsterData>("NormalMonster");
         ParseExcelDataToJson<PlayerDataLoader, JPlayerData>("Player");
         ParseExcelDataToJson<PlayerSkillDataLoader, JPlayerSkillData>("PlayerSkill");
