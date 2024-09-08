@@ -68,11 +68,16 @@ public class UI_Damage : UI_BaseObject
 			damage = uiDamageParam.damage;
 			text.GetComponent<RectTransform>().position = RectTransformUtility.WorldToScreenPoint(Camera.main, uiDamageParam.pos);
 
+			text.text = damage.ToString();
+
 			if (uiDamageParam.isCritical)
 			{
 				bCritical = true;
 				criticalImage.enabled = true;
 				text.color = Color.yellow;
+
+				text.GetComponent<RectTransform>().position = RectTransformUtility.WorldToScreenPoint(Camera.main, uiDamageParam.pos - new Vector3(criticalImage.flexibleWidth / 2, 0, 0));
+				criticalImage.GetComponent<RectTransform>().position = RectTransformUtility.WorldToScreenPoint(Camera.main, uiDamageParam.pos + new Vector3(criticalImage.flexibleWidth / 2, 0, 0));
 			}
 			else
             {
