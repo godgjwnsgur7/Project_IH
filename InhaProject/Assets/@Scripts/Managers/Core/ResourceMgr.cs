@@ -62,7 +62,7 @@ public class ResourceMgr
         if (original.GetComponent<Poolable>() != null)
             return Managers.Pool.Pop(original, position).GameObject;
 
-        GameObject go = Object.Instantiate(original, parent);
+        GameObject go = Object.Instantiate(original, position, default, parent);
         go.name = original.name;
         return go;
     }

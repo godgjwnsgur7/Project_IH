@@ -10,6 +10,19 @@ using static TMPro.Examples.TMP_ExampleScript_01;
 
 public class ObjectMgr : MonoBehaviour
 {
+    #region Root
+    private GameObject _monsterRoot;
+    public GameObject MonsterRoot
+    {
+        get
+        {
+            if (_monsterRoot == null) _monsterRoot = GameObject.Find("@MonsterRoot");
+            if (_monsterRoot == null) _monsterRoot = new GameObject { name = "@MonsterRoot" };
+            return _monsterRoot;
+        }
+    }
+    #endregion
+
     private Dictionary<EItemType, string> itemPrefabsDict = new Dictionary<EItemType, string>();
 
     private List<GameObject> activeObjects = new();
@@ -33,9 +46,22 @@ public class ObjectMgr : MonoBehaviour
     /// <summary>
     /// 이펙트 오브젝트 스폰 - 파괴(비활성화)는 이펙트가 끝나면 자동으로 수행
     /// </summary>
-    public GameObject SpawnEffectObject(EEffectObjectType type, Vector3 position)
+    public BaseEffectObject SpawnEffectObject(EEffectObjectType type, Vector3 position, EffectParam param = null)
     {
-        return Managers.Resource.Instantiate($"{PrefabPath.OBJECT_EFFECTOBEJCT_PATH}/{type}", position);
+        BaseEffectObject effectObject = Managers.Resource.Instantiate($"{PrefabPath.OBJECT_EFFECTOBEJCT_PATH}/{type}", position).GetComponent<BaseEffectObject>();
+        effectObject.transform.position += effectObject.SubPos;
+        effectObject.SetInfo(param);
+        return effectObject;
+    }
+
+    public void SpawnNormalMonster(ENormalMonsterType type, Vector3 position)
+    {
+        NormalMonster normalMonster = Managers.Resource.Instantiate($"{PrefabPath.OBJECT_MONSTER_PATH}/{type}", position).GetComponent<NormalMonster>();
+        
+        if(normalMonster != null)
+        {
+            normalMonster.transform.parent = MonsterRoot.transform;
+        }
     }
 
     public void Init()

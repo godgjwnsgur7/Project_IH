@@ -14,7 +14,18 @@ public class GameScene : BaseScene
         GameObject go = Managers.Resource.Instantiate(PrefabPath.OBJECT_PLAYER_PATH + $"/{EPlayerType.Player.ToString()}");
         Camera.main.GetComponent<CameraController>().SetTarget(go.GetComponent<Player>());
 
+        Invoke("TestSpawnMonster", 0.5f); // 임시
+
         return true;
+    }
+
+    // 스폰 몬스터 테스트 코드
+    private void TestSpawnMonster()
+    {
+        Managers.Object.SpawnEffectObject(EEffectObjectType.MonsterSpawnEffect, new Vector3(19, 2.5f, 0),
+            new SpawnMonsterEffectParam(ENormalMonsterType.SkeletonWarrior));
+        Managers.Object.SpawnEffectObject(EEffectObjectType.MonsterSpawnEffect, new Vector3(-2.5f, 5.5f, 0),
+            new SpawnMonsterEffectParam(ENormalMonsterType.SkeletonWizard));
     }
 
     public override void Clear()

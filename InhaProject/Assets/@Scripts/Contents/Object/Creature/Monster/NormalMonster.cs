@@ -29,6 +29,7 @@ public class NormalMonsterData
 public enum ENormalMonsterState
 {
     None,
+    Spawn,
     Idle,
     Patrol,
     Chase,
@@ -41,6 +42,7 @@ public enum ENormalMonsterType
 {
     SkeletonWarrior = 0,
     SkeletonWizard = 1,
+    Max = 2,
 }
 
 public class NormalMonster : BaseMonster
