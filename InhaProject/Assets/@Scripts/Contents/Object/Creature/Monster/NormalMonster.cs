@@ -568,4 +568,18 @@ public class NormalMonster : BaseMonster
     }
     #endregion
     #endregion
+
+    #region Animation Clip Event
+    public override void OnActiveAttackObject()
+    {
+        base.OnActiveAttackObject();
+        attackObject.SetActiveCollider(true);
+    }
+
+    public override void OnDeactiveAttackObject()
+    {
+        base.OnDeactiveAttackObject();
+        attackObject.SetActiveCollider(false);
+    }
+    #endregion
 }

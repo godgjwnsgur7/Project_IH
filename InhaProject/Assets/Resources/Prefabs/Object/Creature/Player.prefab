@@ -670,6 +670,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <AttackObjectType>k__BackingField: 0
+  <Rigid>k__BackingField: {fileID: 0}
+  <Collider>k__BackingField: {fileID: 0}
 --- !u!65 &8815910375461447221
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -905,7 +907,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.25, y: 0.1, z: 0.25}
+  m_Size: {x: 0.24, y: 0.1, z: 0.24}
   m_Center: {x: 0, y: 0.05, z: 0}
 --- !u!1 &1308480016052120217
 GameObject:
@@ -2117,6 +2119,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <AttackObjectType>k__BackingField: 0
+  <Rigid>k__BackingField: {fileID: 0}
+  <Collider>k__BackingField: {fileID: 0}
 --- !u!54 &4931165932373663284
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3803,7 +3807,6 @@ MonoBehaviour:
     MoveSpeed: 0
     DashSpeed: 0
     JumpPower: 0
-    PlayerSkillList: []
   skillAttackObject: {fileID: 0}
   attackObject: {fileID: 2916405762298004907}
   _isPlayerInputControll: 0

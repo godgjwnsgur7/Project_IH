@@ -49,4 +49,9 @@ public abstract class BaseMonster : Creature, IHitEvent
     }
 
     public abstract void OnHit(AttackParam param = null);
+
+    #region Animation Clip Event
+    public virtual void OnActiveAttackObject() { }
+    public virtual void OnDeactiveAttackObject() { }
+    #endregion
 }

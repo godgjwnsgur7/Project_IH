@@ -31255,6 +31255,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <AttackObjectType>k__BackingField: 0
+  <Rigid>k__BackingField: {fileID: 501858191394797036}
+  <Collider>k__BackingField: {fileID: 6306175933850317747}
 --- !u!54 &501858191394797036
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -42111,7 +42113,7 @@ Transform:
   m_GameObject: {fileID: 6961079830461328630}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.1, y: 5.42, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.35, y: 0.35, z: 0.35}
   m_ConstrainProportionsScale: 0
   m_Children:

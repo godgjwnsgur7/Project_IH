@@ -43,13 +43,15 @@ public class BaseAttackObject : InitBase
         this.onAttackTarget = onAttackTarget;
     }
 
-    protected void OnAttackTarget(IHitEvent hitEvent)
-    {
-        onAttackTarget?.Invoke(hitEvent);
-    }
-    
     public void SetActive(bool active)
     {
         this.gameObject.SetActive(active);
+    }
+
+    public virtual void SetActiveCollider(bool isActive) { }
+
+    protected void OnAttackTarget(IHitEvent hitEvent)
+    {
+        onAttackTarget?.Invoke(hitEvent);
     }
 }

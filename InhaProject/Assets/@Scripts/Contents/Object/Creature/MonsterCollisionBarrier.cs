@@ -17,7 +17,6 @@ public class MonsterCollisionBarrier : InitBase
         Rigid.useGravity = false;
         Rigid.isKinematic = true;
         Collider.isTrigger = true;
-        Rigid.excludeLayers += 1 << (int)ELayer.Monster;
     }
 
     public override bool Init()
@@ -28,7 +27,6 @@ public class MonsterCollisionBarrier : InitBase
         Rigid ??= GetComponent<Rigidbody>();
         Collider ??= GetComponent<CapsuleCollider>();
         Rigid.excludeLayers += 1 << (int)ELayer.Monster;
-
         return true;
     }
 
