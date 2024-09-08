@@ -42,6 +42,7 @@ public class UI_SkillBar : UI_GameScene
 		{
 			player = playerObject.GetComponent<Player>();
 			player.OnChangedMp += OnChangedMp;
+			player.OnUseSkill = OnUseSkill;
 		}
 
 		StartCoroutine(SetPlayerInfo());
