@@ -49,7 +49,6 @@ public class ObjectMgr : MonoBehaviour
     public BaseEffectObject SpawnEffectObject(EEffectObjectType type, Vector3 position, EffectParam param = null)
     {
         BaseEffectObject effectObject = Managers.Resource.Instantiate($"{PrefabPath.OBJECT_EFFECTOBEJCT_PATH}/{type}", position).GetComponent<BaseEffectObject>();
-        effectObject.transform.position += effectObject.SubPos;
         effectObject.SetInfo(param);
         return effectObject;
     }

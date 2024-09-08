@@ -6,6 +6,7 @@ using UnityEngine;
 public class MonsterSpawnEffect : BaseEffectObject
 {
     ENormalMonsterType monsterType = ENormalMonsterType.Max;
+    float subPosY = 2.5f;
 
     protected override void OnDisable()
     {
@@ -19,8 +20,6 @@ public class MonsterSpawnEffect : BaseEffectObject
         if (base.Init())
             return false;
 
-        SubPos = new Vector3(0, -2.5f, -0.1f);
-
         return true;
     }
 
@@ -28,24 +27,31 @@ public class MonsterSpawnEffect : BaseEffectObject
     {
         base.SetInfo(param);
 
+        transform.position += Vector3.down * subPosY;
+
         if(param is SpawnMonsterEffectParam spawnParam)
         {
             monsterType = spawnParam.spawnType;
         }
+
+        if (coSpawnMonster != null)
+            StopCoroutine(coSpawnMonster);
+
+        coSpawnMonster = CoroutineHelper.StartCoroutine(CoSpawnMonster());
     }
 
-    protected override IEnumerator CoDestroySelf(float subTime = 1.5f)
+    Coroutine coSpawnMonster = null;
+    private IEnumerator CoSpawnMonster(float waitTime = 0.5f)
     {
-        yield return new WaitForSeconds(subTime);
+        yield return new WaitForSeconds(waitTime);
 
-        Vector3 spawnPosVec = this.transform.position - (Vector3.up * SubPos.y);
+        if (monsterType == ENormalMonsterType.Max)
+            monsterType = (ENormalMonsterType)Random.Range(0, (int)ENormalMonsterType.Max);
+
+        Vector3 spawnPosVec = this.transform.position + (Vector3.up * subPosY);
         spawnPosVec.z = 0;
         
-        if(monsterType == ENormalMonsterType.Max)
-            monsterType = (ENormalMonsterType)Random.Range(0, (int)ENormalMonsterType.Max);
-        
         Managers.Object.SpawnNormalMonster(monsterType, spawnPosVec);
-
-        yield return StartCoroutine(base.CoDestroySelf(subTime));
+        coSpawnMonster = null;
     }
 }

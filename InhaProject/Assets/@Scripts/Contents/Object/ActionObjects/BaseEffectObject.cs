@@ -15,7 +15,6 @@ public enum EEffectObjectType
 public class BaseEffectObject : InitBase, Poolable
 {
     [SerializeField, ReadOnly] protected float maxDuration;
-    [field: SerializeField, ReadOnly] public Vector3 SubPos { get; protected set; }
 
     public bool IsUsing { get; set; }
     public GameObject GameObject { get { return this.gameObject; } }
@@ -48,14 +47,14 @@ public class BaseEffectObject : InitBase, Poolable
         coDestroySelf = StartCoroutine(CoDestroySelf());
     }
 
-    protected virtual IEnumerator CoDestroySelf(float subTime = 0f)
+    private IEnumerator CoDestroySelf(float subTime = 0f)
     {
         yield return new WaitForSeconds(maxDuration - subTime);
         DestroySelf();
         coDestroySelf = null;
     }
 
-    protected void DestroySelf()
+    private void DestroySelf()
     {
         Managers.Resource.Destroy(gameObject);
     }
