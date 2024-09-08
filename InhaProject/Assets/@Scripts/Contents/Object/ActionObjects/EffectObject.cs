@@ -6,6 +6,7 @@ using UnityEngine;
 public enum EEffectObjectType
 {
     PlayerHitEffect,
+    PlayerHitBlockEffect,
     MonsterHitEffect, // ¹Ì»ç¿ë
 }
 

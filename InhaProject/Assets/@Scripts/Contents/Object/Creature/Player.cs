@@ -924,7 +924,7 @@ public class Player : Creature, IHitEvent
         if (PlayerState == EPlayerState.Guard && param.isAttackerLeft == !LookLeft)
         {
             subVec.x += Collider.size.x * ((LookLeft) ? -1 : 1) * 2;
-            Managers.Object.SpawnEffectObject(EEffectObjectType.PlayerHitEffect, this.transform.position + subVec);
+            Managers.Object.SpawnEffectObject(EEffectObjectType.PlayerHitBlockEffect, this.transform.position + subVec);
             isPlayerStateLock = false;
             PlayerState = EPlayerState.Block;
             return;
