@@ -91,15 +91,28 @@ public class PlayerSkill
 {
     public EPlayerSkillType skillType;
     public float coolTime;
-    public bool isAvailable;
     public float mpAmount;
+    public bool isAvailable;
 
-    public PlayerSkill(EPlayerSkillType skillType, float coolTime, bool isAvailable, float mpAmount)
+    public PlayerSkill(EPlayerSkillType skillType, float coolTime, float mpAmount,
+        bool isAvailable = true)
     {
         this.skillType = skillType;
         this.coolTime = coolTime;
-        this.isAvailable = isAvailable;
         this.mpAmount = mpAmount;
+        this.isAvailable = isAvailable;
+    }
+}
+
+[Serializable]
+public class PlayerAttackSkill : PlayerSkill
+{
+    public List<float> damageRatioList;
+
+    public PlayerAttackSkill(EPlayerSkillType skillType, List<float> damageRatioList, float coolTime, float mpAmount, 
+        bool isAvailable = true) : base(skillType, coolTime, mpAmount, isAvailable)
+    {
+        this.damageRatioList = damageRatioList;
     }
 }
 #endregion
@@ -300,22 +313,22 @@ public class Player : Creature, IHitEvent
         PlayerSkillDict = new Dictionary<EPlayerSkillType, PlayerSkill>();
 
         skillType = EPlayerSkillType.Dash;
-        PlayerSkillDict.Add(skillType, new PlayerSkill(skillType, 5, true, 0));
+        PlayerSkillDict.Add(skillType, new PlayerSkill(skillType, 5, 0));
 
         skillType = EPlayerSkillType.Guard;
-        PlayerSkillDict.Add(skillType, new PlayerSkill(skillType, 5, true, 0));
+        PlayerSkillDict.Add(skillType, new PlayerSkill(skillType, 5, 0));
 
         skillType = EPlayerSkillType.Skill1;
-        PlayerSkillDict.Add(skillType, new PlayerSkill(skillType, 0, true, 10));
-        
+        PlayerSkillDict.Add(skillType, new PlayerAttackSkill(skillType, new List<float> { 1.0f }, 5, 0));
+
         skillType = EPlayerSkillType.Skill2;
-        PlayerSkillDict.Add(skillType, new PlayerSkill(skillType, 5, true, 30));
-        
+        PlayerSkillDict.Add(skillType, new PlayerAttackSkill(skillType, new List<float> { 1.5f }, 5, 0));
+
         skillType = EPlayerSkillType.Skill3;
-        PlayerSkillDict.Add(skillType, new PlayerSkill(skillType, 10, true, 100));
-        
+        PlayerSkillDict.Add(skillType, new PlayerAttackSkill(skillType, new List<float> { 2.0f }, 5, 0));
+
         skillType = EPlayerSkillType.Skill4;
-        PlayerSkillDict.Add(skillType, new PlayerSkill(skillType, 15, true, 200));
+        PlayerSkillDict.Add(skillType, new PlayerAttackSkill(skillType, new List<float> { 0.3f, 0.4f, 0.3f, 0.4f, 1.5f }, 5, 0));
     }
 
     public override Vector3 GetCameraTargetPos()
@@ -776,12 +789,23 @@ public class Player : Creature, IHitEvent
 
     #region Skill Motion
     [SerializeField, ReadOnly] int skillNum = 0;
+    [SerializeField, ReadOnly] int skillCount = 0;
     public void OnSkillAttackTarget(IHitEvent skillAttackTarget)
     {
         if (PlayerState == EPlayerState.Skill1 || PlayerState == EPlayerState.Skill2 
             || PlayerState == EPlayerState.Skill3 || PlayerState == EPlayerState.Skill4)
         {
-            skillAttackTarget.OnHit(new AttackParam(this, LookLeft, PlayerInfo.StrikingPower * 2f));
+            if(PlayerSkillDict.TryGetValue((EPlayerSkillType)skillNum, out PlayerSkill d)
+                && d is PlayerAttackSkill data)
+            {
+                float damageRatio = data.damageRatioList[skillCount];
+                skillAttackTarget.OnHit(new AttackParam(this, LookLeft, PlayerInfo.StrikingPower * damageRatio));
+            }
+            else
+            {
+                Debug.LogWarning($"스킬 데이터가 없습니다 : {skillNum} 번");
+                return;
+            }
         }
     }
 
@@ -821,6 +845,7 @@ public class Player : Creature, IHitEvent
         skillAttackObject.SetActive(false);
         playerCamera.enabled = false;
         skillNum = 0;
+        skillCount = 0;
         isSuperArmour = false;
         IsInvincibility = false;
     }
@@ -885,7 +910,7 @@ public class Player : Creature, IHitEvent
     #endregion
 
     #region Hit Motion
-    Vector3 hitForceDir = Vector3.zero;
+    Vector3 hitForceVec = Vector3.zero;
     [SerializeField, ReadOnly] bool isSuperArmour = false;
 
     [SerializeField, ReadOnly] bool _isInvincibility;
@@ -939,7 +964,7 @@ public class Player : Creature, IHitEvent
         }
 
         LookLeft = !param.isAttackerLeft;
-        hitForceDir.x = param.pushPower * ((param.isAttackerLeft) ? -1 : 1);
+        hitForceVec.x = param.pushPower * ((param.isAttackerLeft) ? -1 : 1);
         Managers.Object.SpawnEffectObject(EEffectObjectType.PlayerHitEffect, this.transform.position + subVec);
         isPlayerStateLock = false;
 
@@ -947,7 +972,7 @@ public class Player : Creature, IHitEvent
             PlayerState = EPlayerState.Hit;
         else
         {
-            hitForceDir.y = param.pushPower;
+            hitForceVec.y = param.pushPower;
             PlayerState = EPlayerState.Down;
         }
     }
@@ -970,9 +995,9 @@ public class Player : Creature, IHitEvent
         isPlayerStateLock = true;
         InitRigidVelocityY();
 
-        if (hitForceDir != Vector3.zero)
+        if (hitForceVec != Vector3.zero)
         {
-            SetRigidVelocity(hitForceDir);
+            SetRigidVelocity(hitForceVec);
         }
     }
 
@@ -989,7 +1014,7 @@ public class Player : Creature, IHitEvent
 
     protected virtual void HitStateExit()
     {
-        hitForceDir = Vector3.zero;
+        hitForceVec = Vector3.zero;
     }
     #endregion
 
@@ -1004,9 +1029,9 @@ public class Player : Creature, IHitEvent
         isPlayerStateLock = true;
         InitRigidVelocityY();
 
-        if (hitForceDir != Vector3.zero)
+        if (hitForceVec != Vector3.zero)
         {
-            SetRigidVelocity(hitForceDir);
+            SetRigidVelocity(hitForceVec);
         }
     }
 
@@ -1021,7 +1046,7 @@ public class Player : Creature, IHitEvent
 
     protected virtual void DownStateExit()
     {
-        hitForceDir = Vector3.zero;
+        hitForceVec = Vector3.zero;
         isPlayerStateLock = true;
     }
     #endregion
@@ -1117,6 +1142,11 @@ public class Player : Creature, IHitEvent
     public void OnDeactiveAttackobject()
     {
         attackObject.SetActive(false);
+    }
+
+    public void OnAddSkillCount()
+    {
+        skillCount++;
     }
     #endregion
 }
