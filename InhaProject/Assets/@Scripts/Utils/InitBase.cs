@@ -15,7 +15,10 @@ public class InitBase : MonoBehaviour
         return true;
     }
 
-    private void Awake()
+    /// <summary>
+    /// 재정의 및 확장하지 말고 Init 사용해주세요.
+    /// </summary>
+    protected virtual void Awake()
     {
         Init();
     }

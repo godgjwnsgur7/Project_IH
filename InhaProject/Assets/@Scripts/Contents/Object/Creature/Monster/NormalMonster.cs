@@ -395,7 +395,7 @@ public class NormalMonster : BaseMonster
 
     public void OnAttackTarget(IHitEvent attackTarget)
     {
-        attackTarget?.OnHit(new AttackParam(this, LookLeft));
+        attackTarget?.OnHit(new AttackParam(this, LookLeft, MonsterInfo.StrikingPower));
     }
 
     public void OnAttackRangeInTarget(Player player)

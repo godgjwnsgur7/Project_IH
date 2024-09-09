@@ -1,43 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_HealthBar : UI_GameScene
+public class UI_HealthBar : UI_BaseObject
 {
 	[SerializeField] private Image hpSlider;
 	[SerializeField] private Text hpText;
 
-	private Player player;
+	[SerializeField, ReadOnly] float maxHp = 0;
+    [SerializeField, ReadOnly] float currHp = 0;
+
 	public override bool Init()
-	{
-		return true;
-	}
-
-	private void Awake()
-	{
-		GameObject playerObject = GameObject.FindWithTag("Player");
-		if (playerObject != null)
-		{
-			player = playerObject.GetComponent<Player>();
-			player.OnChangedHp += OnChangedHp;
-		}
-	}
-
-	private void Start()
-	{
-		StartCoroutine(SetPlayerInfo());
-	}
-
-	private void OnChangedHp(float hp)
     {
-		hpSlider.fillAmount = hp / player.PlayerInfo.MaxHp;
-		hpText.text = hp.ToString() + "/" + player.PlayerInfo.MaxHp.ToString();
-	}
+		if (base.Init() == false)
+			return false;
 
-	IEnumerator SetPlayerInfo()
-	{
-		yield return new WaitForFixedUpdate();
-		OnChangedHp(player.PlayerInfo.MaxMp);
-	}
+        Managers.Game.Player.OnChangedHp -= OnChangedHp;
+        Managers.Game.Player.OnChangedHp += OnChangedHp;
+
+        return true;
+    }
+
+    public void SetInfo(float maxHp)
+    {
+        this.maxHp = maxHp;
+        currHp = maxHp;
+        SetHpBar();
+    }
+
+    private void OnChangedHp(float currHp)
+    {
+		this.currHp = currHp;
+        SetHpBar();
+    }
+
+    private void SetHpBar()
+    {
+        hpSlider.fillAmount = currHp / maxHp;
+        hpText.text = $"{currHp}/{maxHp}";
+    }
 }

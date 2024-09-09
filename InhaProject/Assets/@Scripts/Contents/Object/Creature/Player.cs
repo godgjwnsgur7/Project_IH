@@ -129,6 +129,7 @@ public class Player : Creature, IHitEvent
         get { return _playerInfo; }
         protected set
         {
+            // 시바 얘 안된다 ㅠㅠ ㅋ
             OnChangedHp?.Invoke(_playerInfo.CurrHp);
             OnChangedMp?.Invoke(_playerInfo.CurrMp);
 
@@ -304,6 +305,9 @@ public class Player : Creature, IHitEvent
         skillAttackObject.SetActive(false);
         skillAttackObject.SetInfo(ETag.Player, OnSkillAttackTarget);
         attackObject.SetInfo(ETag.Player, OnAttackTarget);
+    
+        // 임시 (바꿔야 함 - 지금 PlayerInfo 자체가 이상함 ㅋㅋ 변수로 다 빼야할 수도 있을 것 같.)
+        Managers.UI.SceneUI.GetComponent<UI_GameScene>()?.SetInfo(OnReadyToSkill, PlayerInfo.MaxHp, PlayerInfo.MaxMp);
     }
 
     private void SetSkillInfo()
@@ -339,11 +343,16 @@ public class Player : Creature, IHitEvent
     }
 
     #region UI
-    public Action<float> OnChangedHp = null;
-    public Action<float> OnChangedMp = null;
-    public Action<int> OnUseSkill = null; // int : SkillType Num.
+    public event Action<float> OnChangedHp = null; 
+    public event Action<float> OnChangedMp = null;
+    public event Action<int> OnUseSkill = null; // int : SkillType Num.
 
     [SerializeField, ReadOnly] Inventory inventory;
+
+    public void OnReadyToSkill(int skillNum)
+    {
+
+    }
 
     public void OnUseItemKey(int slotId)
     {
@@ -945,6 +954,8 @@ public class Player : Creature, IHitEvent
             , transform.position + (Collider.size.y * Vector3.up * 1.2f));
         Managers.UI.SpawnObjectUI<UI_Damage>(EUIObjectType.UI_Damage, damageParam);
 
+        OnDamaged(damageParam.damage); // 임시 - 가드 등 처리해야되고 죽는거 넣어야 함
+
         Vector3 subVec = new Vector3(0, Collider.size.y * 0.7f, 0);
         if (PlayerState == EPlayerState.Guard && param.isAttackerLeft == !LookLeft)
         {
@@ -975,6 +986,12 @@ public class Player : Creature, IHitEvent
             hitForceVec.y = param.pushPower;
             PlayerState = EPlayerState.Down;
         }
+    }
+
+    private void OnDamaged(float damage)
+    {
+        PlayerInfo.CurrHp -= damage;
+        OnChangedHp?.Invoke(PlayerInfo.CurrHp);
     }
 
     Coroutine coHitDelayCheck;

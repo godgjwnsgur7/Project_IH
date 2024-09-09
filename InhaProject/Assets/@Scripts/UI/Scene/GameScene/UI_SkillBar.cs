@@ -1,11 +1,13 @@
 using Data;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.UI;
 
 
-public class UI_SkillBar : UI_GameScene
+public class UI_SkillBar : UI_BaseObject
 {
 	[SerializeField] private UI_SkillSlot[] skillSlots;
 	[SerializeField] private Image playerMPImg;
@@ -15,46 +17,40 @@ public class UI_SkillBar : UI_GameScene
 	float time;
 
 	public GameObject hudDamageText;
+    public event Action<int> OnReadyToSkill = null;
 
-	private Player player;
+	// 지워야 하는 대 ㅋ 상 ㅋ
+    private Player player;
 
-	// 테스트용도, 플레이어 MP 따로 받아와야 함
-	public float playerMp = 100.0f;
+    // 테스트용도, 플레이어 MP 따로 받아와야 함
+    public float playerMp = 100.0f;
 	public override bool Init()
 	{
-		return true;
-	}
+		if (base.Init() == false)
+			return false;
 
-	private void Awake()
-	{
-		for (int i = 0; i < skillSlots.Length; i++)
+        for (int i = 0; i < skillSlots.Length; i++)
         {
             skillSlots[i].Init();
             skillSlots[i].frontImage.fillAmount = 0;
             skillSlots[i].frontImage.fillOrigin = (int)Image.Origin360.Top;
         }
+
+		return true;
     }
 
-    private void Start()
-	{
-		GameObject playerObject = GameObject.FindWithTag("Player");
-		if (playerObject != null)
-		{
-			player = playerObject.GetComponent<Player>();
-			player.OnChangedMp += OnChangedMp;
-			player.OnUseSkill = OnUseSkill;
-		}
+    public void SetInfo(Action<int> OnReadyToSkill, float maxMp)
+    {
+        this.OnReadyToSkill = OnReadyToSkill;
 
-		StartCoroutine(SetPlayerInfo());
-	}
+        Managers.Game.Player.OnChangedMp -= OnChangedMp;
+        Managers.Game.Player.OnChangedMp += OnChangedMp;
 
-	IEnumerator SetPlayerInfo()
-	{
-		yield return new WaitForFixedUpdate();
-		OnChangedMp(player.PlayerInfo.MaxMp);
-	}
+        Managers.Game.Player.OnUseSkill -= OnUseSkill;
+        Managers.Game.Player.OnUseSkill += OnUseSkill;
+    }
 
-	private void OnChangedMp(float mp)
+    private void OnChangedMp(float mp)
 	{
 		playerMPImg.fillAmount = mp / player.PlayerInfo.MaxMp;
 		playerMPImgBar.fillAmount = mp / player.PlayerInfo.MaxMp;
@@ -153,7 +149,7 @@ public class UI_SkillBar : UI_GameScene
 
 	public void OnDamageButton()
 	{
-		int rand = Random.Range(0, 2);
+		int rand = UnityEngine.Random.Range(0, 2);
 
 		UIDamageParam uiDamageParam = new UIDamageParam(9900999, new Vector3(0, 0, 0), false);
 		UI_Damage damageUI = Managers.Resource.Instantiate($"{PrefabPath.UI_OBJECT_PATH}/{EUIObjectType.UI_Damage}").GetComponent<UI_Damage>();

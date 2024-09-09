@@ -7,6 +7,18 @@ using UnityEngine;
 
 public class GameMgr 
 {
+    private Player _player;
+    public Player Player
+    {
+        get
+        {
+            if( _player == null )
+                _player = GameObject.FindWithTag("Player")?.GetComponent<Player>();
+
+            return _player; 
+        }
+    }
+
     public List<BaseStage> stages = new List<BaseStage>(); // 전체 스테이지 리스트
     private int currentStageIndex;
     private BaseStage currentStage;
