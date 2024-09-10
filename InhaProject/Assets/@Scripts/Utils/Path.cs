@@ -29,6 +29,9 @@ public static class PrefabPath
     public const string OBJECT_ATTACKOBJECT_PATH = "Object/AttackObject";
     public const string OBJECT_EFFECTOBEJCT_PATH = "Object/EffectObject";
 
+    public const string SOUND_BGM_PATH = "Sounds/BGM";
+    public const string SOUND_SFX_PATH = "Sounds/SFX";
+
     public const string UI_POPUP_PATH = "UI/Popup";
     public const string UI_WINDOW_PATH = "UI/Window";
     public const string UI_OBJECT_PATH = "UI/Object";
