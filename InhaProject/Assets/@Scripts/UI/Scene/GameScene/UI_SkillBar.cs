@@ -10,31 +10,20 @@ using UnityEngine.UI;
 public class UI_SkillBar : UI_BaseObject
 {
 	[SerializeField] private UI_SkillSlot[] skillSlots;
-	[SerializeField] private Image playerMPImg;
-	[SerializeField] private Image playerMPImgBar;
+	[SerializeField] private Image mpSlider;
+	[SerializeField] private Image mpSliderBar;
 	[SerializeField] private Text mpText;
 
-	float time;
+	[SerializeField, ReadOnly] float maxMp = 0;
+	[SerializeField, ReadOnly] float curMp = 0;
 
 	public GameObject hudDamageText;
     public event Action<int> OnReadyToSkill = null;
 
-	// 지워야 하는 대 ㅋ 상 ㅋ
-    private Player player;
-
-    // 테스트용도, 플레이어 MP 따로 받아와야 함
-    public float playerMp = 100.0f;
 	public override bool Init()
 	{
 		if (base.Init() == false)
 			return false;
-
-        for (int i = 0; i < skillSlots.Length; i++)
-        {
-            skillSlots[i].Init();
-            skillSlots[i].frontImage.fillAmount = 0;
-            skillSlots[i].frontImage.fillOrigin = (int)Image.Origin360.Top;
-        }
 
 		return true;
     }
@@ -43,18 +32,22 @@ public class UI_SkillBar : UI_BaseObject
     {
         this.OnReadyToSkill = OnReadyToSkill;
 
-        Managers.Game.Player.OnChangedMp -= OnChangedMp;
-        Managers.Game.Player.OnChangedMp += OnChangedMp;
+		Managers.Game.Player.OnChangedMp -= OnChangedMp;
+		Managers.Game.Player.OnChangedMp += OnChangedMp;
 
-        Managers.Game.Player.OnUseSkill -= OnUseSkill;
-        Managers.Game.Player.OnUseSkill += OnUseSkill;
-    }
+		Managers.Game.Player.OnUseSkill -= OnUseSkill;
+		Managers.Game.Player.OnUseSkill += OnUseSkill;
 
-    private void OnChangedMp(float mp)
+		this.maxMp = maxMp;
+		curMp = maxMp;
+
+		SetMpBar();
+	}
+
+    private void OnChangedMp(float curMp)
 	{
-		playerMPImg.fillAmount = mp / player.PlayerInfo.MaxMp;
-		playerMPImgBar.fillAmount = mp / player.PlayerInfo.MaxMp;
-		mpText.text = mp + " / " + player.PlayerInfo.MaxMp.ToString();
+		this.curMp = curMp;
+		SetMpBar();
 	}
 
 	private void OnUseSkill(int type)
@@ -64,44 +57,47 @@ public class UI_SkillBar : UI_BaseObject
 
 	IEnumerator SkillCoolTime(int type)
 	{
-		Debug.Log(player.PlayerSkillDict[(EPlayerSkillType)type].isAvailable);
+		UI_SkillSlot slot = skillSlots[(int)type];
 
-		if (player.PlayerSkillDict[(EPlayerSkillType)type].isAvailable == false)
-			yield break;
+		if ( slot == null) yield break;
 
-		Debug.Log(player.PlayerSkillDict[(EPlayerSkillType)type].mpAmount);
-
-		if (player.PlayerInfo.CurrMp < player.PlayerSkillDict[(EPlayerSkillType)type].mpAmount)	
-			yield break;
-
-		// player.PlayerInfo.CurrMp -= player.PlayerInfo.PlayerSkillList[type].mpAmount;
-
-		// 이건 플레이어에서 해야 될 것 같은데
-		player.PlayerSkillDict[(EPlayerSkillType)type].isAvailable = false;
-
-		float currentTime = 0;   
-
-		while (currentTime < player.PlayerSkillDict[(EPlayerSkillType)type].coolTime)
+		if (Managers.Game.Player.PlayerSkillDict.TryGetValue((EPlayerSkillType)type, out PlayerSkill usedSkill))
 		{
-			currentTime += Time.deltaTime;
+			if (usedSkill.isAvailable == false) yield break;
 
-			skillSlots[type].frontImage.fillAmount = currentTime;
-			int cooltime = (int)(player.PlayerSkillDict[(EPlayerSkillType)type].coolTime - currentTime);
-			skillSlots[(int)type].cooltimeText.text = cooltime.ToString();
-			yield return new WaitForFixedUpdate();
+			if (curMp < usedSkill.mpAmount) yield break;
+
+			float currentTime = 0;
+			
+			while ( currentTime < usedSkill.coolTime )
+            {
+				currentTime += Time.deltaTime;
+				int cooltime = (int)(usedSkill.coolTime - currentTime) + 1;
+
+				slot.SetFillAmountToFrontImage(currentTime / usedSkill.coolTime);
+				slot.SetCooltimeText(cooltime.ToString());
+				yield return new WaitForFixedUpdate();
+			}
+
+			slot.SetFillAmountToFrontImage(0);
+			slot.SetCooltimeText("");
+
+			OnReadyToSkill?.Invoke(type);
 		}
 
-		skillSlots[(int)type].frontImage.fillAmount = 0;
-		skillSlots[(int)type].cooltimeText.enabled = false;
 
-		// 이건 플레이어에서 해야 될 것 같은데
-		player.PlayerSkillDict[(EPlayerSkillType)type].isAvailable = true;
+		// 플레이어에서 isAvailable 바꿔줘야 함
+		// player.PlayerSkillDict[(EPlayerSkillType)type].isAvailable = false;
+		//player.PlayerSkillDict[(EPlayerSkillType)type].isAvailable = true;
 	}
 
-	public void ConnectSlot()
-	{
+	private void SetMpBar()
+    {
+		mpSlider.fillAmount = curMp / maxMp;
+		mpSliderBar.fillAmount = curMp / maxMp;
+		mpText.text = $"{curMp} / {maxMp}";
+    }
 
-	}
 
 	#region Skill Events
 	//   public void OnClickSlot1()

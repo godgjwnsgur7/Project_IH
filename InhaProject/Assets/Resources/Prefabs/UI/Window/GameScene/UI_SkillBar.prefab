@@ -3948,17 +3948,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillSlots:
-  - {fileID: 4725405737011994243}
   - {fileID: 1844324573512029240}
+  - {fileID: 4725405737011994243}
   - {fileID: 8809335391925839809}
   - {fileID: 4145075191639860449}
   - {fileID: 4255226355193297869}
   - {fileID: 3613468089011374412}
-  playerMPImg: {fileID: 6755018594069235887}
-  playerMPImgBar: {fileID: 6037119551852868949}
+  mpSlider: {fileID: 6755018594069235887}
+  mpSliderBar: {fileID: 6037119551852868949}
   mpText: {fileID: 6744410084752320646}
+  maxMp: 0
+  curMp: 0
   hudDamageText: {fileID: 6021863253300501416, guid: f209028ae2dbc55429375f9563045232, type: 3}
-  playerMp: 100
 --- !u!1 &8152909461904962751
 GameObject:
   m_ObjectHideFlags: 0
