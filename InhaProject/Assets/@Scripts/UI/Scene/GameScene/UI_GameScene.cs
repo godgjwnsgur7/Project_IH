@@ -54,7 +54,7 @@ public class UI_GameScene : UI_BaseScene
         return true;
 	}
 
-    public void SetInfo(Action<int> OnReadyToSkill, float maxHp, float maxMp)
+    public void SetInfo(Action<EPlayerSkillType> OnReadyToSkill, float maxHp, float maxMp)
     {
 		uiHealthBar.SetInfo(maxHp);
 		uiSkillBar.SetInfo(OnReadyToSkill, maxMp);

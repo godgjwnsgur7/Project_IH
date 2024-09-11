@@ -625,7 +625,7 @@ GameObject:
   - component: {fileID: 2197602035443257827}
   - component: {fileID: 6188141199834977970}
   - component: {fileID: 8151044091184340707}
-  - component: {fileID: 2793313367539291820}
+  - component: {fileID: 1034421287058991560}
   m_Layer: 5
   m_Name: UI_LoadingPopup
   m_TagString: Untagged
@@ -718,7 +718,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &2793313367539291820
+--- !u!114 &1034421287058991560
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -727,7 +727,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8297459295111685417}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a87bd5e31e64334a9ecdb912e149299, type: 3}
+  m_Script: {fileID: 11500000, guid: f4e8fab6b0104194092adff2d03e373a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   progressBar: {fileID: 3944889220869582448}

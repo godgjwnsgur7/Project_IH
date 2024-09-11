@@ -18,7 +18,7 @@ public class UI_SkillBar : UI_BaseObject
 	[SerializeField, ReadOnly] float curMp = 0;
 
 	public GameObject hudDamageText;
-    public event Action<int> OnReadyToSkill = null;
+    public event Action<EPlayerSkillType> OnReadyToSkill = null;
 
 	public override bool Init()
 	{
@@ -28,7 +28,7 @@ public class UI_SkillBar : UI_BaseObject
 		return true;
     }
 
-    public void SetInfo(Action<int> OnReadyToSkill, float maxMp)
+    public void SetInfo(Action<EPlayerSkillType> OnReadyToSkill, float maxMp)
     {
         this.OnReadyToSkill = OnReadyToSkill;
 
@@ -50,12 +50,12 @@ public class UI_SkillBar : UI_BaseObject
 		SetMpBar();
 	}
 
-	private void OnUseSkill(int type)
+	private void OnUseSkill(EPlayerSkillType type, float coolTime)
     {
-		StartCoroutine(SkillCoolTime(type));
+        StartCoroutine(CoSkillCoolTime(type, coolTime));
     }
 
-	IEnumerator SkillCoolTime(int type)
+	IEnumerator CoSkillCoolTime(EPlayerSkillType type, float coolTime)
 	{
 		UI_SkillSlot slot = skillSlots[(int)type];
 
@@ -63,10 +63,6 @@ public class UI_SkillBar : UI_BaseObject
 
 		if (Managers.Game.Player.PlayerSkillDict.TryGetValue((EPlayerSkillType)type, out PlayerSkill usedSkill))
 		{
-			if (usedSkill.isAvailable == false) yield break;
-
-			if (curMp < usedSkill.mpAmount) yield break;
-
 			float currentTime = 0;
 			
 			while ( currentTime < usedSkill.coolTime )
@@ -81,15 +77,10 @@ public class UI_SkillBar : UI_BaseObject
 
 			slot.SetFillAmountToFrontImage(0);
 			slot.SetCooltimeText("");
-
-			OnReadyToSkill?.Invoke(type);
 		}
 
-
-		// 플레이어에서 isAvailable 바꿔줘야 함
-		// player.PlayerSkillDict[(EPlayerSkillType)type].isAvailable = false;
-		//player.PlayerSkillDict[(EPlayerSkillType)type].isAvailable = true;
-	}
+        OnReadyToSkill?.Invoke(type);
+    }
 
 	private void SetMpBar()
     {

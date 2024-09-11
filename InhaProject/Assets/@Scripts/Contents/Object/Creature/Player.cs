@@ -123,21 +123,8 @@ public class Player : Creature, IHitEvent
 
     public Dictionary<EPlayerSkillType, PlayerSkill> PlayerSkillDict { get; protected set; }
     [field: SerializeField, ReadOnly] public EPlayerType PlayerType { get; protected set; }
-    [field: SerializeField] private PlayerData _playerInfo;
-    public PlayerData PlayerInfo
-    {
-        get { return _playerInfo; }
-        protected set
-        {
-            // 시바 얘 안된다 ㅠㅠ ㅋ
-            OnChangedHp?.Invoke(_playerInfo.CurrHp);
-            OnChangedMp?.Invoke(_playerInfo.CurrMp);
+    private PlayerData playerData = null;
 
-            _playerInfo = value;
-        }
-    }
-
-    
     [SerializeField, ReadOnly] BaseAttackObject skillAttackObject;
     [SerializeField, ReadOnly] BaseAttackObject attackObject = null;
 
@@ -298,7 +285,7 @@ public class Player : Creature, IHitEvent
         base.SetInfo(templateID);
 
         PlayerType = Util.ParseEnum<EPlayerType>(gameObject.name); // 임시
-        PlayerInfo = new PlayerData(Managers.Data.PlayerDict[(int)PlayerType]);
+        playerData = new PlayerData(Managers.Data.PlayerDict[(int)PlayerType]);
 
         SetSkillInfo();
 
@@ -306,8 +293,7 @@ public class Player : Creature, IHitEvent
         skillAttackObject.SetInfo(ETag.Player, OnSkillAttackTarget);
         attackObject.SetInfo(ETag.Player, OnAttackTarget);
     
-        // 임시 (바꿔야 함 - 지금 PlayerInfo 자체가 이상함 ㅋㅋ 변수로 다 빼야할 수도 있을 것 같.)
-        Managers.UI.SceneUI.GetComponent<UI_GameScene>()?.SetInfo(OnReadyToSkill, PlayerInfo.MaxHp, PlayerInfo.MaxMp);
+        Managers.UI.SceneUI.GetComponent<UI_GameScene>()?.SetInfo(OnReadyToSkill, playerData.MaxHp, playerData.MaxMp);
     }
 
     private void SetSkillInfo()
@@ -345,14 +331,10 @@ public class Player : Creature, IHitEvent
     #region UI
     public event Action<float> OnChangedHp = null; 
     public event Action<float> OnChangedMp = null;
-    public event Action<int> OnUseSkill = null; // int : SkillType Num.
+    /// <summary> Type, CoolTime </summary>
+    public event Action<EPlayerSkillType, float> OnUseSkill = null;
 
     [SerializeField, ReadOnly] Inventory inventory;
-
-    public void OnReadyToSkill(int skillNum)
-    {
-        Debug.Log($"{skillNum}번 스킬 준비완료 ㅋ");
-    }
 
     public void OnUseItemKey(int slotId)
     {
@@ -610,7 +592,7 @@ public class Player : Creature, IHitEvent
 
     private void Movement()
     {
-        SetRigidVelocityX(moveDirection.x * PlayerInfo.MoveSpeed);
+        SetRigidVelocityX(moveDirection.x * playerData.MoveSpeed);
 
         if (moveDirection.x > 0)
             LookLeft = false;
@@ -631,7 +613,7 @@ public class Player : Creature, IHitEvent
     protected virtual void JumpStateEnter()
     {
         InitRigidVelocityY();
-        SetRigidVelocityY(PlayerInfo.JumpPower);
+        SetRigidVelocityY(playerData.JumpPower);
     }
 
     protected virtual void UpdateJumpState()
@@ -734,7 +716,7 @@ public class Player : Creature, IHitEvent
 
     protected virtual void DashStateEnter()
     {
-        SetRigidVelocityX(PlayerInfo.DashSpeed * ((LookLeft) ? -1 : 1));
+        SetRigidVelocityX(playerData.DashSpeed * ((LookLeft) ? -1 : 1));
         isPlayerStateLock = true;
         IsInvincibility = true;
     }
@@ -762,7 +744,7 @@ public class Player : Creature, IHitEvent
     {
         if (PlayerState == EPlayerState.Attack)
         {
-            attackTarget.OnHit(new AttackParam(this, LookLeft, PlayerInfo.StrikingPower));
+            attackTarget.OnHit(new AttackParam(this, LookLeft, playerData.StrikingPower));
         }
     }
     protected virtual bool AttackStateCondition()
@@ -808,7 +790,7 @@ public class Player : Creature, IHitEvent
                 && d is PlayerAttackSkill data)
             {
                 float damageRatio = data.damageRatioList[skillCount];
-                skillAttackTarget.OnHit(new AttackParam(this, LookLeft, PlayerInfo.StrikingPower * damageRatio));
+                skillAttackTarget.OnHit(new AttackParam(this, LookLeft, playerData.StrikingPower * damageRatio));
             }
             else
             {
@@ -816,6 +798,12 @@ public class Player : Creature, IHitEvent
                 return;
             }
         }
+    }
+
+    public void OnReadyToSkill(EPlayerSkillType skillType)
+    {
+        if (PlayerSkillDict.TryGetValue(skillType, out PlayerSkill skillData))
+            skillData.isAvailable = true;
     }
 
     protected virtual bool SkillStateCondition()
@@ -826,7 +814,13 @@ public class Player : Creature, IHitEvent
         if (CreatureFoot.IsLandingGround == false)
             return false;
 
-        // 스킬이 사용이 가능한지 체크해야 함
+        if (PlayerSkillDict.TryGetValue((EPlayerSkillType)skillNum, out PlayerSkill skillData))
+        {
+            if (skillData.isAvailable == false)
+                return false;
+        }
+        else
+            return false;
 
         return true;
     }
@@ -836,7 +830,16 @@ public class Player : Creature, IHitEvent
         if(skillNum == 4)
             playerCamera.enabled = true;
 
-        OnUseSkill(skillNum);
+        EPlayerSkillType type = (EPlayerSkillType)skillNum;
+        PlayerSkill skillData = PlayerSkillDict[type];
+        skillData.isAvailable = false;
+
+        playerData.CurrMp -= skillData.mpAmount;
+        OnChangedMp?.Invoke(playerData.CurrMp);
+        OnUseSkill?.Invoke(type, skillData.coolTime);
+
+        if (OnUseSkill == null)
+            Debug.Log("zz");
 
         isPlayerStateLock = true;
         InitRigidVelocityX();
@@ -944,6 +947,12 @@ public class Player : Creature, IHitEvent
         }
     }
 
+    private void OnDamaged(float damage)
+    {
+        playerData.CurrHp -= damage;
+        OnChangedHp?.Invoke(playerData.CurrHp);
+    }
+
     public void OnHit(AttackParam param = null)
     {
         if (IsInvincibility || param == null)
@@ -958,14 +967,13 @@ public class Player : Creature, IHitEvent
             , transform.position + (Collider.size.y * Vector3.up * 1.2f));
         Managers.UI.SpawnObjectUI<UI_Damage>(EUIObjectType.UI_Damage, damageParam);
 
-        OnDamaged(damageParam.damage); // 임시 - 가드 등 처리해야되고 죽는거 넣어야 함
-
         Vector3 subVec = new Vector3(0, Collider.size.y * 0.7f, 0);
         if (PlayerState == EPlayerState.Guard && param.isAttackerLeft == !LookLeft)
         {
             subVec.x += Collider.size.x * ((LookLeft) ? -1 : 1) * 2;
             Managers.Object.SpawnEffectObject(EEffectObjectType.PlayerHitBlockEffect, this.transform.position + subVec);
             isPlayerStateLock = false;
+            OnDamaged(damageParam.damage / 10);
             PlayerState = EPlayerState.Block;
             return;
         }
@@ -990,12 +998,6 @@ public class Player : Creature, IHitEvent
             hitForceVec.y = param.pushPower;
             PlayerState = EPlayerState.Down;
         }
-    }
-
-    private void OnDamaged(float damage)
-    {
-        PlayerInfo.CurrHp -= damage;
-        OnChangedHp?.Invoke(PlayerInfo.CurrHp);
     }
 
     Coroutine coHitDelayCheck;
@@ -1048,6 +1050,7 @@ public class Player : Creature, IHitEvent
     protected virtual void DownStateEnter()
     {
         isPlayerStateLock = true;
+        IsInvincibility = true;
         InitRigidVelocityY();
 
         if (hitForceVec != Vector3.zero)
@@ -1081,7 +1084,6 @@ public class Player : Creature, IHitEvent
     protected virtual void DownLandStateEnter()
     {
         isPlayerStateLock = true;
-        IsInvincibility = true;
         InitRigidVelocityX();
     }
 
@@ -1130,7 +1132,7 @@ public class Player : Creature, IHitEvent
     #region Dead Motion
     protected virtual bool DeadStateCondition()
     {
-        if (PlayerInfo.CurrHp > 0)
+        if (playerData.CurrHp > 0)
             return false;
 
         return true;
