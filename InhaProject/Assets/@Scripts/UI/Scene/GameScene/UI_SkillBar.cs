@@ -59,26 +59,26 @@ public class UI_SkillBar : UI_BaseObject
 	{
 		UI_SkillSlot slot = skillSlots[(int)type];
 
-		if ( slot == null) yield break;
-
-		if (Managers.Game.Player.PlayerSkillDict.TryGetValue((EPlayerSkillType)type, out PlayerSkill usedSkill))
+		if (slot == null)
 		{
-			float currentTime = 0;
-			
-			while ( currentTime < usedSkill.coolTime )
-            {
-				currentTime += Time.deltaTime;
-				int cooltime = (int)(usedSkill.coolTime - currentTime) + 1;
+			Debug.LogWarning($"{(int)type}번 slot이 없음");
+            yield break;
+        }
 
-				slot.SetFillAmountToFrontImage(currentTime / usedSkill.coolTime);
-				slot.SetCooltimeText(cooltime.ToString());
-				yield return new WaitForFixedUpdate();
-			}
+        float currentTime = 0;
 
-			slot.SetFillAmountToFrontImage(0);
-			slot.SetCooltimeText("");
-		}
+        while (currentTime < coolTime)
+        {
+            currentTime += Time.deltaTime;
+            int cooltime = (int)(coolTime - currentTime) + 1;
 
+            slot.SetFillAmountToFrontImage(currentTime / coolTime);
+            slot.SetCooltimeText(cooltime.ToString());
+            yield return null;
+        }
+
+        slot.SetFillAmountToFrontImage(0);
+        slot.SetCooltimeText("");
         OnReadyToSkill?.Invoke(type);
     }
 
