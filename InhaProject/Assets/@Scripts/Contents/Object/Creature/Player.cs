@@ -351,7 +351,7 @@ public class Player : Creature, IHitEvent
 
     public void OnReadyToSkill(int skillNum)
     {
-
+        Debug.Log($"{skillNum}번 스킬 준비완료 ㅋ");
     }
 
     public void OnUseItemKey(int slotId)
@@ -826,6 +826,8 @@ public class Player : Creature, IHitEvent
         if (CreatureFoot.IsLandingGround == false)
             return false;
 
+        // 스킬이 사용이 가능한지 체크해야 함
+
         return true;
     }
 
@@ -833,6 +835,8 @@ public class Player : Creature, IHitEvent
     {
         if(skillNum == 4)
             playerCamera.enabled = true;
+
+        OnUseSkill(skillNum);
 
         isPlayerStateLock = true;
         InitRigidVelocityX();

@@ -17,14 +17,14 @@ public class UI_HealthBar : UI_BaseObject
 		if (base.Init() == false)
 			return false;
 
-        Managers.Game.Player.OnChangedHp -= OnChangedHp;
-        Managers.Game.Player.OnChangedHp += OnChangedHp;
-
         return true;
     }
 
     public void SetInfo(float maxHp)
     {
+        Managers.Game.Player.OnChangedHp -= OnChangedHp;
+        Managers.Game.Player.OnChangedHp += OnChangedHp;
+
         this.maxHp = maxHp;
         currHp = maxHp;
         SetHpBar();

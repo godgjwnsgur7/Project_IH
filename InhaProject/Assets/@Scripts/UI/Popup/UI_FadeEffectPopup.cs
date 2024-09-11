@@ -84,7 +84,7 @@ public class UI_FadeEffectPopup : UI_BasePopup
         // Wait Condition
         if (fadeInEffectCondition != null)
         {
-            var loadingPopup = Managers.UI.OpenPopupUI<UI_Loading>();
+            var loadingPopup = Managers.UI.OpenPopupUI<UI_LoadingPopup>();
             yield return new WaitUntil(fadeInEffectCondition);
             yield return new WaitForSeconds(1f); // LoadingUI 테스트를 위한 1초 대기 (임시)
             Managers.UI.ClosePopupUI(loadingPopup);

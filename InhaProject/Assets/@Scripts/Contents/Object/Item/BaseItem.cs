@@ -14,6 +14,7 @@ public enum EItemType
     ManaPotion,
     HealPack,
     ManaPack,
+
     Key,
 
     Max

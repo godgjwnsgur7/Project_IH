@@ -13,10 +13,12 @@ public class GameScene : BaseScene
 
         GameObject go = Managers.Resource.Instantiate(PrefabPath.OBJECT_PLAYER_PATH + $"/{EPlayerType.Player.ToString()}");
         Camera.main.GetComponent<CameraController>().SetTarget(go.GetComponent<Player>());
-
-        Invoke("TestSpawnMonster", 0.5f); // 임시
-
         return true;
+    }
+
+    private void Start()
+    {
+        TestSpawnMonster();
     }
 
     // 스폰 몬스터 테스트 코드
