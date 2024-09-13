@@ -248,16 +248,6 @@ public class Player : Creature, IHitEvent
         }
     }
 
-    // 게임 매니저에서 처리 예정
-    protected override void Start()
-    {
-        base.Start();
-
-        IsPlayerInputControll = true;
-
-        JMapData mapData = Managers.Data.MapDict[0];
-    }
-
     protected override void Reset()
     {
         base.Reset();
@@ -299,6 +289,7 @@ public class Player : Creature, IHitEvent
         attackObject.SetInfo(ETag.Player, OnAttackTarget);
     
         Managers.UI.SceneUI.GetComponent<UI_GameScene>()?.SetInfo(OnReadyToSkill, playerData.MaxHp, playerData.MaxMp);
+        IsPlayerInputControll = true;
     }
 
     private void SetSkillInfo()

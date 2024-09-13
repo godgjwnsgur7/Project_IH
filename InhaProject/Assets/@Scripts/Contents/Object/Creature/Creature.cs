@@ -37,11 +37,6 @@ public class Creature : BaseObject
         }
     }
 
-    protected virtual void Start()
-    {
-        SetInfo(); // 임시?
-    }
-
     protected virtual void Reset()
     {
         CreatureFoot ??= Util.FindChild<CreatureFoot>(this.gameObject);

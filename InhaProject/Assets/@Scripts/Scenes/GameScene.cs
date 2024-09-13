@@ -10,9 +10,13 @@ public class GameScene : BaseScene
             return false;
 
         SceneType = Define.EScene.GameScene;
-        Managers.Game.StartGame();
 
         return true;
+    }
+
+    private void Start()
+    {
+        Managers.Game.StartGame();
     }
 
     // 스폰 몬스터 테스트 코드

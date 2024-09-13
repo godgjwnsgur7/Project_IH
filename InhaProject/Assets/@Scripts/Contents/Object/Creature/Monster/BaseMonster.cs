@@ -44,6 +44,11 @@ public abstract class BaseMonster : Creature, IHitEvent
                 rendererList.Add(renderer);
     }
 
+    protected virtual void Start()
+    {
+        SetInfo();
+    }
+
     public override void SetInfo(int templateID = 0)
     {
         base.SetInfo(templateID);

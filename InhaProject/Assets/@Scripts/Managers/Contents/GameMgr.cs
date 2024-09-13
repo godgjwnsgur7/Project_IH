@@ -42,6 +42,17 @@ public class GameMgr
     {
         return Managers.Resource.Instantiate($"{PrefabPath.STAGE_PATH}/Stage {stageId}").GetComponent<BaseStage>();
     }
+    
+    public void TestBossStage()
+    {
+        CurrStage = Managers.Resource.Instantiate($"{PrefabPath.STAGE_PATH}/SamplePrefab/SampleBossStage").GetComponent<BaseStage>();
+
+        Player player = Managers.Resource.Instantiate(PrefabPath.OBJECT_PLAYER_PATH + $"/{EPlayerType.Player}").GetComponent<Player>();
+        player.transform.position = CurrStage.PlayerStartingPoint.position;
+        player.SetInfo(0);
+
+        Camera.main.GetComponent<CameraController>().SetTarget(player);
+    }
 
     public void StartGame()
     {
@@ -60,6 +71,8 @@ public class GameMgr
 
         Player player = Managers.Resource.Instantiate(PrefabPath.OBJECT_PLAYER_PATH + $"/{EPlayerType.Player}").GetComponent<Player>();
         player.transform.position = CurrStage.PlayerStartingPoint.position;
+        player.SetInfo(0);
+
         Camera.main.GetComponent<CameraController>().SetTarget(player);
     }
 
