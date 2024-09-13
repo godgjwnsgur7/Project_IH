@@ -26,6 +26,7 @@ public enum EPlayerState
     Walk, // 일단 미사용
     Move, // Run으로 일단 사용
     Jump,
+    JumpAir,
     Fall,
     Land,
     Dash,
@@ -176,6 +177,7 @@ public class Player : Creature, IHitEvent
                 case EPlayerState.Idle: isChangeState = IdleStateCondition(); break;
                 case EPlayerState.Move: isChangeState = MoveStateCondition(); break;
                 case EPlayerState.Jump: isChangeState = JumpStateCondition(); break;
+                case EPlayerState.JumpAir: isChangeState = JumpAirStateCondition(); break;
                 case EPlayerState.Fall: isChangeState = FallStateCondition(); break;
                 case EPlayerState.Land: isChangeState = LandStateCondition(); break;
                 case EPlayerState.Dash: isChangeState = DashStateCondition(); break;
@@ -199,6 +201,7 @@ public class Player : Creature, IHitEvent
                 case EPlayerState.Idle: IdleStateExit(); break;
                 case EPlayerState.Move: MoveStateExit(); break;
                 case EPlayerState.Jump: JumpStateExit(); break;
+                case EPlayerState.JumpAir: JumpAirStateExit(); break;
                 case EPlayerState.Fall: FallStateExit(); break;
                 case EPlayerState.Land: LandStateExit(); break;
                 case EPlayerState.Dash: DashStateExit(); break;
@@ -224,6 +227,7 @@ public class Player : Creature, IHitEvent
                 case EPlayerState.Idle: IdleStateEnter(); break;
                 case EPlayerState.Move: MoveStateEnter(); break;
                 case EPlayerState.Jump: JumpStateEnter(); break;
+                case EPlayerState.JumpAir: JumpAirStateEnter(); break;
                 case EPlayerState.Fall: FallStateEnter(); break;
                 case EPlayerState.Land: LandStateEnter(); break;
                 case EPlayerState.Dash: DashStateEnter(); break;
@@ -403,9 +407,9 @@ public class Player : Creature, IHitEvent
             return;
 
         if (!CreatureFoot.IsLandingGround)
-            return;
-        
-        PlayerState = EPlayerState.Jump;
+            PlayerState = EPlayerState.JumpAir;
+        else
+            PlayerState = EPlayerState.Jump;
     }
 
     public void OnDashKey()
@@ -507,6 +511,7 @@ public class Player : Creature, IHitEvent
                 case EPlayerState.Idle: UpdateIdleState(); break;
                 case EPlayerState.Move: UpdateMoveState(); break;
                 case EPlayerState.Jump: UpdateJumpState(); break;
+                case EPlayerState.JumpAir: UpdateJumpAirState(); break;
                 case EPlayerState.Fall: UpdateFallState(); break;
                 case EPlayerState.Land: UpdateLandState(); break;
                 case EPlayerState.Dash: UpdateDashState(); break;
@@ -545,6 +550,7 @@ public class Player : Creature, IHitEvent
     {
         InitRigidVelocityX();
         isPlayerStateLock = false;
+        isJumpAir = false;
     }
 
     protected virtual void UpdateIdleState()
@@ -572,8 +578,7 @@ public class Player : Creature, IHitEvent
 
     protected virtual void MoveStateEnter()
     {
-
-
+        isJumpAir = false;
     }
 
     protected virtual void UpdateMoveState()
@@ -634,6 +639,45 @@ public class Player : Creature, IHitEvent
     }
     #endregion
 
+    #region JumpAir Motion
+    bool isJumpAir = false;
+    protected virtual bool JumpAirStateCondition()
+    {
+        if (isJumpAir)
+            return false;
+
+        if (CreatureFoot.IsLandingGround)
+            return false;
+
+        return true;
+    }
+
+    protected virtual void JumpAirStateEnter()
+    {
+        InitRigidVelocityY();
+        SetRigidVelocityY(playerData.JumpPower);
+
+        // 캐릭터 밑에 이펙트 추가하면 좋을 듯한데 (에셋)
+    }
+
+    protected virtual void UpdateJumpAirState()
+    {
+        Movement();
+        FallDownCheck();
+
+        // 착지 확인
+        if (CreatureFoot.IsLandingGround)
+        {
+            PlayerState = EPlayerState.Move;
+        }
+    }
+
+    protected virtual void JumpAirStateExit()
+    {
+
+    }
+    #endregion
+
     #region Fall Motion
     protected virtual bool FallStateCondition()
     {
@@ -685,7 +729,7 @@ public class Player : Creature, IHitEvent
 
     protected virtual void LandStateEnter()
     {
-
+        isJumpAir = false;
     }
 
     protected virtual void UpdateLandState()
