@@ -217,7 +217,6 @@ public class Player : Creature, IHitEvent
                 case EPlayerState.Down: DownStateExit(); break;
                 case EPlayerState.DownLand: DownLandStateExit(); break;
                 case EPlayerState.GetUp: GetUpStateExit(); break;
-                case EPlayerState.Dead: DeadStateExit(); break;
             }
 
             _playerState = value;
@@ -617,12 +616,6 @@ public class Player : Creature, IHitEvent
     {
         Movement();
         FallDownCheck();
-
-        // 착지 확인
-        if (CreatureFoot.IsLandingGround)
-        {
-            PlayerState = EPlayerState.Move;
-        }
     }
 
     protected virtual void JumpStateExit()
@@ -1112,7 +1105,6 @@ public class Player : Creature, IHitEvent
     protected virtual void DownStateEnter()
     {
         isPlayerStateLock = true;
-        IsInvincibility = true;
         InitRigidVelocityY();
 
         if (hitForceVec != Vector3.zero)
@@ -1146,6 +1138,7 @@ public class Player : Creature, IHitEvent
     protected virtual void DownLandStateEnter()
     {
         isPlayerStateLock = true;
+        IsInvincibility = true;
         InitRigidVelocityX();
     }
 
@@ -1187,7 +1180,19 @@ public class Player : Creature, IHitEvent
 
     protected virtual void GetUpStateExit()
     {
+        if (coDelayInvincibilityTime == null)
+            coDelayInvincibilityTime = StartCoroutine(CoDelayInvincibilityTime(0.3f));
+        else
+            IsInvincibility = false;
+    }
+
+    Coroutine coDelayInvincibilityTime = null;
+    private IEnumerator CoDelayInvincibilityTime(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+
         IsInvincibility = false;
+        coDelayInvincibilityTime = null;
     }
     #endregion
 
@@ -1202,11 +1207,15 @@ public class Player : Creature, IHitEvent
 
     protected virtual void DeadStateEnter()
     {
+        IsInvincibility = true;
     }
 
-    protected virtual void DeadStateExit()
+    protected virtual void UpdateDeadState()
     {
-
+        if (IsEndCurrentState(EPlayerState.Dead))
+        {
+            Managers.Game.ClearFailedStage();
+        }
     }
     #endregion
 

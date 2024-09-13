@@ -12,7 +12,6 @@ public static class Define
         Unknown,
         IntroScene,
         TitleScene,
-        LobbyScene,
         GameScene,
     }
 

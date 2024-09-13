@@ -8,6 +8,7 @@ public enum EObjectType
 {
     None,
     Creature,
+    BossMonster,
     Item,
     Obstacle,//장애물(함정같은거)
 }

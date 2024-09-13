@@ -5,8 +5,8 @@ using UnityEngine.Rendering;
 
 public class BossStage : BaseStage
 {
-    [field: SerializeField, ReadOnly]
-    private List<BossGimmickPoint> gimmickPointList = new List<BossGimmickPoint>();
+    [field: SerializeField, ReadOnly] private List<BossGimmickPoint> gimmickPointList = new List<BossGimmickPoint>();
+    [field: SerializeField, ReadOnly] private List<MonsterSpawnPoint> monsterSpawnPoints = new List<MonsterSpawnPoint>();
 
     protected override void Reset()
     {
@@ -14,8 +14,12 @@ public class BossStage : BaseStage
 
         Transform[] allChildren = this.GetComponentsInChildren<Transform>();
         foreach (Transform child in allChildren)
+        {
             if (child.TryGetComponent<BossGimmickPoint>(out BossGimmickPoint gimmickPoint))
                 gimmickPointList.Add(gimmickPoint);
+            else if(child.TryGetComponent<MonsterSpawnPoint>(out MonsterSpawnPoint monsterSpawnPoint))
+                monsterSpawnPoints.Add(monsterSpawnPoint);
+        }
     }
 
     public override bool Init()

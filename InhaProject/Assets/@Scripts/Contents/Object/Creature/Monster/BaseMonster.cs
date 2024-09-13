@@ -8,7 +8,6 @@ public enum EMonsterType
 {
     NormalMonster = 0,
     NamedMonster = 1, // 미사용 중
-    BossMonster = 2,
     Max
 }
 

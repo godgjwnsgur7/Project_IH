@@ -278,7 +278,13 @@ MonoBehaviour:
   <StageType>k__BackingField: 0
   <PlayerStartingPoint>k__BackingField: {fileID: 1193901759934195259}
   gimmickPointList:
-  - {fileID: 0}
+  - {fileID: 7482410678464233535}
+  - {fileID: 4545886159531223964}
+  - {fileID: 3456496991895104814}
+  - {fileID: 5366535975935279731}
+  monsterSpawnPoints:
+  - {fileID: 5035733909765113867}
+  - {fileID: 6514713124714154967}
 --- !u!1 &3474544873825420566
 GameObject:
   m_ObjectHideFlags: 0
@@ -534,8 +540,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 27, y: 1, z: 1}
-  m_Center: {x: -15, y: 0, z: 0}
+  m_Size: {x: 28, y: 1, z: 1}
+  m_Center: {x: -15.5, y: 0, z: 0}
 --- !u!1 &4462925920134856100
 GameObject:
   m_ObjectHideFlags: 0
@@ -590,9 +596,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1663142577905554893}
   - component: {fileID: 6397625532056117263}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: SampleRightWallCollider
-  m_TagString: Ground
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -906,9 +912,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4436483033675803502}
   - component: {fileID: 9128319976056249877}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: SampleLeftWallCollider
-  m_TagString: Ground
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

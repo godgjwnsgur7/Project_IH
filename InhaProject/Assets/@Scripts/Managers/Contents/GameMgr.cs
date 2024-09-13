@@ -87,6 +87,11 @@ public class GameMgr
         NextStage();
     }
 
+    public void ClearFailedStage()
+    {
+        Managers.Scene.LoadScene(Define.EScene.TitleScene);
+    }
+
     private void ClearGame()
     {
         // 게임 클리어 창 띄우고, 로비로 돌아가자.

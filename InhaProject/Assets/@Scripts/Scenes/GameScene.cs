@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameScene : BaseScene
 {
+    [SerializeField] int stageId = 1;
+
     public override bool Init()
     {
         if (base.Init() == false)
@@ -16,7 +18,8 @@ public class GameScene : BaseScene
 
     private void Start()
     {
-        Managers.Game.StartGame();
+        // Managers.Game.StartGame();
+        Managers.Game.StartStage(stageId);
     }
 
     // 스폰 몬스터 테스트 코드
