@@ -657,6 +657,8 @@ public class Player : Creature, IHitEvent
         InitRigidVelocityY();
         SetRigidVelocityY(playerData.JumpPower);
 
+        isJumpAir = true;
+
         // 캐릭터 밑에 이펙트 추가하면 좋을 듯한데 (에셋)
     }
 
