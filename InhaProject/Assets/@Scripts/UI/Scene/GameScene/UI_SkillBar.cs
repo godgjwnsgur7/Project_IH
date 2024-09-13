@@ -57,7 +57,7 @@ public class UI_SkillBar : UI_BaseObject
 
 	IEnumerator CoSkillCoolTime(EPlayerSkillType type, float coolTime)
 	{
-		UI_SkillSlot slot = skillSlots[(int)type];
+		UI_SkillSlot slot = skillSlots[(int)type - 1];
 
 		if (slot == null)
 		{

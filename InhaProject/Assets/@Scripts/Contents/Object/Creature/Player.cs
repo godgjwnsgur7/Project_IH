@@ -186,6 +186,7 @@ public class Player : Creature, IHitEvent
                 case EPlayerState.Skill2:
                 case EPlayerState.Skill3:
                 case EPlayerState.Skill4: isChangeState = SkillStateCondition(); break;
+                case EPlayerState.Guard: isChangeState = GuardStateCondition(); break;
                 case EPlayerState.Hit: isChangeState = HitStateCondition(); break;
                 case EPlayerState.Down: isChangeState = DownStateCondition(); break;
                 case EPlayerState.DownLand: isChangeState = DownLandStateCondition(); break;
@@ -313,16 +314,16 @@ public class Player : Creature, IHitEvent
         PlayerSkillDict.Add(skillType, new PlayerSkill(skillType, 5, 0));
 
         skillType = EPlayerSkillType.Skill1;
-        PlayerSkillDict.Add(skillType, new PlayerAttackSkill(skillType, new List<float> { 1.0f }, 5, 0));
+        PlayerSkillDict.Add(skillType, new PlayerAttackSkill(skillType, new List<float> { 1.0f }, 5, 5));
 
         skillType = EPlayerSkillType.Skill2;
-        PlayerSkillDict.Add(skillType, new PlayerAttackSkill(skillType, new List<float> { 1.5f }, 5, 0));
+        PlayerSkillDict.Add(skillType, new PlayerAttackSkill(skillType, new List<float> { 1.5f }, 5, 20));
 
         skillType = EPlayerSkillType.Skill3;
-        PlayerSkillDict.Add(skillType, new PlayerAttackSkill(skillType, new List<float> { 2.0f }, 5, 0));
+        PlayerSkillDict.Add(skillType, new PlayerAttackSkill(skillType, new List<float> { 2.0f }, 5, 20));
 
         skillType = EPlayerSkillType.Skill4;
-        PlayerSkillDict.Add(skillType, new PlayerAttackSkill(skillType, new List<float> { 0.3f, 0.4f, 0.3f, 0.4f, 1.5f }, 5, 0));
+        PlayerSkillDict.Add(skillType, new PlayerAttackSkill(skillType, new List<float> { 0.3f, 0.4f, 0.3f, 0.4f, 1.5f }, 5, 50));
     }
 
     public override Vector3 GetCameraTargetPos()
@@ -757,6 +758,12 @@ public class Player : Creature, IHitEvent
     #region Dash Motion
     protected virtual bool DashStateCondition()
     {
+        if (PlayerSkillDict[EPlayerSkillType.Dash].isAvailable == false)
+        {
+            // 재사용 대기시간입니다.
+            return false;
+        }
+
         return true;
     }
 
@@ -765,6 +772,9 @@ public class Player : Creature, IHitEvent
         SetRigidVelocityX(playerData.DashSpeed * ((LookLeft) ? -1 : 1));
         isPlayerStateLock = true;
         IsInvincibility = true;
+
+        PlayerSkillDict[EPlayerSkillType.Dash].isAvailable = false;
+        OnUseSkill(EPlayerSkillType.Dash, PlayerSkillDict[EPlayerSkillType.Dash].coolTime);
     }
 
     protected virtual void UpdateDashState()
@@ -863,7 +873,16 @@ public class Player : Creature, IHitEvent
         if (PlayerSkillDict.TryGetValue((EPlayerSkillType)skillNum, out PlayerSkill skillData))
         {
             if (skillData.isAvailable == false)
+            {
+                // 스킬이 준비되지 않았습니다.
                 return false;
+            }
+
+            if (skillData.mpAmount > playerData.CurrMp)
+            {
+                // 마나가 부족합니다.
+                return false;
+            }
         }
         else
             return false;
@@ -883,9 +902,6 @@ public class Player : Creature, IHitEvent
         playerData.CurrMp -= skillData.mpAmount;
         OnChangedMp?.Invoke(playerData.CurrMp);
         OnUseSkill?.Invoke(type, skillData.coolTime);
-
-        if (OnUseSkill == null)
-            Debug.Log("zz");
 
         isPlayerStateLock = true;
         InitRigidVelocityX();
@@ -919,12 +935,21 @@ public class Player : Creature, IHitEvent
         if (CreatureFoot.IsLandingGround == false)
             return false;
 
+        if (PlayerSkillDict[EPlayerSkillType.Guard].isAvailable == false)
+        {
+            // 재사용 대기시간입니다.
+            return false;
+        }
+
         return true;
     }
     
     protected virtual void GuardStateEnter()
     {
         InitRigidVelocityX();
+
+        PlayerSkillDict[EPlayerSkillType.Guard].isAvailable = false;
+        OnUseSkill(EPlayerSkillType.Guard, PlayerSkillDict[EPlayerSkillType.Guard].coolTime);
     }
 
     protected virtual void UpdateGuardState()
