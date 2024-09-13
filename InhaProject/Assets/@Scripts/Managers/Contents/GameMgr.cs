@@ -1,6 +1,8 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -8,24 +10,26 @@ using UnityEngine;
 public class GameMgr 
 {
     private Player _player;
-    public Player Player
-    {
-        get
-        {
-            if( _player == null )
-                _player = GameObject.FindWithTag("Player")?.GetComponent<Player>();
+    public Player Player => _player ??= GameObject.FindWithTag("Player")?.GetComponent<Player>();
 
-            return _player; 
-        }
-    }
+    public BaseStage CurrStage { get; private set; } = null;
 
-    public List<BaseStage> stages = new List<BaseStage>(); // 전체 스테이지 리스트
-    private int currentStageIndex;
-    private BaseStage currentStage;
+    int currStageId = 0;
+    int maxStageId = 0;
 
     public void Init()
     {
-        LoadStage(0); // 첫 스테이지 로드
+        maxStageId = 0;
+        DirectoryInfo di = new DirectoryInfo($"{Application.dataPath}/{AssetsPath.STAGE_PATH}");
+        foreach (FileInfo file in di.GetFiles("*.prefab"))
+        {
+            maxStageId++;
+            // ex : Stage 1.prefab => 1
+            string[] strs = file.Name.Split('.')[0].Split(' '); 
+            int stageNum = int.Parse(strs[strs.Length - 1]);
+            if (maxStageId != stageNum)
+                Debug.LogError($"에러 : 스테이지 프리팹이 비어있습니다 : {maxStageId}번 스테이지");
+        }
     }
 
     public void Clear()
@@ -33,38 +37,51 @@ public class GameMgr
 
     }
 
-    public void LoadStage(int stageIndex)
+    #region InGame
+    private BaseStage LoadStage(int stageId)
     {
-        if (stageIndex < stages.Count)
+        return Managers.Resource.Instantiate($"{PrefabPath.STAGE_PATH}/Stage {stageId}").GetComponent<BaseStage>();
+    }
+
+    public void StartGame()
+    {
+        StartStage(1);
+    }
+
+    public void StartStage(int stageId)
+    {
+        currStageId = stageId;
+        CurrStage = LoadStage(stageId);
+        if (CurrStage == null)
         {
-            currentStageIndex = stageIndex;
-            currentStage = stages[stageIndex];
-            currentStage.Init();
-            LoadNextMap(currentStage.maps[0]);
+            Debug.LogError($"{stageId}번 스테이지를 읽어올 수 없습니다.");
+            return;
         }
-        else
+
+        Player player = Managers.Resource.Instantiate(PrefabPath.OBJECT_PLAYER_PATH + $"/{EPlayerType.Player}").GetComponent<Player>();
+        player.transform.position = CurrStage.PlayerStartingPoint.position;
+        Camera.main.GetComponent<CameraController>().SetTarget(player);
+    }
+
+    public void ClearStage()
+    {
+        if (maxStageId == currStageId)
         {
-            Debug.Log("모든 스테이지 클리어!");
-            // 게임 클리어 로직 추가
+            ClearGame();
+            return;
         }
+
+        NextStage();
     }
 
-    public void LoadNextMap(BaseMap map)
+    private void ClearGame()
     {
-        // 맵을 활성화하고, 필요한 초기화 로직 수행
-        map.gameObject.SetActive(true);
-        map.Init();
+        // 게임 클리어 창 띄우고, 로비로 돌아가자.
     }
 
-    public void OnMapCleared(BaseMap clearedMap)
+    private void NextStage()
     {
-        currentStage.OnMapCleared(clearedMap); // 현재 스테이지에 맵 클리어 알림
-    }
-
-    public void OnStageCleared(BaseStage clearedStage)
-    {
-        currentStageIndex++;
-        LoadStage(currentStageIndex); // 다음 스테이지 로드
+        StartStage(currStageId + 1);
     }
 
     Action onEndEffect = null;
@@ -97,4 +114,9 @@ public class GameMgr
         onEndEffect = null;
         coTimeScaleSlowEffect = null;
     }
+    #endregion
+
+    #region OutGame
+
+    #endregion
 }

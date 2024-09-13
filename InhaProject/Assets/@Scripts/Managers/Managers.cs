@@ -64,6 +64,8 @@ public class Managers : MonoBehaviour
             s_instance._object.Init();
             s_instance._sound.Init();
             s_instance._ui.Init();
+
+            s_instance._game.Init();
         }
     }
 

@@ -4,16 +4,12 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using static Define;
 
-public enum EMonsterSkillType
-{
-    ScratchingAttack = 1,
-    
-}
-
 public enum EMonsterType
 {
     NormalMonster = 0,
-
+    NamedMonster = 1, // 미사용 중
+    BossMonster = 2,
+    Max
 }
 
 public abstract class BaseMonster : Creature, IHitEvent

@@ -11,6 +11,9 @@ public class NamedMonsterData
 public enum ENamedMonsterState
 {
     None,
+    
+    Idle,
+
 
     Dead,
 }

@@ -10,16 +10,9 @@ public class GameScene : BaseScene
             return false;
 
         SceneType = Define.EScene.GameScene;
+        Managers.Game.StartGame();
 
-        GameObject go = Managers.Resource.Instantiate(PrefabPath.OBJECT_PLAYER_PATH + $"/{EPlayerType.Player.ToString()}");
-        go.transform.position = new Vector3(19, 3, 0);
-        Camera.main.GetComponent<CameraController>().SetTarget(go.GetComponent<Player>());
         return true;
-    }
-
-    private void Start()
-    {
-        // TestSpawnMonster();
     }
 
     // 스폰 몬스터 테스트 코드

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// "Assets/Resource/Data/Json/" 이후 경로 
+/// "Assets/" 이후 경로
 /// </summary>
-public static class DataPath
+public static class AssetsPath
 {
-
+    public const string STAGE_PATH = "Resources/Prefabs/Stage";
 }
 
 /// <summary>
@@ -28,6 +28,8 @@ public static class PrefabPath
 
     public const string OBJECT_ATTACKOBJECT_PATH = "Object/AttackObject";
     public const string OBJECT_EFFECTOBEJCT_PATH = "Object/EffectObject";
+
+    public const string STAGE_PATH = "Stage";
 
     public const string SOUND_BGM_PATH = "Sounds/BGM";
     public const string SOUND_SFX_PATH = "Sounds/SFX";
