@@ -42,9 +42,6 @@ public class UI_Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
 		UITooltipParam uiTooltipParam = new UITooltipParam(slotName, slotScript);
 		uiToolTip = Managers.UI.SpawnObjectUI<UI_ToolTip>(EUIObjectType.UI_Tooltip, uiTooltipParam);
-
-		UITextParam uiTextParam = new UITextParam("테스트");
-		UI_TextObject uiText = Managers.UI.SpawnObjectUI<UI_TextObject>(EUIObjectType.UI_TextObject, uiTextParam);
 	}
 
     public void OnPointerExit(PointerEventData eventData)
