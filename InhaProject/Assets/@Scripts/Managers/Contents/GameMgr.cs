@@ -24,6 +24,7 @@ public class GameMgr
         foreach (FileInfo file in di.GetFiles("*.prefab"))
         {
             maxStageId++;
+
             // ex : Stage 1.prefab => 1
             string[] strs = file.Name.Split('.')[0].Split(' '); 
             int stageNum = int.Parse(strs[strs.Length - 1]);
@@ -99,6 +100,7 @@ public class GameMgr
 
     private void NextStage()
     {
+        // 작업 예정 ㅋㅋ
         StartStage(currStageId + 1);
     }
 

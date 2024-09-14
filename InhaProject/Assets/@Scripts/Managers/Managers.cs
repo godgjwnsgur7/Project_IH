@@ -40,7 +40,6 @@ public class Managers : MonoBehaviour
     public static UIMgr UI { get { return Instance?._ui; } }
     #endregion
 
-
     public static void Init()
     {
         if (s_instance == null && Initialized == false)
