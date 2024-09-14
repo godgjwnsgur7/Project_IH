@@ -272,6 +272,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6490867}
   m_CullTransparentMesh: 0
+--- !u!224 &32327631 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4671408048033494439, guid: b78a6c30b78b30f45925f6af5ce9b6ea, type: 3}
+  m_PrefabInstance: {fileID: 8065548720687213172}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &57039385
 GameObject:
   m_ObjectHideFlags: 0
@@ -1080,7 +1085,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dfa18a8bc8339e4fa022df42bcfbf60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageId: 1
+  stageId: 0
 --- !u!4 &545397593
 Transform:
   m_ObjectHideFlags: 0
@@ -2411,6 +2416,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   cameraAddFixedValue: {x: 0, y: 0, z: 0}
+  _isUsingSubCamera: 0
 --- !u!1 &998166581
 GameObject:
   m_ObjectHideFlags: 0
@@ -2819,7 +2825,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 582502537}
-  - {fileID: 5431876827972028715}
+  - {fileID: 32327631}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3878,11 +3884,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2054250999}
   m_CullTransparentMesh: 0
---- !u!224 &5431876827972028715 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4385397436827118366, guid: b78a6c30b78b30f45925f6af5ce9b6ea, type: 3}
-  m_PrefabInstance: {fileID: 8065548720687213172}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8065548720687213172
 PrefabInstance:
   m_ObjectHideFlags: 0

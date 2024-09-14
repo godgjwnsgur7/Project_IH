@@ -19,7 +19,10 @@ public class GameScene : BaseScene
     private void Start()
     {
         // Managers.Game.StartGame();
-        Managers.Game.StartStage(stageId);
+        if (stageId >= 1)
+            Managers.Game.StartStage(stageId);
+        else
+            Managers.Game.TestStage();
     }
 
     // 스폰 몬스터 테스트 코드
