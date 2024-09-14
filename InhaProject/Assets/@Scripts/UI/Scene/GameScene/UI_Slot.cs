@@ -1,4 +1,4 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -15,8 +15,8 @@ public class UI_Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 	protected Image slotImage;
 	public Image frontImage;
 
-	private string slotName = "¿Ã∏ß";
-	private string slotScript = "º≥∏Ì";
+	private string slotName = "Ïù¥Î¶Ñ";
+	private string slotScript = "ÏÑ§Î™Ö";
 
 	private void Start()
 	{
@@ -42,7 +42,10 @@ public class UI_Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
 		UITooltipParam uiTooltipParam = new UITooltipParam(slotName, slotScript);
 		uiToolTip = Managers.UI.SpawnObjectUI<UI_ToolTip>(EUIObjectType.UI_Tooltip, uiTooltipParam);
-    }
+
+		UITextParam uiTextParam = new UITextParam("ÌÖåÏä§Ìä∏");
+		UI_TextObject uiText = Managers.UI.SpawnObjectUI<UI_TextObject>(EUIObjectType.UI_TextObject, uiTextParam);
+	}
 
     public void OnPointerExit(PointerEventData eventData)
     {

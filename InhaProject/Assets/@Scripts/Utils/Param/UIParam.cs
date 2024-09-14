@@ -95,3 +95,15 @@ public class UITooltipParam : UIParam
         this.scriptText = scriptText;
     }
 }
+
+public class UITextParam : UIParam
+{
+    public string text;
+    public float displayTime;
+
+    public UITextParam(string text, float displayTime = 4f)
+    {
+        this.text = text;
+        this.displayTime = displayTime;
+    }
+}

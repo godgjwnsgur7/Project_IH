@@ -10,6 +10,7 @@ public enum EUIObjectType
     UI_Damage,
     UI_MonsterStatus,
     UI_Tooltip,
+    UI_TextObject,
 }
 
 public class UI_BaseObject : InitBase

@@ -13,6 +13,9 @@ public class UI_ToolTip : UI_BaseObject
 
     public override bool Init()
     {
+        if (base.Init() == false)
+            return false;
+
         Managers.UI.SetCanvas(gameObject, false, 10);
 
         Vector3 pos = Input.mousePosition;
