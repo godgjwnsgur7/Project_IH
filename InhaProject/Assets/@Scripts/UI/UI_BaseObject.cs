@@ -8,6 +8,7 @@ using UnityEngine.Playables;
 public enum EUIObjectType
 {
     UI_Damage,
+    UI_Tooltip,
 }
 
 public class UI_BaseObject : InitBase

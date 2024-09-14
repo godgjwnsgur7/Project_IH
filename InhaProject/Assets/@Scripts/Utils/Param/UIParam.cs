@@ -73,3 +73,15 @@ public class UIDialogueParam : UIParam
 		this.size = size;
 	}   
 }
+
+public class UITooltipParam : UIParam
+{
+    public string nameText;
+    public string scriptText;
+
+    public UITooltipParam(string nameText, string scriptText)
+    {
+        this.nameText = nameText;
+        this.scriptText = scriptText;
+    }
+}

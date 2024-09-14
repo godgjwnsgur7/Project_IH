@@ -9,7 +9,7 @@ public class UI_ItemSlot : UI_Slot
 	[SerializeField] public TextMeshProUGUI countText;
 	private bool isEnable { get; set; }
 
-	private void Start()
+	private void Awake()
 	{
 		Init();
 	}
@@ -24,5 +24,7 @@ public class UI_ItemSlot : UI_Slot
 		//slotImage.enabled = false;
 		countText.enabled = false;
 		isEnable = false;
+
+		base.SetInfo("아이템 슬롯", "아이템 설명이 들어가야 함");
 	}
 }

@@ -25,6 +25,8 @@ public class UI_SkillSlot : UI_Slot
         frontImage.fillAmount = 0.0f;
 
         cooltimeText.text = "";
+
+        base.SetInfo("스킬 슬롯", "스킬 설명");
     }
 
     public void SetFillAmountToFrontImage(float value)
