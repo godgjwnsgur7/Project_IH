@@ -9,16 +9,33 @@ using UnityEngine.UI;
 
 public class UI_SkillBar : UI_BaseObject
 {
+	public GameObject hudDamageText;
+	public event Action<EPlayerSkillType> OnReadyToSkill = null;
+
 	[SerializeField] private UI_SkillSlot[] skillSlots;
 	[SerializeField] private Image mpSlider;
 	[SerializeField] private Image mpSliderBar;
 	[SerializeField] private Text mpText;
 
 	[SerializeField, ReadOnly] float maxMp = 0;
-	[SerializeField, ReadOnly] float curMp = 0;
+	[SerializeField, ReadOnly] float _currMp;
+	
+	float changeMoveSpeed = 1.5f;
+	Coroutine coChangedMp = null;
+	public float curMp
+    {
+		get { return _currMp; }
 
-	public GameObject hudDamageText;
-    public event Action<EPlayerSkillType> OnReadyToSkill = null;
+		protected set
+        {
+			_currMp = value;
+
+			if (coChangedMp == null)
+			{
+				coChangedMp = StartCoroutine(CoChangedMp());
+			}
+        }
+    }
 
 	public override bool Init()
 	{
@@ -47,7 +64,30 @@ public class UI_SkillBar : UI_BaseObject
     private void OnChangedMp(float curMp)
 	{
 		this.curMp = curMp;
-		SetMpBar();
+	}
+
+	private void OnDisable()
+	{
+		if (coChangedMp != null)
+        {
+			StopCoroutine(coChangedMp);
+        }
+	}
+
+	private IEnumerator CoChangedMp()
+	{
+		mpText.text = $"{curMp} / {maxMp}";
+
+		while (mpSlider.fillAmount > curMp / maxMp + 0.01 )
+		{
+			mpSlider.fillAmount = Mathf.Lerp(mpSlider.fillAmount, curMp / maxMp, Time.deltaTime * changeMoveSpeed);
+			mpSliderBar.fillAmount = Mathf.Lerp(mpSlider.fillAmount, curMp / maxMp, Time.deltaTime * changeMoveSpeed);
+			yield return null;
+		}
+
+		mpSlider.fillAmount = curMp / maxMp;
+		mpSlider.fillAmount = curMp / maxMp;
+		coChangedMp = null;
 	}
 
 	private void OnUseSkill(EPlayerSkillType type, float coolTime)
@@ -83,10 +123,9 @@ public class UI_SkillBar : UI_BaseObject
     }
 
 	private void SetMpBar()
-    {
+	{
 		mpSlider.fillAmount = curMp / maxMp;
 		mpSliderBar.fillAmount = curMp / maxMp;
-		mpText.text = $"{curMp} / {maxMp}";
     }
 
 

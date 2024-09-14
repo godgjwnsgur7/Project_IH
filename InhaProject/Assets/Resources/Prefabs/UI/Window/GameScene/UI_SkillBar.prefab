@@ -4122,6 +4122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b982bddc1729e74d9cc67aec72019c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hudDamageText: {fileID: 6021863253300501416, guid: f209028ae2dbc55429375f9563045232, type: 3}
   skillSlots:
   - {fileID: 6018965565924043829}
   - {fileID: 2114302886077464647}
@@ -4133,8 +4134,7 @@ MonoBehaviour:
   mpSliderBar: {fileID: 3336216651642126441}
   mpText: {fileID: 6571407090502446452}
   maxMp: 0
-  curMp: 0
-  hudDamageText: {fileID: 6021863253300501416, guid: f209028ae2dbc55429375f9563045232, type: 3}
+  _currMp: 0
 --- !u!1 &8670480847280714538
 GameObject:
   m_ObjectHideFlags: 0
@@ -5132,12 +5132,20 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2703923031703487003, guid: dabd1fd5fd08ded40a0c56084688b980, type: 3}
       propertyPath: m_text
-      value: V
+      value: Space
+      objectReference: {fileID: 0}
+    - target: {fileID: 2703923031703487003, guid: dabd1fd5fd08ded40a0c56084688b980, type: 3}
+      propertyPath: m_fontSize
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 2703923031703487003, guid: dabd1fd5fd08ded40a0c56084688b980, type: 3}
       propertyPath: m_fontAsset
       value: 
       objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 2703923031703487003, guid: dabd1fd5fd08ded40a0c56084688b980, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 2703923031703487003, guid: dabd1fd5fd08ded40a0c56084688b980, type: 3}
       propertyPath: m_sharedMaterial
       value: 
@@ -5145,7 +5153,7 @@ PrefabInstance:
     - target: {fileID: 3917650589931797883, guid: dabd1fd5fd08ded40a0c56084688b980, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: f6b8b85cbdc82ce439a41ae3d56d57ee, type: 3}
+      objectReference: {fileID: 21300000, guid: c67fbf9375ad5c34399c2849430ca7f7, type: 3}
     - target: {fileID: 7223136822058203362, guid: dabd1fd5fd08ded40a0c56084688b980, type: 3}
       propertyPath: m_Name
       value: UI_Slot3
