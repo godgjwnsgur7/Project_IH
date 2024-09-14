@@ -379,13 +379,11 @@ public class NormalMonster : BaseMonster
 
     protected virtual void AttackStateEnter()
     {
-
+        InitRigidVelocityX();
     }
 
     protected virtual void UpdateAttackState()
     {
-        InitRigidVelocityX();
-
         if (IsEndCurrentState(ENormalMonsterState.Attack))
         {
             MonsterState = ENormalMonsterState.Idle;
@@ -509,6 +507,7 @@ public class NormalMonster : BaseMonster
 
     public override void OnMoveEvent(float moveSpeed)
     {
+        Debug.Log("11");
         base.OnMoveEvent(moveSpeed);
         SetRigidVelocityX(moveSpeed * ((LookLeft) ? -1 : 1));
     }
