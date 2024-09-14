@@ -41,7 +41,7 @@ public class UI_Dialogue : UI_BasePopup
 
 			npcName = uiDialogueParam.nameText;
 			scripts = uiDialogueParam.scriptTexts;
-			scriptLength = uiDialogueParam.size;
+			scriptLength = uiDialogueParam.scriptTexts.Length;
 
 			nameText.text = npcName;
 			scriptText.text = scripts[currentLine];

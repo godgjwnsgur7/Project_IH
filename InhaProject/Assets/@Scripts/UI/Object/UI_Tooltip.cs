@@ -38,6 +38,8 @@ public class UI_ToolTip : UI_BaseObject
 
     public override void SetInfo(UIParam param)
     {
+        base.SetInfo(param);
+
         UITooltipParam test = param as UITooltipParam;
 
         if (test == null)

@@ -74,13 +74,11 @@ public class UIDialogueParam : UIParam
 {
     public string nameText;
     public string[] scriptTexts;
-    public int size;
 
-    public UIDialogueParam(string nameText, string[] scriptTexts, int size)
+    public UIDialogueParam(string nameText, string[] scriptTexts)
 	{
 		this.nameText = nameText;
 		this.scriptTexts = scriptTexts;
-		this.size = size;
 	}   
 }
 

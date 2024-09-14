@@ -11,6 +11,7 @@ public class UI_TextObject : UI_BaseObject
     private Vector3 pos;
     public float scaleSpeed = 3f;
     public float moveSpeed = 150f;
+    float displayTime = 4f;
 
     public override bool Init()
     {
@@ -25,12 +26,26 @@ public class UI_TextObject : UI_BaseObject
         pos.x += 100;
         text.rectTransform.localScale = new Vector3(0.3f, 0.3f, 1f);
 
+        StartCoroutine("ITextMoveAndScale", 4);
+
         return true;
     }
 
-    public virtual void SetInfo(string text, float displayTime)
+    public override void SetInfo(UIParam param)
     {
-        this.text.text = text;
+        base.SetInfo(param);
+
+        UITextParam test = param as UITextParam;
+
+        if (test == null)
+            return;
+
+        if (test is UITextParam uiTextParam)
+        {
+            text.text = uiTextParam.text;
+            displayTime = uiTextParam.displayTime;
+        }
+
         StartCoroutine("ITextMoveAndScale", displayTime);
     }
 

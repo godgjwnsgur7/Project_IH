@@ -60,16 +60,11 @@ public class UI_GameScene : UI_BaseScene
 		uiSkillBar.SetInfo(OnReadyToSkill, maxMp);
 	}
 
-    public void ConnectPlayerInfoUI(Player player, Action<int> onSkillActive)
-	{
-		
-	}
-
 	// 테스트 용도
 	public void OnClickDialogueButton()
 	{
 		string[] scripts = { "잘 되는지 확인", "확인확인확인", "마지막 확인 " };
-		UIParam dialogueParam = new UIDialogueParam("아이고", scripts, scripts.Length);
+		UIParam dialogueParam = new UIDialogueParam("아이고", scripts);
 
 		Managers.UI.OpenPopupUI<UI_Dialogue>(dialogueParam);
 	}
