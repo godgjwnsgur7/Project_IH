@@ -21,17 +21,20 @@ public class UI_MonsterStatus : UI_BaseObject
         return true;
     }
 
-    private void OnDisable()
-    {
-        if (coFollowTarget != null)
-            StopCoroutine(coFollowTarget);
-    }
-
     public override void SetInfo(UIParam param)
     {
         base.SetInfo(param);
 
-        if(param is UIMonsterStatusParam monsterStatusParam && monsterStatusParam.monster != null)
+        MainCameraController mainCameraController = Camera.main.GetComponent<MainCameraController>();
+
+        if(mainCameraController != null)
+        {
+            mainCameraController.OnChangedSubCameraEnable -= OnChangedSubCameraEnable;
+            mainCameraController.OnChangedSubCameraEnable += OnChangedSubCameraEnable;
+        }
+
+
+        if (param is UIMonsterStatusParam monsterStatusParam && monsterStatusParam.monster != null)
         {
             if (coFollowTarget != null)
                 StopCoroutine(coFollowTarget);
@@ -43,8 +46,13 @@ public class UI_MonsterStatus : UI_BaseObject
             Target.OnChangedCurrHp -= OnChangedCurrHp;
             Target.OnChangedCurrHp += OnChangedCurrHp;
 
-            coFollowTarget = StartCoroutine(CoFollowTarget());
+            coFollowTarget = CoroutineHelper.StartCoroutine(CoFollowTarget());
         }
+    }
+
+    public void OnChangedSubCameraEnable(bool isEnable)
+    {
+        this.gameObject.SetActive(!isEnable);
     }
 
     public void OnChangedCurrHp(float currHp)

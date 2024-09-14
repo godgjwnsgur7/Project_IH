@@ -51,7 +51,7 @@ public class GameMgr
         player.transform.position = CurrStage.PlayerStartingPoint.position;
         player.SetInfo(0);
 
-        Camera.main.GetComponent<CameraController>().SetTarget(player);
+        Camera.main.GetComponent<MainCameraController>().SetTarget(player);
     }
 
     public void StartGame()
@@ -73,7 +73,7 @@ public class GameMgr
         player.transform.position = CurrStage.PlayerStartingPoint.position;
         player.SetInfo(0);
 
-        Camera.main.GetComponent<CameraController>().SetTarget(player);
+        Camera.main.GetComponent<MainCameraController>().SetTarget(player);
     }
 
     public void ClearStage()

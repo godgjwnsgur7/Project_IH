@@ -2,12 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using System;
 
-public class CameraController : MonoBehaviour
+public class MainCameraController : MonoBehaviour
 {
     Camera cam;
     [SerializeField, ReadOnly] private BaseObject target;
     [SerializeField] Vector3 cameraAddFixedValue;
+
+    [SerializeField, ReadOnly] private bool _isUsingSubCamera = false;
+    public bool IsUsingSubCamera 
+    { 
+        get { return _isUsingSubCamera; }
+        set
+        {
+            if (_isUsingSubCamera == value)
+                return;
+
+            _isUsingSubCamera = value;
+            OnChangedSubCameraEnable?.Invoke(value);
+        }
+    }
+
+    public event Action<bool> OnChangedSubCameraEnable;
 
     private void Awake()
     {

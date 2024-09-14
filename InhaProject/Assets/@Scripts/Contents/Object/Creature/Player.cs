@@ -120,7 +120,7 @@ public class PlayerAttackSkill : PlayerSkill
 
 public class Player : Creature, IHitEvent
 {
-    [SerializeField, ReadOnly] Camera playerCamera;
+    [SerializeReference, ReadOnly] PlayerCameraController playerCameraController = null;
 
     public Dictionary<EPlayerSkillType, PlayerSkill> PlayerSkillDict { get; protected set; }
     [field: SerializeField, ReadOnly] public EPlayerType PlayerType { get; protected set; }
@@ -251,9 +251,9 @@ public class Player : Creature, IHitEvent
     {
         base.Reset();
 
+        playerCameraController = Util.FindChild<PlayerCameraController>(gameObject, "PlayerCamera", true);
         skillAttackObject ??= Util.FindChild<BaseAttackObject>(this.gameObject, "FX_Projectile1", true);
         attackObject ??= Util.FindChild<BoxAttackObject>(this.gameObject, "PlayerAttackObject");
-        playerCamera = Util.FindChild<Camera>(gameObject, "PlayerCamera", true);
     }
 
     public override bool Init()
@@ -261,7 +261,6 @@ public class Player : Creature, IHitEvent
         if (base.Init() == false)
             return false;
 
-        playerCamera.enabled = false;
         attackObject.SetActive(false);
 
         CreatureType = ECreatureType.Player;
@@ -280,6 +279,7 @@ public class Player : Creature, IHitEvent
 
         PlayerType = Util.ParseEnum<EPlayerType>(gameObject.name); // 임시
         playerData = new PlayerData(Managers.Data.PlayerDict[(int)PlayerType]);
+        playerCameraController.SetEnabled(false);
 
         SetSkillInfo();
 
@@ -877,7 +877,7 @@ public class Player : Creature, IHitEvent
     protected virtual void SkillStateEnter()
     {
         if(skillNum == 4)
-            playerCamera.enabled = true;
+            playerCameraController.SetEnabled(true);
 
         EPlayerSkillType type = (EPlayerSkillType)skillNum;
         PlayerSkill skillData = PlayerSkillDict[type];
@@ -905,7 +905,7 @@ public class Player : Creature, IHitEvent
     protected virtual void SkillStateExit()
     {
         skillAttackObject.SetActive(false);
-        playerCamera.enabled = false;
+        playerCameraController.SetEnabled(false);
         skillNum = 0;
         skillCount = 0;
         isSuperArmour = false;

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3871524006957096100}
   - component: {fileID: 1270744241569968690}
   - component: {fileID: 5309378640007815187}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: UI_MonsterStatus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -116,7 +116,7 @@ GameObject:
   - component: {fileID: 291087755887798447}
   - component: {fileID: 8387929564390193882}
   - component: {fileID: 3679516619604639491}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -189,7 +189,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4020743334972357407}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -227,7 +227,7 @@ GameObject:
   - component: {fileID: 5209829817316790664}
   - component: {fileID: 6971296895807051168}
   - component: {fileID: 8824020166398526145}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}

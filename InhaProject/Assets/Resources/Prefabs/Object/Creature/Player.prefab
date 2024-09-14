@@ -1749,6 +1749,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8018559621317408360}
+  - component: {fileID: 2060847708270570820}
   - component: {fileID: 730311137750006112}
   - component: {fileID: 9079460786323072920}
   - component: {fileID: 873901975399509488}
@@ -1774,6 +1775,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7328193469661354002}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &2060847708270570820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2581057859760530271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dc4e4dc04f40fb47a4c9cf4e3b0a57b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCameraController: {fileID: 0}
+  cam: {fileID: 0}
 --- !u!20 &730311137750006112
 Camera:
   m_ObjectHideFlags: 0
@@ -1813,7 +1828,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 503
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -3796,24 +3811,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2abe321c6304ed4a878e1bfbfd439cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCamera: {fileID: 730311137750006112}
+  playerCameraController: {fileID: 2060847708270570820}
   <PlayerType>k__BackingField: 0
-  _playerInfo:
-    MaxHp: 0
-    CurrHp: 0
-    MaxMp: 0
-    CurrMp: 0
-    StrikingPower: 0
-    MoveSpeed: 0
-    DashSpeed: 0
-    JumpPower: 0
-  skillAttackObject: {fileID: 0}
+  skillAttackObject: {fileID: 5049102924517790271}
   attackObject: {fileID: 2916405762298004907}
   _isPlayerInputControll: 0
   isPlayerStateLock: 0
   _playerState: 0
   inventory: {fileID: 0}
   skillNum: 0
+  skillCount: 0
   isSuperArmour: 0
   _isInvincibility: 0
 --- !u!95 &1035204835852347487
