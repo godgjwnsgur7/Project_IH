@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,8 @@ public abstract class BaseMonster : Creature, IHitEvent
     [field: SerializeField, ReadOnly] public EMonsterType MonsterType { get; protected set; }
     [SerializeField, ReadOnly] MonsterCollisionBarrier collisionBarrier;
     [SerializeField, ReadOnly] protected List<Renderer> rendererList;
+
+    public Action<float> OnChangedCurrHp;
 
     public override bool Init()
     {
@@ -55,7 +58,10 @@ public abstract class BaseMonster : Creature, IHitEvent
         collisionBarrier.SetInfo(ELayer.Player);
     }
 
+    public abstract float GetMaxHp();
     public abstract void OnHit(AttackParam param = null);
+    public override Vector3 GetTopPosition() => base.GetTopPosition();
+    public override float GetSizeX() => base.GetSizeX();
 
     protected Coroutine coDestroyEffect = null;
     protected IEnumerator CoDestroyEffect(float fadeTime)
@@ -89,5 +95,6 @@ public abstract class BaseMonster : Creature, IHitEvent
     #region Animation Clip Event
     public virtual void OnActiveAttackObject() { }
     public virtual void OnDeactiveAttackObject() { }
+    public virtual void OnMoveEvent(float moveSpeed) { }
     #endregion
 }

@@ -67,6 +67,16 @@ public class Creature : BaseObject
         lookDirX = (isLeft) ? -1 : 1;
     }
 
+    public virtual Vector3 GetTopPosition()
+    {
+        return this.transform.position + (Vector3.up * Collider.size.y * transform.localScale.y);
+    }
+    
+    public virtual float GetSizeX()
+    {
+        return Collider.size.x * transform.localScale.x;
+    }
+
     #region Rigid
 
     protected void SetRigidVelocity(Vector3 velocity)

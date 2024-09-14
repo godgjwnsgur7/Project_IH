@@ -6,6 +6,7 @@ using static Define;
 [System.Serializable]
 public class NormalMonsterData
 {
+    public float MaxHp;
     public float CurrHp;
     public float StrikingPower;     // °ø°Ý·Â
     public float MoveSpeed;
@@ -16,6 +17,7 @@ public class NormalMonsterData
 
     public NormalMonsterData(Data.JNormalMonsterData jMonsterData)
     {
+        MaxHp = jMonsterData.MaxHp;
         CurrHp = jMonsterData.MaxHp;
         StrikingPower = jMonsterData.StrikingPower;
         MoveSpeed = jMonsterData.MoveSpeed;
@@ -48,7 +50,7 @@ public enum ENormalMonsterType
 public class NormalMonster : BaseMonster
 {
     [field: SerializeField, ReadOnly] public ENormalMonsterType NormalMonsterType { get; protected set; }
-    [field: SerializeField, ReadOnly] public NormalMonsterData MonsterInfo { get; protected set; }
+    [SerializeField, ReadOnly] protected NormalMonsterData monsterData;
     [SerializeField, ReadOnly] protected MonsterAttackRange attackRange;
     [SerializeField] protected BaseAttackObject attackObject;
     
@@ -137,14 +139,17 @@ public class NormalMonster : BaseMonster
         base.SetInfo(templateID);
 
         NormalMonsterType = Util.ParseEnum<ENormalMonsterType>(gameObject.name);
-        MonsterInfo = new NormalMonsterData(Managers.Data.NormalMonsterDict[(int)MonsterType]);
-        MonsterInfo.AttackDistance *= 2;
+        monsterData = new NormalMonsterData(Managers.Data.NormalMonsterDict[(int)MonsterType]);
+        monsterData.AttackDistance *= 2;
 
         attackObject.SetInfo(ETag.Monster, OnAttackTarget);
         attackRange.SetInfo(OnAttackRangeInTarget);
 
+        Managers.UI.SpawnObjectUI<UI_MonsterStatus>(EUIObjectType.UI_MonsterStatus, new UIMonsterStatusParam(this));
         StartCoroutine(CoUpdateAI());
     }
+
+    public override float GetMaxHp() => monsterData.MaxHp;
 
     #region AI
     public float UpdateAITick { get; protected set; } = 0.0f;
@@ -181,8 +186,8 @@ public class NormalMonster : BaseMonster
             return;
 
         Vector3 subVec = new Vector3(0, this.transform.localScale.y * Collider.center.y, 0);
-        Debug.DrawRay(transform.position + subVec, Vector3.right * MonsterInfo.DetectDistance * lookDirX, Color.red, 0.1f);
-        if (Physics.Raycast(transform.position + subVec, Vector3.right * lookDirX, out RaycastHit hit, MonsterInfo.DetectDistance, 1 << (int)ELayer.Player)
+        Debug.DrawRay(transform.position + subVec, Vector3.right * monsterData.DetectDistance * lookDirX, Color.red, 0.1f);
+        if (Physics.Raycast(transform.position + subVec, Vector3.right * lookDirX, out RaycastHit hit, monsterData.DetectDistance, 1 << (int)ELayer.Player)
             && hit.transform.GetComponent<Player>() != null)
         {
             ChaseTarget = hit.transform.GetComponent<Player>();
@@ -224,7 +229,7 @@ public class NormalMonster : BaseMonster
                 return prevState != MonsterState;
             }
 
-            float chaseDistanceSqr = MonsterInfo.ChaseDistance * MonsterInfo.ChaseDistance;
+            float chaseDistanceSqr = monsterData.ChaseDistance * monsterData.ChaseDistance;
             if (chaseDistanceSqr < chaseTargetDistance.sqrMagnitude)
             {
                 ChaseTarget = null;
@@ -309,7 +314,7 @@ public class NormalMonster : BaseMonster
         if (IsChaseOrAttackTarget())
             return;
 
-        SetRigidVelocityX(lookDirX * MonsterInfo.MoveSpeed);
+        SetRigidVelocityX(lookDirX * monsterData.MoveSpeed);
         patrolTime -= Time.deltaTime;
 
         if (patrolTime < 0.0f)
@@ -357,7 +362,7 @@ public class NormalMonster : BaseMonster
             return;
         }
 
-        SetRigidVelocityX(lookDirX * MonsterInfo.ChaseSpeed);
+        SetRigidVelocityX(lookDirX * monsterData.ChaseSpeed);
     }
 
     protected virtual void ChaseStateExit()
@@ -395,7 +400,7 @@ public class NormalMonster : BaseMonster
 
     public void OnAttackTarget(IHitEvent attackTarget)
     {
-        attackTarget?.OnHit(new AttackParam(this, LookLeft, MonsterInfo.StrikingPower));
+        attackTarget?.OnHit(new AttackParam(this, LookLeft, monsterData.StrikingPower));
     }
 
     public void OnAttackRangeInTarget(Player player)
@@ -418,12 +423,14 @@ public class NormalMonster : BaseMonster
             , true);
         Managers.UI.SpawnObjectUI<UI_Damage>(EUIObjectType.UI_Damage, damageParam);
 
-        MonsterInfo.CurrHp -= param.damage;
+        monsterData.CurrHp -= param.damage;
+        OnChangedCurrHp?.Invoke(monsterData.CurrHp);
+
         LookLeft = !param.isAttackerLeft;
         hitForceDir.x = param.pushPower * ((param.isAttackerLeft) ? -1 : 1);
         MonsterState = ENormalMonsterState.Dead;
 
-        if (MonsterInfo.CurrHp > 0)
+        if (monsterData.CurrHp > 0)
         {
             if (ChaseTarget == null && param.attacker is BaseObject target)
                 ChaseTarget = target;
@@ -469,7 +476,7 @@ public class NormalMonster : BaseMonster
     #region Dead Motion
     protected virtual bool DeadStateCondition()
     {
-        if (MonsterInfo.CurrHp > 0f)
+        if (monsterData.CurrHp > 0f)
             return false;
 
         return true;
@@ -498,6 +505,12 @@ public class NormalMonster : BaseMonster
     {
         base.OnDeactiveAttackObject();
         attackObject.SetActiveCollider(false);
+    }
+
+    public override void OnMoveEvent(float moveSpeed)
+    {
+        base.OnMoveEvent(moveSpeed);
+        SetRigidVelocityX(moveSpeed * ((LookLeft) ? -1 : 1));
     }
     #endregion
 }

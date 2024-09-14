@@ -20,6 +20,16 @@ public class UIFadeEffectParam : UIParam
     }
 }
 
+public class UIMonsterStatusParam : UIParam
+{
+    public BaseMonster monster;
+
+    public UIMonsterStatusParam(BaseMonster monster)
+    {
+        this.monster = monster;
+    }
+}
+
 public class UIInformParam : UIParam
 {
     public string informText;
