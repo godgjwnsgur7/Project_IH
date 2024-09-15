@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class GameScene : BaseScene
 {
-    [SerializeField] int stageId = 1;
+#if UNITY_EDITOR
+    [Header("Test 여부 체크 & 테스트 Stage 입력")]
+    [SerializeField] bool isTestStage = false;
+    [SerializeField] int testStageId = 0;
+#endif
 
     public override bool Init()
     {
@@ -18,11 +22,15 @@ public class GameScene : BaseScene
 
     private void Start()
     {
-        // Managers.Game.StartGame();
-        if (stageId >= 1)
-            Managers.Game.StartStage(stageId);
-        else
-            Managers.Game.TestStage();
+#if UNITY_EDITOR
+        if (isTestStage)
+        {
+            Managers.Game.TestStage(testStageId);
+            return;    
+        }
+#endif
+
+        Managers.Game.StartStage();
     }
 
     // 스폰 몬스터 테스트 코드

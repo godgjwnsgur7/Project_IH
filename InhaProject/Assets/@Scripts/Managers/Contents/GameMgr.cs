@@ -14,7 +14,7 @@ public class GameMgr
 
     public BaseStage CurrStage { get; private set; } = null;
 
-    int currStageId = 0;
+    int currStageId = 1;
     int maxStageId = 0;
 
     public void Init()
@@ -38,15 +38,25 @@ public class GameMgr
 
     }
 
-    public void TestStage()
+    public void TestStage(int stageId)
     {
-        CurrStage = Managers.Resource.Instantiate($"{PrefabPath.STAGE_PATH}/SamplePrefab/TestStage").GetComponent<BaseStage>();
+        CurrStage = null;
+        if (stageId == 0)
+            CurrStage = Managers.Resource.Instantiate($"{PrefabPath.STAGE_PATH}/SamplePrefab/TestStage").GetComponent<BaseStage>();
+        else
+            CurrStage = LoadStage(stageId);
 
-        Player player = Managers.Resource.Instantiate(PrefabPath.OBJECT_PLAYER_PATH + $"/{EPlayerType.Player}").GetComponent<Player>();
-        player.transform.position = CurrStage.PlayerStartingPoint.position;
-        player.SetInfo(0);
+        if (CurrStage == null)
+        {
+            Debug.LogError($"{stageId}번 스테이지를 읽어올 수 없습니다.");
+            return;
+        }
 
-        Camera.main.GetComponent<MainCameraController>().SetTarget(player);
+        _player = Managers.Resource.Instantiate(PrefabPath.OBJECT_PLAYER_PATH + $"/{EPlayerType.Player}").GetComponent<Player>();
+        _player.transform.position = CurrStage.PlayerStartingPoint.position;
+        _player.SetInfo(0);
+
+        Camera.main.GetComponent<MainCameraController>().SetTarget(_player);
     }
 
     #region InGame
@@ -55,26 +65,20 @@ public class GameMgr
         return Managers.Resource.Instantiate($"{PrefabPath.STAGE_PATH}/Stage {stageId}").GetComponent<BaseStage>();
     }
     
-    public void StartGame()
+    public void StartStage()
     {
-        StartStage(1);
-    }
-
-    public void StartStage(int stageId)
-    {
-        currStageId = stageId;
-        CurrStage = LoadStage(stageId);
+        CurrStage = LoadStage(currStageId);
         if (CurrStage == null)
         {
-            Debug.LogError($"{stageId}번 스테이지를 읽어올 수 없습니다.");
+            Debug.LogError($"{currStageId}번 스테이지를 읽어올 수 없습니다.");
             return;
         }
 
-        Player player = Managers.Resource.Instantiate(PrefabPath.OBJECT_PLAYER_PATH + $"/{EPlayerType.Player}").GetComponent<Player>();
-        player.transform.position = CurrStage.PlayerStartingPoint.position;
-        player.SetInfo(0);
+         _player = Managers.Resource.Instantiate(PrefabPath.OBJECT_PLAYER_PATH + $"/{EPlayerType.Player}").GetComponent<Player>();
+        _player.transform.position = CurrStage.PlayerStartingPoint.position;
+        _player.SetInfo(0);
 
-        Camera.main.GetComponent<MainCameraController>().SetTarget(player);
+        Camera.main.GetComponent<MainCameraController>().SetTarget(_player);
     }
 
     public void ClearStage()
@@ -100,8 +104,7 @@ public class GameMgr
 
     private void NextStage()
     {
-        // 작업 예정 ㅋㅋ
-        StartStage(currStageId + 1);
+        Managers.Scene.LoadScene(Define.EScene.GameScene);
     }
 
     Action onEndEffect = null;
