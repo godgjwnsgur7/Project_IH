@@ -44,6 +44,22 @@ public class FixedBossMonster : Creature
 
             _monsterState = value;
             PlayAnimation(value);
+
+            switch(value)
+            {
+                case EFixedBossMonsterState.Pattern1:
+
+                    break;
+                case EFixedBossMonsterState.Pattern2:
+                    SpawnMonsterPattern();
+                    break;
+                case EFixedBossMonsterState.Pattern3:
+
+                    break;
+                case EFixedBossMonsterState.Pattern4:
+
+                    break;
+            }
         }
     }
 
@@ -98,7 +114,7 @@ public class FixedBossMonster : Creature
 
     protected void UpdateIdleState()
     {
-
+        MonsterState = EFixedBossMonsterState.Pattern2;
     }
 
     protected void UpdatePattern(EFixedBossMonsterState state)
@@ -116,7 +132,8 @@ public class FixedBossMonster : Creature
         {
             int randomNum = (Random.Range(0, (int)ENormalMonsterType.Max));
             ENormalMonsterType spawnMonsterType = (ENormalMonsterType)randomNum;
-            Managers.Object.SpawnNormalMonster(spawnMonsterType, point.transform.position);
+            SpawnMonsterEffectParam param = new SpawnMonsterEffectParam(spawnMonsterType);
+            Managers.Object.SpawnEffectObject(EEffectObjectType.MonsterSpawnEffect, point.transform.position, param);
         }
     }
     #endregion

@@ -26,6 +26,11 @@ public class BossStage : BaseStage
         bossMonster = Util.FindChild<FixedBossMonster>(this.gameObject);
     }
 
+    private void Start()
+    {
+        bossMonster?.SetInfo(gimmickPointList, monsterSpawnPointList);
+    }
+
     public override bool Init()
     {
         if (base.Init() == false)
@@ -35,4 +40,5 @@ public class BossStage : BaseStage
 
         return true;
     }
+
 }
