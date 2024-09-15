@@ -6,7 +6,9 @@ using UnityEngine.Rendering;
 public class BossStage : BaseStage
 {
     [field: SerializeField, ReadOnly] private List<BossGimmickPoint> gimmickPointList = new List<BossGimmickPoint>();
-    [field: SerializeField, ReadOnly] private List<MonsterSpawnPoint> monsterSpawnPoints = new List<MonsterSpawnPoint>();
+    [field: SerializeField, ReadOnly] private List<MonsterSpawnPoint> monsterSpawnPointList = new List<MonsterSpawnPoint>();
+
+    [SerializeField, ReadOnly] FixedBossMonster bossMonster;
 
     protected override void Reset()
     {
@@ -18,8 +20,10 @@ public class BossStage : BaseStage
             if (child.TryGetComponent<BossGimmickPoint>(out BossGimmickPoint gimmickPoint))
                 gimmickPointList.Add(gimmickPoint);
             else if(child.TryGetComponent<MonsterSpawnPoint>(out MonsterSpawnPoint monsterSpawnPoint))
-                monsterSpawnPoints.Add(monsterSpawnPoint);
+                monsterSpawnPointList.Add(monsterSpawnPoint);
         }
+
+        bossMonster = Util.FindChild<FixedBossMonster>(this.gameObject);
     }
 
     public override bool Init()
@@ -31,7 +35,4 @@ public class BossStage : BaseStage
 
         return true;
     }
-
-    public List<BossGimmickPoint> GetGimmickPointList() => gimmickPointList;
-
 }

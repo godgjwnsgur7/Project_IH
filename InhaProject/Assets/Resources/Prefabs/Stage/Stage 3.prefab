@@ -279,7 +279,8 @@ MonoBehaviour:
   <PlayerStartingPoint>k__BackingField: {fileID: 1193901759934195259}
   gimmickPointList:
   - {fileID: 0}
-  monsterSpawnPoints: []
+  monsterSpawnPointList: []
+  bossMonster: {fileID: 0}
 --- !u!1 &3474544873825420566
 GameObject:
   m_ObjectHideFlags: 0
@@ -1246,9 +1247,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1926671010228032741}
     m_Modifications:
+    - target: {fileID: 1524304051803342045, guid: 24fb80e1522730a4db4032e7c4e2faf1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3486853385568332937, guid: 24fb80e1522730a4db4032e7c4e2faf1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3512399151062823379, guid: 24fb80e1522730a4db4032e7c4e2faf1, type: 3}
       propertyPath: m_Name
       value: SkeletonWizardBoss
+      objectReference: {fileID: 0}
+    - target: {fileID: 3618562791479256673, guid: 24fb80e1522730a4db4032e7c4e2faf1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5924838284475501620, guid: 24fb80e1522730a4db4032e7c4e2faf1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1290,8 +1303,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6593045561496588334, guid: 24fb80e1522730a4db4032e7c4e2faf1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 9009997174790470136, guid: 24fb80e1522730a4db4032e7c4e2faf1, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 24fb80e1522730a4db4032e7c4e2faf1, type: 3}

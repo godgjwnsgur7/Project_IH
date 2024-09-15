@@ -492,6 +492,52 @@ public class NormalMonster : BaseMonster
     #endregion
     #endregion
 
+    #region Animation
+    protected void PlayAnimation(ENormalMonsterState state)
+    {
+        if (animator == null)
+            return;
+
+        animator.Play(state.ToString());
+    }
+
+    protected void ReplayAnimation(ENormalMonsterState state)
+    {
+        if (IsState(state))
+            return;
+
+        animator.Play(state.ToString(), -1, 0f);
+    }
+
+    public bool IsState(ENormalMonsterState state)
+    {
+        if (animator == null)
+            return false;
+
+        return IsState(animator.GetCurrentAnimatorStateInfo(0), state);
+    }
+
+    protected bool IsState(AnimatorStateInfo stateInfo, ENormalMonsterState state)
+    {
+        return stateInfo.IsName(state.ToString());
+    }
+
+    public bool IsEndCurrentState(ENormalMonsterState state)
+    {
+        if (animator == null)
+        {
+            Debug.LogWarning("animator is Null");
+            return false;
+        }
+
+        // 다른 애니메이션이 재생 중
+        if (!IsState(state))
+            return false;
+
+        return IsEndState(animator.GetCurrentAnimatorStateInfo(0));
+    }
+    #endregion
+
     #region Animation Clip Event
     public override void OnActiveAttackObject()
     {

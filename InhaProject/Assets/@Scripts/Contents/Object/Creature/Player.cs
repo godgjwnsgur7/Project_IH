@@ -1221,6 +1221,44 @@ public class Player : Creature, IHitEvent
 
     #endregion
 
+    #region Animation
+    protected void PlayAnimation(EPlayerState state)
+    {
+        if (animator == null)
+            return;
+
+        animator.Play(state.ToString());
+    }
+
+    protected bool IsState(AnimatorStateInfo stateInfo, EPlayerState state)
+    {
+        return stateInfo.IsName(state.ToString());
+    }
+
+    public bool IsState(EPlayerState state)
+    {
+        if (animator == null)
+            return false;
+
+        return IsState(animator.GetCurrentAnimatorStateInfo(0), state);
+    }
+
+    public bool IsEndCurrentState(EPlayerState state)
+    {
+        if (animator == null)
+        {
+            Debug.LogWarning("animator is Null");
+            return false;
+        }
+
+        // 다른 애니메이션이 재생 중
+        if (!IsState(state))
+            return false;
+
+        return IsEndState(animator.GetCurrentAnimatorStateInfo(0));
+    }
+    #endregion
+
     #region Animation Clip Event
     public void OnInitHitForce()
     {

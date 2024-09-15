@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameScene : BaseScene
 {
 #if UNITY_EDITOR
-    [Header("Test 여부 체크 & 테스트 Stage 입력")]
+    [Header("Test 여부 체크 & 테스트할 Stage 입력")]
     [SerializeField] bool isTestStage = false;
     [SerializeField] int testStageId = 0;
 #endif
