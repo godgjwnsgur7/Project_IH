@@ -21,7 +21,7 @@ public class Obstacle : BaseObject
     protected Player player;
 
     // Æ®·¦ »©¼­ ³ª´­±î?
-    protected void OnCollisionEnter(Collision collision)
+    protected virtual void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.CompareTag("Player"))
         {
@@ -40,7 +40,7 @@ public class Obstacle : BaseObject
         }
     }
     // ±×·²±î?
-    protected void OnCollisionExit(Collision collision)
+    protected virtual void OnCollisionExit(Collision collision)
     {
         if (collision.collider.CompareTag("Player"))
         {

@@ -50,7 +50,7 @@ public class UIMgr
         if(obj != null)
         {
             obj.name = name;
-            obj.transform.SetParent(SceneUI.transform);
+            obj.transform.SetParent(SceneUI?.transform);
 
             if (param != null)
                 obj.SetInfo(param);
