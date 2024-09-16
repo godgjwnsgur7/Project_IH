@@ -553,7 +553,6 @@ public class NormalMonster : BaseMonster
 
     public override void OnMoveEvent(float moveSpeed)
     {
-        Debug.Log("11");
         base.OnMoveEvent(moveSpeed);
         SetRigidVelocityX(moveSpeed * ((LookLeft) ? -1 : 1));
     }

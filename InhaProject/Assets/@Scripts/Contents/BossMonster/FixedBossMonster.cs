@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Define;
 
 public enum EFixedBossMonsterState
 {
-    None,
+    None = 0,
+    Pattern1 = 1,
+    Pattern2 = 2,
+    Pattern3 = 3,
     Idle,
-    Pattern1,
-    Pattern2,
-    Pattern3,
-    Pattern4,
 }
 
 public enum EFixedBossMonsterType
@@ -18,10 +18,15 @@ public enum EFixedBossMonsterType
     Max,
 }
 
-public class FixedBossMonster : Creature
+public class FixedBossMonster : BaseObject
 {
     [field: SerializeField, ReadOnly] private List<BossGimmickPoint> gimmickPointList;
     [field: SerializeField, ReadOnly] private List<MonsterSpawnPoint> monsterSpawnPointList;
+    [SerializeField] BoxAttackObject attackObject1;
+    [SerializeField] BoxAttackObject attackObject3;
+
+    [SerializeField] public BoxCollider Collider { get; private set; }
+    protected Animator animator;
 
     [SerializeField, ReadOnly] private EFixedBossMonsterState _monsterState;
     public EFixedBossMonsterState MonsterState
@@ -35,7 +40,7 @@ public class FixedBossMonster : Creature
             switch (value)
             {
                 case EFixedBossMonsterState.Idle:
-                    UpdateAITick = 5.0f;
+                    UpdateAITick = 3.0f;
                     break;
                 default:
                     UpdateAITick = 0.0f;
@@ -56,17 +61,23 @@ public class FixedBossMonster : Creature
                 case EFixedBossMonsterState.Pattern3:
 
                     break;
-                case EFixedBossMonsterState.Pattern4:
-
-                    break;
             }
         }
     }
-
+    
     public override bool Init()
     {
         if (base.Init() == false)
             return false;
+
+        Collider = GetComponent<BoxCollider>();
+        animator = GetComponent<Animator>();
+
+        ObjectType = EObjectType.BossMonster;
+
+        this.gameObject.tag = ETag.Monster.ToString();
+        this.gameObject.layer = (int)ELayer.Monster;
+        Collider.excludeLayers += 1 << (int)ELayer.Monster;
 
         return true;
     }
@@ -76,12 +87,18 @@ public class FixedBossMonster : Creature
         this.gimmickPointList = gimmickPointList;
         this.monsterSpawnPointList = monsterSpawnPointList;
 
+        attackObject1.SetInfo(Define.ETag.Monster, OnAttackTarget);
+        attackObject3.SetInfo(Define.ETag.Monster, OnAttackTarget);
+
         StartCoroutine(CoUpdateAI());
     }
 
-    protected override void FlipX(bool isLeft)
+    public void OnAttackTarget(IHitEvent attackTarget)
     {
-        base.FlipX(false);
+        if (patternNum == 1)
+            attackTarget?.OnHit(new AttackParam(this, true, 10));
+        if (patternNum == 3)
+            attackTarget?.OnHit(new AttackParam(this, true, 10));
     }
 
     #region AI
@@ -96,11 +113,12 @@ public class FixedBossMonster : Creature
                 case EFixedBossMonsterState.None:
                     MonsterState = EFixedBossMonsterState.Idle;
                     break;
-                case EFixedBossMonsterState.Idle: UpdateIdleState(); break;
+                case EFixedBossMonsterState.Idle:
+                    UpdateIdleState();
+                    break;
                 case EFixedBossMonsterState.Pattern1:
                 case EFixedBossMonsterState.Pattern2:
                 case EFixedBossMonsterState.Pattern3:
-                case EFixedBossMonsterState.Pattern4:
                     UpdatePattern(MonsterState);
                     break;
             }
@@ -112,9 +130,14 @@ public class FixedBossMonster : Creature
         }
     }
 
+    [SerializeField, ReadOnly] int patternNum = 0;
     protected void UpdateIdleState()
     {
-        MonsterState = EFixedBossMonsterState.Pattern2;
+        patternNum++;
+        if (patternNum > 3)
+            patternNum = 1;
+
+        MonsterState = (EFixedBossMonsterState)patternNum;
     }
 
     protected void UpdatePattern(EFixedBossMonsterState state)
@@ -181,6 +204,30 @@ public class FixedBossMonster : Creature
             return false;
 
         return IsEndState(animator.GetCurrentAnimatorStateInfo(0));
+    }
+    protected bool IsEndState(AnimatorStateInfo stateInfo)
+    {
+        return stateInfo.normalizedTime >= 1.0f;
+    }
+    #endregion
+
+    #region Animation Clip Event
+    public virtual void OnActiveAttackObject(int patternNum) 
+    {
+        SetActiveAttackObject(patternNum, true);
+    }
+    public virtual void OnDeactiveAttackObject(int patternNum)
+    {
+        SetActiveAttackObject(patternNum, false);
+    }
+
+    private void SetActiveAttackObject(int patternNum, bool isActive)
+    {
+        switch (patternNum)
+        {
+            case 1: attackObject1.SetActiveCollider(isActive); break;
+            case 3: attackObject3.SetActiveCollider(isActive); break;
+        }
     }
     #endregion
 }
