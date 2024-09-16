@@ -3,6 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Define;
 
+[System.Serializable]
+public class BossMonsterData
+{
+    public float MaxHp;
+    public float CurrHp;
+    public float StrikingPower;
+
+    public BossMonsterData(float maxHp, float currHp, float strikingPower)
+    {
+        MaxHp = maxHp;
+        CurrHp = currHp;
+        StrikingPower = strikingPower;
+    }
+}
+
 public enum EFixedBossMonsterState
 {
     None = 0,
@@ -18,7 +33,7 @@ public enum EFixedBossMonsterType
     Max,
 }
 
-public class FixedBossMonster : BaseObject
+public class FixedBossMonster : BaseObject, IHitEvent
 {
     [field: SerializeField, ReadOnly] private List<BossGimmickPoint> gimmickPointList;
     [field: SerializeField, ReadOnly] private List<MonsterSpawnPoint> monsterSpawnPointList;
@@ -52,14 +67,8 @@ public class FixedBossMonster : BaseObject
 
             switch(value)
             {
-                case EFixedBossMonsterState.Pattern1:
-
-                    break;
                 case EFixedBossMonsterState.Pattern2:
                     SpawnMonsterPattern();
-                    break;
-                case EFixedBossMonsterState.Pattern3:
-
                     break;
             }
         }
@@ -96,9 +105,20 @@ public class FixedBossMonster : BaseObject
     public void OnAttackTarget(IHitEvent attackTarget)
     {
         if (patternNum == 1)
-            attackTarget?.OnHit(new AttackParam(this, true, 10));
+            attackTarget?.OnHit(new AttackParam(this, true, 1500));
         if (patternNum == 3)
-            attackTarget?.OnHit(new AttackParam(this, true, 10));
+            attackTarget?.OnHit(new AttackParam(this, true, 5000));
+    }
+
+    public void OnHit(AttackParam param = null)
+    {
+        if (param == null)
+            return;
+
+        UIDamageParam damageParam = new((int)param.damage
+            , transform.position + (Collider.size.y * Vector3.up * this.transform.localScale.y)
+            , true);
+        Managers.UI.SpawnObjectUI<UI_Damage>(EUIObjectType.UI_Damage, damageParam);
     }
 
     #region AI

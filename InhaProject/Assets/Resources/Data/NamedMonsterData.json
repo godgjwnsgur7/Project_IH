@@ -3,7 +3,7 @@
     {
       "DataId": 0,
       "MaxHp": 10000.0,
-      "StrikingPower": 40.0,
+      "StrikingPower": 3000.0,
       "MoveSpeed": 1.0
     }
   ]

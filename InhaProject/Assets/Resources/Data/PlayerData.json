@@ -2,9 +2,9 @@
   "Players": [
     {
       "DataId": 0,
-      "MaxHp": 100.0,
-      "MaxMp": 100.0,
-      "StrikingPower": 10.0,
+      "MaxHp": 14000.0,
+      "MaxMp": 1000.0,
+      "StrikingPower": 100.0,
       "MoveSpeed": 5.0,
       "DashSpeed": 8.0,
       "JumpPower": 8.0

@@ -124,7 +124,7 @@ public class Player : Creature, IHitEvent
 
     public Dictionary<EPlayerSkillType, PlayerSkill> PlayerSkillDict { get; protected set; }
     [field: SerializeField, ReadOnly] public EPlayerType PlayerType { get; protected set; }
-    private PlayerData playerData = null;
+    [field: SerializeField, ReadOnly] private PlayerData playerData = null;
 
     [SerializeField, ReadOnly] BaseAttackObject skillAttackObject;
     [SerializeField, ReadOnly] BaseAttackObject attackObject = null;
@@ -497,6 +497,8 @@ public class Player : Creature, IHitEvent
     {
         while (IsPlayerInputControll)
         {
+            // Hp, Mp 회복
+
             switch (PlayerState)
             {
                 case EPlayerState.Idle: UpdateIdleState(); break;
