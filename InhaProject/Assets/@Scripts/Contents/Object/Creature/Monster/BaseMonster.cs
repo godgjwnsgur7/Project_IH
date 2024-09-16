@@ -29,6 +29,7 @@ public abstract class BaseMonster : Creature, IHitEvent
 
         this.gameObject.layer = (int)ELayer.Monster;
         this.tag = ETag.Monster.ToString();
+        Collider.excludeLayers += 1 << (int)ELayer.Monster;
 
         return true;
     }

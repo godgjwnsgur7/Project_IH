@@ -26,6 +26,9 @@ public class MonsterCollisionBarrier : InitBase
 
         Rigid ??= GetComponent<Rigidbody>();
         Collider ??= GetComponent<CapsuleCollider>();
+
+        this.gameObject.tag = ETag.Monster.ToString();
+        this.gameObject.layer = (int)ELayer.Monster;
         Rigid.excludeLayers += 1 << (int)ELayer.Monster;
         return true;
     }
