@@ -4745,7 +4745,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2703923031703487003, guid: dabd1fd5fd08ded40a0c56084688b980, type: 3}
       propertyPath: m_text
-      value: X
+      value: V
       objectReference: {fileID: 0}
     - target: {fileID: 2703923031703487003, guid: dabd1fd5fd08ded40a0c56084688b980, type: 3}
       propertyPath: m_fontAsset
@@ -4758,7 +4758,11 @@ PrefabInstance:
     - target: {fileID: 3917650589931797883, guid: dabd1fd5fd08ded40a0c56084688b980, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 2a5c892bdd014164da633b8c6fd0f246, type: 3}
+      objectReference: {fileID: 21300000, guid: f6b8b85cbdc82ce439a41ae3d56d57ee, type: 3}
+    - target: {fileID: 5571994425540838266, guid: dabd1fd5fd08ded40a0c56084688b980, type: 3}
+      propertyPath: skillType
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 7223136822058203362, guid: dabd1fd5fd08ded40a0c56084688b980, type: 3}
       propertyPath: m_Name
       value: UI_Slot2
@@ -4877,6 +4881,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 4671408048033494439}
     m_Modifications:
     - target: {fileID: 2703923031703487003, guid: dabd1fd5fd08ded40a0c56084688b980, type: 3}
+      propertyPath: m_text
+      value: Z
+      objectReference: {fileID: 0}
+    - target: {fileID: 2703923031703487003, guid: dabd1fd5fd08ded40a0c56084688b980, type: 3}
       propertyPath: m_fontAsset
       value: 
       objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4888,6 +4896,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: eed44235dcbd621438f7c0c4f05e2356, type: 3}
+    - target: {fileID: 5571994425540838266, guid: dabd1fd5fd08ded40a0c56084688b980, type: 3}
+      propertyPath: skillType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7223136822058203362, guid: dabd1fd5fd08ded40a0c56084688b980, type: 3}
       propertyPath: m_Name
       value: UI_Slot1
@@ -5017,6 +5029,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: b450d0b398880cb458f83d1a01b399ca, type: 3}
+    - target: {fileID: 5571994425540838266, guid: dabd1fd5fd08ded40a0c56084688b980, type: 3}
+      propertyPath: skillType
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7223136822058203362, guid: dabd1fd5fd08ded40a0c56084688b980, type: 3}
       propertyPath: m_Name
       value: UI_Slot5
@@ -5154,6 +5170,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: c67fbf9375ad5c34399c2849430ca7f7, type: 3}
+    - target: {fileID: 5571994425540838266, guid: dabd1fd5fd08ded40a0c56084688b980, type: 3}
+      propertyPath: skillType
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 7223136822058203362, guid: dabd1fd5fd08ded40a0c56084688b980, type: 3}
       propertyPath: m_Name
       value: UI_Slot3
@@ -5283,6 +5303,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 300abdf8cbdd5c742a05b6506767fd64, type: 3}
+    - target: {fileID: 5571994425540838266, guid: dabd1fd5fd08ded40a0c56084688b980, type: 3}
+      propertyPath: skillType
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 7223136822058203362, guid: dabd1fd5fd08ded40a0c56084688b980, type: 3}
       propertyPath: m_Name
       value: UI_Slot6
@@ -5412,6 +5436,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: a033cea4a39ce430ea12f95b9b9edb9e, type: 3}
+    - target: {fileID: 5571994425540838266, guid: dabd1fd5fd08ded40a0c56084688b980, type: 3}
+      propertyPath: skillType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7223136822058203362, guid: dabd1fd5fd08ded40a0c56084688b980, type: 3}
       propertyPath: m_Name
       value: UI_Slot4

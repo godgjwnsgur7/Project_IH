@@ -1,0 +1,29 @@
+{
+  "items": [
+    {
+      "ItemType": "Map",
+      "Name": "지도",
+      "Script": "미니맵을 볼 수 있는 지도다."
+    },
+    {
+      "ItemType": "Key",
+      "Name": "금색 열쇠",
+      "Script": "잠겨 있는 무언가에 사용할 수 있는 열쇠다. 잠긴 것을 찾아보자."
+    },
+    {
+      "ItemType": "Key2",
+      "Name": "의심스러운 열쇠",
+      "Script": "낡은 열쇠다."
+    },
+    {
+      "ItemType": "ManaPotion",
+      "Name": "마나 회복 물약",
+      "Script": "파란색 물약이다. 사용 시 MP를 250 회복한다."
+    },
+    {
+      "ItemType": "HealPotion",
+      "Name": "체력 회복 물약",
+      "Script": "빨간색 물약이다. 사용 시 HP를 500 회복한다. "
+    }
+  ]
+}

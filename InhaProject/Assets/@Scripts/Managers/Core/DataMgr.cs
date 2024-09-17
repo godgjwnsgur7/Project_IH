@@ -18,6 +18,9 @@ public class DataMgr
     public Dictionary<int, JPlayerData> PlayerDict { get; private set; } = new Dictionary<int, JPlayerData>();
     public Dictionary<int, JPlayerSkillData> PlayerSkillDict { get; private set; } = new Dictionary<int, JPlayerSkillData>();
 
+    public Dictionary<string, JSkillSlotData> SkillSlotDict { get; private set; } = new Dictionary<string, JSkillSlotData>();
+    public Dictionary<string, JItemSlotData> ItemSlotDataDict { get; private set; } = new Dictionary<string, JItemSlotData>();
+
 
     public void Init()
     {
@@ -26,7 +29,9 @@ public class DataMgr
         NormalMonsterDict = LoadJson<NormalMonsterDataLoader, int, JNormalMonsterData>("NormalMonsterData").MakeDict();
         PlayerDict = LoadJson<PlayerDataLoader, int, JPlayerData>("PlayerData").MakeDict();
         PlayerSkillDict = LoadJson<PlayerSkillDataLoader, int, JPlayerSkillData>("PlayerSkillData").MakeDict();
-    }
+        SkillSlotDict = LoadJson<SkillSlotDataLoader, string, JSkillSlotData>("SkillSlotData").MakeDict();
+        ItemSlotDataDict = LoadJson<ItemSlotDataLoader, string, JItemSlotData>("ItemSlotData").MakeDict();
+    } 
 
     public Loader LoadJson<Loader, Key, Value>(string path) where Loader : ILoader<Key, Value>
     {

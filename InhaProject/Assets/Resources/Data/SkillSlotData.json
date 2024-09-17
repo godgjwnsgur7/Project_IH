@@ -1,0 +1,46 @@
+{
+  "Skills": [
+    {
+      "SkillType": "Guard",
+      "Name": "가드",
+      "Script": "공격을 막는다. 가드 성공 시 받는 데미지가 감소된다.",
+      "Cooltime": "쿨타임: 5초",
+      "MpAmount": null
+    },
+    {
+      "SkillType": "Dash",
+      "Name": "구르기",
+      "Script": "앞으로 굴러 공격을 회피할 수 있다. ",
+      "Cooltime": "쿨타임: 5초",
+      "MpAmount": null
+    },
+    {
+      "SkillType": "Skill1",
+      "Name": "파이어볼",
+      "Script": "전방으로 구체 공격을 날린다.",
+      "Cooltime": "쿨타임: 5초",
+      "MpAmount": "MP 소모: 5"
+    },
+    {
+      "SkillType": "Skill2",
+      "Name": "블로우",
+      "Script": "전방으로 구체 공격을 빠르게 날린다.",
+      "Cooltime": "쿨타임: 5초",
+      "MpAmount": "MP 소모: 20"
+    },
+    {
+      "SkillType": "Skill3",
+      "Name": "사냥정통",
+      "Script": "힘을 농축시켜 강한 공격을 날린다.",
+      "Cooltime": "쿨타임: 5초",
+      "MpAmount": "MP 소모: 20"
+    },
+    {
+      "SkillType": "Skill4",
+      "Name": "[각성기] 빛내림",
+      "Script": "적에게 화염구를 난사한다.",
+      "Cooltime": "쿨타임: 5초",
+      "MpAmount": "MP소모: 50"
+    }
+  ]
+}

@@ -8,10 +8,12 @@ public class UI_ToolTip : UI_BaseObject
 {
     [SerializeField, ReadOnly] public TextMeshProUGUI scriptText;
     [SerializeField, ReadOnly] public TextMeshProUGUI nameText;
+    [SerializeField, ReadOnly] public TextMeshProUGUI cooltime;
+    [SerializeField, ReadOnly] public TextMeshProUGUI mpAmountText;
 
     [SerializeField, ReadOnly] public RectTransform rt;
 
-    public override bool Init()
+    public override bool Init() 
     {
         if (base.Init() == false)
             return false;
@@ -50,6 +52,16 @@ public class UI_ToolTip : UI_BaseObject
             nameText.text = uiTooltipParam.nameText;
             scriptText.text = uiTooltipParam.scriptText;
         }
+    }
+
+    public void SetMpAmountText(string text)
+    {
+        mpAmountText.text = text;
+    }
+
+    public void SetCooltimeText(string text)
+    {
+        cooltime.text = text;
     }
 
     public void DestroyUI()

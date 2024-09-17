@@ -5,12 +5,18 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+
+enum ItemSlotData
+{
+
+}
+
 public class UI_Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
 	[SerializeField] protected Sprite slot_img;
 	[SerializeField] protected Sprite front_img;
 
-	UI_ToolTip uiToolTip;
+	protected UI_ToolTip uiToolTip;
 
 	protected Image slotImage;
 	public Image frontImage;
@@ -38,13 +44,13 @@ public class UI_Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 		this.slotScript = slotScript;
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    public virtual void OnPointerEnter(PointerEventData eventData)
     {
 		UITooltipParam uiTooltipParam = new UITooltipParam(slotName, slotScript);
 		uiToolTip = Managers.UI.SpawnObjectUI<UI_ToolTip>(EUIObjectType.UI_Tooltip, uiTooltipParam);
 	}
 
-    public void OnPointerExit(PointerEventData eventData)
+    public virtual void OnPointerExit(PointerEventData eventData)
     {
 		if (uiToolTip != null)
 			uiToolTip.DestroyUI();

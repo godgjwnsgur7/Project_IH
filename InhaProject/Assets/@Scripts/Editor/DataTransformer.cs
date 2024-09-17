@@ -23,6 +23,8 @@ public class DataTransformer : EditorWindow
         ParseExcelDataToJson<NormalMonsterDataLoader, JNormalMonsterData>("NormalMonster");
         ParseExcelDataToJson<PlayerDataLoader, JPlayerData>("Player");
         ParseExcelDataToJson<PlayerSkillDataLoader, JPlayerSkillData>("PlayerSkill");
+        ParseExcelDataToJson<SkillSlotDataLoader, JSkillSlotData>("SkillSlot");
+        ParseExcelDataToJson<ItemSlotDataLoader, JItemSlotData>("ItemSlot");
 
         Debug.Log("DataTransformer Completed");
     }
