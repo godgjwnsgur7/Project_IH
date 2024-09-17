@@ -495,9 +495,15 @@ public class Player : Creature, IHitEvent
     Coroutine coPlayerStateController = null;
     protected IEnumerator CoPlayerStateController()
     {
+        float timer = 0.0f;
         while (IsPlayerInputControll)
         {
-            // Hp, Mp 회복
+            timer += Time.deltaTime;
+            if(timer >= 1.0f)
+            {
+                timer -= 1.0f;
+                NaturalRecovery();
+            }
 
             switch (PlayerState)
             {
@@ -525,6 +531,18 @@ public class Player : Creature, IHitEvent
         }
 
         coPlayerStateController = null;
+    }
+
+    private void NaturalRecovery()
+    {
+        playerData.CurrHp += 10;
+        playerData.CurrMp += 5;
+
+        if (playerData.CurrHp > playerData.MaxHp) playerData.CurrHp = playerData.MaxHp;
+        if (playerData.CurrMp > playerData.MaxMp) playerData.CurrMp = playerData.MaxMp;
+
+        OnChangedHp?.Invoke(playerData.CurrHp);
+        OnChangedMp?.Invoke(playerData.CurrMp);
     }
 
     #region Idle Motion
@@ -561,6 +579,9 @@ public class Player : Creature, IHitEvent
     protected virtual bool MoveStateCondition() 
     {
         if (moveDirection.x == 0)
+            return false;
+
+        if (Rigid.velocity.y != 0)
             return false;
 
         if (CreatureFoot.IsLandingGround == false)
@@ -1020,21 +1041,29 @@ public class Player : Creature, IHitEvent
 
         coHitDelayCheck = StartCoroutine(CoHitDelayCheck(0.3f));
 
-        UIDamageParam damageParam = new((int)param.damage
-            , transform.position + (Collider.size.y * Vector3.up * 1.2f));
-        Managers.UI.SpawnObjectUI<UI_Damage>(EUIObjectType.UI_Damage, damageParam);
-
+        UIDamageParam damageParam;
         Vector3 subVec = new Vector3(0, Collider.size.y * 0.7f, 0);
         if (PlayerState == EPlayerState.Guard && param.isAttackerLeft == !LookLeft)
         {
             subVec.x += Collider.size.x * ((LookLeft) ? -1 : 1) * 2;
             Managers.Object.SpawnEffectObject(EEffectObjectType.PlayerHitBlockEffect, this.transform.position + subVec);
             isPlayerStateLock = false;
-            OnDamaged(damageParam.damage / 10);
+
+            damageParam = new((int)param.damage / 10
+            , transform.position + (Collider.size.y * Vector3.up * 1.2f));
+            Managers.UI.SpawnObjectUI<UI_Damage>(EUIObjectType.UI_Damage, damageParam);
+            OnDamaged(damageParam.damage);
+
             PlayerState = EPlayerState.Block;
             return;
         }
-        
+
+        damageParam = new((int)param.damage
+            , transform.position + (Collider.size.y * Vector3.up * 1.2f));
+        Managers.UI.SpawnObjectUI<UI_Damage>(EUIObjectType.UI_Damage, damageParam);
+        OnDamaged(damageParam.damage);
+
+
         if (isSuperArmour)
         {
             subVec.x += Collider.size.x * ((LookLeft) ? 1 : -1) * 2;

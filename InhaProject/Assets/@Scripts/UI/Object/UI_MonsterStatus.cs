@@ -33,7 +33,6 @@ public class UI_MonsterStatus : UI_BaseObject
             mainCameraController.OnChangedSubCameraEnable += OnChangedSubCameraEnable;
         }
 
-
         if (param is UIMonsterStatusParam monsterStatusParam && monsterStatusParam.monster != null)
         {
             if (coFollowTarget != null)

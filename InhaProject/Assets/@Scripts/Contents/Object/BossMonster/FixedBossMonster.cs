@@ -1,22 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Define;
-
-[System.Serializable]
-public class BossMonsterData
-{
-    public float MaxHp;
-    public float CurrHp;
-    public float StrikingPower;
-
-    public BossMonsterData(float maxHp, float currHp, float strikingPower)
-    {
-        MaxHp = maxHp;
-        CurrHp = currHp;
-        StrikingPower = strikingPower;
-    }
-}
 
 public enum EFixedBossMonsterState
 {
@@ -25,6 +11,7 @@ public enum EFixedBossMonsterState
     Pattern2 = 2,
     Pattern3 = 3,
     Idle,
+    Dead,
 }
 
 public enum EFixedBossMonsterType
@@ -37,11 +24,19 @@ public class FixedBossMonster : BaseObject, IHitEvent
 {
     [field: SerializeField, ReadOnly] private List<BossGimmickPoint> gimmickPointList;
     [field: SerializeField, ReadOnly] private List<MonsterSpawnPoint> monsterSpawnPointList;
+    
     [SerializeField] BoxAttackObject attackObject1;
     [SerializeField] BoxAttackObject attackObject3;
 
+    #region Stat
+    [field: SerializeField] public float MaxHp { get; protected set; }
+    [field: SerializeField] public float CurrHp { get; protected set; }
+    #endregion
+    
     [SerializeField] public BoxCollider Collider { get; private set; }
     protected Animator animator;
+
+    [SerializeField, ReadOnly] string monsterName = null;
 
     [SerializeField, ReadOnly] private EFixedBossMonsterState _monsterState;
     public EFixedBossMonsterState MonsterState
@@ -70,10 +65,15 @@ public class FixedBossMonster : BaseObject, IHitEvent
                 case EFixedBossMonsterState.Pattern2:
                     SpawnMonsterPattern();
                     break;
+                case EFixedBossMonsterState.Dead:
+                    // 뒤로 물러나며 사라지는 모션 추가 예정
+                    break;
             }
         }
     }
-    
+
+    [SerializeField, ReadOnly] UI_BossMonsterStatus monsterStatusUI = null;
+
     public override bool Init()
     {
         if (base.Init() == false)
@@ -88,7 +88,17 @@ public class FixedBossMonster : BaseObject, IHitEvent
         this.gameObject.layer = (int)ELayer.Monster;
         Collider.excludeLayers += 1 << (int)ELayer.Monster;
 
+        SetMonsterData();
+       
         return true;
+    }
+
+    private void SetMonsterData()
+    {
+        // 엑셀 데이터로 분리 예정 (임시)
+        CurrHp = 100000;
+        MaxHp = 100000;
+        monsterName = "스켈레톤 킹";
     }
 
     public void SetInfo(List<BossGimmickPoint> gimmickPointList, List<MonsterSpawnPoint> monsterSpawnPointList)
@@ -99,26 +109,38 @@ public class FixedBossMonster : BaseObject, IHitEvent
         attackObject1.SetInfo(Define.ETag.Monster, OnAttackTarget);
         attackObject3.SetInfo(Define.ETag.Monster, OnAttackTarget);
 
+        UIBossMonsterStatusParam param = new UIBossMonsterStatusParam(monsterName, MaxHp);
+        monsterStatusUI = Managers.UI.SpawnObjectUI<UI_BossMonsterStatus>(EUIObjectType.UI_BossMOnsterStatus, param);
+
         StartCoroutine(CoUpdateAI());
     }
 
     public void OnAttackTarget(IHitEvent attackTarget)
     {
-        if (patternNum == 1)
-            attackTarget?.OnHit(new AttackParam(this, true, 1500));
-        if (patternNum == 3)
-            attackTarget?.OnHit(new AttackParam(this, true, 5000));
+        if (patternNum == 1) attackTarget?.OnHit(new AttackParam(this, true, 1500));
+        if (patternNum == 3) attackTarget?.OnHit(new AttackParam(this, true, 5000));
     }
 
     public void OnHit(AttackParam param = null)
     {
-        if (param == null)
+        if (param == null || MonsterState == EFixedBossMonsterState.Dead)
             return;
 
         UIDamageParam damageParam = new((int)param.damage
             , transform.position + (Collider.size.y * Vector3.up * this.transform.localScale.y)
             , true);
         Managers.UI.SpawnObjectUI<UI_Damage>(EUIObjectType.UI_Damage, damageParam);
+
+        OnDamaged(damageParam.damage);
+
+        if(CurrHp <= 0)
+            MonsterState = EFixedBossMonsterState.Dead;
+    }
+
+    private void OnDamaged(float damage)
+    {
+        CurrHp -= damage;
+        monsterStatusUI.OnChangedCurrHp(CurrHp);
     }
 
     #region AI
@@ -173,7 +195,7 @@ public class FixedBossMonster : BaseObject, IHitEvent
     {
         foreach(var point in monsterSpawnPointList)
         {
-            int randomNum = (Random.Range(0, (int)ENormalMonsterType.Max));
+            int randomNum = (UnityEngine.Random.Range(0, (int)ENormalMonsterType.Max));
             ENormalMonsterType spawnMonsterType = (ENormalMonsterType)randomNum;
             SpawnMonsterEffectParam param = new SpawnMonsterEffectParam(spawnMonsterType);
             Managers.Object.SpawnEffectObject(EEffectObjectType.MonsterSpawnEffect, point.transform.position, param);

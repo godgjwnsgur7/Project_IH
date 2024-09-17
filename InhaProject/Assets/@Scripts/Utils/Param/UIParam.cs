@@ -30,6 +30,18 @@ public class UIMonsterStatusParam : UIParam
     }
 }
 
+public class UIBossMonsterStatusParam : UIParam
+{
+    public string monsterName;
+    public float maxHp;
+
+    public UIBossMonsterStatusParam(string monsterName, float maxHp)
+    {
+        this.monsterName = monsterName;
+        this.maxHp = maxHp;
+    }
+}
+
 public class UIInformParam : UIParam
 {
     public string informText;

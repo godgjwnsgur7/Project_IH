@@ -554,7 +554,8 @@ public class NormalMonster : BaseMonster
     public override void OnMoveEvent(float moveSpeed)
     {
         base.OnMoveEvent(moveSpeed);
-        SetRigidVelocityX(moveSpeed * ((LookLeft) ? -1 : 1));
+        if(IsMovementCheck())
+            SetRigidVelocityX(moveSpeed * ((LookLeft) ? -1 : 1));
     }
     #endregion
 }
