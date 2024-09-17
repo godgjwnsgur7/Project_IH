@@ -12,14 +12,39 @@ public class UI_Damage : UI_BaseObject
 	private float moveSpeed = 50.0f;
 	private float alphaSpeed = 3.0f;
 	private float destroyTime = 1.0f;
+	private Vector3 monsterPos;
 
 	private int damage;
 	private bool bCritical;
 
-
-    private void Start()
+	public override void SetInfo(UIParam param)
 	{
-		StartCoroutine(IfadeOutInDamage(destroyTime));
+		base.SetInfo(param);
+
+		if (param is UIDamageParam uiDamageParam)
+		{
+			damage = uiDamageParam.damage;
+			monsterPos = uiDamageParam.pos;
+			text.GetComponent<RectTransform>().position = RectTransformUtility.WorldToScreenPoint(Camera.main, monsterPos);
+
+			text.text = damage.ToString();
+
+			if (uiDamageParam.isCritical)
+			{
+				bCritical = true;
+				criticalImage.enabled = true;
+				text.color = Color.yellow;
+
+				text.GetComponent<RectTransform>().position = RectTransformUtility.WorldToScreenPoint(Camera.main, uiDamageParam.pos - new Vector3(criticalImage.flexibleWidth / 2, 0, 0));
+				criticalImage.GetComponent<RectTransform>().position = RectTransformUtility.WorldToScreenPoint(Camera.main, uiDamageParam.pos + new Vector3(criticalImage.flexibleWidth / 2, 0, 0));
+			}
+			else
+			{
+				criticalImage.enabled = false;
+			}
+
+			StartCoroutine(IfadeOutInDamage(destroyTime));
+		}
 	}
 
 	private IEnumerator IfadeOutInDamage(float fadeTime)
@@ -28,6 +53,8 @@ public class UI_Damage : UI_BaseObject
 
 		while (textTempColor.a > 0f)
         {
+			text.GetComponent<RectTransform>().position = RectTransformUtility.WorldToScreenPoint(Camera.main, monsterPos);
+
 			textTempColor.a -= Time.deltaTime / fadeTime;
 			text.color = textTempColor;
 			text.transform.Translate(new Vector3(0, Time.deltaTime * moveSpeed, 0));
@@ -58,33 +85,6 @@ public class UI_Damage : UI_BaseObject
         text = Util.FindChild<TextMeshProUGUI>(this.gameObject, "DamageText");
 		criticalImage = Util.FindChild<Image>(this.gameObject, "CriticalImage");
     }
-
-	public override void SetInfo(UIParam param)
-	{
-		base.SetInfo(param);
-
-		if (param is UIDamageParam uiDamageParam)
-		{
-			damage = uiDamageParam.damage;
-			text.GetComponent<RectTransform>().position = RectTransformUtility.WorldToScreenPoint(Camera.main, uiDamageParam.pos);
-
-			text.text = damage.ToString();
-
-			if (uiDamageParam.isCritical)
-			{
-				bCritical = true;
-				criticalImage.enabled = true;
-				text.color = Color.yellow;
-
-				text.GetComponent<RectTransform>().position = RectTransformUtility.WorldToScreenPoint(Camera.main, uiDamageParam.pos - new Vector3(criticalImage.flexibleWidth / 2, 0, 0));
-				criticalImage.GetComponent<RectTransform>().position = RectTransformUtility.WorldToScreenPoint(Camera.main, uiDamageParam.pos + new Vector3(criticalImage.flexibleWidth / 2, 0, 0));
-			}
-			else
-            {
-				criticalImage.enabled = false;
-			}
-        }
-	}
 
 	private void DestroyObject()
 	{
