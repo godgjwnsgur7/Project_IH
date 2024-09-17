@@ -69573,7 +69573,11 @@ MonoBehaviour:
   monsterSpawnPointList: []
   attackObject1: {fileID: 4413063090901172289}
   attackObject3: {fileID: 2708428427799062019}
+  <MaxHp>k__BackingField: 0
+  <CurrHp>k__BackingField: 0
+  monsterName: 
   _monsterState: 0
+  monsterStatusUI: {fileID: 0}
   patternNum: 0
 --- !u!95 &95000010427460720
 Animator:
@@ -120249,7 +120253,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8214700863023601332
 Transform:
   m_ObjectHideFlags: 0
@@ -125808,7 +125812,7 @@ ParticleSystem:
     serializedVersion: 6
     enabled: 1
     type: 4
-    angle: 20
+    angle: 12.5
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 1

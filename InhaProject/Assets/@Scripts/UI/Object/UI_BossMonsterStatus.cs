@@ -36,6 +36,7 @@ public class UI_BossMonsterStatus : UI_BaseObject
     private void SetStatusBarText(float maxHp, float currHp)
     {
         statusBarText.text = $"{currHp} / {maxHp}";
+        statusBarFiller.fillAmount = currHp / maxHp;
     }
 
     public void OnChangedCurrHp(float currHp)

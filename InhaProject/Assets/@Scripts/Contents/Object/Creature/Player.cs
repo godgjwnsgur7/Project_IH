@@ -268,7 +268,6 @@ public class Player : Creature, IHitEvent
 
         this.gameObject.tag = ETag.Player.ToString();
         this.gameObject.layer = (int)ELayer.Player;
-        Collider.excludeLayers += 1 << (int)ELayer.Monster;
 
         return true;
     }
@@ -283,7 +282,8 @@ public class Player : Creature, IHitEvent
 
         SetSkillInfo();
 
-        skillAttackObject.SetActive(false);
+        skillAttackObject.SetActive(true);
+        skillAttackObject.SetActiveCollider(false);
         skillAttackObject.SetInfo(ETag.Player, OnSkillAttackTarget);
         attackObject.SetInfo(ETag.Player, OnAttackTarget);
     
@@ -581,7 +581,7 @@ public class Player : Creature, IHitEvent
         if (moveDirection.x == 0)
             return false;
 
-        if (Rigid.velocity.y != 0)
+        if (Rigid.velocity.y > 0)
             return false;
 
         if (CreatureFoot.IsLandingGround == false)
@@ -912,7 +912,6 @@ public class Player : Creature, IHitEvent
 
         isPlayerStateLock = true;
         InitRigidVelocityX();
-        skillAttackObject.SetActive(true);
     }
 
     protected virtual void UpdateSkillState()
@@ -927,8 +926,8 @@ public class Player : Creature, IHitEvent
 
     protected virtual void SkillStateExit()
     {
-        skillAttackObject.SetActive(false);
         playerCameraController.SetEnabled(false);
+        OnDeactiveSkillAttackObject();
         skillNum = 0;
         skillCount = 0;
         isSuperArmour = false;
@@ -1019,9 +1018,9 @@ public class Player : Creature, IHitEvent
             _isInvincibility = value;
 
             if (_isInvincibility)
-                Rigid.excludeLayers += 1 << (int)ELayer.Default;
+                Rigid.excludeLayers += 1 << (int)ELayer.Monster;
             else
-                Rigid.excludeLayers -= 1 << (int)ELayer.Default;
+                Rigid.excludeLayers -= 1 << (int)ELayer.Monster;
         }
     }
 
@@ -1305,6 +1304,16 @@ public class Player : Creature, IHitEvent
     public void OnDeactiveAttackobject()
     {
         attackObject.SetActive(false);
+    }
+
+    public void OnActiveSkillAttackObject()
+    {
+        skillAttackObject.SetActiveCollider(true);
+    }
+
+    public void OnDeactiveSkillAttackObject()
+    {
+        skillAttackObject.SetActiveCollider(false);
     }
 
     public void OnAddSkillCount()

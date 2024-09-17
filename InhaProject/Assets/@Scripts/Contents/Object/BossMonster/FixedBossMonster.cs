@@ -126,9 +126,12 @@ public class FixedBossMonster : BaseObject, IHitEvent
         if (param == null || MonsterState == EFixedBossMonsterState.Dead)
             return;
 
-        UIDamageParam damageParam = new((int)param.damage
-            , transform.position + (Collider.size.y * Vector3.up * this.transform.localScale.y)
-            , true);
+        // 히트 좌표 받아서 처리 예정 (임시)
+        Vector3 hitPos = transform.position + (Vector3.up * Collider.size.y * transform.localScale.y / 2);
+        hitPos.x += UnityEngine.Random.Range(-1.5f, 0.0f);
+        hitPos.y += UnityEngine.Random.Range(-1.0f, 3.0f);
+
+        UIDamageParam damageParam = new((int)param.damage, hitPos, true);
         Managers.UI.SpawnObjectUI<UI_Damage>(EUIObjectType.UI_Damage, damageParam);
 
         OnDamaged(damageParam.damage);

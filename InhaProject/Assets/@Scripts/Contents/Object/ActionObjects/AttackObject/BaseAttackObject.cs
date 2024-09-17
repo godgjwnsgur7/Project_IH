@@ -50,7 +50,7 @@ public class BaseAttackObject : InitBase
 
     public virtual void SetActiveCollider(bool isActive) { }
 
-    protected void OnAttackTarget(IHitEvent hitEvent)
+    protected virtual void OnAttackTarget(IHitEvent hitEvent)
     {
         onAttackTarget?.Invoke(hitEvent);
     }

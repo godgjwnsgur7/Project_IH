@@ -27,8 +27,8 @@ public class BoxAttackObject : BaseAttackObject
             return false;
 
         AttackObjectType = EAttackObjectType.Box;
-        Rigid ??= GetComponent<Rigidbody>();
-        Collider ??= GetComponent<BoxCollider>();
+        Rigid = GetComponent<Rigidbody>();
+        Collider = GetComponent<BoxCollider>();
 
         return true;
     }
@@ -40,6 +40,11 @@ public class BoxAttackObject : BaseAttackObject
     public override void SetActiveCollider(bool isActive)
     {
         Collider.enabled = isActive;
+    }
+
+    protected override void OnAttackTarget(IHitEvent hitEvent)
+    {
+        base.OnAttackTarget(hitEvent);
     }
 
     private void OnTriggerEnter(Collider other)

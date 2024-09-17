@@ -45368,8 +45368,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <MonsterType>k__BackingField: 0
   collisionBarrier: {fileID: 7737423459855304478}
+  rendererList:
+  - {fileID: 1953271713334316891}
+  - {fileID: 6459685662857493379}
+  - {fileID: 2089861603716625039}
+  - {fileID: 1079105839476108966}
   <NormalMonsterType>k__BackingField: 0
-  <MonsterInfo>k__BackingField:
+  monsterData:
+    MaxHp: 0
     CurrHp: 0
     StrikingPower: 0
     MoveSpeed: 0
@@ -45379,11 +45385,6 @@ MonoBehaviour:
     AttackDistance: 0
   attackRange: {fileID: 4397832045876889890}
   attackObject: {fileID: 2004337254141471779}
-  rendererList:
-  - {fileID: 1953271713334316891}
-  - {fileID: 6459685662857493379}
-  - {fileID: 2089861603716625039}
-  - {fileID: 1079105839476108966}
   _monsterState: 0
   ChaseTarget: {fileID: 0}
   AttackTarget: {fileID: 0}
@@ -55802,7 +55803,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3769401396181936668}
-  m_Material: {fileID: 13400000, guid: fcc1d63785426274b9ca640d7e073b0c, type: 2}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

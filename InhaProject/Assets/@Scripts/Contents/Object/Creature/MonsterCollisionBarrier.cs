@@ -24,8 +24,8 @@ public class MonsterCollisionBarrier : InitBase
         if (base.Init() == false)
             return false;
 
-        Rigid ??= GetComponent<Rigidbody>();
-        Collider ??= GetComponent<CapsuleCollider>();
+        Rigid = GetComponent<Rigidbody>();
+        Collider = GetComponent<CapsuleCollider>();
 
         this.gameObject.tag = ETag.Monster.ToString();
         this.gameObject.layer = (int)ELayer.Monster;

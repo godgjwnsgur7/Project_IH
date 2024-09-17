@@ -42141,8 +42141,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <MonsterType>k__BackingField: 0
   collisionBarrier: {fileID: 973143719794398247}
+  rendererList:
+  - {fileID: 6392578872326442776}
+  - {fileID: 3120640660852872551}
+  - {fileID: 2527706332385672187}
   <NormalMonsterType>k__BackingField: 0
-  <MonsterInfo>k__BackingField:
+  monsterData:
+    MaxHp: 0
     CurrHp: 0
     StrikingPower: 0
     MoveSpeed: 0
@@ -42152,10 +42157,6 @@ MonoBehaviour:
     AttackDistance: 0
   attackRange: {fileID: 6507128251054799236}
   attackObject: {fileID: 5216241134304237995}
-  rendererList:
-  - {fileID: 6392578872326442776}
-  - {fileID: 3120640660852872551}
-  - {fileID: 2527706332385672187}
   _monsterState: 0
   ChaseTarget: {fileID: 0}
   AttackTarget: {fileID: 0}
