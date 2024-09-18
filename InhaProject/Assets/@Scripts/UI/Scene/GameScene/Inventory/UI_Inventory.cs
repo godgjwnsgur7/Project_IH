@@ -58,7 +58,7 @@ public class UI_Inventory : MonoBehaviour
 
 	private void InventoryScript_ItemAdd(object sender, InventoryEventArgs e )
 	{
-		IInventoryItem item = inventory.FindItem(e.Item.Param.type.ToString());
+		IInventoryItem item = inventory.FindItem(e.Item.Name);
 
 		foreach (UI_ItemSlot slot in itemSlots)
 		{
@@ -80,7 +80,6 @@ public class UI_Inventory : MonoBehaviour
 			if (slot.name == e.Item.Name)
 			{	
 				frontImage.enabled = false;
-			
 
 				if (slot.type == EItemSlotType.HealPotion ||
 					slot.type == EItemSlotType.ManaPotion)
