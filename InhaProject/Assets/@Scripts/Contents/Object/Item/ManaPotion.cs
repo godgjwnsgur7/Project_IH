@@ -7,7 +7,7 @@ public class ManaPotion : BaseItem, IInventoryItem
     
     public string Name
     {
-        get { return "HealPotion"; }
+        get { return "ManaPotion"; }
     }
 
     public Sprite _Image = null;
