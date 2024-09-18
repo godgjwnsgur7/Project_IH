@@ -484,10 +484,18 @@ public class NormalMonster : BaseMonster
     {
         if (IsEndCurrentState(ENormalMonsterState.Dead))
         {
-            coDestroyEffect = StartCoroutine(CoDestroyEffect(1.5f));
+            coDisappearEffect = StartCoroutine(CoDisappearEffect(1.5f, OnDeadMonster));
             return;
         }
     }
+
+    public void OnDeadMonster()
+    {
+        // 일정 확률에 따라 아이템 드롭?
+
+        Managers.Resource.Destroy(this.gameObject);
+    }
+
     protected virtual void DeadStateExit() { }
     #endregion
     #endregion

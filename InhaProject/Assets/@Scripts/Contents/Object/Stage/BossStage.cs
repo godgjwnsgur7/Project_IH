@@ -28,7 +28,7 @@ public class BossStage : BaseStage
 
     private void Start()
     {
-        bossMonster?.SetInfo(gimmickPointList, monsterSpawnPointList);
+        bossMonster?.SetPointInfo(gimmickPointList, monsterSpawnPointList);
     }
 
     public override bool Init()

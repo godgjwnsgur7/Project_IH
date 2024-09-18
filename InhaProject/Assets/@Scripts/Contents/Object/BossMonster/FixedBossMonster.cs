@@ -20,7 +20,7 @@ public enum EFixedBossMonsterType
     Max,
 }
 
-public class FixedBossMonster : BaseObject, IHitEvent
+public class FixedBossMonster : BaseMonster, IHitEvent
 {
     [field: SerializeField, ReadOnly] private List<BossGimmickPoint> gimmickPointList;
     [field: SerializeField, ReadOnly] private List<MonsterSpawnPoint> monsterSpawnPointList;
@@ -33,9 +33,6 @@ public class FixedBossMonster : BaseObject, IHitEvent
     [field: SerializeField] public float CurrHp { get; protected set; }
     #endregion
     
-    [SerializeField] public BoxCollider Collider { get; private set; }
-    protected Animator animator;
-
     [SerializeField, ReadOnly] string monsterName = null;
 
     [SerializeField, ReadOnly] private EFixedBossMonsterState _monsterState;
@@ -79,10 +76,7 @@ public class FixedBossMonster : BaseObject, IHitEvent
         if (base.Init() == false)
             return false;
 
-        Collider = GetComponent<BoxCollider>();
-        animator = GetComponent<Animator>();
-
-        ObjectType = EObjectType.BossMonster;
+        MonsterType = EMonsterType.BossMonster;
 
         this.gameObject.tag = ETag.Monster.ToString();
         this.gameObject.layer = (int)ELayer.Monster;
@@ -93,6 +87,16 @@ public class FixedBossMonster : BaseObject, IHitEvent
         return true;
     }
 
+    public override void SetInfo(int templateID = 0)
+    {
+        base.SetInfo(templateID);
+    }
+
+    protected override void FlipX(bool isLeft)
+    {
+        base.FlipX(true);
+    }
+
     private void SetMonsterData()
     {
         // ø¢ºø µ•¿Ã≈Õ∑Œ ∫–∏Æ øπ¡§ (¿”Ω√)
@@ -101,7 +105,7 @@ public class FixedBossMonster : BaseObject, IHitEvent
         monsterName = "Ω∫ƒÃ∑π≈Ê ≈∑";
     }
 
-    public void SetInfo(List<BossGimmickPoint> gimmickPointList, List<MonsterSpawnPoint> monsterSpawnPointList)
+    public void SetPointInfo(List<BossGimmickPoint> gimmickPointList, List<MonsterSpawnPoint> monsterSpawnPointList)
     {
         this.gimmickPointList = gimmickPointList;
         this.monsterSpawnPointList = monsterSpawnPointList;
@@ -115,13 +119,15 @@ public class FixedBossMonster : BaseObject, IHitEvent
         StartCoroutine(CoUpdateAI());
     }
 
+    public override float GetMaxHp() => MaxHp;
+
     public void OnAttackTarget(IHitEvent attackTarget)
     {
         if (patternNum == 1) attackTarget?.OnHit(new AttackParam(this, true, 1500));
         if (patternNum == 3) attackTarget?.OnHit(new AttackParam(this, true, 5000));
     }
 
-    public void OnHit(AttackParam param = null)
+    public override void OnHit(AttackParam param = null)
     {
         if (param == null || MonsterState == EFixedBossMonsterState.Dead)
             return;

@@ -122,6 +122,12 @@ public class Player : Creature, IHitEvent
 {
     [SerializeReference, ReadOnly] PlayerCameraController playerCameraController = null;
 
+    /// <summary> Type, CoolTime </summary>
+    public event Action<EPlayerSkillType, float> OnUseSkill = null;
+
+    public event Action<float> OnChangedHp = null;
+    public event Action<float> OnChangedMp = null;
+
     public Dictionary<EPlayerSkillType, PlayerSkill> PlayerSkillDict { get; protected set; }
     [field: SerializeField, ReadOnly] public EPlayerType PlayerType { get; protected set; }
     [field: SerializeField, ReadOnly] private PlayerData playerData = null;
@@ -329,27 +335,30 @@ public class Player : Creature, IHitEvent
         return cameraTargetPos;
     }
 
-    #region UI
-    public event Action<float> OnChangedHp = null; 
-    public event Action<float> OnChangedMp = null;
-    
-    /// <summary> Type, CoolTime </summary>
-    public event Action<EPlayerSkillType, float> OnUseSkill = null;
-
+    #region Inventory
     [SerializeField, ReadOnly] Inventory inventory;
+
+    public void OnGetInventroyItem(IInventoryItem item)
+    {
+        inventory.AddItem(item);
+    }
+
+    public void OnGetApplyItme(EItemType itemType)
+    {
+        switch (itemType)
+        {
+            case EItemType.HealPack:
+
+                break;
+            case EItemType.ManaPack:
+
+                break;
+        }
+    }
 
     public void OnUseItemKey(int slotId)
     {
-        InventoryItemData itemData = inventory.GetItem(slotId);
 
-        // ItemParam을 받아와야 할 듯
-        // 지금 상황에서 사용이 가능한지 판단.
-
-        bool isUse = true;
-        if(isUse)
-        {
-            inventory.RemoveItem(itemData);
-        }
     }
     #endregion
 

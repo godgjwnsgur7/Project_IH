@@ -9,6 +9,7 @@ public enum EMonsterType
 {
     NormalMonster = 0,
     NamedMonster = 1, // 미사용 중
+    BossMonster = 2,
     Max
 }
 
@@ -19,20 +20,6 @@ public abstract class BaseMonster : Creature, IHitEvent
     [SerializeField, ReadOnly] protected List<Renderer> rendererList;
 
     public Action<float> OnChangedCurrHp;
-
-    public override bool Init()
-    {
-        if (base.Init() == false)
-            return false;
-
-        CreatureType = ECreatureType.Monster;
-
-        this.gameObject.layer = (int)ELayer.Monster;
-        this.tag = ETag.Monster.ToString();
-        Collider.excludeLayers += 1 << (int)ELayer.Monster;
-
-        return true;
-    }
 
     protected override void Reset()
     {
@@ -52,11 +39,25 @@ public abstract class BaseMonster : Creature, IHitEvent
         SetInfo();
     }
 
+    public override bool Init()
+    {
+        if (base.Init() == false)
+            return false;
+
+        CreatureType = ECreatureType.Monster;
+
+        this.gameObject.layer = (int)ELayer.Monster;
+        this.tag = ETag.Monster.ToString();
+        Collider.excludeLayers += 1 << (int)ELayer.Monster;
+
+        return true;
+    }
+
     public override void SetInfo(int templateID = 0)
     {
         base.SetInfo(templateID);
 
-        collisionBarrier.SetInfo(ELayer.Player);
+        collisionBarrier?.SetInfo(ELayer.Player);
     }
 
     public abstract float GetMaxHp();
@@ -64,8 +65,8 @@ public abstract class BaseMonster : Creature, IHitEvent
     public override Vector3 GetTopPosition() => base.GetTopPosition();
     public override float GetSizeX() => base.GetSizeX();
 
-    protected Coroutine coDestroyEffect = null;
-    protected IEnumerator CoDestroyEffect(float fadeTime)
+    protected Coroutine coDisappearEffect = null;
+    protected IEnumerator CoDisappearEffect(float fadeTime, Action onDisappear)
     {
         while (true)
         {
@@ -89,8 +90,8 @@ public abstract class BaseMonster : Creature, IHitEvent
             yield return null;
         }
 
-        coDestroyEffect = null;
-        Managers.Resource.Destroy(gameObject);
+        coDisappearEffect = null;
+        onDisappear?.Invoke();
     }
 
     #region Animation Clip Event
