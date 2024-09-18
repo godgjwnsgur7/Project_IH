@@ -20,7 +20,7 @@ public class InventoryItemData
 	}
 }
 
-public class Inventory : MonoBehaviour
+public class Inventory
 {
 	private const int SLOT_SIZE = 6;
 

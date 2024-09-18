@@ -18,7 +18,7 @@ enum EItemSlot
 public class UI_Inventory : MonoBehaviour
 {
 	public GameObject item;
-	public Inventory inventory;
+	public Inventory inventory = new Inventory();
 
 	[SerializeField, ReadOnly] UI_ItemSlot[] itemSlots;
 
@@ -45,10 +45,8 @@ public class UI_Inventory : MonoBehaviour
 
 	private void Start()
 	{
-		GameObject playerObject = GameObject.FindWithTag("Player");
-		Player player = playerObject.GetComponent<Player>();
+		Player player = Managers.Game.Player;
 
-        //inventory = player.inventory;
         inventory.ItemAdd -= InventoryScript_ItemAdd;
         inventory.ItemAdd += InventoryScript_ItemAdd;
         inventory.ItemRemove -= InventoryScript_ItemRemove;

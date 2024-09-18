@@ -286,8 +286,14 @@ public class Player : Creature, IHitEvent
         skillAttackObject.SetActiveCollider(false);
         skillAttackObject.SetInfo(ETag.Player, OnSkillAttackTarget);
         attackObject.SetInfo(ETag.Player, OnAttackTarget);
-    
-        Managers.UI.SceneUI.GetComponent<UI_GameScene>()?.SetInfo(OnReadyToSkill, playerData.MaxHp, playerData.MaxMp);
+
+        UI_GameScene gameSceneUI = Managers.UI.SceneUI.GetComponent<UI_GameScene>();
+        if(gameSceneUI != null)
+        {
+            gameSceneUI.SetInfo(OnReadyToSkill, playerData.MaxHp, playerData.MaxMp);
+            inventory = gameSceneUI.uiInventory.inventory;
+        }
+
         IsPlayerInputControll = true;
     }
 
@@ -326,6 +332,7 @@ public class Player : Creature, IHitEvent
     #region UI
     public event Action<float> OnChangedHp = null; 
     public event Action<float> OnChangedMp = null;
+    
     /// <summary> Type, CoolTime </summary>
     public event Action<EPlayerSkillType, float> OnUseSkill = null;
 
@@ -1027,6 +1034,10 @@ public class Player : Creature, IHitEvent
     private void OnDamaged(float damage)
     {
         playerData.CurrHp -= damage;
+
+        if (playerData.CurrHp < 0)
+            playerData.CurrHp = 0;
+
         OnChangedHp?.Invoke(playerData.CurrHp);
     }
 
@@ -1054,14 +1065,12 @@ public class Player : Creature, IHitEvent
             OnDamaged(damageParam.damage);
 
             PlayerState = EPlayerState.Block;
-            return;
         }
 
         damageParam = new((int)param.damage
             , transform.position + (Collider.size.y * Vector3.up * 1.2f));
         Managers.UI.SpawnObjectUI<UI_Damage>(EUIObjectType.UI_Damage, damageParam);
         OnDamaged(damageParam.damage);
-
 
         if (isSuperArmour)
         {
@@ -1076,12 +1085,18 @@ public class Player : Creature, IHitEvent
         Managers.Object.SpawnEffectObject(EEffectObjectType.PlayerHitEffect, this.transform.position + subVec);
         isPlayerStateLock = false;
 
-        if (CreatureFoot.IsLandingGround)
-            PlayerState = EPlayerState.Hit;
-        else
+        if(CreatureFoot.IsLandingGround == false)
         {
             hitForceVec.y = param.pushPower;
             PlayerState = EPlayerState.Down;
+        }
+        else if(playerData.CurrHp <= 0)
+        {
+            PlayerState = EPlayerState.Dead;
+        }
+        else
+        {
+            PlayerState = EPlayerState.Hit;
         }
     }
 
@@ -1175,10 +1190,17 @@ public class Player : Creature, IHitEvent
     protected virtual void UpdateDownLandState()
     {
        if(IsEndCurrentState(EPlayerState.DownLand))
-        {
-            isPlayerStateLock = false;
-            PlayerState = EPlayerState.GetUp;
-        }
+       {
+            if (playerData.CurrHp <= 0)
+            {
+                Managers.Game.ClearFailedStage();
+            }
+            else
+            {
+                isPlayerStateLock = false;
+                PlayerState = EPlayerState.GetUp;
+            }
+       }
     }
 
     protected virtual void DownLandStateExit()
