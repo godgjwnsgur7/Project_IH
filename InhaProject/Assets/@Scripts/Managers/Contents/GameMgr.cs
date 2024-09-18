@@ -53,8 +53,8 @@ public class GameMgr
         }
 
         _player = Managers.Resource.Instantiate(PrefabPath.OBJECT_PLAYER_PATH + $"/{EPlayerType.Player}").GetComponent<Player>();
-        _player.transform.position = CurrStage.PlayerStartingPoint.position;
-        _player.SetInfo(0);
+        Player.transform.position = CurrStage.PlayerStartingPoint.position;
+        Player.SetInfo(0);
 
         Camera.main.GetComponent<MainCameraController>().SetTarget(_player);
     }
@@ -67,6 +67,9 @@ public class GameMgr
     
     public void StartStage()
     {
+        if(CurrStage != null)
+            Managers.Resource.Destroy(CurrStage.gameObject);
+
         CurrStage = LoadStage(currStageId);
         if (CurrStage == null)
         {
@@ -74,9 +77,11 @@ public class GameMgr
             return;
         }
 
-         _player = Managers.Resource.Instantiate(PrefabPath.OBJECT_PLAYER_PATH + $"/{EPlayerType.Player}").GetComponent<Player>();
-        _player.transform.position = CurrStage.PlayerStartingPoint.position;
-        _player.SetInfo(0);
+        if(_player == null)
+            _player = Managers.Resource.Instantiate(PrefabPath.OBJECT_PLAYER_PATH + $"/{EPlayerType.Player}").GetComponent<Player>();
+
+        Player.transform.position = CurrStage.PlayerStartingPoint.position;
+        Player.SetInfo(0);
 
         Camera.main.GetComponent<MainCameraController>().SetTarget(_player);
     }

@@ -80,11 +80,6 @@ public class Inventory : MonoBehaviour
 			}
 		}
 
-		else
-		{
-			Debug.Log(data.name + "이 없습니다.");
-		}
-
 		return false;
 	}
 

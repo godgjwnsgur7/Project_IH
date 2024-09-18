@@ -116,6 +116,24 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Num1Key"",
+                    ""type"": ""Button"",
+                    ""id"": ""d3d40446-1368-4e35-8112-24a05463b794"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Num2Key"",
+                    ""type"": ""Button"",
+                    ""id"": ""dbcb70cc-4666-44e7-b6bb-3a042386e4c1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -272,6 +290,28 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""VKey"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7d44ffa1-99ac-4f16-9eed-90ecdf5aea2c"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Num1Key"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1f3c2b24-4b89-4f29-863d-84bfd663ecd2"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Num2Key"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -324,6 +364,8 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
         m_InGame_XKey = m_InGame.FindAction("XKey", throwIfNotFound: true);
         m_InGame_CKey = m_InGame.FindAction("CKey", throwIfNotFound: true);
         m_InGame_VKey = m_InGame.FindAction("VKey", throwIfNotFound: true);
+        m_InGame_Num1Key = m_InGame.FindAction("Num1Key", throwIfNotFound: true);
+        m_InGame_Num2Key = m_InGame.FindAction("Num2Key", throwIfNotFound: true);
         // OutGame
         m_OutGame = asset.FindActionMap("OutGame", throwIfNotFound: true);
     }
@@ -397,6 +439,8 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_InGame_XKey;
     private readonly InputAction m_InGame_CKey;
     private readonly InputAction m_InGame_VKey;
+    private readonly InputAction m_InGame_Num1Key;
+    private readonly InputAction m_InGame_Num2Key;
     public struct InGameActions
     {
         private @MainInputActions m_Wrapper;
@@ -411,6 +455,8 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
         public InputAction @XKey => m_Wrapper.m_InGame_XKey;
         public InputAction @CKey => m_Wrapper.m_InGame_CKey;
         public InputAction @VKey => m_Wrapper.m_InGame_VKey;
+        public InputAction @Num1Key => m_Wrapper.m_InGame_Num1Key;
+        public InputAction @Num2Key => m_Wrapper.m_InGame_Num2Key;
         public InputActionMap Get() { return m_Wrapper.m_InGame; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -450,6 +496,12 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
             @VKey.started += instance.OnVKey;
             @VKey.performed += instance.OnVKey;
             @VKey.canceled += instance.OnVKey;
+            @Num1Key.started += instance.OnNum1Key;
+            @Num1Key.performed += instance.OnNum1Key;
+            @Num1Key.canceled += instance.OnNum1Key;
+            @Num2Key.started += instance.OnNum2Key;
+            @Num2Key.performed += instance.OnNum2Key;
+            @Num2Key.canceled += instance.OnNum2Key;
         }
 
         private void UnregisterCallbacks(IInGameActions instance)
@@ -484,6 +536,12 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
             @VKey.started -= instance.OnVKey;
             @VKey.performed -= instance.OnVKey;
             @VKey.canceled -= instance.OnVKey;
+            @Num1Key.started -= instance.OnNum1Key;
+            @Num1Key.performed -= instance.OnNum1Key;
+            @Num1Key.canceled -= instance.OnNum1Key;
+            @Num2Key.started -= instance.OnNum2Key;
+            @Num2Key.performed -= instance.OnNum2Key;
+            @Num2Key.canceled -= instance.OnNum2Key;
         }
 
         public void RemoveCallbacks(IInGameActions instance)
@@ -569,6 +627,8 @@ public partial class @MainInputActions: IInputActionCollection2, IDisposable
         void OnXKey(InputAction.CallbackContext context);
         void OnCKey(InputAction.CallbackContext context);
         void OnVKey(InputAction.CallbackContext context);
+        void OnNum1Key(InputAction.CallbackContext context);
+        void OnNum2Key(InputAction.CallbackContext context);
     }
     public interface IOutGameActions
     {

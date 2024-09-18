@@ -447,7 +447,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTestStage: 1
-  testStageId: 3
+  testStageId: 2
   inventory: {fileID: 585567867}
 --- !u!4 &545397593
 Transform:

@@ -28,7 +28,7 @@ public class ObjectMgr : MonoBehaviour
     private List<GameObject> activeObjects = new();
 
     //오브젝트 스폰
-    public void SpawnObject(EItemType itemType, Vector3 position = default, Quaternion rotation = default)
+    public void SpawnItemObject(EItemType itemType, Vector3 position = default, Quaternion rotation = default)
     {
         if (itemType == EItemType.None || itemType == EItemType.Max)
             return;

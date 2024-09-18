@@ -7,7 +7,7 @@ using static Define;
 
 public class CreatureFoot : InitBase
 {
-    public bool IsLandingGround{ get { return (landingCount > 0); } }
+    public bool IsLandingGround { get { return (landingCount > 0); } }
     public Rigidbody Rigid { get; private set; }
     public BoxCollider Collider { get; private set; }
 

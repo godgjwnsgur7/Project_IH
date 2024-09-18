@@ -19,7 +19,7 @@ public class ItemBox : BaseItem
             Managers.Object.DespawnObject(transform.parent.gameObject);
             Destroy(transform.parent.gameObject);
 
-            Managers.Object.SpawnObject(itemTypesToSpawn, spawnPosition, spawnRotation);
+            Managers.Object.SpawnItemObject(itemTypesToSpawn, spawnPosition, spawnRotation);
         }
     }
   

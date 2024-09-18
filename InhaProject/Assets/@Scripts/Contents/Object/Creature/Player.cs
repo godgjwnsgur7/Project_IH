@@ -335,6 +335,11 @@ public class Player : Creature, IHitEvent
         return cameraTargetPos;
     }
 
+    public void AddPosition(Vector3 addVec)
+    {
+        this.transform.position += addVec;
+    }
+
     #region Inventory
     [SerializeField, ReadOnly] Inventory inventory;
 
@@ -343,22 +348,47 @@ public class Player : Creature, IHitEvent
         inventory.AddItem(item);
     }
 
-    public void OnGetApplyItme(EItemType itemType)
+    public void OnGetApplyItme(ItemParam param)
     {
-        switch (itemType)
+        if(param is ApplyItemParam applyItemParam)
         {
-            case EItemType.HealPack:
-
-                break;
-            case EItemType.ManaPack:
-
-                break;
+            if (applyItemParam.IsHp)
+            {
+                Debug.Log($"체력포션 사용 : {applyItemParam.Heal} 회복");
+                RecoveryHp(applyItemParam.Heal);
+            }
+            else
+            {
+                // Mp
+                Debug.Log($"마나포션 사용 : {applyItemParam.Heal} 회복");
+                RecoveryMp(applyItemParam.Heal);
+            }
         }
     }
 
     public void OnUseItemKey(int slotId)
     {
+        InventoryItemData itemData = inventory.GetItem(slotId);
+        bool isUse = inventory.RemoveItem(itemData);
 
+        if (isUse)
+        {
+            if (itemData.param is PotionItemParam potion)
+            {
+                if (potion.IsHp)
+                {
+                    // Hp
+                    Debug.Log($"체력포션 사용 : {potion.Heal} 회복");
+                    RecoveryHp(potion.Heal);
+                }
+                else
+                {
+                    // Mp
+                    Debug.Log($"마나포션 사용 : {potion.Heal} 회복");
+                    RecoveryMp(potion.Heal);
+                }
+            }
+        }
     }
     #endregion
 
@@ -372,10 +402,12 @@ public class Player : Creature, IHitEvent
         Managers.Input.OnCKeyEntered -= OnJumpKey;
         Managers.Input.OnVKeyEntered -= OnGuardKey;
         Managers.Input.OnXKeyEntered -= OnAttackKey;
-        Managers.Input.OnZKeyEntered += OnSkillKey1;
+        Managers.Input.OnZKeyEntered -= OnSkillKey1;
         Managers.Input.OnAKeyEntered -= OnSkillKey2;
         Managers.Input.OnSKeyEntered -= OnSkillKey3;
         Managers.Input.OnDKeyEntered -= OnSkillKey4;
+        Managers.Input.OnNum1KeyEntered -= OnUseItemSlot1;
+        Managers.Input.OnNum2KeyEntered -= OnUseItemSlot2;
 
         if (isConnect)
         {
@@ -388,6 +420,8 @@ public class Player : Creature, IHitEvent
             Managers.Input.OnAKeyEntered += OnSkillKey2;
             Managers.Input.OnSKeyEntered += OnSkillKey3;
             Managers.Input.OnDKeyEntered += OnSkillKey4;
+            Managers.Input.OnNum1KeyEntered += OnUseItemSlot1;
+            Managers.Input.OnNum2KeyEntered += OnUseItemSlot2;
         }
     }
 
@@ -504,6 +538,16 @@ public class Player : Creature, IHitEvent
             IsInvincibility = true;
     }
 
+    public void OnUseItemSlot1()
+    {
+        OnUseItemKey(1);
+    }
+
+    public void OnUseItemSlot2()
+    {
+        OnUseItemKey(2);
+    }
+
     #endregion
 
     #region PlayerState Controll
@@ -514,13 +558,16 @@ public class Player : Creature, IHitEvent
         float timer = 0.0f;
         while (IsPlayerInputControll)
         {
-            timer += Time.deltaTime;
-            if(timer >= 1.0f)
+            if(!isDead)
             {
-                timer -= 1.0f;
-                NaturalRecovery();
+                timer += Time.deltaTime;
+                if (timer >= 1.0f)
+                {
+                    timer -= 1.0f;
+                    NaturalRecovery();
+                }
             }
-
+            
             switch (PlayerState)
             {
                 case EPlayerState.Idle: UpdateIdleState(); break;
@@ -551,13 +598,27 @@ public class Player : Creature, IHitEvent
 
     private void NaturalRecovery()
     {
-        playerData.CurrHp += 10;
-        playerData.CurrMp += 5;
+        RecoveryHp(10);
+        RecoveryMp(5);
+    }
+    
+    private void RecoveryHp(float hp)
+    {
+        playerData.CurrHp += hp;
 
-        if (playerData.CurrHp > playerData.MaxHp) playerData.CurrHp = playerData.MaxHp;
-        if (playerData.CurrMp > playerData.MaxMp) playerData.CurrMp = playerData.MaxMp;
+        if (playerData.CurrHp > playerData.MaxHp)
+            playerData.CurrHp = playerData.MaxHp;
 
         OnChangedHp?.Invoke(playerData.CurrHp);
+    }
+
+    private void RecoveryMp(float mp)
+    {
+        playerData.CurrMp += mp;
+
+        if (playerData.CurrMp > playerData.MaxMp) 
+            playerData.CurrMp = playerData.MaxMp;
+
         OnChangedMp?.Invoke(playerData.CurrMp);
     }
 
@@ -1045,7 +1106,10 @@ public class Player : Creature, IHitEvent
         playerData.CurrHp -= damage;
 
         if (playerData.CurrHp < 0)
+        {
+            isDead = true;
             playerData.CurrHp = 0;
+        }
 
         OnChangedHp?.Invoke(playerData.CurrHp);
     }
@@ -1172,7 +1236,10 @@ public class Player : Creature, IHitEvent
         if (CreatureFoot.IsLandingGround)
         {
             isPlayerStateLock = false;
-            PlayerState = EPlayerState.DownLand;
+            if (playerData.CurrHp <= 0)
+                PlayerState = EPlayerState.Dead;
+            else
+                PlayerState = EPlayerState.DownLand;
         }
     }
 
@@ -1200,16 +1267,9 @@ public class Player : Creature, IHitEvent
     {
        if(IsEndCurrentState(EPlayerState.DownLand))
        {
-            if (playerData.CurrHp <= 0)
-            {
-                Managers.Game.ClearFailedStage();
-            }
-            else
-            {
-                isPlayerStateLock = false;
-                PlayerState = EPlayerState.GetUp;
-            }
-       }
+            isPlayerStateLock = false;
+            PlayerState = EPlayerState.GetUp;
+        }
     }
 
     protected virtual void DownLandStateExit()
@@ -1258,6 +1318,7 @@ public class Player : Creature, IHitEvent
     #endregion
 
     #region Dead Motion
+    bool isDead = false;
     protected virtual bool DeadStateCondition()
     {
         if (playerData.CurrHp > 0)
@@ -1269,14 +1330,8 @@ public class Player : Creature, IHitEvent
     protected virtual void DeadStateEnter()
     {
         IsInvincibility = true;
-    }
-
-    protected virtual void UpdateDeadState()
-    {
-        if (IsEndCurrentState(EPlayerState.Dead))
-        {
-            Managers.Game.ClearFailedStage();
-        }
+        InitRigidVelocityX();
+        Managers.Game.ClearFailedStage();
     }
     #endregion
 
