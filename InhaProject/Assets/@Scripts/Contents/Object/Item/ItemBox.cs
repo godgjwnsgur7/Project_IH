@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Define;
 
+
 public class ItemBox : BaseItem
 {
 
-
+ 
     [SerializeField]
     private EItemType itemTypesToSpawn; // 생성될 아이템 
     private void OnCollisionEnter(Collision collision)
@@ -18,8 +19,13 @@ public class ItemBox : BaseItem
 
             Managers.Object.DespawnObject(transform.parent.gameObject);
             Destroy(transform.parent.gameObject);
-
-            Managers.Object.SpawnItemObject(itemTypesToSpawn, spawnPosition, spawnRotation);
+            if(itemTypesToSpawn == EItemType.Key)
+            {
+                Key key = new Key();
+                Managers.Game.Player.OnGetInventroyItem(key);
+            }
+            else
+                Managers.Object.SpawnItemObject(itemTypesToSpawn, spawnPosition, spawnRotation);
         }
     }
   
@@ -34,4 +40,6 @@ public class ItemBox : BaseItem
 
   
 }
+
+
 

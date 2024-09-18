@@ -20,7 +20,7 @@ public class ManaPack : BaseItem
     {
         if (!base.Init())
             return false;
-        ItemType = EItemType.HealPack;
+        ItemType = EItemType.ManaPack;
         param = new ApplyItemParam(false, heal);
         param.type = ItemType;
         return true;
