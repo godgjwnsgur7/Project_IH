@@ -6,11 +6,12 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
-public class IntroVideoPlayer : UI_ClearObject
+public class IntroVideoPlayer : MonoBehaviour
 {
 	public RawImage MovieScreen;
 	public VideoPlayer LinkedVideo;
 	[SerializeField] VideoClip videoClip;
+	[SerializeField] public Image fadeEffectImage;
 	[SerializeField] public GameObject exitbutton;
 
 	private bool bSkip = true;
@@ -55,8 +56,8 @@ public class IntroVideoPlayer : UI_ClearObject
 
 	public void OnClickSkipButton()
 	{
-		LinkedVideo.frame = (long)LinkedVideo.frameCount;
 		fadeEffectImage.color = new Color(0, 0, 0, 1);
+		LinkedVideo.frame = (long)LinkedVideo.frameCount;
 	}
 
 }
