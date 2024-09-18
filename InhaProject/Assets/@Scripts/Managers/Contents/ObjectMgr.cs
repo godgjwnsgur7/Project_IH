@@ -86,6 +86,8 @@ public class ObjectMgr : MonoBehaviour
     {
         foreach (var monster in baseMonsters)
             Managers.Resource.Destroy(monster.gameObject);
+
+        baseMonsters.Clear();
     }
 
     // 오브젝트 디스폰

@@ -21,11 +21,13 @@ public class UI_GameOverPopup : UI_BasePopup
 
     public void OnClickRestartButton()
     {
+        ClosePopupUI();
         Managers.Game.StartContinueGame();
     }
 
     public void OnClickExitButton()
     {
+        ClosePopupUI();
         Managers.Scene.LoadScene(Define.EScene.TitleScene);
     }
 

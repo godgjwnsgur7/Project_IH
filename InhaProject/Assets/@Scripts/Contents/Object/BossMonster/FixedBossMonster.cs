@@ -114,7 +114,7 @@ public class FixedBossMonster : BaseMonster, IHitEvent
         attackObject3.SetInfo(Define.ETag.Monster, OnAttackTarget);
 
         UIBossMonsterStatusParam param = new UIBossMonsterStatusParam(monsterName, MaxHp);
-        monsterStatusUI = Managers.UI.SpawnObjectUI<UI_BossMonsterStatus>(EUIObjectType.UI_BossMOnsterStatus, param);
+        monsterStatusUI = Managers.UI.SpawnObjectUI<UI_BossMonsterStatus>(EUIObjectType.UI_BossMonsterStatus, param);
 
         StartCoroutine(CoUpdateAI());
     }

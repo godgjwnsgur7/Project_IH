@@ -9,7 +9,7 @@ public enum EUIObjectType
 {
     UI_Damage,
     UI_MonsterStatus,
-    UI_BossMOnsterStatus,
+    UI_BossMonsterStatus,
     UI_Tooltip,
     UI_TextObject,
 }

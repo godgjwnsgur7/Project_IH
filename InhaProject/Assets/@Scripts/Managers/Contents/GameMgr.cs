@@ -23,7 +23,7 @@ public class GameMgr
         }
     }
 
-    int currStageId = 0;
+    int currStageId = 1;
     int maxStageId = 0;
 
     public void Init()
@@ -49,6 +49,7 @@ public class GameMgr
 
     public void TestStage(int stageId)
     {
+        currStageId = stageId;
         CurrStage = null;
         if (stageId == 0)
             CurrStage = Managers.Resource.Instantiate($"{PrefabPath.STAGE_PATH}/SamplePrefab/TestStage").GetComponent<BaseStage>();
@@ -76,7 +77,7 @@ public class GameMgr
 
     public void StartNewGame()
     {
-        currStageId = 0;
+        currStageId = 1;
         StartContinueGame();
     }
 
@@ -90,7 +91,7 @@ public class GameMgr
         if (CurrStage != null)
             Managers.Resource.Destroy(CurrStage.gameObject);
 
-        CurrStage = LoadStage(++currStageId);
+        CurrStage = LoadStage(currStageId);
         if (CurrStage == null)
         {
             Debug.LogError($"{currStageId}번 스테이지를 읽어올 수 없습니다.");
@@ -108,7 +109,8 @@ public class GameMgr
 
     public void ClearStage()
     {
-        if (maxStageId == currStageId)
+        currStageId++;
+        if (maxStageId < currStageId)
         {
             ClearGame();
             return;
@@ -131,7 +133,7 @@ public class GameMgr
 
     private void ClearGame()
     {
-        // 게임 클리어 창 띄우고, 로비로 돌아가자.
+        // Managers.UI.SpawnObjectUI<>
     }
 
     Action onEndEffect = null;
