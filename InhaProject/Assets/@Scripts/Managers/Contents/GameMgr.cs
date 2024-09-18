@@ -89,7 +89,9 @@ public class GameMgr
     public void StartStage()
     {
         if (CurrStage != null)
+        {
             Managers.Resource.Destroy(CurrStage.gameObject);
+        }
 
         CurrStage = LoadStage(currStageId);
         if (CurrStage == null)
@@ -133,7 +135,6 @@ public class GameMgr
 
     public void ClearFailedStage()
     {
-        --currStageId;
         Managers.UI.OpenPopupUI<UI_GameOverPopup>().SetInfo(new UIParam());
     }
 

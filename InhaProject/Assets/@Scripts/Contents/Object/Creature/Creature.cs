@@ -61,7 +61,7 @@ public class Creature : BaseObject
     {
         base.SetInfo(templateID);
 
-        CreatureFoot.InitLandingCount();
+        CreatureFoot?.InitLandingCount();
     }
 
     protected override void FlipX(bool isLeft)

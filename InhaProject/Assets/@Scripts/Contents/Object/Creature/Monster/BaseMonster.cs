@@ -30,7 +30,9 @@ public abstract class BaseMonster : Creature, IHitEvent
         rendererList = new List<Renderer>();
         Transform[] allChildren = this.GetComponentsInChildren<Transform>();
         foreach (Transform child in allChildren)
-            if (child.GetComponent<ParticleSystem>() == null && child.TryGetComponent<Renderer>(out Renderer renderer))
+            if (child.GetComponent<ParticleSystem>() == null && 
+                child.GetComponent<TrailRenderer>() == null &&
+                child.TryGetComponent<Renderer>(out Renderer renderer))
                 rendererList.Add(renderer);
     }
 
@@ -77,13 +79,16 @@ public abstract class BaseMonster : Creature, IHitEvent
             float time = fadeTime * Time.deltaTime;
             foreach (Renderer randerer in rendererList)
             {
-                Color tempColor = randerer.material.color;
-                if (tempColor.a > 0.01f)
+                if(randerer != null && randerer.material != null)
                 {
-                    count++;
-                    tempColor.a -= time;
-                    if (tempColor.a <= 0.1f) tempColor.a = 0f;
-                    randerer.material.color = tempColor;
+                    Color tempColor = randerer.material.color;
+                    if (tempColor.a > 0.01f)
+                    {
+                        count++;
+                        tempColor.a -= time;
+                        if (tempColor.a <= 0.1f) tempColor.a = 0f;
+                        randerer.material.color = tempColor;
+                    }
                 }
             }
 

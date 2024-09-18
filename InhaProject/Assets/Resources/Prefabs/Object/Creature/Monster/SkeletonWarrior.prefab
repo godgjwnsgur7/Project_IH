@@ -42146,7 +42146,6 @@ MonoBehaviour:
   rendererList:
   - {fileID: 6392578872326442776}
   - {fileID: 3120640660852872551}
-  - {fileID: 2527706332385672187}
   <NormalMonsterType>k__BackingField: 0
   monsterData:
     MaxHp: 0
