@@ -14,7 +14,7 @@ public class GameMgr
 
     public BaseStage CurrStage { get; private set; } = null;
 
-    int currStageId = 1;
+    int currStageId = 0;
     int maxStageId = 0;
 
     public void Init()
@@ -64,13 +64,24 @@ public class GameMgr
     {
         return Managers.Resource.Instantiate($"{PrefabPath.STAGE_PATH}/Stage {stageId}").GetComponent<BaseStage>();
     }
-    
+
+    public void StartNewGame()
+    {
+        currStageId = 0;
+        StartContinueGame();
+    }
+
+    public void StartContinueGame()
+    {
+        Managers.Scene.LoadScene(Define.EScene.GameScene);
+    }
+
     public void StartStage()
     {
-        if(CurrStage != null)
+        if (CurrStage != null)
             Managers.Resource.Destroy(CurrStage.gameObject);
 
-        CurrStage = LoadStage(currStageId);
+        CurrStage = LoadStage(++currStageId);
         if (CurrStage == null)
         {
             Debug.LogError($"{currStageId}번 스테이지를 읽어올 수 없습니다.");
@@ -97,19 +108,21 @@ public class GameMgr
         NextStage();
     }
 
+    private void NextStage()
+    {
+        UIFadeEffectParam param = new UIFadeEffectParam(null, StartStage, null);
+        Managers.UI.OpenPopupUI<UI_FadeEffectPopup>(param);
+    }
+
     public void ClearFailedStage()
     {
+        --currStageId;
         Managers.Scene.LoadScene(Define.EScene.TitleScene);
     }
 
     private void ClearGame()
     {
         // 게임 클리어 창 띄우고, 로비로 돌아가자.
-    }
-
-    private void NextStage()
-    {
-        Managers.Scene.LoadScene(Define.EScene.GameScene);
     }
 
     Action onEndEffect = null;

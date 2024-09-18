@@ -413,6 +413,9 @@ public class NormalMonster : BaseMonster
     Vector3 hitForceDir = Vector3.zero;
     public override void OnHit(AttackParam param = null)
     {
+        if (MonsterState == ENormalMonsterState.Dead)
+            return;
+
         if (param == null)
             return;
 
@@ -472,6 +475,7 @@ public class NormalMonster : BaseMonster
     #endregion
 
     #region Dead Motion
+    bool isDead = false;
     protected virtual bool DeadStateCondition()
     {
         if (monsterData.CurrHp > 0f)
@@ -479,12 +483,16 @@ public class NormalMonster : BaseMonster
 
         return true;
     }
-    protected virtual void DeadStateEnter() { }
+    protected virtual void DeadStateEnter()
+    {
+        coDisappearEffect = StartCoroutine(CoDisappearEffect(1f, () => isDead, OnDeadMonster));
+    }
+
     protected virtual void UpdateDeadState()
     {
         if (IsEndCurrentState(ENormalMonsterState.Dead))
         {
-            coDisappearEffect = StartCoroutine(CoDisappearEffect(1.5f, OnDeadMonster));
+            isDead = true;
             return;
         }
     }
@@ -493,10 +501,9 @@ public class NormalMonster : BaseMonster
     {
         // 일정 확률에 따라 아이템 드롭해야 함 (임시)
         int random = UnityEngine.Random.Range((int)EItemType.None + 1, (int)EItemType.Key);
-        Vector3 spawnPosVec = transform.position + (Vector3.up * Collider.size.y * transform.localScale.y / 2);
+        Vector3 spawnPosVec = transform.position;
         
         Managers.Object.SpawnItemObject((EItemType)random, spawnPosVec);
-
         Managers.Resource.Destroy(this.gameObject);
     }
 

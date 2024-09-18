@@ -23,6 +23,9 @@ public class ObjectMgr : MonoBehaviour
     }
     #endregion
 
+    // 임시
+    public List<BaseMonster> baseMonsters = new List<BaseMonster>();
+
     private Dictionary<EItemType, string> itemPrefabsDict = new Dictionary<EItemType, string>();
 
     private List<GameObject> activeObjects = new();
@@ -66,6 +69,12 @@ public class ObjectMgr : MonoBehaviour
     public void Init()
     {
         SetItemPrefabsDict();
+    }
+
+    public void Clear()
+    {
+        foreach (var monster in baseMonsters)
+            Managers.Resource.Destroy(monster.gameObject);
     }
 
     // 오브젝트 디스폰

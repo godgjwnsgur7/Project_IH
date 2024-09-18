@@ -44,6 +44,11 @@ public class UI_GameScene : UI_BaseScene
 		uiSkillBar.SetInfo(OnReadyToSkill, maxMp);
 	}
 	
+	public void OnClickTest()
+	{
+		Managers.Game.ClearStage();
+	}
+
 	// 테스트 용도
 	public void OnClickDialogueButton()
 	{

@@ -1126,6 +1126,7 @@ public class Player : Creature, IHitEvent
 
         UIDamageParam damageParam;
         Vector3 subVec = new Vector3(0, Collider.size.y * 0.7f, 0);
+
         if (PlayerState == EPlayerState.Guard && param.isAttackerLeft == !LookLeft)
         {
             subVec.x += Collider.size.x * ((LookLeft) ? -1 : 1) * 2;
@@ -1138,6 +1139,7 @@ public class Player : Creature, IHitEvent
             OnDamaged(damageParam.damage);
 
             PlayerState = EPlayerState.Block;
+            return;
         }
 
         damageParam = new((int)param.damage

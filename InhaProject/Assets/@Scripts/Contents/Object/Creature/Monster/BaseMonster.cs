@@ -16,7 +16,7 @@ public enum EMonsterType
 public abstract class BaseMonster : Creature, IHitEvent
 {
     [field: SerializeField, ReadOnly] public EMonsterType MonsterType { get; protected set; }
-    [SerializeField, ReadOnly] MonsterCollisionBarrier collisionBarrier;
+    [SerializeField, ReadOnly] protected MonsterCollisionBarrier collisionBarrier;
     [SerializeField, ReadOnly] protected List<Renderer> rendererList;
 
     public Action<float> OnChangedCurrHp;
@@ -58,6 +58,7 @@ public abstract class BaseMonster : Creature, IHitEvent
         base.SetInfo(templateID);
 
         collisionBarrier?.SetInfo(ELayer.Player);
+        Managers.Object.baseMonsters.Add(this);
     }
 
     public abstract float GetMaxHp();
@@ -66,12 +67,14 @@ public abstract class BaseMonster : Creature, IHitEvent
     public override float GetSizeX() => base.GetSizeX();
 
     protected Coroutine coDisappearEffect = null;
-    protected IEnumerator CoDisappearEffect(float fadeTime, Action onDisappear)
+    protected IEnumerator CoDisappearEffect(float fadeTime, Func<bool> waitCondition, Action onDisappear = null)
     {
+        yield return new WaitUntil(waitCondition);
+
         while (true)
         {
             int count = 0;
-            float time = fadeTime * 0.01f * Time.deltaTime;
+            float time = fadeTime * Time.deltaTime;
             foreach (Renderer randerer in rendererList)
             {
                 Color tempColor = randerer.material.color;
@@ -79,7 +82,7 @@ public abstract class BaseMonster : Creature, IHitEvent
                 {
                     count++;
                     tempColor.a -= time;
-                    if (tempColor.a <= 0f) tempColor.a = 0f;
+                    if (tempColor.a <= 0.1f) tempColor.a = 0f;
                     randerer.material.color = tempColor;
                 }
             }

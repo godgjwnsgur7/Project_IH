@@ -17,7 +17,7 @@ public class Creature : BaseObject
     public ECreatureType CreatureType { get; protected set; }
     public CreatureFoot CreatureFoot { get; protected set; }
 
-    protected Rigidbody Rigid { get; private set; }
+    [field: SerializeField, ReadOnly] protected Rigidbody Rigid { get; private set; }
     [SerializeField] public BoxCollider Collider { get; private set; }
 
     protected Animator animator;
