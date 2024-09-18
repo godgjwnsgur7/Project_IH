@@ -134,6 +134,8 @@ public class GameMgr
     private void ClearGame()
     {
         // Managers.UI.SpawnObjectUI<>
+
+        Managers.UI.SpawnObjectUI<UI_ClearObject>(EUIObjectType.UI_ClearObject);
     }
 
     Action onEndEffect = null;

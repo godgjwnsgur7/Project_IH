@@ -427,7 +427,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 572048851423041700, guid: 3b2a17095992b4b48b6fc6b99a5af2f0, type: 3}
       propertyPath: m_Name
-      value: UI_ClearPopup
+      value: UI_ClearObject
       objectReference: {fileID: 0}
     - target: {fileID: 2333959833988425388, guid: 3b2a17095992b4b48b6fc6b99a5af2f0, type: 3}
       propertyPath: m_Pivot.x
