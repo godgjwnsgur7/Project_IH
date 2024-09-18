@@ -21,7 +21,8 @@ public class UI_GameOverPopup : UI_BasePopup
 
     public void OnClickRestartButton()
     {
-        Managers.Scene.LoadScene(Define.EScene.TitleScene);
+        Managers.Game.StartContinueGame();
+        //Managers.Scene.LoadScene(Define.EScene.TitleScene);
     }
 
     public void OnClickExitButton()
