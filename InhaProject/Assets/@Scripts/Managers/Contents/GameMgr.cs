@@ -112,11 +112,17 @@ public class GameMgr
         currStageId++;
         if (maxStageId < currStageId)
         {
-            ClearGame();
+            CoroutineHelper.StartCoroutine(CoClearGame());
             return;
         }
 
         NextStage();
+    }
+
+    private IEnumerator CoClearGame()
+    {
+        yield return new WaitForSecondsRealtime(1f);
+        ClearGame();
     }
 
     private void NextStage()

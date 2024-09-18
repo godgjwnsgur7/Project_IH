@@ -15,7 +15,7 @@ public enum ECreatureType
 public class Creature : BaseObject
 {
     public ECreatureType CreatureType { get; protected set; }
-    public CreatureFoot CreatureFoot { get; protected set; }
+    [field: SerializeField] public CreatureFoot CreatureFoot { get; protected set; }
 
     [field: SerializeField, ReadOnly] protected Rigidbody Rigid { get; private set; }
     [SerializeField] public BoxCollider Collider { get; private set; }
@@ -39,7 +39,7 @@ public class Creature : BaseObject
 
     protected virtual void Reset()
     {
-        CreatureFoot ??= Util.FindChild<CreatureFoot>(this.gameObject);
+        CreatureFoot = Util.FindChild<CreatureFoot>(this.gameObject);
     }
 
     public override bool Init()
@@ -47,7 +47,9 @@ public class Creature : BaseObject
         if (base.Init() == false)
             return false;
 
-        Reset();
+        if(CreatureFoot == null)
+            CreatureFoot = Util.FindChild<CreatureFoot>(this.gameObject);
+
         Collider = GetComponent<BoxCollider>();
         Rigid = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
@@ -58,6 +60,8 @@ public class Creature : BaseObject
     public override void SetInfo(int templateID = 0)
     {
         base.SetInfo(templateID);
+
+        CreatureFoot.InitLandingCount();
     }
 
     protected override void FlipX(bool isLeft)

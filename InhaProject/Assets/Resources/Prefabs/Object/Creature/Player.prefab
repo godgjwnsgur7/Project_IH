@@ -3811,8 +3811,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2abe321c6304ed4a878e1bfbfd439cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <CreatureFoot>k__BackingField: {fileID: 2656062218659092187}
+  <Rigid>k__BackingField: {fileID: 0}
   playerCameraController: {fileID: 2060847708270570820}
   <PlayerType>k__BackingField: 0
+  playerData:
+    MaxHp: 0
+    CurrHp: 0
+    MaxMp: 0
+    CurrMp: 0
+    StrikingPower: 0
+    MoveSpeed: 0
+    DashSpeed: 0
+    JumpPower: 0
   skillAttackObject: {fileID: 5049102924517790271}
   attackObject: {fileID: 2916405762298004907}
   _isPlayerInputControll: 0

@@ -18,9 +18,19 @@ public class CreatureFoot : InitBase
         if (base.Init() == false)
             return false;
 
-        landingCount = 0;
+        Rigid = GetComponent<Rigidbody>();
+        Collider = GetComponent<BoxCollider>();
+
+        InitLandingCount();
 
         return true;
+    }
+
+    public void InitLandingCount()
+    {
+        landingCount = 0;
+        Collider.enabled = false;
+        Collider.enabled = true;
     }
 
     private void Reset()

@@ -42139,6 +42139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 928286e0014f78445aec2897d31854b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <CreatureFoot>k__BackingField: {fileID: 2590540014061576277}
   <Rigid>k__BackingField: {fileID: 0}
   <MonsterType>k__BackingField: 0
   collisionBarrier: {fileID: 973143719794398247}

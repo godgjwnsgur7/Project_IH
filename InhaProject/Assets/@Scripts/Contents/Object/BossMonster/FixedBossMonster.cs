@@ -62,6 +62,9 @@ public class FixedBossMonster : BaseMonster, IHitEvent
                 case EFixedBossMonsterState.Pattern2:
                     SpawnMonsterPattern();
                     break;
+                case EFixedBossMonsterState.Dead:
+                    EnterDeadState();
+                    break;
             }
         }
     }
@@ -200,10 +203,14 @@ public class FixedBossMonster : BaseMonster, IHitEvent
         }
     }
 
+    protected void EnterDeadState()
+    {
+        Managers.Game.ClearStage();
+    }
+
     protected void UpdateDeadState()
     {
         this.transform.position += Vector3.right * 0.02f;
-        Managers.Game.ClearStage();
     }
 
     protected void SpawnMonsterPattern()

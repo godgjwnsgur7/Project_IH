@@ -85,7 +85,8 @@ public class ObjectMgr : MonoBehaviour
     public void Clear()
     {
         foreach (var monster in baseMonsters)
-            Managers.Resource.Destroy(monster.gameObject);
+            if(monster != null)
+                Managers.Resource.Destroy(monster.gameObject);
 
         baseMonsters.Clear();
     }
