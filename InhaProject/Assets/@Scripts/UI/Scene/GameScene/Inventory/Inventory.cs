@@ -63,7 +63,7 @@ public class Inventory : MonoBehaviour
 		}
 	}
 
-	public void RemoveItem(InventoryItemData data)
+	public bool RemoveItem(InventoryItemData data)
 	{
 		if (items.Exists(x => x.Name.Equals(data.name)))
 		{
@@ -76,14 +76,16 @@ public class Inventory : MonoBehaviour
 			{
 				items.Remove(findItem);
 				Debug.Log(items.Exists(x => x.Name.Equals(data.name)));
+				return true;
 			}
-			return;
 		}
 
 		else
 		{
 			Debug.Log(data.name + "이 없습니다.");
 		}
+
+		return false;
 	}
 
 	public bool RemoveItem(IInventoryItem item)
