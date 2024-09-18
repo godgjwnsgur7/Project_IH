@@ -62,9 +62,6 @@ public class FixedBossMonster : BaseMonster, IHitEvent
                 case EFixedBossMonsterState.Pattern2:
                     SpawnMonsterPattern();
                     break;
-                case EFixedBossMonsterState.Dead:
-                    EnterDeadState();
-                    break;
             }
         }
     }
@@ -172,6 +169,9 @@ public class FixedBossMonster : BaseMonster, IHitEvent
                 case EFixedBossMonsterState.Pattern3:
                     UpdatePattern(MonsterState);
                     break;
+                case EFixedBossMonsterState.Dead:
+                    UpdateDeadState();
+                    break;
             }
 
             if (UpdateAITick > 0)
@@ -200,9 +200,9 @@ public class FixedBossMonster : BaseMonster, IHitEvent
         }
     }
 
-    protected void EnterDeadState()
+    protected void UpdateDeadState()
     {
-        SetRigidVelocityX(5);
+        this.transform.position += Vector3.right * 0.02f;
         Managers.Game.ClearStage();
     }
 
