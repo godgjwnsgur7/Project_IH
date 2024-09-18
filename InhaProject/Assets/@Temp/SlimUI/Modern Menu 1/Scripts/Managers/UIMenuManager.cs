@@ -137,9 +137,14 @@ namespace SlimUI.ModernMenu{
 			mainMenu.SetActive(true);
 		}
 
-		public void LoadScene(string scene)
+		public void LoadScene()
 		{
-			Managers.Scene.LoadScene(Define.EScene.GameScene);
+			Managers.Game.StartNewGame();
+		}
+
+		public void ContinueScene()
+		{
+			Managers.Game.StartContinueGame();
 		}
 
 		public void  DisablePlayCampaign(){

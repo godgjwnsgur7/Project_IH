@@ -227,7 +227,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61d3c40a22eadd0419c82db1daaac4a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 0}
   inventory: {fileID: 0}
   itemSlots:
   - {fileID: 2533288651190111165}
@@ -1606,6 +1605,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 321524199318266599}
     m_Modifications:
+    - target: {fileID: 2828124539157884449, guid: 60ff186e70ae1f94b8cdabc43dc8c685, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3917650589931797883, guid: 60ff186e70ae1f94b8cdabc43dc8c685, type: 3}
       propertyPath: m_Sprite
       value: 
