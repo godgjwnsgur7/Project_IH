@@ -63,7 +63,7 @@ public class FixedBossMonster : BaseMonster, IHitEvent
                     SpawnMonsterPattern();
                     break;
                 case EFixedBossMonsterState.Dead:
-                    // 뒤로 물러나며 사라지는 모션 추가 예정
+                    EnterDeadState();
                     break;
             }
         }
@@ -172,9 +172,6 @@ public class FixedBossMonster : BaseMonster, IHitEvent
                 case EFixedBossMonsterState.Pattern3:
                     UpdatePattern(MonsterState);
                     break;
-                case EFixedBossMonsterState.Dead:
-                    UpdateDeadState();
-                    break;
             }
 
             if (UpdateAITick > 0)
@@ -206,6 +203,7 @@ public class FixedBossMonster : BaseMonster, IHitEvent
     protected void EnterDeadState()
     {
         SetRigidVelocityX(5);
+        Managers.Game.ClearStage();
     }
 
     protected void SpawnMonsterPattern()
