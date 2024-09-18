@@ -354,13 +354,10 @@ public class Player : Creature, IHitEvent
         {
             if (applyItemParam.IsHp)
             {
-                Debug.Log($"체력포션 사용 : {applyItemParam.Heal} 회복");
                 RecoveryHp(applyItemParam.Heal);
             }
             else
             {
-                // Mp
-                Debug.Log($"마나포션 사용 : {applyItemParam.Heal} 회복");
                 RecoveryMp(applyItemParam.Heal);
             }
         }
@@ -377,14 +374,10 @@ public class Player : Creature, IHitEvent
             {
                 if (potion.IsHp)
                 {
-                    // Hp
-                    Debug.Log($"체력포션 사용 : {potion.Heal} 회복");
                     RecoveryHp(potion.Heal);
                 }
                 else
                 {
-                    // Mp
-                    Debug.Log($"마나포션 사용 : {potion.Heal} 회복");
                     RecoveryMp(potion.Heal);
                 }
             }

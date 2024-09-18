@@ -42,8 +42,6 @@ public class NamedMonster : MonoBehaviour
             if (_monsterState == value)
                 return;
 
-            bool isChangeState = true;
-
             // TODO ม๘วเ ม฿
         }
     }
