@@ -12,6 +12,7 @@ public enum EUIObjectType
     UI_BossMonsterStatus,
     UI_Tooltip,
     UI_TextObject,
+    UI_ClearObject,
 }
 
 public class UI_BaseObject : InitBase
