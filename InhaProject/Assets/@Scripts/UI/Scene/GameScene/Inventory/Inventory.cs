@@ -48,7 +48,6 @@ public class Inventory : MonoBehaviour
 			{
 				IInventoryItem findItem = items.Find(x => x.Name.Equals(item.Name));
 				findItem.Count += item.Count;
-				Debug.Log(findItem.Count);
 				if ( ItemAdd != null )
 					ItemAdd(this, new InventoryEventArgs(item));
 				return;
@@ -65,6 +64,9 @@ public class Inventory : MonoBehaviour
 
 	public bool RemoveItem(InventoryItemData data)
 	{
+		if (data == null)
+			return false;
+
 		if (items.Exists(x => x.Name.Equals(data.name)))
 		{
 			IInventoryItem findItem = items.Find(x => x.Name.Equals(data.name));
@@ -75,7 +77,6 @@ public class Inventory : MonoBehaviour
 			if (findItem.Count <= 0)
 			{
 				items.Remove(findItem);
-				Debug.Log(items.Exists(x => x.Name.Equals(data.name)));
 				return true;
 			}
 		}
@@ -112,6 +113,24 @@ public class Inventory : MonoBehaviour
 
 	public InventoryItemData GetItem(int slotId)
 	{
+		switch (slotId)
+		{
+			case 1:
+				return FindItemData(EItemType.HealPotion.ToString());
+			case 2:
+				return FindItemData(EItemType.ManaPotion.ToString());
+		}
 		return null;
+	}
+
+	public InventoryItemData FindItemData(string name)
+	{
+		if (!items.Exists(x => x.Name.Equals(name)))
+			return null;
+		IInventoryItem findItem = items.Find(x => x.Name.Equals(name));
+
+		InventoryItemData param = new InventoryItemData(findItem.Name, findItem.Count, findItem.Param);
+
+		return param;
 	}
 }

@@ -34,6 +34,10 @@ public class PotionItemParam : ItemParam
     public PotionItemParam(bool isHp, float heal)
     {
         IsHp = isHp;
+        if (isHp)
+            type = EItemType.HealPotion;
+        else
+            type = EItemType.ManaPotion;
         this.Heal = heal;
     }
 }
