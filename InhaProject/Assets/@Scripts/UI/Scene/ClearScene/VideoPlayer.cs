@@ -43,16 +43,11 @@ public class IntroVideoPlayer : MonoBehaviour
 		Managers.UI.OpenPopupUI<UI_Dialogue>(dialogueParam);
 
 		exitbutton.SetActive(true);
-
 	}
 
 	public void OnClickExitButton()
 	{
-#if UNITY_EDITOR
-		UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit(); 
-#endif
+		Managers.Scene.LoadScene(Define.EScene.TitleScene);
 	}
 
 }
