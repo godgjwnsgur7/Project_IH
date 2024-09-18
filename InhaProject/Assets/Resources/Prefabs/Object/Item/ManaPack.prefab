@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4029933100025510027}
-  - component: {fileID: 2615763744968611465}
   - component: {fileID: 2960144361954936849}
+  - component: {fileID: 8839708906464481695}
   m_Layer: 0
   m_Name: ManaPack
   m_TagString: Untagged
@@ -35,19 +35,6 @@ Transform:
   - {fileID: 5407400648709305984}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2615763744968611465
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1433745342197572927}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5591bd173c222e41a37ef840935c7ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  heal: 10
 --- !u!65 &2960144361954936849
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -69,6 +56,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.0800004, y: 1.0800002, z: 0.18720055}
   m_Center: {x: -0.00000023841858, y: 1, z: 0}
+--- !u!114 &8839708906464481695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1433745342197572927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15ad6d010e07226449e097218ba642e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  heal: 10
 --- !u!1 &5625906919148229049
 GameObject:
   m_ObjectHideFlags: 0
