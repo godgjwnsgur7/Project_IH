@@ -88,12 +88,13 @@ public class UI_Inventory : MonoBehaviour
 			
 			if (slot.name == item.Name)
 			{
-				int count = int.Parse(slot.countText.text);
-				count -= 1;
 				
 				if ( slot.type == EItemSlotType.HealPotion ||
 					slot.type == EItemSlotType.ManaPotion)
 				{
+					int count = int.Parse(slot.countText.text);
+					count -= 1;
+
 					if (count > 0)
 						slot.countText.text = count.ToString();
 					else
