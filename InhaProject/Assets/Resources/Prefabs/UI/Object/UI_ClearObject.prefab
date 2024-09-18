@@ -75,68 +75,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &101015279341012839
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 992578798106009232}
-  - component: {fileID: 5073076669784010446}
-  - component: {fileID: 7781149672294556759}
-  m_Layer: 5
-  m_Name: VideoPlayer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &992578798106009232
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 101015279341012839}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2333959833988425388}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5073076669784010446
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 101015279341012839}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 040489859716684458383299b2e1fcc4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fadeEffectImage: {fileID: 0}
-  MovieScreen: {fileID: 1577197796726565900}
-  LinkedVideo: {fileID: 9131624423337606123}
-  videoClip: {fileID: 32900000, guid: ec38cc8f2f0348249a26f01304eca9cb, type: 3}
-  exitbutton: {fileID: 2245056689995823584}
---- !u!222 &7781149672294556759
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 101015279341012839}
-  m_CullTransparentMesh: 1
 --- !u!1 &572048851423041700
 GameObject:
   m_ObjectHideFlags: 0
@@ -170,7 +108,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 55579609537642915}
-  - {fileID: 992578798106009232}
   - {fileID: 5851086862912740333}
   - {fileID: 7684811546168027967}
   - {fileID: 102804477810862656}
@@ -258,6 +195,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeEffectImage: {fileID: 4081476073699911525}
+  MovieScreen: {fileID: 1577197796726565900}
+  LinkedVideo: {fileID: 9131624423337606123}
+  videoClip: {fileID: 32900000, guid: ec38cc8f2f0348249a26f01304eca9cb, type: 3}
+  exitbutton: {fileID: 2245056689995823584}
 --- !u!1 &2245056689995823584
 GameObject:
   m_ObjectHideFlags: 0
@@ -379,8 +320,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5073076669784010446}
-        m_TargetAssemblyTypeName: IntroVideoPlayer, Assembly-CSharp
+      - m_Target: {fileID: 4284085043060994884}
+        m_TargetAssemblyTypeName: UI_ClearObject, Assembly-CSharp
         m_MethodName: OnClickExitButton
         m_Mode: 1
         m_Arguments:
@@ -812,7 +753,7 @@ GameObject:
   - component: {fileID: 1521935477307934661}
   - component: {fileID: 7561952058797015912}
   m_Layer: 5
-  m_Name: RestartButton (1)
+  m_Name: SkipButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -920,8 +861,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5073076669784010446}
-        m_TargetAssemblyTypeName: IntroVideoPlayer, Assembly-CSharp
+      - m_Target: {fileID: 4284085043060994884}
+        m_TargetAssemblyTypeName: UI_ClearObject, Assembly-CSharp
         m_MethodName: OnClickSkipButton
         m_Mode: 1
         m_Arguments:
