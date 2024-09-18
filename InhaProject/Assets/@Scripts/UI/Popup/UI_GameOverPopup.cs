@@ -14,9 +14,12 @@ public class UI_GameOverPopup : UI_BasePopup
         if (base.Init() == false)
             return false;
 
+        return true;
+    }
+    public override void SetInfo(UIParam param)
+    {
         StartCoroutine(CoStartFillProgress(progress));
         StartCoroutine(CoStartFillProgress(progress2));
-        return true;
     }
 
     public void OnClickRestartButton()
