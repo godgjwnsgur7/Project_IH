@@ -22,16 +22,11 @@ public class UI_GameOverPopup : UI_BasePopup
     public void OnClickRestartButton()
     {
         Managers.Game.StartContinueGame();
-        //Managers.Scene.LoadScene(Define.EScene.TitleScene);
     }
 
     public void OnClickExitButton()
     {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit(); 
-#endif
+        Managers.Scene.LoadScene(Define.EScene.TitleScene);
     }
 
     private IEnumerator CoStartFillProgress(Slider silder)

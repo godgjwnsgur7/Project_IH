@@ -126,7 +126,7 @@ public class GameMgr
     public void ClearFailedStage()
     {
         --currStageId;
-        Managers.Scene.LoadScene(Define.EScene.TitleScene);
+        Managers.UI.OpenPopupUI<UI_GameOverPopup>();
     }
 
     private void ClearGame()
