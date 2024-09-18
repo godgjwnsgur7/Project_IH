@@ -86,27 +86,31 @@ public class Inventory : MonoBehaviour
 		}
 	}
 
-	public void RemoveItem(IInventoryItem item)
+	public bool RemoveItem(IInventoryItem item)
 	{
 		if (items.Exists(x => x.Name.Equals(item.Name)))
 		{
 			IInventoryItem findItem = items.Find(x => x.Name.Equals(item.Name));
 			findItem.Count -= item.Count;
+
 			if (ItemRemove != null)
 				ItemRemove(this, new InventoryEventArgs(findItem));
 
 			if ( findItem.Count <= 0 )
 			{
 				items.Remove(findItem);
+
 				Debug.Log(items.Exists(x => x.Name.Equals(item.Name)));
+				return true;
 			}
-			return;
 		}
 
 		else
 		{
 			Debug.Log(item.Name + "이 없습니다.");
 		}
+
+		return false;
 	}
 
 	public InventoryItemData GetItem(int slotId)
