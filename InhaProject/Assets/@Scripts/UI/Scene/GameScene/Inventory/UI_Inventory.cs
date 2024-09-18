@@ -45,13 +45,17 @@ public class UI_Inventory : MonoBehaviour
 
 	private void Start()
 	{
-		Player player = Managers.Game.Player;
+		//Player player = Managers.Game.Player;
 
         inventory.ItemAdd -= InventoryScript_ItemAdd;
         inventory.ItemAdd += InventoryScript_ItemAdd;
         inventory.ItemRemove -= InventoryScript_ItemRemove;
         inventory.ItemRemove += InventoryScript_ItemRemove;
-    }
+
+		HealPotion potion = new HealPotion();
+		inventory.AddItem(potion);
+		Debug.Log(inventory);
+	}
 
 	private void InventoryScript_ItemAdd(object sender, InventoryEventArgs e )
 	{
@@ -82,14 +86,16 @@ public class UI_Inventory : MonoBehaviour
 
 		foreach (UI_ItemSlot slot in itemSlots)
 		{
+			Transform childTransformFrontImg = slot.transform.Find("FrontImage");
+			Image frontImage = childTransformFrontImg.GetComponent<Image>();
 
+			Debug.Log(frontImage);
+			Debug.Log(item);
 
-			Transform childTransformSlotImg = slot.transform.Find("SlotImage");
-			Image image = childTransformSlotImg.GetComponent<Image>();
-
-			// 이미 가지고 있는 아이템이라면 숫자만 처리
+			// 가지고 있던 아이템이 아니라면 슬롯에 처리
 			if (item != null)
 			{
+				Debug.Log(slot.name);
 				if (slot.name == e.Item.Name)
 				{
 					int count = int.Parse(slot.countText.text);
@@ -100,21 +106,37 @@ public class UI_Inventory : MonoBehaviour
 				continue;
 			}
 
-			// 가지고 있던 아이템이 아니라면 슬롯에 처리
-			if ( !image.enabled )
+			if ( slot.name == e.Item.Name)
 			{
-				slot.name = e.Item.Name;
-				image.enabled = true;
-				image.sprite = e.Item.Image;
+				frontImage.enabled = false;
+				Debug.Log(slot.type);
 
-				// 아이템 타입이 소모품이라면 숫자도 표시
-				if ( e.Item.Param.type == EItemType.HealPotion)
+
+				if (slot.type == EItemType.HealPotion)
 				{
 					slot.countText.enabled = true;
-					slot.countText.text = e.Item.Count.ToString();
+					Debug.Log(slot.countText.enabled);
+					slot.countText.text = "5";
 				}
 				break;
+
 			}
+
+			// 이미 가지고 있는 아이템이라면 숫자만 처리
+			//if ( frontImage.enabled )
+			//{
+			//	slot.name = e.Item.Name;
+			//	frontImage.enabled = false;
+
+			//	Debug.Log( e.Item.Param.type);
+			//	// 아이템 타입이 소모품이라면 숫자도 표시
+			//	if ( e.Item.Param.type == EItemType.HealPotion)
+			//	{
+			//		slot.countText.enabled = true;
+			//		slot.countText.text = "5";
+			//	}
+			//	break;
+			//}
 		}
 	}
 

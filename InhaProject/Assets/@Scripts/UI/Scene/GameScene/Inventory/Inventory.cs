@@ -1,10 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering;
-using static UnityEditor.Progress;
 
 public class InventoryItemData
 {
@@ -20,7 +17,7 @@ public class InventoryItemData
 	}
 }
 
-public class Inventory
+public class Inventory : MonoBehaviour
 {
 	private const int SLOT_SIZE = 6;
 
@@ -29,7 +26,7 @@ public class Inventory
 	public event EventHandler<InventoryEventArgs> ItemAdd;
 	public event EventHandler<InventoryEventArgs> ItemRemove;
 
-	public IInventoryItem FindItem(string name)	
+    public IInventoryItem FindItem(string name)	
 	{
 		if (items.Exists(x => x.Name.Equals(name)))
 		{
@@ -44,23 +41,14 @@ public class Inventory
 	{
 		if (items.Count < SLOT_SIZE)
 		{
-			Collider collider = (item as BaseItem).GetComponent<Collider>();
-
-			if (collider != null)
-			{
-				if (collider.enabled)
-				{
-					collider.enabled = false;
-				}
-			}
-
-			item.OnPickup();
+			// item.OnPickup();
 
 			// 이미 가지고 있는 아이템인지 검사
 			if (items.Exists(x => x.Name.Equals(item.Name)))
 			{
 				IInventoryItem findItem = items.Find(x => x.Name.Equals(item.Name));
 				findItem.Count += item.Count;
+				Debug.Log(findItem.Count);
 				if ( ItemAdd != null )
 					ItemAdd(this, new InventoryEventArgs(item));
 				return;

@@ -10,8 +10,7 @@ using Data;
 public class UI_ItemSlot : UI_Slot
 {
 	[SerializeField, ReadOnly] public TextMeshProUGUI countText;
-	[SerializeField, ReadOnly] public EItemType type;
-	private bool isEnable { get; set; }
+	[SerializeField] public EItemType type;
 
 	private void Awake()
 	{
@@ -24,9 +23,7 @@ public class UI_ItemSlot : UI_Slot
 
 		if (front_img != null)
 			frontImage.sprite = front_img;
-
-		countText.enabled = false;
-		isEnable = false;
+			
 	}
 
 	public override void OnPointerEnter(PointerEventData eventData)
