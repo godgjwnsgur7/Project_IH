@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class HealPotion : BaseItem, IInventoryItem
 {
+    [SerializeField]
+   private float heal = 10f;
     public string Name 
     {
         get { return "HealPotion"; }
@@ -33,8 +35,7 @@ public class HealPotion : BaseItem, IInventoryItem
 
     public void OnPickup()
     {
-        gameObject.SetActive(false);
-        Destroy(gameObject); 
+        DestroyItem();
     }
 
     protected override void OnCollisionEnter(Collision collision)
@@ -59,7 +60,8 @@ public class HealPotion : BaseItem, IInventoryItem
         if (!base.Init())
             return false;
         ItemType = EItemType.HealPotion;
-
+        _param = new PotionItem(true, heal);
+        _param.type = ItemType;
         return true;
     }
 }

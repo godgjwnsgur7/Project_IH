@@ -28,7 +28,9 @@ public abstract class BaseItem : BaseObject
 
     protected bool isPlayerInRange = false;
 
-    ItemParam param;
+    
+
+    Player player = null;
 
     public override bool Init()
     {
@@ -63,7 +65,7 @@ public abstract class BaseItem : BaseObject
         Vector3 spawnPosition = transform.position; // 현재 아이템 위치에 생성
         Quaternion spawnRotation = Quaternion.identity;
 
-        switch(spawnItemType)
+        switch (spawnItemType)
         {
             case EItemType.HealPack:
             case EItemType.ManaPack:
@@ -76,10 +78,11 @@ public abstract class BaseItem : BaseObject
 
     protected virtual void OnCollisionEnter(Collision collision)
     {
+
         if (collision.collider.CompareTag("Player")) // 충돌한 객체가 Player 태그를 가진 경우
         {
             isPlayerInRange = true;
-            Player player = collision.collider.gameObject.GetComponent<Player>();
+            player = collision.collider.gameObject.GetComponent<Player>();
             switch (ItemType)
             {
                 case EItemType.HealPack:
