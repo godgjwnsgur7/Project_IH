@@ -60,7 +60,7 @@ public class MovingPlatform : BasePlatform
             {
                 Vector3 platformMovement = transform.position - lastPlatformPosition;
 
-                player.transform.position += platformMovement;
+                player.AddPosition(platformMovement);
             }
 
             elapsedTime += Time.deltaTime;
