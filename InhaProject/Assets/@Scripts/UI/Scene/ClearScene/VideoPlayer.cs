@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
@@ -6,12 +6,14 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
-public class IntroVideoPlayer : MonoBehaviour
+public class IntroVideoPlayer : UI_ClearObject
 {
 	public RawImage MovieScreen;
 	public VideoPlayer LinkedVideo;
 	[SerializeField] VideoClip videoClip;
 	[SerializeField] public GameObject exitbutton;
+
+	private bool bSkip = true;
 
 	void Awake()
 	{
@@ -21,7 +23,6 @@ public class IntroVideoPlayer : MonoBehaviour
 
 	IEnumerator ReadyToPlay()
 	{
-		Time.timeScale = 0.0f;
 		LinkedVideo.Prepare();
 
 		while (!LinkedVideo.isPrepared)
@@ -33,13 +34,13 @@ public class IntroVideoPlayer : MonoBehaviour
 		LinkedVideo.Play();
 
 		MovieScreen.texture = LinkedVideo.texture;
-		Time.timeScale = 1.0f;
 	}
 
 	void OnEndMovie(VideoPlayer vp)
 	{
-		string[] scripts = { "´©±º°¡´Â ½ÅÀÌ µ¹¾Æ¿ÀÁö ¾Ê±â¸¦ ¹Ù¶ó°í", "´©±º°¡´Â ½ÅÀÇ Á×À½À» ³¯Á¶ÇÏ°í", "´©±º°¡´Â µ¹¾Æ¿ÀÁö ¾ÊÀ» ½ÅÀ» ±â´Ù¸°´Ù."
-		, "±×·¯³ª ÀÌ ¸ğµç °ÍÀº ½ÅÀ» Ã£´Â ÀÚ¸¸ÀÌ ½ÃÀÛÇÒ ¼ö ÀÖÀ¸´Ï.", "½ÅÀ» ¸¸³ª°íÀÚ ÇÏ´Â ÀÚ, ±×ÀÇ ¼Õ¿¡ µé¸° °í´ëÀÇ ÈçÀû¿¡¼­ ½ÃÀÛÇÒ °ÍÀÌ´Ù."};
+		Time.timeScale = 1.0f;
+		string[] scripts = { "ëˆ„êµ°ê°€ëŠ” ì‹ ì´ ëŒì•„ì˜¤ì§€ ì•Šê¸°ë¥¼ ë°”ë¼ê³ ", "ëˆ„êµ°ê°€ëŠ” ì‹ ì˜ ì£½ìŒì„ ë‚ ì¡°í•˜ê³ ", "ëˆ„êµ°ê°€ëŠ” ëŒì•„ì˜¤ì§€ ì•Šì„ ì‹ ì„ ê¸°ë‹¤ë¦°ë‹¤."
+		, "ê·¸ëŸ¬ë‚˜ ì´ ëª¨ë“  ê²ƒì€ ì‹ ì„ ì°¾ëŠ” ìë§Œì´ ì‹œì‘í•  ìˆ˜ ìˆìœ¼ë‹ˆ.", "ì‹ ì„ ë§Œë‚˜ê³ ì í•˜ëŠ” ì, ê·¸ì˜ ì†ì— ë“¤ë¦° ê³ ëŒ€ì˜ í”ì ì—ì„œ ì‹œì‘í•  ê²ƒì´ë‹¤."};
 		UIParam dialogueParam = new UIDialogueParam("???", scripts);
 
 		Managers.UI.OpenPopupUI<UI_Dialogue>(dialogueParam);
@@ -49,8 +50,13 @@ public class IntroVideoPlayer : MonoBehaviour
 
 	public void OnClickExitButton()
 	{
-		
 		Managers.Scene.LoadScene(Define.EScene.TitleScene);
+	}
+
+	public void OnClickSkipButton()
+	{
+		LinkedVideo.frame = (long)LinkedVideo.frameCount;
+		fadeEffectImage.color = new Color(0, 0, 0, 1);
 	}
 
 }

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class UI_ClearObject : UI_BaseObject
 {
-    [SerializeField] private Image fadeEffectImage;
+    [SerializeField] public Image fadeEffectImage;
     private Coroutine fadeEffectCoroutine = null;
     public override bool Init()
     {
@@ -13,10 +13,11 @@ public class UI_ClearObject : UI_BaseObject
             return false;
 
         Managers.Sound.StopBgm();
+        Time.timeScale = 0.0f;
 
         if (fadeEffectCoroutine == null)
         {
-            fadeEffectCoroutine = StartCoroutine(IfadeOutInEffect(2f));
+            fadeEffectCoroutine = StartCoroutine(IfadeOutInEffect(1f));
         }
 
         return true;
@@ -25,7 +26,7 @@ public class UI_ClearObject : UI_BaseObject
     private IEnumerator IfadeOutInEffect(float fadeTime)
     {
         Debug.Log("코루틴 시작");
-        // FadeOut Effect
+
         fadeEffectImage.color = new Color(0, 0, 0, 1);
         Color tempColor = fadeEffectImage.color;
 
