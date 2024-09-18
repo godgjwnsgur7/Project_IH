@@ -45,8 +45,6 @@ public class UI_Inventory : MonoBehaviour
 
 	private void Start()
 	{
-		//Player player = Managers.Game.Player;
-
         inventory.ItemAdd -= InventoryScript_ItemAdd;
         inventory.ItemAdd += InventoryScript_ItemAdd;
         inventory.ItemRemove -= InventoryScript_ItemRemove;
@@ -54,35 +52,11 @@ public class UI_Inventory : MonoBehaviour
 
 		HealPotion potion = new HealPotion();
 		inventory.AddItem(potion);
-		Debug.Log(inventory);
 	}
 
 	private void InventoryScript_ItemAdd(object sender, InventoryEventArgs e )
 	{
-		// UI_ItemSlot[] arr = transform.GetComponentsInChildren<UI_ItemSlot>();
-
 		IInventoryItem item = inventory.FindItem(e.Item.Name);
-
-		//switch (item.Param.type)
-		//{
-		//	case EItemType.None:
-		//		break;
-		//	case EItemType.HealPotion:
-		//		itemSlots[(int)EItemSlot.RedPotion].name = e.Item.Name;
-		//		itemSlots[(int)EItemSlot.RedPotion].frontImage.enabled = false;
-		//		itemSlots[(int)EItemSlot.RedPotion].countText.enabled = true;
-		//		itemSlots[(int)EItemSlot.RedPotion].countText.text = e.Item.Count.ToString();
-		//		break;
-		//	case EItemType.ManaPotion:
-		//		itemSlots[(int)EItemSlot.BluePotion].name = e.Item.Name;
-		//		itemSlots[(int)EItemSlot.BluePotion].frontImage.enabled = false;
-		//		itemSlots[(int)EItemSlot.BluePotion].countText.enabled = true;
-		//		itemSlots[(int)EItemSlot.BluePotion].countText.text = e.Item.Count.ToString();
-		//		break;
-		//	case EItemType.Key:
-
-		//		break;
-		//}
 
 		foreach (UI_ItemSlot slot in itemSlots)
 		{
@@ -92,7 +66,6 @@ public class UI_Inventory : MonoBehaviour
 			Debug.Log(frontImage);
 			Debug.Log(item);
 
-			// 가지고 있던 아이템이 아니라면 슬롯에 처리
 			if (item != null)
 			{
 				Debug.Log(slot.name);
@@ -106,37 +79,20 @@ public class UI_Inventory : MonoBehaviour
 				continue;
 			}
 
-			if ( slot.name == e.Item.Name)
+			if (slot.name == e.Item.Name)
 			{
 				frontImage.enabled = false;
 				Debug.Log(slot.type);
 
 
-				if (slot.type == EItemType.HealPotion)
+				if (slot.type == EItemType.HealPotion ||
+					slot.type == EItemType.ManaPotion)
 				{
-					slot.countText.enabled = true;
-					Debug.Log(slot.countText.enabled);
-					slot.countText.text = "5";
+					slot.countText.text = e.Item.Count.ToString();
 				}
 				break;
 
 			}
-
-			// 이미 가지고 있는 아이템이라면 숫자만 처리
-			//if ( frontImage.enabled )
-			//{
-			//	slot.name = e.Item.Name;
-			//	frontImage.enabled = false;
-
-			//	Debug.Log( e.Item.Param.type);
-			//	// 아이템 타입이 소모품이라면 숫자도 표시
-			//	if ( e.Item.Param.type == EItemType.HealPotion)
-			//	{
-			//		slot.countText.enabled = true;
-			//		slot.countText.text = "5";
-			//	}
-			//	break;
-			//}
 		}
 	}
 
@@ -146,37 +102,34 @@ public class UI_Inventory : MonoBehaviour
 
 		IInventoryItem item = inventory.FindItem(e.Item.Name);
 
-		// 찾는 아이템이 인벤토리에 없다면 return
 		if ( item == null)
 			return;
 
 		foreach (UI_ItemSlot slot in arr)
 		{
-			Transform childTransformSlotImg = slot.transform.Find("SlotImage");
-			Image image = childTransformSlotImg.GetComponent<Image>();
+			Transform childTransformFrontImg = slot.transform.Find("FrontImage");
+			Image frontImage = childTransformFrontImg.GetComponent<Image>();
 			
 			if (slot.name == e.Item.Name)
 			{
 				int count = int.Parse(slot.countText.text);
-				count = e.Item.Count;
+				//count = e.Item.Count;
 				
-				// 소모품일 경우만 개수 표시 수정
-				if ( e.Item.Param.type == EItemType.HealPotion)
+				if ( e.Item.Param.type == EItemType.HealPotion ||
+					slot.type == EItemType.ManaPotion)
 				{
 					if (count > 0)
 						slot.countText.text = count.ToString();
 					else
 					{
-						image.enabled = false;
-						slot.countText.enabled = false;
-						slot.name = "null";
+						frontImage.enabled = true;
+						slot.countText.text = "";
 					}
 				}
 				
 				else
 				{
-					image.enabled = false;
-					slot.name = "null";
+					frontImage.enabled = true;
 				}
 				break;
 			}

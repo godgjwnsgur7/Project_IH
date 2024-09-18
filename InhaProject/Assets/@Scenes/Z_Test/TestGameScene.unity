@@ -676,9 +676,17 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 861383794258159744, guid: 3289d0dc62b5013479267abbc07342fe, type: 3}
+      propertyPath: m_CullTransparentMesh
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2101635990398159140, guid: 3289d0dc62b5013479267abbc07342fe, type: 3}
       propertyPath: m_Name
       value: UI_Inventory (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4977046363846461653, guid: 3289d0dc62b5013479267abbc07342fe, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5127159285256613585, guid: 3289d0dc62b5013479267abbc07342fe, type: 3}
       propertyPath: type
