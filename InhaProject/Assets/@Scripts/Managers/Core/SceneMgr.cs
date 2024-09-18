@@ -20,6 +20,8 @@ public class SceneMgr
 
     public void LoadScene(Define.EScene type)
     {
+        Managers.Sound.StopBgm();
+
         nextScene = type;
         isCompleteLoadingScene = false;
 

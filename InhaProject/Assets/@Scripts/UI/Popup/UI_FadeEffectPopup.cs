@@ -13,6 +13,8 @@ public class UI_FadeEffectPopup : UI_BasePopup
     private Action onFadeOutCallBack = null;
     private Action onFadeInCallBack = null;
 
+    bool isWait = false;
+
     public override bool Init()
     {
         if (base.Init() == false)

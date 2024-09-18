@@ -20,6 +20,9 @@ public enum EBgmSoundType
 {
     None = 0,
 
+    BossMap,
+    NormalMap,
+
     Max,
 }
 
@@ -31,6 +34,9 @@ public enum EBgmSoundType
 public enum ESfxSoundType
 {
     None = 0,
+
+    UI_Result_Defeat,
+    UI_Result_Victory,
 
     Max,
 }
@@ -181,7 +187,7 @@ public class SoundMgr
     {
         float _currSfxVolume = volumeData.masterVolume * volumeData.sfxVolume;
 
-        string path = $"{PrefabPath.SOUND_SFX_PATH}/{sfxType}";
+        string path = $"{LoadPath.SOUND_SFX_PATH}/{sfxType}";
         AudioClip audioClip = GetOrAddAudioClip(path);
 
         if (audioClip == null)
@@ -249,7 +255,7 @@ public class SoundMgr
         float _currBgmVolume = volumeData.masterVolume * volumeData.bgmVolume;
         float currVolume = audioSources[(int)ESoundType.BGM].volume;
 
-        string path = $"Sounds/BGM/{bgmType}";
+        string path = $"{LoadPath.SOUND_BGM_PATH}/{bgmType}";
 
         AudioClip audioClip = GetOrAddAudioClip(path);
 

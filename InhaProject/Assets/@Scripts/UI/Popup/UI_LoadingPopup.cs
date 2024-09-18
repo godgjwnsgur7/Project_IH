@@ -7,31 +7,41 @@ public class UI_LoadingPopup : UI_BasePopup
 {
     [SerializeField] public Slider progressBar;
 
+    private void OnEnable()
+    {
+        coProgressBar = StartCoroutine(CoProgressBar());
+    }
+
     public override bool Init()
     {
         if (base.Init() == false)
             return false;
 
-        progressBar.value = 0;
-
         return true;
     }
-
-	private void Update()
-	{
-		progressBar.value += Time.deltaTime;
-	}
 
 	public override void SetInfo(UIParam param)
     {
         base.SetInfo(param);
-
     }
 
     public override void ClosePopupUI()
     {
         base.ClosePopupUI();
+    }
 
+    Coroutine coProgressBar = null;
+    protected IEnumerator CoProgressBar()
+    {
+        progressBar.value = 0f;
 
+        while (progressBar.value < 0.99f)
+        {
+            progressBar.value += Time.deltaTime;
+            yield return null;
+        }
+
+        progressBar.value = 1f;
+        coProgressBar = null;
     }
 }

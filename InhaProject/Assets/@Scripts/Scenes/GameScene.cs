@@ -32,6 +32,15 @@ public class GameScene : BaseScene
 #endif
 
         Managers.Game.StartStage();
+
+        if (Managers.Game.IsBossStage)
+        {
+            Managers.Sound.PlayBgm(EBgmSoundType.BossMap);
+        }
+        else
+        {
+            Managers.Sound.PlayBgm(EBgmSoundType.NormalMap);
+        }
     }
 
     // 스폰 몬스터 테스트 코드

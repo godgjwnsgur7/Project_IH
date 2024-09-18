@@ -9,7 +9,7 @@ public class NormalStage : BaseStage
         if (base.Init() == false)
             return false;
 
-        StageType = EStageType.BossStage;
+        StageType = EStageType.NormalStage;
 
         return true;
     }

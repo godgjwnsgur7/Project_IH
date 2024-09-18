@@ -15,7 +15,8 @@ public static class AssetsPath
 /// </summary>
 public static class LoadPath
 {
-
+    public const string SOUND_BGM_PATH = "Sounds/BGM";
+    public const string SOUND_SFX_PATH = "Sounds/SFX";
 }
 
 /// <summary>
@@ -30,9 +31,6 @@ public static class PrefabPath
     public const string OBJECT_EFFECTOBEJCT_PATH = "Object/EffectObject";
 
     public const string STAGE_PATH = "Stage";
-
-    public const string SOUND_BGM_PATH = "Sounds/BGM";
-    public const string SOUND_SFX_PATH = "Sounds/SFX";
 
     public const string UI_PATH = "UI";
     public const string UI_POPUP_PATH = "UI/Popup";

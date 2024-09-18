@@ -17,6 +17,11 @@ public class TitleScene : BaseScene
         return true;
     }
 
+    private void Start()
+    {
+        Managers.Sound.PlayBgm(EBgmSoundType.BossMap);
+    }
+
     public override void Clear()
     {
         

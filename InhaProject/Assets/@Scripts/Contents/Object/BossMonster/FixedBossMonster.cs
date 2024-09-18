@@ -172,6 +172,9 @@ public class FixedBossMonster : BaseMonster, IHitEvent
                 case EFixedBossMonsterState.Pattern3:
                     UpdatePattern(MonsterState);
                     break;
+                case EFixedBossMonsterState.Dead:
+                    UpdateDeadState();
+                    break;
             }
 
             if (UpdateAITick > 0)
@@ -198,6 +201,11 @@ public class FixedBossMonster : BaseMonster, IHitEvent
             MonsterState = EFixedBossMonsterState.Idle;
             return;
         }
+    }
+
+    protected void EnterDeadState()
+    {
+        SetRigidVelocityX(5);
     }
 
     protected void SpawnMonsterPattern()
@@ -255,10 +263,6 @@ public class FixedBossMonster : BaseMonster, IHitEvent
             return false;
 
         return IsEndState(animator.GetCurrentAnimatorStateInfo(0));
-    }
-    protected bool IsEndState(AnimatorStateInfo stateInfo)
-    {
-        return stateInfo.normalizedTime >= 1.0f;
     }
     #endregion
 

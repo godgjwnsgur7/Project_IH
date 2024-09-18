@@ -12,7 +12,16 @@ public class GameMgr
     private Player _player;
     public Player Player => _player ??= GameObject.FindWithTag("Player")?.GetComponent<Player>();
 
+    [field: SerializeField, ReadOnly]
     public BaseStage CurrStage { get; private set; } = null;
+    
+    public bool IsBossStage
+    {
+        get
+        {
+            return CurrStage.StageType == EStageType.BossStage;
+        }
+    }
 
     int currStageId = 0;
     int maxStageId = 0;
