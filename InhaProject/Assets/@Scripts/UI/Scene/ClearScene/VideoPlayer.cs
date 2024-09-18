@@ -21,6 +21,7 @@ public class IntroVideoPlayer : MonoBehaviour
 
 	IEnumerator ReadyToPlay()
 	{
+		Time.timeScale = 0.0f;
 		LinkedVideo.Prepare();
 
 		while (!LinkedVideo.isPrepared)
@@ -32,6 +33,7 @@ public class IntroVideoPlayer : MonoBehaviour
 		LinkedVideo.Play();
 
 		MovieScreen.texture = LinkedVideo.texture;
+		Time.timeScale = 1.0f;
 	}
 
 	void OnEndMovie(VideoPlayer vp)
@@ -47,6 +49,7 @@ public class IntroVideoPlayer : MonoBehaviour
 
 	public void OnClickExitButton()
 	{
+		
 		Managers.Scene.LoadScene(Define.EScene.TitleScene);
 	}
 
