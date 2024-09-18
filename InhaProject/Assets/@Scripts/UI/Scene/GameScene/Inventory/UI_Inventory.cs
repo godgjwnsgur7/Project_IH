@@ -59,9 +59,7 @@ public class UI_Inventory : MonoBehaviour
 	private void InventoryScript_ItemAdd(object sender, InventoryEventArgs e )
 	{
 		IInventoryItem item = inventory.FindItem(e.Item.Param.type.ToString());
-		Debug.Log(e.Item.Param.type.ToString());
-		Debug.Log(item);
-			
+
 		foreach (UI_ItemSlot slot in itemSlots)
 		{
 			Transform childTransformFrontImg = slot.transform.Find("FrontImage");
@@ -104,7 +102,6 @@ public class UI_Inventory : MonoBehaviour
 
 		if ( item == null)
 			return;
-		Debug.Log("아이템 사용 들어옴");
 
 		foreach (UI_ItemSlot slot in arr)
 		{
@@ -119,9 +116,6 @@ public class UI_Inventory : MonoBehaviour
 				if ( slot.type == EItemSlotType.HealPotion ||
 					slot.type == EItemSlotType.ManaPotion)
 				{
-					Debug.Log(slot.name + ", " + item.Name + " 같다.");
-					Debug.Log(count);
-
 					if (count > 0)
 						slot.countText.text = count.ToString();
 					else
