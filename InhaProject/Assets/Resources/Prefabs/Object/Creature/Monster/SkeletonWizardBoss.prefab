@@ -69569,6 +69569,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34c6a3d6a95b9f0449479c8fec0437a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Rigid>k__BackingField: {fileID: 0}
+  <MonsterType>k__BackingField: 0
+  collisionBarrier: {fileID: 0}
+  rendererList: []
   gimmickPointList: []
   monsterSpawnPointList: []
   attackObject1: {fileID: 4413063090901172289}
