@@ -4,30 +4,38 @@ using UnityEngine;
 
 public class DisappearingPlatform : BasePlatform
 {
-    public float disappearDuration = 1f; // 플랫폼이 사라지는 시간
+    public float disappearDuration = 2f; // 플랫폼이 사라지는 시간
     public float reappearDelay = 2f; // 플랫폼이 다시 나타나는 시간
-    private Renderer render;
     private Color originalColor;
     private Color transparentColor;
     private bool isDisappearing = false;
+    [SerializeField, ReadOnly] protected List<Renderer> rendererList;
 
     public override bool Init()
     {
         if (!base.Init())
             return false;
 
-        render = GetComponent<Renderer>();
-        if (render != null)
-        {
-            originalColor = render.material.color;
-            transparentColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0);
-        }
-
         // 콜라이더를 트리거로 설정
         Collider collider = GetComponent<Collider>();
         if (collider != null)
         {
             collider.isTrigger = true;
+        }
+
+        rendererList = new List<Renderer>();
+        Transform[] allChildren = this.GetComponentsInChildren<Transform>();
+        foreach (Transform child in allChildren)
+        {
+            if (child.GetComponent<ParticleSystem>() == null && child.TryGetComponent<Renderer>(out Renderer renderer))
+                rendererList.Add(renderer);
+        }
+
+        // 원래 색상 및 투명 색상 초기화
+        if (rendererList.Count > 0)
+        {
+            originalColor = rendererList[0].material.color;
+            transparentColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0f);
         }
 
         return true;
@@ -48,17 +56,21 @@ public class DisappearingPlatform : BasePlatform
         float elapsedTime = 0f;
         while (elapsedTime < disappearDuration)
         {
-            float alpha = Mathf.Lerp(1f, 0f, elapsedTime / disappearDuration);
-            if (render != null)
-                render.material.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
+            float alpha = 1f - elapsedTime / disappearDuration;
+            foreach (Renderer render in rendererList)
+            {
+                if (render != null)
+                    render.material.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
+            }
 
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
         // 최종적으로 완전히 투명하게 만들기
-        if (render != null)
-            render.material.color = transparentColor;
+        foreach (Renderer render in rendererList)
+            if (render != null)
+                render.material.color = transparentColor;
 
         // 하위 객체를 비활성화
         SetChildrenActive(false);
@@ -73,17 +85,21 @@ public class DisappearingPlatform : BasePlatform
         elapsedTime = 0f;
         while (elapsedTime < disappearDuration)
         {
-            float alpha = Mathf.Lerp(0f, 1f, elapsedTime / disappearDuration);
-            if (render != null)
-                render.material.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
+            float alpha = elapsedTime / disappearDuration;
+            foreach (Renderer render in rendererList)
+            {
+                if (render != null)
+                    render.material.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
+            }
 
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
         // 최종적으로 원래 색상으로 복구
-        if (render != null)
-            render.material.color = originalColor;
+        foreach (Renderer render in rendererList)
+            if (render != null)
+                render.material.color = originalColor;
 
         isDisappearing = false;
     }
