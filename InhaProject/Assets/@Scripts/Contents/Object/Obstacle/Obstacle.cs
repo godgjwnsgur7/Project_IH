@@ -10,7 +10,7 @@ public enum EObstacleType
     None,
     Trap,
     Portal,       // 포탈
-    BossStageDoor // 보스 스테이지로 가는 문
+    Door // 보스 스테이지로 가는 문
 }
 public class Obstacle : BaseObject
 {
@@ -73,9 +73,7 @@ public class Obstacle : BaseObject
                 case EObstacleType.Portal:
                     TeleportPlayer();
                     break;
-                case EObstacleType.BossStageDoor:
-                    EnterBossStage();
-                    break;
+
             }
         }
     }

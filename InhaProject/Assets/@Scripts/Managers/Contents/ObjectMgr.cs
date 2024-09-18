@@ -12,6 +12,7 @@ public class ObjectMgr : MonoBehaviour
 {
     #region Root
     private GameObject _monsterRoot;
+    private GameObject _itemRoot;
     public GameObject MonsterRoot
     {
         get
@@ -19,6 +20,15 @@ public class ObjectMgr : MonoBehaviour
             if (_monsterRoot == null) _monsterRoot = GameObject.Find("@MonsterRoot");
             if (_monsterRoot == null) _monsterRoot = new GameObject { name = "@MonsterRoot" };
             return _monsterRoot;
+        }
+    }
+    public GameObject ItemRoot
+    {
+        get
+        {
+            if (_itemRoot == null) _itemRoot = GameObject.Find("@ItemRoot");
+            if (_itemRoot == null) _itemRoot = new GameObject { name = "@ItemRoot" };
+            return _itemRoot;
         }
     }
     #endregion
@@ -40,6 +50,7 @@ public class ObjectMgr : MonoBehaviour
         GameObject obj = Managers.Resource.Instantiate(itemPrefabsDict[itemType], null);
         if (obj != null)
         {
+            obj.transform.parent = ItemRoot.transform;
             obj.transform.position = position;
             obj.transform.rotation = rotation;
             activeObjects.Add(obj);  
