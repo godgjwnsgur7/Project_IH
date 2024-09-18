@@ -100,7 +100,16 @@ public class GameMgr
             return;
         }
 
-        if(_player == null)
+        if (IsBossStage)
+        {
+            Managers.Sound.PlayBgm(EBgmSoundType.BossMap);
+        }
+        else
+        {
+            Managers.Sound.PlayBgm(EBgmSoundType.NormalMap);
+        }
+
+        if (_player == null)
             _player = Managers.Resource.Instantiate(PrefabPath.OBJECT_PLAYER_PATH + $"/{EPlayerType.Player}").GetComponent<Player>();
 
         Player.transform.position = CurrStage.PlayerStartingPoint.position;
