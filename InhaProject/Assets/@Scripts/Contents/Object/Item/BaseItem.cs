@@ -24,7 +24,6 @@ public abstract class BaseItem : BaseObject
 {
     public EItemType ItemType { get; set; } = EItemType.None; // 아이템 타입
 
-    protected Animator animator; // 애니메이터 컴포넌트
 
     protected bool isPlayerInRange = false;
 
@@ -37,8 +36,7 @@ public abstract class BaseItem : BaseObject
         if (!base.Init())
             return false;
 
-        animator = GetComponent<Animator>(); // 애니메이터 컴포넌트 가져오기
-                                             // 필요한 경우 다른 컴포넌트 초기화
+        
         SetInfo();
         return true;
     }
