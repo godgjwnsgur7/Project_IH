@@ -45,13 +45,18 @@ public class UI_Inventory : MonoBehaviour
 
 	private void Start()
 	{
-        inventory.ItemAdd -= InventoryScript_ItemAdd;
-        inventory.ItemAdd += InventoryScript_ItemAdd;
-        inventory.ItemRemove -= InventoryScript_ItemRemove;
-        inventory.ItemRemove += InventoryScript_ItemRemove;
+		inventory = Managers.Scene.CurrentScene.GetComponent<GameScene>()?.inventory;
 
-		HealPotion potion = new HealPotion();
-		inventory.AddItem(potion);
+		if(inventory != null)
+        {
+			inventory.ItemAdd -= InventoryScript_ItemAdd;
+			inventory.ItemAdd += InventoryScript_ItemAdd;
+			inventory.ItemRemove -= InventoryScript_ItemRemove;
+			inventory.ItemRemove += InventoryScript_ItemRemove;
+
+			//HealPotion potion = new HealPotion();
+			//inventory.AddItem(potion); 
+		}
 	}
 
 	private void InventoryScript_ItemAdd(object sender, InventoryEventArgs e )
@@ -63,12 +68,8 @@ public class UI_Inventory : MonoBehaviour
 			Transform childTransformFrontImg = slot.transform.Find("FrontImage");
 			Image frontImage = childTransformFrontImg.GetComponent<Image>();
 
-			Debug.Log(frontImage);
-			Debug.Log(item);
-
 			if (item != null)
 			{
-				Debug.Log(slot.name);
 				if (slot.name == e.Item.Name)
 				{
 					int count = int.Parse(slot.countText.text);
@@ -80,13 +81,12 @@ public class UI_Inventory : MonoBehaviour
 			}
 
 			if (slot.name == e.Item.Name)
-			{
+			{	
 				frontImage.enabled = false;
-				Debug.Log(slot.type);
+			
 
-
-				if (slot.type == EItemType.HealPotion ||
-					slot.type == EItemType.ManaPotion)
+				if (slot.type == EItemSlotType.HealPotion ||
+					slot.type == EItemSlotType.ManaPotion)
 				{
 					slot.countText.text = e.Item.Count.ToString();
 				}
@@ -115,8 +115,8 @@ public class UI_Inventory : MonoBehaviour
 				int count = int.Parse(slot.countText.text);
 				//count = e.Item.Count;
 				
-				if ( e.Item.Param.type == EItemType.HealPotion ||
-					slot.type == EItemType.ManaPotion)
+				if ( slot.type == EItemSlotType.HealPotion ||
+					slot.type == EItemSlotType.ManaPotion)
 				{
 					if (count > 0)
 						slot.countText.text = count.ToString();

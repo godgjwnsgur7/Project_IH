@@ -10,6 +10,7 @@ public class GameScene : BaseScene
     [SerializeField] int testStageId = 0;
 #endif
 
+    [SerializeField] public Inventory inventory;
     public override bool Init()
     {
         if (base.Init() == false)

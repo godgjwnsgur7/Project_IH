@@ -7,10 +7,19 @@ using UnityEngine.EventSystems;
 using System;
 using Data;
 
+public enum EItemSlotType
+{
+	HealPotion,
+	ManaPotion,
+	Key,
+	Map,
+	Max
+}
+
 public class UI_ItemSlot : UI_Slot
 {
 	[SerializeField, ReadOnly] public TextMeshProUGUI countText;
-	[SerializeField] public EItemType type;
+	[SerializeField] public EItemSlotType type; 
 
 	private void Awake()
 	{
@@ -30,7 +39,7 @@ public class UI_ItemSlot : UI_Slot
 	{
 		base.OnPointerEnter(eventData);
 
-		foreach (EItemType item in Enum.GetValues(typeof(EItemType)))
+		foreach (EItemSlotType item in Enum.GetValues(typeof(EItemSlotType)))
 		{
 			if (item.ToString() == type.ToString())
 			{

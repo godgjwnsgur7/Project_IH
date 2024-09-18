@@ -18,12 +18,12 @@
     {
       "ItemType": "ManaPotion",
       "Name": "마나 회복 물약",
-      "Script": "파란색 물약이다. 사용 시 MP를 250 회복한다."
+      "Script": "파란색 물약이다. 사용 시 MP를 일정량 회복한다."
     },
     {
       "ItemType": "HealPotion",
       "Name": "체력 회복 물약",
-      "Script": "빨간색 물약이다. 사용 시 HP를 500 회복한다. "
+      "Script": "빨간색 물약이다. 사용 시 HP를 일정량 회복한다."
     }
   ]
 }
