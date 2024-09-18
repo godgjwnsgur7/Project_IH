@@ -17,31 +17,10 @@ enum EItemSlot
 
 public class UI_Inventory : MonoBehaviour
 {
-	public GameObject item;
 	public Inventory inventory = new Inventory();
 
 	[SerializeField, ReadOnly] UI_ItemSlot[] itemSlots;
 
-
-	public void OnClickPickupButton()
-	{
-		IInventoryItem inventoryItem = item.GetComponent<IInventoryItem>();
-
-		if ( inventoryItem != null )
-		{
-			inventory.AddItem(inventoryItem);
-		}
-	}
-
-	public void OnClickRemoveItemButton()
-	{
-		// InventoryItemData removeItemData = new InventoryItemData("HealPotion", 1, new ItemParam param);
-
-		//if (removeItemData != null )
-		//{
-		//	inventory.RemoveItem(removeItemData);
-		//}
-	}
 
 	private void Start()
 	{
