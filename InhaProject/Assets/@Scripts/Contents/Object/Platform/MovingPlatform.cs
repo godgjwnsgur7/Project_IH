@@ -48,34 +48,33 @@ public class MovingPlatform : BasePlatform
     {
         float elapsedTime = 0f;
         float journeyLength = Vector3.Distance(from, to);
+        float moveDuration = journeyLength / moveSpeed;
 
-        while (elapsedTime < journeyLength / moveSpeed)
+        while (elapsedTime < moveDuration)
         {
-            float distanceCovered = (elapsedTime / (journeyLength / moveSpeed)) * journeyLength;
-            float fractionOfJourney = distanceCovered / journeyLength;
+            float fractionOfJourney = elapsedTime / moveDuration;
+            lastPlatformPosition = transform.position;
             transform.position = Vector3.Lerp(from, to, fractionOfJourney);
 
             if (player != null)
             {
-                // 플랫폼 이동 거리 계산
                 Vector3 platformMovement = transform.position - lastPlatformPosition;
 
-                // 플레이어 위치 조정
                 player.transform.position += platformMovement;
             }
 
             elapsedTime += Time.deltaTime;
-            yield return null; // 다음 프레임까지 대기
+            yield return null;
         }
 
-        // 정확히 도착 위치 설정
+
         transform.position = to;
         lastPlatformPosition = to;
     }
 
     protected override void OnCollisionEnter(Collision collision)
     {
-       base.OnCollisionEnter(collision);
+        base.OnCollisionEnter(collision);
     }
 
 
