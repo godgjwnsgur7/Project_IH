@@ -74,7 +74,8 @@ public class ObjectMgr : MonoBehaviour
         if (obj == null) return;
 
         activeObjects.Remove(obj);
-        Destroy(obj);
+        obj.SetActive(false);
+       // Destroy(obj);
     }
 
     // 현재 활성화된 오브젝트들 관리

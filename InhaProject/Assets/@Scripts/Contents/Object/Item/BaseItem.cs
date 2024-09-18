@@ -28,10 +28,10 @@ public abstract class BaseItem : BaseObject
 
     protected bool isPlayerInRange = false;
 
-    
+    protected ItemParam param;
 
-    Player player = null;
-
+    [SerializeField]
+    protected float heal = 10f;
     public override bool Init()
     {
         if (!base.Init())
@@ -52,63 +52,12 @@ public abstract class BaseItem : BaseObject
 
 
 
-    protected virtual void DestroyItem()
+
+    protected virtual void OnTriggerEnter(Collider other)
     {
-        Debug.Log(this + "Destroy");
-        // 자신을 파괴
-        Managers.Object.DespawnObject(gameObject);
-
+        
     }
-
-    protected virtual void SpawnItems(EItemType spawnItemType)
-    {
-        Vector3 spawnPosition = transform.position; // 현재 아이템 위치에 생성
-        Quaternion spawnRotation = Quaternion.identity;
-
-        switch (spawnItemType)
-        {
-            case EItemType.HealPack:
-            case EItemType.ManaPack:
-                spawnPosition.y += 1f;
-                break;
-        }
-        Managers.Object.SpawnObject(spawnItemType, spawnPosition, spawnRotation);
-
-    }
-
-    protected virtual void OnCollisionEnter(Collision collision)
-    {
-
-        if (collision.collider.CompareTag("Player")) // 충돌한 객체가 Player 태그를 가진 경우
-        {
-            isPlayerInRange = true;
-            player = collision.collider.gameObject.GetComponent<Player>();
-            switch (ItemType)
-            {
-                case EItemType.HealPack:
-                    // player 힐
-                    break;
-                case EItemType.ManaPack:
-                    // player 마나 회복
-                    break;
-                default:
-                    //input 인벤토리로
-                    break;
-
-
-
-            }
-        }
-    }
-
-    protected virtual void OnCollisionExit(Collision collision)
-    {
-        if (collision.collider.CompareTag("Player")) // 충돌한 객체가 Player 태그를 가진 경우
-        {
-            isPlayerInRange = false;
-        }
-
-    }
+    
 }
 
 

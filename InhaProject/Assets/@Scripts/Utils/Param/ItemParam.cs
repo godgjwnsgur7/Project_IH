@@ -14,17 +14,24 @@ public class ItemParam
     //}
 }
 
-public class ConsumeItem : ItemParam
-{
-
-}
-
-public class PotionItem : ConsumeItem
+public class ApplyItemParam : ItemParam
 {
     public bool IsHp = false;
     public float Heal = 1.0f;
 
-    public PotionItem(bool isHp, float heal)
+    public ApplyItemParam(bool isHp, float heal)
+    {
+        IsHp = isHp;
+        this.Heal = heal;
+    }
+}
+
+public class PotionItemParam : ItemParam
+{
+    public bool IsHp = false;
+    public float Heal = 1.0f;
+
+    public PotionItemParam(bool isHp, float heal)
     {
         IsHp = isHp;
         this.Heal = heal;

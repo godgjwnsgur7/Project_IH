@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 4029933100025510027}
   - component: {fileID: 3548428918680772872}
   - component: {fileID: 5050157552862110816}
-  - component: {fileID: 5984025012484211907}
   - component: {fileID: 2615763744968611465}
+  - component: {fileID: 2960144361954936849}
   m_Layer: 0
   m_Name: HealPack
   m_TagString: Untagged
@@ -86,8 +86,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1433745342197572927}
   m_Mesh: {fileID: 4300000, guid: 5fc7a42ea213e134d9c31a206f2a66cc, type: 2}
---- !u!64 &5984025012484211907
-MeshCollider:
+--- !u!114 &2615763744968611465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1433745342197572927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5591bd173c222e41a37ef840935c7ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &2960144361954936849
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -104,22 +116,9 @@ MeshCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 5fc7a42ea213e134d9c31a206f2a66cc, type: 2}
---- !u!114 &2615763744968611465
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1433745342197572927}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5591bd173c222e41a37ef840935c7ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  serializedVersion: 3
+  m_Size: {x: 1.0800004, y: 1.0800002, z: 0.18720055}
+  m_Center: {x: -0.00000023841858, y: 0, z: 0}
 --- !u!1 &7822741814329048565
 GameObject:
   m_ObjectHideFlags: 0

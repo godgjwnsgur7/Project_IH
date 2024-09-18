@@ -147,6 +147,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9000139330892634256}
   - component: {fileID: 166936192366404238}
+  - component: {fileID: 3972888452400500737}
   m_Layer: 0
   m_Name: ManaPotion
   m_TagString: Untagged
@@ -192,6 +193,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &3972888452400500737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5559041244701711194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b24a27fbd43953458ff4b58546efc34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  heal: 10
+  _Image: {fileID: 0}
+  _count: 1
 --- !u!1 &6184283278201113298
 GameObject:
   m_ObjectHideFlags: 0

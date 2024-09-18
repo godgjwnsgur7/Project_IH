@@ -12,10 +12,6 @@ public class Key : BaseItem
         return true;
     }
 
-    protected override void OnCollisionEnter(Collision collision)
-    {
-        base.OnCollisionEnter(collision);
-    }
-
+  
 
 }
