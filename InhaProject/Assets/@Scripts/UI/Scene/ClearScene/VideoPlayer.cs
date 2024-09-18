@@ -11,10 +11,12 @@ public class IntroVideoPlayer : MonoBehaviour
 	public RawImage MovieScreen;
 	public VideoPlayer LinkedVideo;
 	[SerializeField] VideoClip videoClip;
+	[SerializeField] public GameObject exitbutton;
 
 	void Awake()
 	{
 		StartCoroutine(ReadyToPlay());
+		exitbutton.SetActive(false);
 	}
 
 	IEnumerator ReadyToPlay()
@@ -39,8 +41,18 @@ public class IntroVideoPlayer : MonoBehaviour
 		UIParam dialogueParam = new UIDialogueParam("???", scripts);
 
 		Managers.UI.OpenPopupUI<UI_Dialogue>(dialogueParam);
-		// Managers.Scene.LoadScene(Define.EScene.TitleScene);
+
+		exitbutton.SetActive(true);
+
 	}
 
+	public void OnClickExitButton()
+	{
+#if UNITY_EDITOR
+		UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit(); 
+#endif
+	}
 
 }
