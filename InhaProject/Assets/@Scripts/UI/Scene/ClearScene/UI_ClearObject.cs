@@ -13,7 +13,10 @@ public class UI_ClearObject : UI_BaseObject
     public VideoPlayer LinkedVideo;
     [SerializeField] VideoClip videoClip;
     [SerializeField] public GameObject exitbutton;
-    public override bool Init()
+    private UI_Dialogue uiDialogue;
+
+
+	public override bool Init()
     {
         if (base.Init() == false)
             return false;
@@ -26,7 +29,9 @@ public class UI_ClearObject : UI_BaseObject
             fadeEffectCoroutine = StartCoroutine(IfadeOutInEffect(2f));
         }
 
-        StartCoroutine(ReadyToPlay());
+		uiDialogue = null;
+
+		StartCoroutine(ReadyToPlay());
         exitbutton.SetActive(false);
 
         return true;
@@ -55,13 +60,17 @@ public class UI_ClearObject : UI_BaseObject
         , "그러나 이 모든 것은 신을 찾는 자만이 시작할 수 있으니.", "신을 만나고자 하는 자, 그의 손에 들린 고대의 흔적에서 시작할 것이다."};
         UIParam dialogueParam = new UIDialogueParam("???", scripts);
 
-        Managers.UI.OpenPopupUI<UI_Dialogue>(dialogueParam);
+		uiDialogue = Managers.UI.OpenPopupUI<UI_Dialogue>(dialogueParam);
 
         exitbutton.SetActive(true);
     }
 
     public void OnClickExitButton()
     {
+        if (uiDialogue != null)
+        {
+            uiDialogue.ClosePopupUI();
+        }
         Managers.Scene.LoadScene(Define.EScene.TitleScene);
     }
 

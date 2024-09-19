@@ -49,7 +49,7 @@ public class Inventory : MonoBehaviour
 				IInventoryItem findItem = items.Find(x => x.Name.Equals(item.Name));
 				findItem.Count += item.Count;
 				if ( ItemAdd != null )
-					ItemAdd(this, new InventoryEventArgs(item));
+					ItemAdd(this, new InventoryEventArgs(findItem));
 				return;
 			}
 
@@ -74,7 +74,7 @@ public class Inventory : MonoBehaviour
 			if (ItemRemove != null)
 				ItemRemove(this, new InventoryEventArgs(findItem));
 
-			if (findItem.Count <= 0)
+			if (findItem.Count < 0)
 			{
 				items.Remove(findItem);
 				return true;
@@ -94,7 +94,7 @@ public class Inventory : MonoBehaviour
 			if (ItemRemove != null)
 				ItemRemove(this, new InventoryEventArgs(findItem));
 
-			if ( findItem.Count <= 0 )
+			if ( findItem.Count < 0 )
 			{
 				items.Remove(findItem);
 
