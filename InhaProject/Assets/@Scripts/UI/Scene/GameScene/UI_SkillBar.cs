@@ -64,7 +64,7 @@ public class UI_SkillBar : UI_BaseObject
     private void OnChangedMp(float curMp)
 	{
 		this.curMp = curMp;
-	}
+    }
 
 	private void OnDisable()
 	{
@@ -78,16 +78,15 @@ public class UI_SkillBar : UI_BaseObject
 	{
 		mpText.text = $"{curMp} / {maxMp}";
 
-		while (mpSlider.fillAmount > curMp / maxMp + 0.01 )
+		while (Mathf.Abs(mpSlider.fillAmount - (curMp / maxMp)) > 0.01f)
 		{
 			mpSlider.fillAmount = Mathf.Lerp(mpSlider.fillAmount, curMp / maxMp, Time.deltaTime * changeMoveSpeed);
 			mpSliderBar.fillAmount = Mathf.Lerp(mpSlider.fillAmount, curMp / maxMp, Time.deltaTime * changeMoveSpeed);
 			yield return null;
 		}
+        SetMpBar();
 
-		mpSlider.fillAmount = curMp / maxMp;
-		mpSlider.fillAmount = curMp / maxMp;
-		coChangedMp = null;
+        coChangedMp = null;
 	}
 
 	private void OnUseSkill(EPlayerSkillType type, float coolTime)

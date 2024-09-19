@@ -103,10 +103,12 @@ public class GameMgr
         if (IsBossStage)
         {
             Managers.Sound.PlayBgm(EBgmSoundType.BossMap);
+            Camera.main.GetComponent<MainCameraController>()?.SetActiveMinimapCamera(false);
         }
         else
         {
             Managers.Sound.PlayBgm(EBgmSoundType.NormalMap);
+            Camera.main.GetComponent<MainCameraController>()?.SetActiveMinimapCamera(true);
         }
 
         if (_player == null)

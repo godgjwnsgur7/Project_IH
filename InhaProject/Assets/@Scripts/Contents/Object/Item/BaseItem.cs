@@ -29,8 +29,6 @@ public abstract class BaseItem : BaseObject
 
     protected ItemParam param;
 
-    [SerializeField]
-    protected float heal = 10f;
     public override bool Init()
     {
         if (!base.Init())

@@ -111,7 +111,7 @@ public class UITextParam : UIParam
     public string text;
     public float displayTime;
 
-    public UITextParam(string text, float displayTime = 4f)
+    public UITextParam(string text, float displayTime = 1f)
     {
         this.text = text;
         this.displayTime = displayTime;

@@ -14,6 +14,27 @@ public class MovingPlatform : BasePlatform
     private Vector3 endPosition;
     private Vector3 lastPlatformPosition;
 
+
+    protected Player player = null;
+
+    protected virtual void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.CompareTag("Player"))
+        {
+            player ??= collision.collider.gameObject.GetComponent<Player>();
+
+        }
+    }
+
+    protected virtual void OnCollisionExit(Collision collision)
+    {
+        if (collision.collider.CompareTag("Player"))
+        {
+            player = null;
+
+        }
+    }
+
     public override bool Init()
     {
         if (!base.Init())
@@ -72,19 +93,4 @@ public class MovingPlatform : BasePlatform
         lastPlatformPosition = to;
     }
 
-    protected override void OnCollisionEnter(Collision collision)
-    {
-        base.OnCollisionEnter(collision);
-    }
-
-
-    protected override void OnCollisionExit(Collision collision)
-    {
-        base.OnCollisionExit(collision);
-        if (player != null)
-        {
-            player = null;
-        }
-
-    }
 }

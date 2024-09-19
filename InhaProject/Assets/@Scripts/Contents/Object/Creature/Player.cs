@@ -315,22 +315,22 @@ public class Player : Creature, IHitEvent
         PlayerSkillDict = new Dictionary<EPlayerSkillType, PlayerSkill>();
 
         skillType = EPlayerSkillType.Dash;
-        PlayerSkillDict.Add(skillType, new PlayerSkill(skillType, 5, 0));
+        PlayerSkillDict.Add(skillType, new PlayerSkill(skillType, 3, 0));
 
         skillType = EPlayerSkillType.Guard;
-        PlayerSkillDict.Add(skillType, new PlayerSkill(skillType, 5, 0));
+        PlayerSkillDict.Add(skillType, new PlayerSkill(skillType, 4, 0));
 
         skillType = EPlayerSkillType.Skill1;
-        PlayerSkillDict.Add(skillType, new PlayerAttackSkill(skillType, new List<float> { 1.0f }, 5, 5));
+        PlayerSkillDict.Add(skillType, new PlayerAttackSkill(skillType, new List<float> { 1.0f }, 0, 30));
 
         skillType = EPlayerSkillType.Skill2;
-        PlayerSkillDict.Add(skillType, new PlayerAttackSkill(skillType, new List<float> { 1.5f }, 5, 20));
+        PlayerSkillDict.Add(skillType, new PlayerAttackSkill(skillType, new List<float> { 1.5f }, 7, 100));
 
         skillType = EPlayerSkillType.Skill3;
-        PlayerSkillDict.Add(skillType, new PlayerAttackSkill(skillType, new List<float> { 2.0f }, 5, 20));
+        PlayerSkillDict.Add(skillType, new PlayerAttackSkill(skillType, new List<float> { 2.0f }, 10, 150));
 
         skillType = EPlayerSkillType.Skill4;
-        PlayerSkillDict.Add(skillType, new PlayerAttackSkill(skillType, new List<float> { 0.3f, 0.4f, 0.3f, 0.4f, 1.5f }, 5, 50));
+        PlayerSkillDict.Add(skillType, new PlayerAttackSkill(skillType, new List<float> { 0.3f, 0.4f, 0.5f, 0.6f, 2.5f }, 20, 350));
     }
 
     public override Vector3 GetCameraTargetPos()
@@ -956,13 +956,15 @@ public class Player : Creature, IHitEvent
         {
             if (skillData.isAvailable == false)
             {
-                // 스킬이 준비되지 않았습니다.
+                Managers.UI.SpawnObjectUI<UI_TextObject>(EUIObjectType.UI_TextObject,
+                    new UITextParam("스킬이 준비되지 않았습니다."));
                 return false;
             }
 
             if (skillData.mpAmount > playerData.CurrMp)
             {
-                // 마나가 부족합니다.
+                Managers.UI.SpawnObjectUI<UI_TextObject>(EUIObjectType.UI_TextObject,
+                    new UITextParam("마나가 부족합니다."));
                 return false;
             }
         }
@@ -1055,6 +1057,7 @@ public class Player : Creature, IHitEvent
 
     protected virtual void BlockStateEnter()
     {
+        RecoveryMp(100);
         isPlayerStateLock = true;
         SetRigidVelocityX(2f * ((LookLeft) ? 1 : -1));
         Managers.Game.GameTimeScaleSlowEffect(0.5f, 0.5f);

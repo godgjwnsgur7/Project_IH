@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 1989113716327935250}
   - component: {fileID: 3964752060042407058}
   - component: {fileID: 6667340697920482421}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: WallPropsBottomA_ST
-  m_TagString: Ground
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -151,9 +151,9 @@ GameObject:
   - component: {fileID: 6007442089041476905}
   - component: {fileID: 8508319807320490147}
   - component: {fileID: 159446379703604360}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: WallPropsBottomA_ST
-  m_TagString: Ground
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -235,9 +235,9 @@ GameObject:
   - component: {fileID: 3079739913878805257}
   - component: {fileID: 1127449813895099028}
   - component: {fileID: 664317034810277698}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: HidePlatForm
-  m_TagString: Ground
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -272,6 +272,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disappearDuration: 1
   reappearDelay: 2
+  rendererList: []
 --- !u!65 &664317034810277698
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -553,9 +554,9 @@ GameObject:
   - component: {fileID: 6057369801661417304}
   - component: {fileID: 3814387563638623119}
   - component: {fileID: 4778377513907975645}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: WallPropsBottomA_ST (1)
-  m_TagString: Ground
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

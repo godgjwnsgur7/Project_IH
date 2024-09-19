@@ -4,23 +4,26 @@ using UnityEngine;
 
 public class DisappearingPlatform : BasePlatform
 {
-    public float disappearDuration = 2f; // ÇÃ·§ÆûÀÌ »ç¶óÁö´Â ½Ã°£
-    public float reappearDelay = 2f; // ÇÃ·§ÆûÀÌ ´Ù½Ã ³ªÅ¸³ª´Â ½Ã°£
+    public float disappearDuration = 2f; // í”Œë«í¼ì´ ì‚¬ë¼ì§€ëŠ” ì‹œê°„
+    public float reappearDelay = 2f; // í”Œë«í¼ì´ ë‹¤ì‹œ ë‚˜íƒ€ë‚˜ëŠ” ì‹œê°„
     private Color originalColor;
     private Color transparentColor;
     private bool isDisappearing = false;
+    BoxCollider Collider;
+
     [SerializeField, ReadOnly] protected List<Renderer> rendererList;
+    [SerializeField] GameObject platformObj;
 
     public override bool Init()
     {
         if (!base.Init())
             return false;
 
-        // Äİ¶óÀÌ´õ¸¦ Æ®¸®°Å·Î ¼³Á¤
-        Collider collider = GetComponent<Collider>();
-        if (collider != null)
+        // ì½œë¼ì´ë”ë¥¼ íŠ¸ë¦¬ê±°ë¡œ ì„¤ì •
+        Collider = GetComponent<BoxCollider>();
+        if (Collider != null)
         {
-            collider.isTrigger = true;
+            Collider.isTrigger = true;
         }
 
         rendererList = new List<Renderer>();
@@ -31,7 +34,7 @@ public class DisappearingPlatform : BasePlatform
                 rendererList.Add(renderer);
         }
 
-        // ¿ø·¡ »ö»ó ¹× Åõ¸í »ö»ó ÃÊ±âÈ­
+        // ì›ë˜ ìƒ‰ìƒ ë° íˆ¬ëª… ìƒ‰ìƒ ì´ˆê¸°í™”
         if (rendererList.Count > 0)
         {
             originalColor = rendererList[0].material.color;
@@ -52,7 +55,7 @@ public class DisappearingPlatform : BasePlatform
 
     private IEnumerator DisappearAndReappearCoroutine()
     {
-        // »ç¶óÁö´Â °úÁ¤
+        // ì‚¬ë¼ì§€ëŠ” ê³¼ì •
         float elapsedTime = 0f;
         while (elapsedTime < disappearDuration)
         {
@@ -67,21 +70,21 @@ public class DisappearingPlatform : BasePlatform
             yield return null;
         }
 
-        // ÃÖÁ¾ÀûÀ¸·Î ¿ÏÀüÈ÷ Åõ¸íÇÏ°Ô ¸¸µé±â
+        // ìµœì¢…ì ìœ¼ë¡œ ì™„ì „íˆ íˆ¬ëª…í•˜ê²Œ ë§Œë“¤ê¸°
         foreach (Renderer render in rendererList)
             if (render != null)
                 render.material.color = transparentColor;
 
-        // ÇÏÀ§ °´Ã¼¸¦ ºñÈ°¼ºÈ­
-        SetChildrenActive(false);
+        // í•˜ìœ„ ê°ì²´ë¥¼ ë¹„í™œì„±í™”
+        this.gameObject.SetActive(false);
 
-        // ´ë±â
+        // ëŒ€ê¸°
         yield return new WaitForSeconds(reappearDelay);
 
-        // ÇÏÀ§ °´Ã¼¸¦ ´Ù½Ã È°¼ºÈ­
-        SetChildrenActive(true);
+        // í•˜ìœ„ ê°ì²´ë¥¼ ë‹¤ì‹œ í™œì„±í™”
+        this.gameObject.SetActive(true);
 
-        // ´Ù½Ã ³ªÅ¸³ª´Â °úÁ¤
+        // ë‹¤ì‹œ ë‚˜íƒ€ë‚˜ëŠ” ê³¼ì •
         elapsedTime = 0f;
         while (elapsedTime < disappearDuration)
         {
@@ -96,19 +99,11 @@ public class DisappearingPlatform : BasePlatform
             yield return null;
         }
 
-        // ÃÖÁ¾ÀûÀ¸·Î ¿ø·¡ »ö»óÀ¸·Î º¹±¸
+        // ìµœì¢…ì ìœ¼ë¡œ ì›ë˜ ìƒ‰ìƒìœ¼ë¡œ ë³µêµ¬
         foreach (Renderer render in rendererList)
             if (render != null)
                 render.material.color = originalColor;
 
         isDisappearing = false;
-    }
-
-    private void SetChildrenActive(bool isActive)
-    {
-        foreach (Transform child in transform)
-        {
-            child.gameObject.SetActive(isActive);
-        }
     }
 }

@@ -9,7 +9,7 @@ public class MainCameraController : MonoBehaviour
     Camera cam;
     [SerializeField, ReadOnly] private BaseObject target;
     [SerializeField] Vector3 cameraAddFixedValue;
-    [SerializeField] GameObject MinimapCamera;
+    [SerializeField] GameObject minimapCameraObj;
 
     [SerializeField, ReadOnly] private bool _isUsingSubCamera = false;
     public bool IsUsingSubCamera 
@@ -57,6 +57,11 @@ public class MainCameraController : MonoBehaviour
         cam.fieldOfView = 70;
 
         cameraAddFixedValue.z = -10;
+    }
+
+    public void SetActiveMinimapCamera(bool isActive)
+    {
+        minimapCameraObj?.SetActive(isActive);
     }
 
     public void SetTarget(BaseObject target)

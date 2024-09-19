@@ -737,7 +737,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   cameraAddFixedValue: {x: 0, y: 0, z: 0}
-  MinimapCamera: {fileID: 1772467910}
+  minimapCameraObj: {fileID: 1772467910}
   _isUsingSubCamera: 0
 --- !u!1 &996242291
 GameObject:

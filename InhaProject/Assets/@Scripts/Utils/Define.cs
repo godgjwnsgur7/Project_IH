@@ -47,4 +47,7 @@ public static class Define
         Interaction,
         Monster,
     }
+
+    public const int HP_POTION = 2000;
+    public const int MP_POTION = 200;
 }

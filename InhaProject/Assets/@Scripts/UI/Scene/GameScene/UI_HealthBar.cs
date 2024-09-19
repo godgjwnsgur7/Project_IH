@@ -9,21 +9,20 @@ public class UI_HealthBar : UI_BaseObject
 	[SerializeField] private Image hpSlider;
 	[SerializeField] private Text hpText;
 
-	[SerializeField, ReadOnly] float maxHp = 0;
-    [SerializeField, ReadOnly] float _currHp = 0;
-
     float changeMoveSpeed = 1.5f;
+
+    [SerializeField, ReadOnly] float maxHp = 0;
+    [SerializeField, ReadOnly] float _currHp = 0;
     Coroutine coChangedHp = null;
-    public float currHp
+    public float CurrHp
     {
         get { return _currHp; }
         protected set
         {
             _currHp = value;
-            if ( coChangedHp == null )
-            {
+
+            if (coChangedHp == null)
                 coChangedHp = StartCoroutine(CoChangedHp());
-            }
         }
     }
 
@@ -41,13 +40,13 @@ public class UI_HealthBar : UI_BaseObject
         Managers.Game.Player.OnChangedHp += OnChangedHp;
 
         this.maxHp = maxHp;
-        currHp = maxHp;
+        CurrHp = maxHp;
         SetHpBar();
     }
 
     private void OnChangedHp(float currHp)
     {
-        this.currHp = currHp;
+        this.CurrHp = currHp;
     }
 
     private void OnDisable()
@@ -60,20 +59,20 @@ public class UI_HealthBar : UI_BaseObject
 
     private IEnumerator CoChangedHp()
     {
-        hpText.text = $"{currHp}/{maxHp}";
+        hpText.text = $"{CurrHp}/{maxHp}";
 
-        while ( hpSlider.fillAmount > currHp / maxHp + 0.01)
+        while (Mathf.Abs(hpSlider.fillAmount - (CurrHp / maxHp)) > 0.01f)
         {
-            hpSlider.fillAmount = Mathf.Lerp(hpSlider.fillAmount, currHp / maxHp, Time.deltaTime * changeMoveSpeed);
+            hpSlider.fillAmount = Mathf.Lerp(hpSlider.fillAmount, CurrHp / maxHp, Time.deltaTime * changeMoveSpeed);
             yield return null;
         }
 
-        hpSlider.fillAmount = currHp / maxHp;
+        SetHpBar();
         coChangedHp = null;
     }
 
     private void SetHpBar()
     {
-        hpSlider.fillAmount = currHp / maxHp;
+        hpSlider.fillAmount = CurrHp / maxHp;
     }
 }

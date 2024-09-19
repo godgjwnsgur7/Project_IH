@@ -13,6 +13,8 @@ public class CreatureFoot : InitBase
 
     [SerializeField, ReadOnly] int landingCount = 0;
 
+    List<DisappearingPlatform> platformList = new List<DisappearingPlatform>();
+
     public override bool Init()
     {
         if (base.Init() == false)
@@ -47,7 +49,18 @@ public class CreatureFoot : InitBase
         if (collision.tag == ETag.Ground.ToString())
         {
             landingCount++;
+
+            if(collision.TryGetComponent<DisappearingPlatform>(out DisappearingPlatform platform))
+                coDisappearingPlatformCheck = StartCoroutine(CoDisappearingPlatformCheck(platform));
         }
+    }
+
+    Coroutine coDisappearingPlatformCheck = null;
+    protected IEnumerator CoDisappearingPlatformCheck(DisappearingPlatform platform)
+    {
+        yield return new WaitUntil(() => platform.gameObject.activeSelf == false);
+        landingCount--;
+        coDisappearingPlatformCheck = null;
     }
 
     private void OnTriggerExit(Collider collision)
@@ -59,6 +72,10 @@ public class CreatureFoot : InitBase
             {
                 landingCount = 0;
             }
+
+            if (collision.GetComponent<DisappearingPlatform>() != null
+                && coDisappearingPlatformCheck != null)
+                StopCoroutine(coDisappearingPlatformCheck);
         }
     }
 }

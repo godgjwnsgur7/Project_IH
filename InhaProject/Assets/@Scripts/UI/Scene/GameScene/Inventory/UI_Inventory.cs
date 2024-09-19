@@ -78,8 +78,6 @@ public class UI_Inventory : MonoBehaviour
 	{
 		UI_ItemSlot[] arr = transform.GetComponentsInChildren<UI_ItemSlot>();
 
-		Debug.Log("아이템 사용");
-		
 		IInventoryItem item = inventory.FindItem(e.Item.Name);
 
 		if ( item == null)
@@ -105,12 +103,10 @@ public class UI_Inventory : MonoBehaviour
 
 					if (count > 0)
 					{
-						Debug.Log("카운트 개수 > 0 " + count);
 						slot.countText.text = count.ToString();
 					}
 					else
 					{
-						Debug.Log(count + " <- count 개수");
 						frontImage.enabled = true;
 						slot.countText.text = "";
 					}

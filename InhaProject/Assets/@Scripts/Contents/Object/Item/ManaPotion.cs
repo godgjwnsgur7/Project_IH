@@ -55,7 +55,7 @@ public class ManaPotion : BaseItem, IInventoryItem
         if (!base.Init())
             return false;
         ItemType = EItemType.ManaPotion;
-        _param = new PotionItemParam(false, heal);
+        _param = new PotionItemParam(false, Define.MP_POTION);
         _param.type = ItemType;
         return true;
     }

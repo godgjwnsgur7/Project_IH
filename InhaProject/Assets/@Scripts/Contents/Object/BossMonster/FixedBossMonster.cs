@@ -47,7 +47,7 @@ public class FixedBossMonster : BaseMonster, IHitEvent
             switch (value)
             {
                 case EFixedBossMonsterState.Idle:
-                    UpdateAITick = 3.0f;
+                    UpdateAITick = 5.0f;
                     break;
                 default:
                     UpdateAITick = 0.0f;
@@ -100,8 +100,8 @@ public class FixedBossMonster : BaseMonster, IHitEvent
     private void SetMonsterData()
     {
         // 엑셀 데이터로 분리 예정 (임시)
-        CurrHp = 100000;
-        MaxHp = 100000;
+        CurrHp = 40000;
+        MaxHp = 40000;
         monsterName = "스켈레톤 킹";
     }
 
@@ -187,6 +187,8 @@ public class FixedBossMonster : BaseMonster, IHitEvent
     [SerializeField, ReadOnly] int patternNum = 0;
     protected void UpdateIdleState()
     {
+        // 패턴을 순서대로 뱉음
+        // - 언젠가 패턴이 늘어난다면 스킬 가중치 넣어서 랜덤으로 해줄게 보스야;;
         patternNum++;
         if (patternNum > 3)
             patternNum = 1;

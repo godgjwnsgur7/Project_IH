@@ -53,7 +53,7 @@ public class HealPotion : BaseItem, IInventoryItem
         if (!base.Init())
             return false;
         ItemType = EItemType.HealPotion;
-        _param = new PotionItemParam(true, heal);
+        _param = new PotionItemParam(true, Define.HP_POTION);
         _param.type = ItemType;
         return true;
     }

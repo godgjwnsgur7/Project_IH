@@ -2,7 +2,7 @@
   "Monsters": [
     {
       "DataId": 0,
-      "MaxHp": 15000.0,
+      "MaxHp": 5000.0,
       "StrikingPower": 1000.0,
       "MoveSpeed": 2.0,
       "ChaseSpeed": 4.0,
@@ -12,8 +12,8 @@
     },
     {
       "DataId": 1,
-      "MaxHp": 10000.0,
-      "StrikingPower": 2000.0,
+      "MaxHp": 3000.0,
+      "StrikingPower": 2500.0,
       "MoveSpeed": 2.0,
       "ChaseSpeed": 3.0,
       "DetectDistance": 12.0,

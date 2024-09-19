@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Viapix_PlayerParams;
-using static Define;
 
 public class HealPack : BaseItem
 {
@@ -23,7 +22,7 @@ public class HealPack : BaseItem
         if (!base.Init())
             return false;
         ItemType = EItemType.HealPack;
-        param = new ApplyItemParam(true, heal);
+        param = new ApplyItemParam(true, Define.HP_POTION);
         param.type = ItemType;
         return true;
     }

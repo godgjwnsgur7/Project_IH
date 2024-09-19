@@ -21,7 +21,7 @@ public class ManaPack : BaseItem
         if (!base.Init())
             return false;
         ItemType = EItemType.ManaPack;
-        param = new ApplyItemParam(false, heal);
+        param = new ApplyItemParam(false, Define.MP_POTION);
         param.type = ItemType;
         return true;
     }
