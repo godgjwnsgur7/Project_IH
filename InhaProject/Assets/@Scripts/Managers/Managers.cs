@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Resources;
 using System.Runtime.Serialization;
 using TMPro.Examples;
-using UnityEditor.EditorTools;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -73,9 +72,6 @@ public class Managers : MonoBehaviour
     /// </summary>
     public static void Clear()
     {
-        if (Scene.CurrentScene.SceneType == Define.EScene.GameScene)
-            Game.Clear();
-
         Pool.Clear();
         Scene.Clear();
         Object.Clear();

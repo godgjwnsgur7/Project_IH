@@ -897,7 +897,7 @@ Transform:
   m_GameObject: {fileID: 2162640964989678447}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -17.03, y: 0.64, z: 0}
+  m_LocalPosition: {x: -20.43, y: 8.65, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1934,6 +1934,7 @@ MonoBehaviour:
   monsterSpawnPointList:
   - {fileID: 5035733909765113867}
   - {fileID: 6514713124714154967}
+  - {fileID: 7888422259649816133}
   bossMonster: {fileID: 1011843643810180517}
 --- !u!1 &3251937901167990637
 GameObject:
@@ -2965,7 +2966,7 @@ Transform:
   m_GameObject: {fileID: 4462925920134856100}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -19.34, y: 8.94, z: 0}
+  m_LocalPosition: {x: -22.44, y: 0.55, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3154,6 +3155,50 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &4877296060960907229
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5474572944191469064}
+  - component: {fileID: 7888422259649816133}
+  m_Layer: 0
+  m_Name: MonsterSpawnPoint (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5474572944191469064
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4877296060960907229}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -6.07, y: 0.64, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5953800147695044345}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7888422259649816133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4877296060960907229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ae377fcd2087ca44a727adb3b8e3391, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5281085277051306452
 GameObject:
   m_ObjectHideFlags: 0
@@ -4126,6 +4171,7 @@ Transform:
   m_Children:
   - {fileID: 4997492266689766975}
   - {fileID: 3049636361569143852}
+  - {fileID: 5474572944191469064}
   m_Father: {fileID: 1926671010228032741}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7167365859613210697

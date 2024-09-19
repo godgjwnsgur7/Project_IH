@@ -22,7 +22,7 @@ public class Inventory : MonoBehaviour
 	private const int SLOT_SIZE = 6;
 
 	private List<IInventoryItem> items = new List<IInventoryItem>();
-
+ 
 	public event EventHandler<InventoryEventArgs> ItemAdd;
 	public event EventHandler<InventoryEventArgs> ItemRemove;
 

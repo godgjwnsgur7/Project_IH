@@ -100,9 +100,9 @@ public class FixedBossMonster : BaseMonster, IHitEvent
     private void SetMonsterData()
     {
         // ø¢ºø µ•¿Ã≈Õ∑Œ ∫–∏Æ øπ¡§ (¿”Ω√)
-        CurrHp = 40000;
-        MaxHp = 40000;
-        monsterName = "Ω∫ƒÃ∑π≈Ê ≈∑";
+        MaxHp = 20000;
+        CurrHp = MaxHp;
+        monsterName = "Ω∫ƒÃ∑π≈Ê ≈∑(JJ)";
     }
 
     public void SetPointInfo(List<BossGimmickPoint> gimmickPointList, List<MonsterSpawnPoint> monsterSpawnPointList)

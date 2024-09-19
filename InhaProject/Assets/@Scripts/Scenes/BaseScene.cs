@@ -13,6 +13,7 @@ public abstract class BaseScene : InitBase
         if (base.Init() == false)
             return false;
 
+        Managers.Init();
         Managers.Scene.SetCurrentScene(this);
 
         return true;
