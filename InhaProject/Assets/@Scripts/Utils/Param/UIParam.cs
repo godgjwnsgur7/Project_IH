@@ -82,6 +82,19 @@ public class UIDamageParam : UIParam
 	}
 }
 
+public class UIHealParam : UIParam
+{
+    public int healAmount;
+    public bool isHp;
+
+    public UIHealParam(int healAmount, bool isHp)
+    {
+        this.healAmount = healAmount;
+        this.isHp = isHp;
+    }
+}
+
+
 public class UIDialogueParam : UIParam
 {
     public string nameText;

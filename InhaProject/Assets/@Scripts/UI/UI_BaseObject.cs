@@ -13,6 +13,7 @@ public enum EUIObjectType
     UI_Tooltip,
     UI_TextObject,
     UI_ClearObject,
+    UI_Heal,
 }
 
 public class UI_BaseObject : InitBase
