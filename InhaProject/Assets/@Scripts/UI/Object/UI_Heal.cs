@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class UI_Heal : UI_BaseObject
@@ -9,8 +8,6 @@ public class UI_Heal : UI_BaseObject
     [SerializeField, ReadOnly] TextMeshProUGUI healText;
     [SerializeField, ReadOnly] TextMeshProUGUI manaText;
     private TextMeshProUGUI text;
-
-    Coroutine coChangedHp = null;
 
     private float moveSpeed = 50.0f;
     private float alphaSpeed = 3.0f;
