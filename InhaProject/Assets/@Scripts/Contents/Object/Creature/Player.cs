@@ -253,6 +253,11 @@ public class Player : Creature, IHitEvent
         }
     }
 
+    private void OnDestroy()
+    {
+        ConnectInputActions(false);
+    }
+
     protected override void Reset()
     {
         base.Reset();

@@ -39,7 +39,6 @@ public class InputMgr : MonoBehaviour
     public event Action OnNum1KeyEntered;
     public event Action OnNum2KeyEntered;
 
-
     public void Init()
     {
         playerInput = GetComponent<PlayerInput>();

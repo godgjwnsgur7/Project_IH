@@ -72,7 +72,11 @@ public class UI_MonsterStatus : UI_BaseObject
         Target = null;
         coFollowTarget = null;
         MainCameraController mainCameraController = Camera.main.GetComponent<MainCameraController>();
-        mainCameraController.OnChangedSubCameraEnable -= OnChangedSubCameraEnable;
-        Managers.Resource.Destroy(this.gameObject);
+        
+        if(mainCameraController != null)
+        {
+            mainCameraController.OnChangedSubCameraEnable -= OnChangedSubCameraEnable;
+            Managers.Resource.Destroy(this.gameObject);
+        }
     }
 }
