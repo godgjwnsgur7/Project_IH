@@ -9,6 +9,7 @@ public class MainCameraController : MonoBehaviour
     Camera cam;
     [SerializeField, ReadOnly] private BaseObject target;
     [SerializeField] Vector3 cameraAddFixedValue;
+    [SerializeField] GameObject MinimapCamera;
 
     [SerializeField, ReadOnly] private bool _isUsingSubCamera = false;
     public bool IsUsingSubCamera 

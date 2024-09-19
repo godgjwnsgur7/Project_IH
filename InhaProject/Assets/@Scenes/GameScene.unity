@@ -473,8 +473,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dfa18a8bc8339e4fa022df42bcfbf60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isTestStage: 0
-  testStageId: 3
+  isTestStage: 1
+  testStageId: 2
   inventory: {fileID: 585567867}
 --- !u!4 &545397593
 Transform:
@@ -696,7 +696,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 503
+    m_Bits: 1015
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -737,6 +737,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   cameraAddFixedValue: {x: 0, y: 0, z: 0}
+  MinimapCamera: {fileID: 1772467910}
   _isUsingSubCamera: 0
 --- !u!1 &996242291
 GameObject:
@@ -1075,7 +1076,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 2048
+    m_Bits: 2560
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -1096,7 +1097,7 @@ Transform:
   m_GameObject: {fileID: 1772467910}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5, y: 30, z: -15}
+  m_LocalPosition: {x: 5, y: 30, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
