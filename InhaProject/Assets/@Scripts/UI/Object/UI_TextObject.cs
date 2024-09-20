@@ -26,8 +26,6 @@ public class UI_TextObject : UI_BaseObject
         pos.x += 100;
         text.rectTransform.localScale = new Vector3(0.3f, 0.3f, 1f);
 
-        StartCoroutine("ITextMoveAndScale", 4);
-
         return true;
     }
 
@@ -46,37 +44,42 @@ public class UI_TextObject : UI_BaseObject
             displayTime = uiTextParam.displayTime;
         }
 
-        StartCoroutine("ITextMoveAndScale", displayTime);
+        textEffectCoroutine = StartCoroutine(ITextEffect(displayTime, 1f));
     }
 
-	private IEnumerator ITextMoveAndScale(float displayTime)
-	{
-		Color textTempColor = text.color;
+    private void OnDisable()
+    {
+        if (textEffectCoroutine != null)
+            StopCoroutine(textEffectCoroutine);
+    }
+
+    Coroutine textEffectCoroutine = null;
+    private IEnumerator ITextEffect(float displayTime, float fadeTime)
+    {
+        // Move And Scale
+        Color textTempColor = text.color;
         textTempColor.a = 0f;
         float time = 0.0f;
 
-        while ( time <= displayTime)
+        while (time <= displayTime)
         {
             time += Time.deltaTime;
             float temp = Mathf.Lerp(text.transform.localScale.x, 1.5f, Time.deltaTime * scaleSpeed);
 
             text.color = textTempColor;
             textTempColor.a += Time.deltaTime;
-            if ( text.rectTransform.position.x < pos.x )
-			    text.transform.Translate(new Vector3(Time.deltaTime * moveSpeed, 0));
+            if (text.rectTransform.position.x < pos.x)
+                text.transform.Translate(new Vector3(Time.deltaTime * moveSpeed, 0));
 
-            if ( temp < 1f )
+            if (temp < 1f)
                 text.transform.localScale = new Vector3(temp, temp, 1);
             yield return null;
-		}
+        }
 
         textTempColor.a = 1f;
         text.color = textTempColor;
-        StartCoroutine("IFadeOut", 1f);
-	}
-
-    private IEnumerator IFadeOut(float fadeTime)
-    {
+        
+        // Fade Out
         Color textTemp = text.color;
         Color imageTempColor = image.color;
 
@@ -91,6 +94,7 @@ public class UI_TextObject : UI_BaseObject
             yield return null;
         }
 
+        textEffectCoroutine = null;
         Managers.Resource.Destroy(gameObject);
     }
 }

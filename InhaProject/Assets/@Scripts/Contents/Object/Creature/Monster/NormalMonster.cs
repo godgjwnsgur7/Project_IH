@@ -500,7 +500,7 @@ public class NormalMonster : BaseMonster
     public void OnDeadMonster()
     {
         // 일정 확률에 따라 아이템 드롭해야 함 (임시)
-        int random = UnityEngine.Random.Range((int)EItemType.None + 1, (int)EItemType.Key);
+        int random = UnityEngine.Random.Range((int)EItemType.ItemBox + 1, (int)EItemType.Key);
         Vector3 spawnPosVec = transform.position;
         
         Managers.Object.SpawnItemObject((EItemType)random, spawnPosVec);
