@@ -137,11 +137,11 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 25
+  m_VertexColorAlwaysGammaSpace: 1
+  m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 99
   m_TargetDisplay: 0
 --- !u!114 &8730722573448091107
 MonoBehaviour:
@@ -155,7 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1980, y: 1280}
@@ -196,10 +196,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeEffectImage: {fileID: 4081476073699911525}
+  exitbutton: {fileID: 2245056689995823584}
+  canvas: {fileID: 7856216963408051720}
+  videoClip: {fileID: 32900000, guid: ec38cc8f2f0348249a26f01304eca9cb, type: 3}
   MovieScreen: {fileID: 1577197796726565900}
   LinkedVideo: {fileID: 9131624423337606123}
-  videoClip: {fileID: 32900000, guid: ec38cc8f2f0348249a26f01304eca9cb, type: 3}
-  exitbutton: {fileID: 2245056689995823584}
 --- !u!1 &2245056689995823584
 GameObject:
   m_ObjectHideFlags: 0

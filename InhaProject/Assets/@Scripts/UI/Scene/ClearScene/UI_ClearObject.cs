@@ -6,21 +6,28 @@ using UnityEngine.Video;
 
 public class UI_ClearObject : UI_BaseObject
 {
-    [SerializeField] public Image fadeEffectImage;
+    [SerializeField, ReadOnly] public Image fadeEffectImage;
+    [SerializeField, ReadOnly] public GameObject exitbutton;
+    [SerializeField, ReadOnly] public Canvas canvas;
+    [SerializeField, ReadOnly] VideoClip videoClip;
+
+    [ReadOnly] public RawImage MovieScreen;
+    [ReadOnly] public VideoPlayer LinkedVideo;
+
+    private UI_Dialogue uiDialogue;
     private Coroutine fadeEffectCoroutine = null;
 
-    public RawImage MovieScreen;
-    public VideoPlayer LinkedVideo;
-    [SerializeField] VideoClip videoClip;
-    [SerializeField] public GameObject exitbutton;
-    private UI_Dialogue uiDialogue;
-
-
-	public override bool Init()
+    public override bool Init()
     {
         if (base.Init() == false)
             return false;
-        
+
+        if ( canvas != null )
+        {
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.overrideSorting = true;
+            canvas.sortingOrder = 99;
+        }
 
         if (fadeEffectCoroutine == null)
         {
@@ -28,6 +35,7 @@ public class UI_ClearObject : UI_BaseObject
         }
 
 		uiDialogue = null;
+
 
         Managers.Sound.StopBgm();
         StartCoroutine(ReadyToStopBgm());
@@ -41,6 +49,7 @@ public class UI_ClearObject : UI_BaseObject
         yield return new WaitForSeconds(0.75f);
         Time.timeScale = 0.0f;
         StartCoroutine(ReadyToPlay());
+        canvas.overrideSorting = true;
     }
 
     IEnumerator ReadyToPlay()
