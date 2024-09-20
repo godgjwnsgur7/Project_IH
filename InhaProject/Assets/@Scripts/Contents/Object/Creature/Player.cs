@@ -596,13 +596,16 @@ public class Player : Creature, IHitEvent
 
     private void NaturalRecovery()
     {
-        RecoveryHp(10);
-        RecoveryMp(5);
+        RecoveryHp(10, false);
+        RecoveryMp(5, false);
     }
     
-    private void RecoveryHp(float hp)
+    private void RecoveryHp(float hp, bool isNotifyUI = true)
     {
         playerData.CurrHp += hp;
+
+        if(isNotifyUI)
+            Managers.UI.SpawnObjectUI<UI_Heal>(EUIObjectType.UI_Heal, new UIHealParam((int)hp, true));
 
         if (playerData.CurrHp > playerData.MaxHp)
             playerData.CurrHp = playerData.MaxHp;
@@ -610,9 +613,12 @@ public class Player : Creature, IHitEvent
         OnChangedHp?.Invoke(playerData.CurrHp);
     }
 
-    private void RecoveryMp(float mp)
+    private void RecoveryMp(float mp, bool isNotifyUI = true)
     {
         playerData.CurrMp += mp;
+        
+        if(isNotifyUI)
+            Managers.UI.SpawnObjectUI<UI_Heal>(EUIObjectType.UI_Heal, new UIHealParam((int)mp, false));
 
         if (playerData.CurrMp > playerData.MaxMp) 
             playerData.CurrMp = playerData.MaxMp;
