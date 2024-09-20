@@ -20,9 +20,7 @@ public class UI_ClearObject : UI_BaseObject
     {
         if (base.Init() == false)
             return false;
-
-        Managers.Sound.StopBgm();
-        Time.timeScale = 0.0f;
+        
 
         if (fadeEffectCoroutine == null)
         {
@@ -31,10 +29,18 @@ public class UI_ClearObject : UI_BaseObject
 
 		uiDialogue = null;
 
-		StartCoroutine(ReadyToPlay());
+        Managers.Sound.StopBgm();
+        StartCoroutine(ReadyToStopBgm());
         exitbutton.SetActive(false);
 
         return true;
+    }
+
+    IEnumerator ReadyToStopBgm()
+    {
+        yield return new WaitForSeconds(0.75f);
+        Time.timeScale = 0.0f;
+        StartCoroutine(ReadyToPlay());
     }
 
     IEnumerator ReadyToPlay()
@@ -55,7 +61,6 @@ public class UI_ClearObject : UI_BaseObject
 
     void OnEndMovie(VideoPlayer vp)
     {
-        Time.timeScale = 1.0f;
         string[] scripts = { "누군가는 신이 돌아오지 않기를 바라고", "누군가는 신의 죽음을 날조하고", "누군가는 돌아오지 않을 신을 기다린다."
         , "그러나 이 모든 것은 신을 찾는 자만이 시작할 수 있으니.", "신을 만나고자 하는 자, 그의 손에 들린 고대의 흔적에서 시작할 것이다."};
         UIParam dialogueParam = new UIDialogueParam("???", scripts);
@@ -71,6 +76,7 @@ public class UI_ClearObject : UI_BaseObject
         {
             uiDialogue.ClosePopupUI();
         }
+        Time.timeScale = 1.0f;
         Managers.Scene.LoadScene(Define.EScene.TitleScene);
     }
 
