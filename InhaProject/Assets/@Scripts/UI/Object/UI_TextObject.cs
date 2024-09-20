@@ -4,10 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UI_TextObject : UI_BaseObject
+public class UI_TextObject : UI_BasePopup
 {
     [SerializeField] TextMeshProUGUI text;
     [SerializeField] Image image;
+    Color orgColor;
+    Color orgImageColor;
     private Vector3 pos;
     public float scaleSpeed = 3f;
     public float moveSpeed = 150f;
@@ -26,12 +28,20 @@ public class UI_TextObject : UI_BaseObject
         pos.x += 100;
         text.rectTransform.localScale = new Vector3(0.3f, 0.3f, 1f);
 
+        orgColor = text.color;
+        orgImageColor = image.color;
+
         return true;
     }
 
     public override void SetInfo(UIParam param)
     {
         base.SetInfo(param);
+
+        if (gameObject.active == false)
+            gameObject.SetActive(true);
+
+        OnDisable();
 
         UITextParam test = param as UITextParam;
 
@@ -57,7 +67,7 @@ public class UI_TextObject : UI_BaseObject
     private IEnumerator ITextEffect(float displayTime, float fadeTime)
     {
         // Move And Scale
-        Color textTempColor = text.color;
+        Color textTempColor = orgColor;
         textTempColor.a = 0f;
         float time = 0.0f;
 
@@ -81,7 +91,7 @@ public class UI_TextObject : UI_BaseObject
         
         // Fade Out
         Color textTemp = text.color;
-        Color imageTempColor = image.color;
+        Color imageTempColor = orgImageColor;
 
         while (textTemp.a > 0f)
         {
@@ -95,6 +105,6 @@ public class UI_TextObject : UI_BaseObject
         }
 
         textEffectCoroutine = null;
-        Managers.Resource.Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }

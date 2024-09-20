@@ -962,14 +962,14 @@ public class Player : Creature, IHitEvent
         {
             if (skillData.isAvailable == false)
             {
-                Managers.UI.SpawnObjectUI<UI_TextObject>(EUIObjectType.UI_TextObject,
+                Managers.UI.OpenPopupUI<UI_TextObject>(
                     new UITextParam("스킬이 준비되지 않았습니다."));
                 return false;
             }
 
             if (skillData.mpAmount > playerData.CurrMp)
             {
-                Managers.UI.SpawnObjectUI<UI_TextObject>(EUIObjectType.UI_TextObject,
+                Managers.UI.OpenPopupUI<UI_TextObject>(
                     new UITextParam("마나가 부족합니다."));
                 return false;
             }
