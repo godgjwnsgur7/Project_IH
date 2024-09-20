@@ -14,6 +14,7 @@ public class UI_ClearObject : UI_BaseObject
     [ReadOnly] public RawImage MovieScreen;
     [ReadOnly] public VideoPlayer LinkedVideo;
 
+    private int sortingOrder = 99;
     private UI_Dialogue uiDialogue;
     private Coroutine fadeEffectCoroutine = null;
 
@@ -26,7 +27,7 @@ public class UI_ClearObject : UI_BaseObject
         {
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             canvas.overrideSorting = true;
-            canvas.sortingOrder = 99;
+            canvas.sortingOrder = sortingOrder;
         }
 
         if (fadeEffectCoroutine == null)
@@ -75,7 +76,7 @@ public class UI_ClearObject : UI_BaseObject
         UIParam dialogueParam = new UIDialogueParam("???", scripts);
 
 		uiDialogue = Managers.UI.OpenPopupUI<UI_Dialogue>(dialogueParam);
-
+        uiDialogue.SetCavnasSortingOrder(sortingOrder);
         exitbutton.SetActive(true);
     }
 

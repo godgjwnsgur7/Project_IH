@@ -27,6 +27,18 @@ public class UI_Dialogue : UI_BasePopup
 		base.OpenPopupUI();
 	}
 
+	public void SetCavnasSortingOrder(int sortingOrder)
+    {
+		Canvas canvas = Util.GetOrAddComponent<Canvas>(gameObject);
+
+		if ( canvas != null )
+		{
+			canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+			canvas.overrideSorting = true;
+			canvas.sortingOrder = sortingOrder;
+		}
+	}
+
 	public override void SetInfo(UIParam param) 
 	{
 		UIDialogueParam test = param as UIDialogueParam;

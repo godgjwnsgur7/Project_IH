@@ -69,6 +69,7 @@ public class UI_TextObject : UI_BasePopup
         // Move And Scale
         Color textTempColor = orgColor;
         textTempColor.a = 0f;
+        image.color = orgImageColor;
         float time = 0.0f;
 
         while (time <= displayTime)
