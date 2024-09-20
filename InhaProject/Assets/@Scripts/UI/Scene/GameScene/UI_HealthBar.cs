@@ -46,6 +46,7 @@ public class UI_HealthBar : UI_BaseObject
 
     private void OnChangedHp(float currHp)
     {
+        hpText.text = $"{CurrHp}/{maxHp}";
         this.CurrHp = currHp;
     }
 
@@ -59,8 +60,6 @@ public class UI_HealthBar : UI_BaseObject
 
     private IEnumerator CoChangedHp()
     {
-        hpText.text = $"{CurrHp}/{maxHp}";
-
         while (Mathf.Abs(hpSlider.fillAmount - (CurrHp / maxHp)) > 0.01f)
         {
             hpSlider.fillAmount = Mathf.Lerp(hpSlider.fillAmount, CurrHp / maxHp, Time.deltaTime * changeMoveSpeed);

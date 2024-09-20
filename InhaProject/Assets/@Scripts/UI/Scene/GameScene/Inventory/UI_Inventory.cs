@@ -48,12 +48,7 @@ public class UI_Inventory : MonoBehaviour
 			{
 				if (slot.name == e.Item.Name)
 				{
-					int count;
-					if (slot.countText.text != "")
-						count = int.Parse(slot.countText.text);
-					else count = 0;
-					count += e.Item.Count;
-					slot.countText.text = count.ToString();
+					slot.countText.text = e.Item.Count.ToString();
 					break;
 				}
 				continue;
@@ -94,16 +89,9 @@ public class UI_Inventory : MonoBehaviour
 				if ( slot.type == EItemSlotType.HealPotion ||
 					slot.type == EItemSlotType.ManaPotion)
 				{
-					int count;
-					if (slot.countText.text != "")
-						count = int.Parse(slot.countText.text);
-					else count = 0;
-
-					count -= 1;
-
-					if (count > 0)
+					if (e.Item.Count > 0)
 					{
-						slot.countText.text = count.ToString();
+						slot.countText.text = e.Item.Count.ToString();
 					}
 					else
 					{

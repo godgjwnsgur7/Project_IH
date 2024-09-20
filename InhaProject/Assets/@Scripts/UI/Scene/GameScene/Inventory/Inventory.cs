@@ -70,15 +70,15 @@ public class Inventory : MonoBehaviour
 		if (items.Exists(x => x.Name.Equals(data.name)))
 		{
 			IInventoryItem findItem = items.Find(x => x.Name.Equals(data.name));
-			findItem.Count -= data.count;
+			findItem.Count -= 1;
 			if (ItemRemove != null)
 				ItemRemove(this, new InventoryEventArgs(findItem));
 
-			if (findItem.Count >= 0)
+			if (findItem.Count <= 0)
 			{
 				items.Remove(findItem);
-				return true;
 			}
+			return true;
 		}
 
 		return false;
@@ -89,18 +89,18 @@ public class Inventory : MonoBehaviour
 		if (items.Exists(x => x.Name.Equals(item.Name)))
 		{
 			IInventoryItem findItem = items.Find(x => x.Name.Equals(item.Name));
-			findItem.Count -= item.Count;
+			findItem.Count -= 1;
 
 			if (ItemRemove != null)
 				ItemRemove(this, new InventoryEventArgs(findItem));
 
-			if (findItem.Count >= 0)
+			if (findItem.Count <= 0)
 			{
 				items.Remove(findItem);
 
 				Debug.Log(items.Exists(x => x.Name.Equals(item.Name)));
-				return true;
 			}
+			return true;
 		}
 
 		else

@@ -63,6 +63,7 @@ public class UI_SkillBar : UI_BaseObject
 
     private void OnChangedMp(float curMp)
 	{
+		mpText.text = $"{curMp} / {maxMp}";
 		this.curMp = curMp;
     }
 
@@ -76,7 +77,6 @@ public class UI_SkillBar : UI_BaseObject
 
 	private IEnumerator CoChangedMp()
 	{
-		mpText.text = $"{curMp} / {maxMp}";
 
 		while (Mathf.Abs(mpSlider.fillAmount - (curMp / maxMp)) > 0.01f)
 		{
