@@ -568,6 +568,7 @@ public class NormalMonster : BaseMonster
     {
         base.OnDeactiveAttackObject();
         attackObject.SetActiveCollider(false);
+        InitRigidVelocity();
     }
 
     public override void OnMoveEvent(float moveSpeed)
