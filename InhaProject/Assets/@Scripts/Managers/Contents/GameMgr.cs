@@ -113,12 +113,14 @@ public class GameMgr
 
     public void ClearFailedStage()
     {
+        Managers.Sound.PlaySfx(ESfxSoundType.UI_Result_Defeat);
         Managers.UI.OpenPopupUI<UI_GameOverPopup>().SetInfo(new UIParam());
     }
 
     private void ClearGame()
     {
         currStageId = 1;
+        Managers.Sound.PlaySfx(ESfxSoundType.UI_Result_Victory);
         Managers.UI.SpawnObjectUI<UI_ClearObject>(EUIObjectType.UI_ClearObject);
     }
 
