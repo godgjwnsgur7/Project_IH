@@ -14,20 +14,16 @@
 
 **조원 별 담당 업무**
 
-**허준혁**
-- Game Core ( Input, Data, UI, etc )
+**허준혁** : Game Core ( Input, Data, UI, etc )
 - Game Flow, Player, Monster, Boss
 
-**이세민**
-- InGame UI Contents
+**이세민** : InGame UI Contents
 - UI, Title Scene
  
-**라용엽**
-- InGame Object Contents
+**라용엽** : InGame Object Contents
 - Platform, Item, Map
 
-**김서현**
-- OutGame UI Contents
+**김서현** : OutGame UI Contents
 - QA, Unity Experience
 
 ---
