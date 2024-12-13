@@ -16,7 +16,7 @@
 
 **허준혁**
 - Game Core ( Input, Data, UI, etc )
-- Player, Monster, Boss
+- Game Flow, Player, Monster, Boss
 
 **이세민**
 - InGame UI Contents
